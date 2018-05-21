@@ -5,7 +5,7 @@ import { EntityService } from './entity.service';
 @Injectable()
 export class DocumentService<T extends Document> extends EntityService<T> {
 
-	getCollection(): string {
+	get collection(): string {
 		return 'document';
 	}
 

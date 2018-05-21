@@ -1,15 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { Injector, ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { MissingTranslationHandler, TranslateLoader, TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from './auth';
 import { CoreRouting } from './core.routing';
 import { DisposableComponent } from './disposable';
 import { ControlComponent, ControlService, FormService, MatchValidator } from './forms';
 import { HighlightPipe } from './highlight';
+import { HttpResponseInterceptor } from './http';
 import { JsonFormatterComponent } from './json-formatter';
-import { CustomMissingTranslationHandler, LabelService } from './labels';
+import { CustomMissingTranslationHandler, LabelPipe, LabelService } from './labels';
 import { Logger } from './logger';
 import { OnceService } from './once';
 import { PageComponent, PageHosterComponent, PageService, Pages } from './pages';
@@ -19,7 +20,6 @@ import { CookieStorageService, LocalStorageService, SessionStorageService, Stora
 import { TrustPipe } from './trust';
 import { ClickOutsideDirective } from './ui';
 
-// import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 // import { AuthService, AuthTokenInterceptor } from './auth';
 
 @NgModule({
@@ -28,28 +28,25 @@ import { ClickOutsideDirective } from './ui';
 		FormsModule,
 		ReactiveFormsModule,
 		TranslateModule.forChild({
-			loader: { provide: TranslateLoader, useClass: LabelService, deps: [HttpClient, Logger] },
+			loader: { provide: TranslateLoader, useClass: LabelService, deps: [Injector] },
 			missingTranslationHandler: { provide: MissingTranslationHandler, useClass: CustomMissingTranslationHandler },
 		}),
 		CoreRouting,
 	],
 	exports: [
-		AssetPipe, HighlightPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe, MatchValidator, TrustPipe,
+		TranslatePipe, LabelPipe, AssetPipe, HighlightPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe, MatchValidator, TrustPipe,
 		ControlComponent, JsonFormatterComponent,
 	],
 	declarations: [
 		PageHosterComponent, PageComponent, DisposableComponent, JsonFormatterComponent,
-		AssetPipe, HighlightPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe, MatchValidator, TrustPipe,
+		LabelPipe, AssetPipe, HighlightPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe, MatchValidator, TrustPipe,
 		ControlComponent, ClickOutsideDirective
 	],
 	providers: [
-		/*
-		{
-			provide: HTTP_INTERCEPTORS,
-			useClass: AuthTokenInterceptor,
-			multi: true
-		},
-		*/
+		{ provide: HTTP_INTERCEPTORS, useClass: HttpResponseInterceptor, multi: true },
+		TranslatePipe,
+		LabelPipe,
+		LabelService,
 		AssetPipe,
 		AuthService,
 		HighlightPipe,

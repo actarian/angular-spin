@@ -5,7 +5,7 @@ import { Promotion } from './promotion';
 @Injectable()
 export class PromotionService extends EntityService<Promotion> {
 
-	getCollection(): string {
+	get collection(): string {
 		return 'promotion';
 	}
 

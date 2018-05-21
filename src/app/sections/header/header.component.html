@@ -38,10 +38,10 @@
 				</a>
 			</div>
 			<div class="nav-item">
-				<a href="">
+				<a [routerLink]="'accedi' | route" routerLinkActive="active">
 					<svg class="ico">
 						<use xlink:href="#ico-user"></use>
-					</svg><span>Accedi</span>
+					</svg><span>{{ 'header.signIn' | label }}</span>
 				</a>
 			</div>
 			<div class="nav-item">

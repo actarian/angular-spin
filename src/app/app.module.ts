@@ -1,7 +1,7 @@
 import { registerLocaleData } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import localeIt from '@angular/common/locales/it';
-import { LOCALE_ID, NgModule } from '@angular/core';
+import { Injector, LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -21,11 +21,10 @@ import { MemoryService } from './core/memory';
 import { PageDirective } from './core/pages';
 import { RouteService } from './core/routes';
 import { ControlEditableComponent } from './forms';
-import { CategoryService, DestinationService, PromotionService, RegionService, SearchService, UserService } from './models';
+import { CategoryService, DestinationService, PromotionService, RegionService, SearchService, TestService, UserService } from './models';
 import { HomeComponent, ProfileComponent, RegionDetailComponent, RegionsComponent, SearchComponent, SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent } from './pages';
 import { DestinationTypePipe } from './pipes';
 import { CategoriesComponent, DestinationHintComponent, FooterComponent, HeaderComponent, HomeSearchComponent, MainSearchComponent, NotFoundComponent, PromotionsComponent, RegionSearchComponent, SvgComponent, ValuePropositionComponent } from './sections';
-
 
 registerLocaleData(localeIt, 'it');
 
@@ -39,12 +38,13 @@ registerLocaleData(localeIt, 'it');
 		HttpClientInMemoryWebApiModule.forRoot(MemoryService, {
 			delay: 0, dataEncapsulation: false,
 		}),
-		TranslateModule.forRoot({
-			loader: { provide: TranslateLoader, useClass: LabelService, deps: [HttpClient, Logger] },
-			missingTranslationHandler: { provide: MissingTranslationHandler, useClass: CustomMissingTranslationHandler },
-		}),
 		AppRouting,
 		AppPages,
+		TranslateModule.forRoot({
+			loader: { provide: TranslateLoader, useClass: LabelService, deps: [Injector] },
+			missingTranslationHandler: { provide: MissingTranslationHandler, useClass: CustomMissingTranslationHandler },
+		}),
+
 	],
 	declarations: [
 		AppComponent,
@@ -56,11 +56,12 @@ registerLocaleData(localeIt, 'it');
 		DestinationTypePipe,
 	],
 	providers: [
+		{ provide: LOCALE_ID, useValue: 'it' },
+		// { provide: HTTP_INTERCEPTORS, useClass: HttpResponseInterceptor, multi: true },
 		AuthAttribute,
-		CategoryService, DestinationService, PromotionService, RegionService, SearchService, UserService,
+		CategoryService, DestinationService, PromotionService, RegionService, SearchService, TestService, UserService,
 		Logger, TranslateService, RouteService,
 		DestinationTypePipe,
-		{ provide: LOCALE_ID, useValue: 'it' },
 		// { provide: RouteService, useClass: RouteService, deps: [TranslateService, Location, Router] },
 	],
 	entryComponents: [HomeComponent, SearchComponent, SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent, ProfileComponent, RegionDetailComponent, RegionsComponent],

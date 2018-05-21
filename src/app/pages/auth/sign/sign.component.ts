@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PageComponent } from '../../../core/pages';
 import { FacebookService, GoogleService } from '../../../core/plugins';
 import { RouteService } from '../../../core/routes';
-import { UserAuth, UserService } from '../../../models';
+import { TestService, UserAuth, UserService } from '../../../models';
 
 
 @Component({
@@ -20,21 +20,26 @@ export class SignComponent extends PageComponent implements OnInit {
 		private router: Router,
 		private facebookService: FacebookService,
 		private googleService: GoogleService,
-		private userService: UserService
+		private userService: UserService,
+		private testService: TestService
 	) {
 		super(route);
+		this.testService.get('/pippo')
+			.subscribe(x => {
+				console.log('SignComponent', x);
+			});
 	}
 
 	ngOnInit() {
 		this.facebookService.status()
 			.takeUntil(this.unsubscribe)
 			.subscribe(x => {
-				console.log('SignComponent.facebookService.status', x);
+				// console.log('SignComponent.facebookService.status', x);
 			});
 		this.googleService.auth2Instance()
 			.takeUntil(this.unsubscribe)
 			.subscribe(x => {
-				console.log('SignComponent.googleService.auth2Instance', x);
+				// console.log('SignComponent.googleService.auth2Instance', x);
 			});
 	}
 

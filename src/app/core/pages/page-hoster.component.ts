@@ -26,7 +26,7 @@ export class PageHosterComponent extends DisposableComponent implements OnInit {
 		this.routeService.getPageComponentFactory()
 			.takeUntil(this.unsubscribe)
 			.subscribe(factory => {
-				console.log('PageHosterComponent', factory);
+				// console.log('PageHosterComponent', factory);
 				this.factory = factory;
 				this.hostPageRef.clear();
 				const componentRef = this.hostPageRef.createComponent(this.factory);

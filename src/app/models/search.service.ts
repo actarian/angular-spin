@@ -106,7 +106,7 @@ export class SearchService {
 		this.routeService.params
 			.take(1)
 			.subscribe(model => {
-				console.log('SearchService.constructor', model);
+				// console.log('SearchService.constructor', model);
 				this.model = new MainSearch(model as MainSearch);
 			});
 		/*

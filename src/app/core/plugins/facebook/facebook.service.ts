@@ -158,7 +158,7 @@ export class FacebookService {
 		return fromPromise(new Promise((resolve, reject) => {
 			return this.login().subscribe(x => {
 				fields = fields || this.options.fields;
-				console.log(x);
+				// console.log(x);
 				this.FB.api('/me', {
 					fields: fields,
 					accessToken: this.options.tokenClient,
@@ -171,7 +171,7 @@ export class FacebookService {
 						const user = r as FacebookUser;
 						user.authResponse = this.authResponse;
 						user.facebookToken = this.authResponse.accessToken;
-						console.log('FacebookService.getMe.success', user);
+						// console.log('FacebookService.getMe.success', user);
 						resolve(user);
 					}
 				});

@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { Entity } from './entity';
 import { IdentityService } from './identity.service';
 
 @Injectable()
 export class EntityService<T extends Entity> extends IdentityService<T> {
 
-	getCollection(): string {
+	get collection(): string {
 		return 'entity';
 	}
 
@@ -16,9 +16,8 @@ export class EntityService<T extends Entity> extends IdentityService<T> {
 			// if not search term, return empty identity array.
 			return of([]);
 		}
-		return this.http.get<T[]>(`${this.url}?name=${name}`).pipe(
-			tap(x => this.log(`found identities matching "${name}"`)),
-			catchError(this.handleError<T[]>('searchTs', []))
+		return this.get(`?name=${name}`).pipe(
+			tap(x => this.logger.log(`found identities matching "${name}"`))
 		);
 	}
 

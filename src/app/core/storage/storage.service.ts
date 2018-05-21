@@ -26,7 +26,7 @@ export class StorageService {
 	public set(name: string, value: any, days?: number): void { }
 	public on(): Observable<any> { return of(null); }
 	public tryGet(): StorageService {
-		console.log('no StorageService available...');
+		// console.log('no StorageService available...');
 		return this;
 	}
 }
@@ -41,7 +41,7 @@ export class CookieStorageService implements StorageService {
 
 	public tryGet(): StorageService {
 		if (this.isSupported()) {
-			console.log('CookieStorageService.supported');
+			// console.log('CookieStorageService.supported');
 			return this;
 		} else {
 			return this.storageService.tryGet();
@@ -151,7 +151,7 @@ export class SessionStorageService implements StorageService {
 
 	public tryGet(): StorageService {
 		if (this.isSupported()) {
-			console.log('SessionStorageService.supported');
+			// console.log('SessionStorageService.supported');
 			return this;
 		} else {
 			return this.cookieStorageService.tryGet();
@@ -260,7 +260,7 @@ export class LocalStorageService implements StorageService {
 
 	public tryGet(): StorageService {
 		if (this.isSupported()) {
-			console.log('LocalStorageService.supported');
+			// console.log('LocalStorageService.supported');
 			return this;
 		} else {
 			return this.cookieStorageService.tryGet();

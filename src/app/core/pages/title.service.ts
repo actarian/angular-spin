@@ -43,6 +43,6 @@ export class TitleService {
 	}
 
 	private log(log: string) {
-		this.logger.add('TitleService: ' + log);
+		this.logger.log('TitleService: ' + log);
 	}
 }

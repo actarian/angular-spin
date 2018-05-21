@@ -130,9 +130,11 @@ export class RouteService {
 			distinctUntilChanged(),
 			map(route => route.firstChild),
 			switchMap(route => route.params),
+			/*
 			tap((params) => {
 				console.log('getParams', params);
 			}),
+			*/
 			concatMap(x => {
 				return of(this.toData(x));
 			})
@@ -142,9 +144,11 @@ export class RouteService {
 	public getPageComponentFactory(): Observable<ComponentFactory<PageComponent>> {
 		return this.router.events.pipe(
 			filter(event => event instanceof ActivationEnd),
+			/*
 			tap((event) => {
 				console.log('ActivationEnd', event);
 			}),
+			*/
 			map(() => this.route),
 			distinctUntilChanged(),
 			map(route => route.firstChild),
@@ -152,7 +156,7 @@ export class RouteService {
 				this.params = route.params.concatMap(x => {
 					return of(this.toData(x));
 				});
-				console.log('params', this.route.params);
+				// console.log('params', this.route.params);
 			}),
 			switchMap(route => route.data),
 			map((data): ComponentFactory<PageComponent> => {

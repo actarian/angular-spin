@@ -5,7 +5,7 @@ import { Category } from './category';
 @Injectable()
 export class CategoryService extends EntityService<Category> {
 
-	getCollection(): string {
+	get collection(): string {
 		return 'category';
 	}
 

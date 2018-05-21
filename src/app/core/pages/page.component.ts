@@ -21,7 +21,7 @@ export class PageComponent extends DisposableComponent {
 	) {
 		super();
 		// this.titleService.setTitle();
-		console.log('CreatePageComponent');
+		// console.log('CreatePageComponent');
 	}
 
 	getId(): number {

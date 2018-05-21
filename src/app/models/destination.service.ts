@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { EntityService } from '../core/models';
-import { Destination, DestinationAutocomplete } from './destination';
+import { Destination } from './destination';
 
 @Injectable()
 export class DestinationService extends EntityService<Destination> {
 
-	getCollection(): string {
+	get collection(): string {
 		return 'destination';
 	}
 
@@ -15,7 +15,7 @@ export class DestinationService extends EntityService<Destination> {
 		if (!name || !name.trim()) {
 			return of([]);
 		}
-		return this.http.get<Destination[]>(`${this.url}?name=${name}`);
+		return this.get(`?name=${name}`);
 	}
 
 	autocomplete(query: string): Observable<any[]> {
@@ -23,7 +23,7 @@ export class DestinationService extends EntityService<Destination> {
 			return of([]);
 		}
 		query = query.toLowerCase();
-		return this.http.get<DestinationAutocomplete[]>(`${this.url}`).pipe(
+		return this.get().pipe(
 			map((x: Destination[]) => {
 				return x
 					.map((x: Destination) => {

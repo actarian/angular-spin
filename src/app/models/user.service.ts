@@ -7,7 +7,7 @@ import { User, UserAuth, UserSignForgotten } from './user';
 @Injectable()
 export class UserService extends EntityService<User> {
 
-	getCollection(): string {
+	get collection(): string {
 		return 'user';
 	}
 
@@ -19,10 +19,9 @@ export class UserService extends EntityService<User> {
 		if (!user.password.trim()) {
 			return of([]);
 		}
-		return this.http.get<UserAuth[]>(`${this.url}?email=${user.email}&password=${user.password}`);
+		return this.get(`?email=${user.email}&password=${user.password}`);
 		/*.pipe(
-			tap(x => this.log(`tryLogin "${user.email}"`)),
-			catchError(this.handleError<UserAuth[]>('tryLogin', []))
+			tap(x => this.log(`tryLogin "${user.email}"`))
 		);*/
 	}
 
@@ -30,10 +29,9 @@ export class UserService extends EntityService<User> {
 		if (!userSignForgotten.email.trim()) {
 			return of([]);
 		}
-		return this.http.post<any>(`${this.url}/forgotten`, userSignForgotten, this.httpOptions);
+		return this.post(`/forgotten`, userSignForgotten);
 		/*.pipe(
-			tap(x => this.log(`tryLogin "${user.email}"`)),
-			catchError(this.handleError<UserAuth[]>('tryLogin', []))
+			tap(x => this.log(`tryLogin "${user.email}"`))
 		);*/
 	}
 
@@ -41,10 +39,9 @@ export class UserService extends EntityService<User> {
 		if (!user.facebookToken.trim()) {
 			return of([]);
 		}
-		return this.http.post<UserAuth[]>(`${this.url}/facebook`, user); // ?email=${user.email}&facebookToken=${user.facebookToken}`
+		return this.post(`/facebook`, user); // ?email=${user.email}&facebookToken=${user.facebookToken}`
 		/*.pipe(
-			tap(x => this.log(`tryFacebook "${user.email}"`)),
-			catchError(this.handleError<UserAuth[]>('tryFacebook', []))
+			tap(x => this.log(`tryFacebook "${user.email}"`))
 		);*/
 	}
 
@@ -52,10 +49,9 @@ export class UserService extends EntityService<User> {
 		if (!user.googleToken.trim()) {
 			return of([]);
 		}
-		return this.http.post<UserAuth[]>(`${this.url}/google`, user); // ?email=${user.email}&googleToken=${user.googleToken}`
+		return this.post(`/google`, user); // ?email=${user.email}&googleToken=${user.googleToken}`
 		/*.pipe(
-			tap(x => this.log(`tryGoogle "${user.email}"`)),
-			catchError(this.handleError<UserAuth[]>('tryGoogle', []))
+			tap(x => this.log(`tryGoogle "${user.email}"`))
 		);*/
 	}
 

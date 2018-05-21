@@ -7,5 +7,6 @@ export * from './category.service';
 export * from './search.service';
 export * from './region.service';
 export * from './region';
+export * from './test.service';
 export * from './user.service';
 export * from './user';

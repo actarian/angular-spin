@@ -168,10 +168,10 @@ export class GoogleService {
 		return fromPromise(
 			new Promise((resolve, reject) => {
 				const readAccessToken = () => {
-					console.log('GoogleLogin.readAccessToken');
+					// console.log('GoogleLogin.readAccessToken');
 					try {
 						const user = this.instance.currentUser.get().getAuthResponse(true);
-						console.log('GoogleLogin.readAccessToken.success', user);
+						// console.log('GoogleLogin.readAccessToken.success', user);
 						this.authResponse = user;
 						this.storage.set('google', user);
 						resolve({
@@ -212,7 +212,7 @@ export class GoogleService {
 					ux_mode: 'popup',
 				}).then(() => {
 					this.auth2 = this.gapi.auth2;
-					console.log('Auth2Init.success', this.auth2);
+					// console.log('Auth2Init.success', this.auth2);
 					resolve(this.auth2);
 				}, reject);
 			})

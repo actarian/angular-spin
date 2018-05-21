@@ -1,3 +1,10 @@
+<div class="error-http" *ngIf="logger.httpError">
+	<span>error</span>&nbsp;
+	<span class="status">{{logger.httpError.status}}</span>&nbsp;
+	<span class="url">{{logger.httpError.url}}</span>&nbsp;
+	<span class="message">{{logger.httpError.body.error}}</span>
+</div>
+<!--
 <div *ngIf="logger.logs.length">
 	<ul class="list-group ">
 		<li class="list-group-item">
@@ -9,3 +16,4 @@
 	</ul>
 	<br>
 </div>
+-->
