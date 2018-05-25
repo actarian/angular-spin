@@ -3,7 +3,165 @@
 	"version": 1,
 	"newProjectRoot": "projects",
 	"projects": {
-		"angular-spin": {
+		"browser": {
+			"root": "",
+			"sourceRoot": "src",
+			"projectType": "application",
+			"architect": {
+				"build": {
+					"builder": "@angular-devkit/build-angular:browser",
+					"options": {
+						"outputPath": "dist/browser",
+						"index": "src/index.html",
+						"main": "src/main.ts",
+						"tsConfig": "src/tsconfig.app.json",
+						"polyfills": "src/polyfills.ts",
+						"assets": [
+							"src/assets",
+							"src/favicon.ico"
+						],
+						"styles": [
+              				"src/styles.scss"
+            			],
+						"scripts": []
+					},
+					"configurations": {
+						"server": {
+							"optimization": true,
+							"outputHashing": "media",
+							"sourceMap": false,
+							"extractCss": true,
+							"namedChunks": false,
+							"aot": true,
+							"extractLicenses": true,
+							"vendorChunk": false,
+							"buildOptimizer": true,
+							"fileReplacements": [{
+								"replace": "src/environments/environment.ts",
+								"with": "src/environments/environment.server.ts"
+                			}]
+						},
+						"production": {
+							"optimization": true,
+							"outputHashing": "all",
+							"sourceMap": false,
+							"extractCss": true,
+							"namedChunks": false,
+							"aot": true,
+							"extractLicenses": true,
+							"vendorChunk": false,
+							"buildOptimizer": true,
+							"fileReplacements": [{
+								"replace": "src/environments/environment.ts",
+								"with": "src/environments/environment.prod.ts"
+                			}]
+						}
+					}
+				},
+				"serve": {
+					"builder": "@angular-devkit/build-angular:dev-server",
+					"options": {
+						"browserTarget": "browser:build",
+						"port": 40000
+					},
+					"configurations": {
+						"production": {
+							"browserTarget": "browser:build:production"
+						}
+					}
+				},
+				"extract-i18n": {
+					"builder": "@angular-devkit/build-angular:extract-i18n",
+					"options": {
+						"browserTarget": "browser:build"
+					}
+				},
+				"test": {
+					"builder": "@angular-devkit/build-angular:karma",
+					"options": {
+						"main": "src/test.ts",
+						"karmaConfig": "./karma.conf.js",
+						"polyfills": "src/polyfills.ts",
+						"tsConfig": "src/tsconfig.spec.json",
+						"scripts": [],
+						"styles": [
+              				"src/styles.scss"
+            			],
+						"assets": [
+							"src/assets",
+							"src/favicon.ico"
+            			]
+					}
+				},
+				"lint": {
+					"builder": "@angular-devkit/build-angular:tslint",
+					"options": {
+						"tsConfig": [
+							"src/tsconfig.app.json",
+							"src/tsconfig.spec.json"
+						],
+						"exclude": [
+             				 "**/node_modules/**"
+            			]
+					}
+				}
+			}
+		},
+		"server": {
+			"root": "",
+			"sourceRoot": "src",
+			"projectType": "application",
+			"architect": {
+				"build": {
+					"builder": "@angular-devkit/build-angular:browser",
+					"options": {
+						"outputPath": "dist/server",
+						"index": "src/index.html",
+						"main": "src/main.server.ts",
+						"tsConfig": "src/tsconfig.server.json",
+						"polyfills": "src/polyfills.ts",
+						"assets": [
+							"src/assets",
+							"src/favicon.ico"
+						],
+						"styles": [
+              				"src/styles.scss"
+            			],
+						"scripts": []
+					},
+					"configurations": {
+						"production": {
+							"optimization": true,
+							"outputHashing": "media",
+							"sourceMap": false,
+							"extractCss": true,
+							"namedChunks": false,
+							"aot": true,
+							"extractLicenses": true,
+							"vendorChunk": false,
+							"buildOptimizer": true,
+							"fileReplacements": [{
+								"replace": "src/environments/environment.ts",
+								"with": "src/environments/environment.prod.ts"
+                			}]
+						}
+					}
+				},
+				"lint": {
+					"builder": "@angular-devkit/build-angular:tslint",
+					"options": {
+						"tsConfig": [
+							"src/tsconfig.app.json",
+							"src/tsconfig.spec.json"
+						],
+						"exclude": [
+             				 "**/node_modules/**"
+            			]
+					}
+				}
+			}
+		},
+		"docs": {
 			"root": "",
 			"sourceRoot": "src",
 			"projectType": "application",
@@ -40,43 +198,25 @@
 								"replace": "src/environments/environment.ts",
 								"with": "src/environments/environment.docs.ts"
                 			}]
-						},
-						"production": {
-							"optimization": true,
-							"outputHashing": "all",
-							"sourceMap": false,
-							"extractCss": true,
-							"namedChunks": false,
-							"aot": true,
-							"extractLicenses": true,
-							"vendorChunk": false,
-							"buildOptimizer": true,
-							"fileReplacements": [{
-								"replace": "src/environments/environment.ts",
-								"with": "src/environments/environment.prod.ts"
-                			}]
 						}
 					}
 				},
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
 					"options": {
-						"browserTarget": "angular-spin:build",
-						"port": 40000,
-						"ssl": true,
-						"sslKey": "src/websolute.key",
-						"sslCert": "src/websolute.pem"
+						"browserTarget": "docs:build",
+						"port": 40000
 					},
 					"configurations": {
 						"production": {
-							"browserTarget": "angular-spin:build:production"
+							"browserTarget": "docs:build:production"
 						}
 					}
 				},
 				"extract-i18n": {
 					"builder": "@angular-devkit/build-angular:extract-i18n",
 					"options": {
-						"browserTarget": "angular-spin:build"
+						"browserTarget": "docs:build"
 					}
 				},
 				"test": {
@@ -110,7 +250,7 @@
 				}
 			}
 		},
-		"angular-spin-e2e": {
+		"e2e": {
 			"root": "",
 			"sourceRoot": "",
 			"projectType": "application",
@@ -119,7 +259,7 @@
 					"builder": "@angular-devkit/build-angular:protractor",
 					"options": {
 						"protractorConfig": "./protractor.conf.js",
-						"devServerTarget": "angular-spin:serve"
+						"devServerTarget": "browser:serve"
 					}
 				},
 				"lint": {
@@ -136,7 +276,7 @@
 			}
 		}
 	},
-	"defaultProject": "angular-spin",
+	"defaultProject": "browser",
 	"schematics": {
 		"@schematics/angular:component": {
 			"prefix": "app",

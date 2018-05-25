@@ -5,6 +5,42 @@ Accordion
 --------------------------------------------------*/
 
 .ui-accordion {
+	&-header {
+		border-bottom: 1px solid #c2c2c2;
+
+		&>a {
+			position: relative;
+			z-index: 1;
+			display: block;
+			padding: 10px 15px;
+			color: $tit-color;
+			text-decoration: none;
+			font-size: 15px;
+			padding-right: 40px;
+
+			&:before {
+				content: '';
+				position: absolute;
+				z-index: 1;
+				right: 17px;
+				top: 19px;
+				border-top: 5px solid $tit-color;
+				border-left: 5px solid transparent;
+				border-right: 5px solid transparent;
+			}
+		}
+
+		&.ui-state-active {
+			border-bottom: 1px solid $border-color;
+
+			&>a {
+				&:before {
+					transform: rotate(180deg);
+				}
+			}
+		}
+	}
+
 	&-content-wrapper {
 		overflow: hidden;
 	}
@@ -14,37 +50,44 @@ Accordion
 	.ui-accordion {
 		&-header {
 			background: #f1f1f1;
-			border-bottom: 1px solid #c2c2c2;
+		}
+	}
+}
+
+
+.serp-filter {
+
+	p-accordiontab {
+		border-bottom: 1px solid $border-color;
+		display: block;
+	}
+
+	.ui-accordion {
+
+
+		&-header {
+			border-bottom: none;
 
 			&>a {
-				position: relative;
-				z-index: 1;
-				display: block;
-				padding: 10px 15px;
-				color: $tit-color;
-				text-decoration: none;
-				font-size: 15px;
-				padding-right: 40px;
+				padding: 10px 2px;
 
 				&:before {
-					content: '';
-					position: absolute;
-					z-index: 1;
-					right: 15px;
-					top: 19px;
-					border-top: 5px solid $tit-color;
-					border-left: 5px solid transparent;
-					border-right: 5px solid transparent;
+					right: 3px;
 				}
 			}
+		}
 
-			&.ui-state-active {
-				border-bottom: 1px solid $border-color;
+		.list {
+			margin-bottom: 20px;
+			padding: 0 2px;
 
-				&>a {
-					&:before {
-						transform: rotate(180deg);
-					}
+			li {
+				border-bottom: none !important;
+				padding: 6px 0 !important;
+
+				label {
+					font-size: 13px !important;
+					line-height: 1.1 !important;
 				}
 			}
 		}

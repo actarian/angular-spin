@@ -156,7 +156,7 @@ Serp Filters
 }
 
 
-.serp-main-search {
+.serp-main-search--popup {
 	@include sm-up {
 		display: block;
 
@@ -167,33 +167,36 @@ Serp Filters
 }
 
 
-
 /*--------------------------------------------------
-List
+Serp Content
 --------------------------------------------------*/
 
-.list {
+.serp-content {
+	.container {
+		display: flex;
+		justify-content: space-between;
+		margin-bottom: 60px;
 
-	li {
-		padding: 12px 15px;
-		border-bottom: 1px solid $border-color;
-
-		label {
-			margin: 0;
-			padding: 0;
-			line-height: 1.3;
-			font-size: 12px;
-
-			&>span {
-				display: flex;
-				justify-content: space-between;
-
-				em {
-					font-style: normal;
-					font-size: 11px;
-					margin-top: 1px;
-				}
-			}
-		}
 	}
+}
+
+.serp-filter {
+	flex: 0 0 250px;
+	display: block;
+	padding: 0 15px;
+
+	.serp-filter--sticky {
+		position: -webkit-sticky;
+		position: sticky;
+		top: -1px;
+	}
+
+	@include sm-down {
+		display: none;
+	}
+}
+
+.serp-results {
+	flex-grow: 1;
+	padding: 0 15px;
 }

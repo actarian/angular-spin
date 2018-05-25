@@ -23,7 +23,7 @@
 				<span>Modifica </span> </div>
 		</div>
 		<!-- Order Popup -->
-		<div class="serp-filters--popup serp-order" [ngClass]="{'active':active==popupOrder}">
+		<div class="serp-filters--popup serp-order--popup" [ngClass]="{ 'active' : active == popupOrder }">
 			<div class="head">
 				<div class="tit"> Ordina risultati </div>
 				<a class="close" (click)="active=null">
@@ -49,7 +49,7 @@
 		</div>
 		<!-- Order Popup -->
 		<!-- Filter Popup -->
-		<div class="serp-filters--popup serp-filter" [ngClass]="{'active':active==popupFilter}">
+		<div class="serp-filters--popup serp-filter--popup" [ngClass]="{ 'active' : active == popupFilter }">
 			<div class="head">
 				<div class="tit"> Filtra risultati </div>
 				<a class="close" (click)="active=null">
@@ -59,75 +59,15 @@
 				</a>
 			</div>
 			<div class="content">
-				<p-accordion styleClass="popup-accordion">
-					<p-accordionTab header="Destinazione" [selected]="true">
-						<ul class="list">
-							<li class="list--item">
-								<div class="checkbox"> <label> <input name="order" type="checkbox"><span>Abruzzo <em>10</em> </span> </label> </div>
-							</li>
-							<li class="list--item">
-								<div class="checkbox"> <label> <input name="order" type="checkbox"><span>Friuli Venezia Giulia <em>8</em> </span> </label> </div>
-							</li>
-							<li class="list--item">
-								<div class="checkbox"> <label> <input name="order" type="checkbox"><span>Lombardia <em>9</em> </span> </label> </div>
-							</li>
-						</ul>
-					</p-accordionTab>
-					<p-accordionTab header="Servizi">
-						<ul class="list">
-							<li class="list--item">
-								<div class="checkbox"> <label> <input name="order" type="checkbox"><span>Centro benessere <em>10</em> </span> </label> </div>
-							</li>
-							<li class="list--item">
-								<div class="checkbox"> <label> <input name="order" type="checkbox"><span>Novità <em>8</em> </span> </label> </div>
-							</li>
-							<li class="list--item">
-								<div class="checkbox"> <label> <input name="order" type="checkbox"><span>Spiaggia  <em>9</em> </span> </label> </div>
-							</li>
-						</ul>
-					</p-accordionTab>
-					<p-accordionTab header="Trattamento">
-						<ul class="list">
-							<li class="list--item">
-								<div class="checkbox"> <label> <input name="order" type="checkbox"><span>Pensione completa con bevande  <em>10</em> </span> </label> </div>
-							</li>
-							<li class="list--item">
-								<div class="checkbox"> <label> <input name="order" type="checkbox"><span>Mezza pensione  <em>8</em> </span> </label> </div>
-							</li>
-							<li class="list--item">
-								<div class="checkbox"> <label> <input name="order" type="checkbox"><span>Soft All Inclusive  <em>9</em> </span> </label> </div>
-							</li>
-						</ul>
-					</p-accordionTab>
-					<p-accordionTab header="Categoria">
-						<ul class="list">
-							<li class="list--item">
-								<div class="checkbox"> <label> <input name="order" type="checkbox"><span>
-									<span class="stars"> <em>*</em> <em>*</em> <em>*</em> <em>*</em> <em class="superior">S</em> </span>
-									<em>10</em> </span> </label>
-								</div>
-							</li>
-							<li class="list--item">
-								<div class="checkbox"> <label> <input name="order" type="checkbox"><span>
-									<span class="stars"> <em>*</em> <em>*</em> <em>*</em> <em>*</em> </span>
-									<em>8</em> </span> </label>
-								</div>
-							</li>
-							<li class="list--item">
-								<div class="checkbox"> <label> <input name="order" type="checkbox"><span>
-									<span class="stars"> <em>*</em> <em>*</em> <em>*</em> </span>
-									<em>9</em> </span> </label>
-								</div>
-							</li>
-						</ul>
-					</p-accordionTab>
-				</p-accordion>
+				<div class="popup-accordion">
+					<section-filter></section-filter>
+				</div>
 			</div>
 			<div class="foot"> <a href="#" class="btn-reset">Resetta filtri </a> <a href="#" class="btn">Aggiorna </a> </div>
 		</div>
 		<!-- Filter Popup -->
 		<!-- Main Search Popup -->
-		<div class="serp-filters--popup serp-main-search" [ngClass]="{'active':active==popupMainSearch}">
+		<div class="serp-filters--popup serp-main-search--popup" [ngClass]="{ 'active' : active == popupMainSearch }">
 			<div class="head">
 				<div class="tit"> Modifica ricerca </div>
 				<a class="close" (click)="active=null">
@@ -142,4 +82,131 @@
 	</div>
 </div>
 
-<json-formatter [json]="search.model"></json-formatter>
+<!-- <json-formatter [json]="search.model"></json-formatter> -->
+
+<div class="serp-content">
+	<div class="container">
+		<div class="serp-filter">
+			<div class="serp-filter--sticky">
+				<section-filter></section-filter>
+			</div>
+		</div>
+		<div class="serp-results">
+			<div class="hotel-list">
+
+				<!-- Hotel Item -->
+				<div class="hotel--item">
+
+					<!-- Hotel Image -->
+					<div class="hotel--image">
+						<div class="discount">
+							<img alt="" src="/assets/img/hotel/sconto20.png">
+						</div>
+						<a href="#" ng-href="#">
+							<img alt="" class="hotel--image-thumb" src="/assets/img/hotel/hotel-1.jpg">
+						</a>
+					</div>
+					<!-- /Hotel Image -->
+
+
+					<!-- Hotel Content -->
+					<div class="hotel--content">
+
+						<div class="hotel--head">
+							<div class="hotel--info">
+								<div class="hotel--name">
+									<a href="#">
+										<span>HOTEL PLATZ</span>
+										<span class="stars"><em>*</em><em>*</em><em>*</em><em>*</em><em class="superior">S</em></span>
+									</a>
+								</div>
+								<div class="hotel--location">
+									<span class="hotel--region">TRENTINO ALTO ADIGE</span>
+									<span class="hotel--town">ORTISEI (BZ)</span>
+								</div>
+							</div>
+							<div class="hotel--trust">
+								<span class="hotel--trust__number excellent">8.7</span>
+								<span class="hotel--trust__text excellent">eccellente</span>
+							</div>
+						</div>
+
+						<div class="hotel--desc">
+							<ul class="hotel--list">
+								<li class="hotel--list-item">
+									<svg class="ico">
+										<use xlink:href="#ico-calendar"></use>
+									</svg>
+									<span>23 aprile 2018 - 3 notti</span>
+								</li>
+
+								<li class="hotel--list-item">
+									<svg class="ico">
+										<use xlink:href="#ico-struttura"></use>
+									</svg>
+									<span>mezza pensione</span>
+								</li>
+
+								<li class="hotel--list-item">
+									<svg class="ico">
+										<use xlink:href="#ico-fav"></use>
+									</svg>
+									<span>utilizzo centro benessere</span>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<!-- /Hotel Content -->
+
+					<!-- Hotel Action -->
+					<div class="hotel--action">
+						<button type="button" class="add-to-fav">
+							<svg class="ico">
+								<use xlink:href="#ico-fav"></use>
+							</svg>
+							Preferiti
+						</button>
+
+						<div class="hotel--special-msg">
+							<strong>20%</strong> PRENOTA PRIMA
+						</div>
+
+						<div class="hotel--summary">
+
+							<div class="hotel--price">
+								<span class="desc">Da</span>
+								<span class="single-price">
+									<span class="value">190</span>
+								<span class="symbol">€</span>
+								</span>
+								<span class="desc">Prezzo per persona</span>
+
+							</div>
+
+							<div class="hotel--total-price">
+								<span class="desc">Prezzo totale</span>
+								<span class="total-price">
+									<span class="value">380</span>
+								<span class="symbol">€</span>
+								</span>
+							</div>
+						</div>
+
+						<div class="hotel--cta">
+							<a href="#" class="btn">Continua</a>
+						</div>
+					</div>
+					<!-- /Hotel Action -->
+
+				</div>
+				<!-- /Hotel Item -->
+
+			</div>
+			<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates deleniti molestias inventore placeat sint sapiente perspiciatis, nobis repellendus ipsa, velit ab. Maiores iste ipsum distinctio placeat odio. Distinctio animi illo quaerat repudiandae accusamus blanditiis modi voluptatem, ab architecto tempora! Dignissimos nam in eaque accusantium autem labore quibusdam ipsam at adipisci, ab enim earum perspiciatis reiciendis hic eum minus sint dolore maxime molestias dolorum? Commodi quia ex, accusantium quibusdam tempora nobis similique deleniti. Illum placeat, sed minima voluptate culpa optio. Culpa ipsa beatae voluptatibus nulla placeat officiis exercitationem! Dicta id amet accusamus. Esse dicta officia voluptates temporibus totam veniam excepturi qui.</p>
+			<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates deleniti molestias inventore placeat sint sapiente perspiciatis, nobis repellendus ipsa, velit ab. Maiores iste ipsum distinctio placeat odio. Distinctio animi illo quaerat repudiandae accusamus blanditiis modi voluptatem, ab architecto tempora! Dignissimos nam in eaque accusantium autem labore quibusdam ipsam at adipisci, ab enim earum perspiciatis reiciendis hic eum minus sint dolore maxime molestias dolorum? Commodi quia ex, accusantium quibusdam tempora nobis similique deleniti. Illum placeat, sed minima voluptate culpa optio. Culpa ipsa beatae voluptatibus nulla placeat officiis exercitationem! Dicta id amet accusamus. Esse dicta officia voluptates temporibus totam veniam excepturi qui.</p>
+			<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates deleniti molestias inventore placeat sint sapiente perspiciatis, nobis repellendus ipsa, velit ab. Maiores iste ipsum distinctio placeat odio. Distinctio animi illo quaerat repudiandae accusamus blanditiis modi voluptatem, ab architecto tempora! Dignissimos nam in eaque accusantium autem labore quibusdam ipsam at adipisci, ab enim earum perspiciatis reiciendis hic eum minus sint dolore maxime molestias dolorum? Commodi quia ex, accusantium quibusdam tempora nobis similique deleniti. Illum placeat, sed minima voluptate culpa optio. Culpa ipsa beatae voluptatibus nulla placeat officiis exercitationem! Dicta id amet accusamus. Esse dicta officia voluptates temporibus totam veniam excepturi qui.</p>
+			<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates deleniti molestias inventore placeat sint sapiente perspiciatis, nobis repellendus ipsa, velit ab. Maiores iste ipsum distinctio placeat odio. Distinctio animi illo quaerat repudiandae accusamus blanditiis modi voluptatem, ab architecto tempora! Dignissimos nam in eaque accusantium autem labore quibusdam ipsam at adipisci, ab enim earum perspiciatis reiciendis hic eum minus sint dolore maxime molestias dolorum? Commodi quia ex, accusantium quibusdam tempora nobis similique deleniti. Illum placeat, sed minima voluptate culpa optio. Culpa ipsa beatae voluptatibus nulla placeat officiis exercitationem! Dicta id amet accusamus. Esse dicta officia voluptates temporibus totam veniam excepturi qui.</p>
+			<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates deleniti molestias inventore placeat sint sapiente perspiciatis, nobis repellendus ipsa, velit ab. Maiores iste ipsum distinctio placeat odio. Distinctio animi illo quaerat repudiandae accusamus blanditiis modi voluptatem, ab architecto tempora! Dignissimos nam in eaque accusantium autem labore quibusdam ipsam at adipisci, ab enim earum perspiciatis reiciendis hic eum minus sint dolore maxime molestias dolorum? Commodi quia ex, accusantium quibusdam tempora nobis similique deleniti. Illum placeat, sed minima voluptate culpa optio. Culpa ipsa beatae voluptatibus nulla placeat officiis exercitationem! Dicta id amet accusamus. Esse dicta officia voluptates temporibus totam veniam excepturi qui.</p>
+		</div>
+	</div>
+</div>

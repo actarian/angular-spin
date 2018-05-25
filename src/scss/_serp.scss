@@ -1,0 +1,199 @@
+@import "~scss/variables";
+
+/*--------------------------------------------------
+SERP
+--------------------------------------------------*/
+
+.serp-results {}
+
+
+/*--------------------------------------------------
+hotel List
+--------------------------------------------------*/
+
+.hotel--item {
+	display: flex;
+	margin-bottom: 30px;
+	box-shadow: 0 3px 7px rgba(0, 0, 0, .15);
+	min-height: 197px;
+
+	@include xs-down {
+		flex-direction: column;
+	}
+
+	.hotel--image {
+		position: relative;
+		z-index: 1;
+		width: 300px;
+
+		@media (width: 768px) {
+			width: 200px;
+		}
+
+		.discount {
+			position: absolute;
+			z-index: 2;
+			top: 0;
+			left: 0;
+
+			@include xs-down {
+				position: static;
+			}
+		}
+
+		a {
+			position: absolute;
+			z-index: -1;
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+
+			@include xs-down {
+				position: static;
+			}
+
+			img {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate3d(-50%, -50%, 0);
+				width: auto;
+				max-width: none;
+				height: auto;
+				min-width: 100%;
+				min-height: 100%;
+				object-fit: cover;
+				transition: transform .3s ease-in-out;
+
+				@include xs-down {
+					position: static;
+					transform: none;
+					width: 100%;
+					height: auto;
+					min-height: 0;
+				}
+			}
+
+			&:hover {
+				img {
+					transform: translate3d(-50%, -50%, 0) scale(1.05) ;
+				}
+			}
+		}
+	}
+
+	.hotel--content {
+		flex: 1 1 auto;
+		padding: 8px 12px 12px;
+
+		svg {
+			display: none;
+		}
+	}
+
+	.hotel--action {
+		width: 190px;
+		padding: 8px 12px 12px;
+		background: $light-color;
+		display: flex;
+		flex-direction: column;
+
+		@media (width: 768px) {
+			width: 170px;
+		}
+
+		.add-to-fav {
+			background: none;
+			color: $primary-color;
+			border: 1px solid $primary-color;
+			text-align: center;
+			cursor: pointer;
+			text-transform: uppercase;
+			padding: 5px 5px;
+			font-size: 12px;
+			background: #fff;
+			transition: background .2s ease-in-out;
+			margin-bottom: 8px;
+
+			&:hover {
+				background-color: lighten($primary-color, 43%);
+			}
+
+			svg {
+				width: 14px;
+				height: 14px;
+				stroke: $primary-color;
+				stroke-width: 1px;
+				fill: #fff;
+				vertical-align: text-top;
+				transform: translateY(1px);
+			}
+		}
+
+		.hotel--special-msg {
+			color: $secondary-color;
+			font-size: 11px;
+			margin-bottom: 10px;
+
+			strong {
+				font-size: 15px;
+				font-weight: bold;
+			}
+		}
+
+		.hotel--summary {
+			flex: 1 0 auto;
+		}
+	}
+
+	.hotel--price {
+		color: $primary-color;
+		margin-top: 5px;
+
+		.desc {
+			display: block;
+			font-size: 9px;
+			text-transform: uppercase;
+			line-height: .9;
+		}
+
+		.single-price {
+			font-weight: bold;
+			line-height: .9;
+			margin-bottom: 3px;
+			display: block;
+
+			.value {
+				font-size: 40px;
+			}
+
+			.symbol {
+				font-size: 16px;
+			}
+		}
+	}
+
+	.hotel--total-price {
+		margin-top: 5px;
+		font-size: 9px;
+		text-transform: uppercase;
+		line-height: .9;
+
+		.total-price {
+			font-weight: bold;
+			display: inline-block;
+			margin-left: 3px;
+		}
+	}
+
+	.hotel--cta {
+		margin-top: 10px;
+
+		.btn {
+			text-align: center;
+			display: block;
+			width: 100%;
+		}
+	}
+
+}

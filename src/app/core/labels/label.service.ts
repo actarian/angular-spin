@@ -83,10 +83,10 @@ export class LabelService<T extends Label> extends ApiService<T> implements Tran
 		let labels: any = this.cache[this.lang];
 		if (labels) {
 			const keys: string[] = key.split('.');
-			let k = keys.shift()!;
+			let k = keys.shift();
 			while (keys.length > 0 && labels[k]) {
 				labels = labels[k];
-				k = keys.shift()!;
+				k = keys.shift();
 			}
 			value = labels[k] || `{${k}}`;
 		}
@@ -104,7 +104,7 @@ export class LabelService<T extends Label> extends ApiService<T> implements Tran
 
 	private missingLabel(key: string): string {
 		if (this.missingHandler) {
-			return typeof this.missingHandler === "function" ?
+			return typeof this.missingHandler === 'function' ?
 				this.missingHandler(key) :
 				this.missingHandler;
 		}

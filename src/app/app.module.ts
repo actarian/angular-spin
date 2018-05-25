@@ -1,3 +1,4 @@
+
 import { registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import localeIt from '@angular/common/locales/it';
@@ -7,6 +8,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { PrebootModule } from 'preboot';
 import { AccordionModule } from 'primeng/accordion';
 import { CalendarModule } from 'primeng/calendar';
 import { GalleriaModule } from 'primeng/galleria';
@@ -24,13 +26,16 @@ import { ControlEditableComponent } from './forms';
 import { CategoryService, DestinationService, PromotionService, RegionService, SearchService, TestService, UserService } from './models';
 import { HomeComponent, ProfileComponent, RegionDetailComponent, RegionsComponent, SearchComponent, SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent } from './pages';
 import { DestinationTypePipe } from './pipes';
-import { CategoriesComponent, DestinationHintComponent, FooterComponent, HeaderComponent, HomeSearchComponent, MainSearchComponent, NotFoundComponent, PromotionsComponent, RegionSearchComponent, SvgComponent, ValuePropositionComponent } from './sections';
+import { CategoriesComponent, DestinationHintComponent, FilterComponent, FooterComponent, HeaderComponent, HomeSearchComponent, MainSearchComponent, NotFoundComponent, PromotionsComponent, RegionSearchComponent, SvgComponent, ValuePropositionComponent } from './sections';
+
 
 registerLocaleData(localeIt, 'it');
 
 @NgModule({
 	imports: [
-		BrowserModule, FormsModule, ReactiveFormsModule, HttpClientModule,
+		BrowserModule.withServerTransition({ appId: 'app' }),
+		PrebootModule.withConfig({ appRoot: 'app-component' }),
+		FormsModule, ReactiveFormsModule, HttpClientModule,
 		CalendarModule, SpinnerModule, GalleriaModule, AccordionModule, NoopAnimationsModule,
 		// The HttpClientInMemoryWebApiModule module intercepts HTTP requests
 		// and returns simulated server responses.
@@ -49,7 +54,7 @@ registerLocaleData(localeIt, 'it');
 	declarations: [
 		AppComponent,
 		HomeComponent, SearchComponent, SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent, ProfileComponent, RegionDetailComponent, RegionsComponent,
-		HeaderComponent, FooterComponent, CategoriesComponent, SvgComponent, ValuePropositionComponent, PromotionsComponent, RegionSearchComponent, NotFoundComponent,
+		HeaderComponent, FooterComponent, FilterComponent, CategoriesComponent, SvgComponent, ValuePropositionComponent, PromotionsComponent, RegionSearchComponent, NotFoundComponent,
 		DestinationHintComponent,
 		ControlEditableComponent,
 		LoggerComponent, PageDirective, MainSearchComponent, HomeSearchComponent,
