@@ -23,7 +23,7 @@ import { MemoryService } from './core/memory';
 import { PageDirective } from './core/pages';
 import { RouteService } from './core/routes';
 import { ControlEditableComponent } from './forms';
-import { CategoryService, DestinationService, PromotionService, RegionService, SearchService, TestService, UserService } from './models';
+import { CategoryService, DestinationService, FilterService, PromotionService, RegionService, SearchService, TagService, TestService, UserService } from './models';
 import { HomeComponent, ProfileComponent, RegionDetailComponent, RegionsComponent, SearchComponent, SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent } from './pages';
 import { DestinationTypePipe } from './pipes';
 import { CategoriesComponent, DestinationHintComponent, FilterComponent, FooterComponent, HeaderComponent, HomeSearchComponent, MainSearchComponent, NotFoundComponent, PromotionsComponent, RegionSearchComponent, SvgComponent, ValuePropositionComponent } from './sections';
@@ -64,7 +64,7 @@ registerLocaleData(localeIt, 'it');
 		{ provide: LOCALE_ID, useValue: 'it' },
 		// { provide: HTTP_INTERCEPTORS, useClass: HttpResponseInterceptor, multi: true },
 		AuthAttribute,
-		CategoryService, DestinationService, PromotionService, RegionService, SearchService, TestService, UserService,
+		CategoryService, DestinationService, FilterService, PromotionService, RegionService, SearchService, TagService, TestService, UserService,
 		Logger, TranslateService, RouteService,
 		DestinationTypePipe,
 		// { provide: RouteService, useClass: RouteService, deps: [TranslateService, Location, Router] },

@@ -1,12 +1,16 @@
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Inject, Injectable, Injector, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/take';
+import { map } from 'rxjs/operators';
+import { EntityService } from '../core/models';
 import { RouteService } from '../core/routes';
 import { LocalStorageService, StorageService } from '../core/storage';
 import { Destination } from './destination';
 import { DestinationService } from './destination.service';
+import { SearchResult } from './search-result';
 
 export class Duration {
 	id: number;
@@ -74,7 +78,7 @@ export class CalendarOption {
 }
 
 @Injectable()
-export class SearchService {
+export class SearchService extends EntityService<SearchResult> {
 
 	model: MainSearch = new MainSearch();
 
@@ -90,12 +94,14 @@ export class SearchService {
 	lastDestinations: Destination[];
 
 	constructor(
+		protected injector: Injector,
 		@Inject(PLATFORM_ID) private platformId: string,
 		private storageService: LocalStorageService,
 		private router: Router,
 		private routeService: RouteService,
 		private destinationService: DestinationService
 	) {
+		super(injector);
 		this.storage = this.storageService.tryGet();
 		const search = this.storage.get('search');
 		if (search) {
@@ -121,6 +127,10 @@ export class SearchService {
 			}
 		});
 		*/
+	}
+
+	get collection(): string {
+		return 'searchResult';
 	}
 
 	onDestinationQuery(query: string) {
@@ -175,6 +185,26 @@ export class SearchService {
 
 	isStartDateEmpty() {
 		return !this.model.startDate;
+	}
+
+	onSearchIn(params: Observable<MainSearch>): Observable<any[]> {
+		return this.get().pipe(
+			map((x: SearchResult[]) => {
+				return x
+					/*
+					.map((x: SearchResult) => {
+						return new SearchResult(x);
+					})
+					.filter((x: SearchResult) => {
+						return x.name.toLowerCase().indexOf(query) !== -1 ||
+							// x.texts.join(', ').toLowerCase().indexOf(query) !== -1;
+							x.abstract.toLowerCase().indexOf(query) !== -1;
+					})
+					.sort((a, b) => a.type > b.type ? 1 : -1)
+					*/
+					;
+			})
+		);
 	}
 
 }

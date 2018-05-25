@@ -1,8 +1,8 @@
-const tag = [{
+import { Tag } from '../models/tag';
+
+export const tag: Tag[] = [{
 	abstract: 'Centro benessere',
 	category: -1,
-	color: 'blue',
-	hexColorCode: null,
 	icon: '104_37_ico-benessere.png',
 	id: 37,
 	name: 'Centro benessere',
@@ -10,8 +10,6 @@ const tag = [{
 }, {
 	abstract: 'Servizio spiaggia',
 	category: -1,
-	color: 'blue',
-	hexColorCode: null,
 	icon: '104_38_ico-spiaggia.png',
 	id: 38,
 	name: 'Servizio spiaggia',
@@ -19,8 +17,6 @@ const tag = [{
 }, {
 	abstract: 'Skipass',
 	category: -1,
-	color: 'blue',
-	hexColorCode: null,
 	icon: '104_39_ico-skipass.png',
 	id: 39,
 	name: 'Skipass',
@@ -28,8 +24,6 @@ const tag = [{
 }, {
 	abstract: '',
 	category: -1,
-	color: 'blue',
-	hexColorCode: '',
 	icon: '104_60_ico-traghettoincluso.png',
 	id: 60,
 	name: 'Traghetto incluso',
@@ -37,8 +31,6 @@ const tag = [{
 }, {
 	abstract: '',
 	category: -1,
-	color: 'blue',
-	hexColorCode: '',
 	icon: '104_61_ico-voloincluso.png',
 	id: 61,
 	name: 'Volo incluso',
@@ -46,8 +38,6 @@ const tag = [{
 }, {
 	abstract: 'Buono spesa',
 	category: -1,
-	color: 'blue',
-	hexColorCode: '',
 	icon: '104_80_buono_spesa.png',
 	id: 80,
 	name: 'Buono spesa',
@@ -55,8 +45,6 @@ const tag = [{
 }, {
 	abstract: '',
 	category: 0,
-	color: 'blue',
-	hexColorCode: '#00acda',
 	icon: null,
 	id: 1,
 	name: 'Mare Italia',
@@ -64,8 +52,6 @@ const tag = [{
 }, {
 	abstract: '',
 	category: 0,
-	color: 'blue',
-	hexColorCode: '',
 	icon: null,
 	id: 3,
 	name: 'Sardegna + traghetto',
@@ -73,8 +59,6 @@ const tag = [{
 }, {
 	abstract: '',
 	category: 0,
-	color: 'blue',
-	hexColorCode: '#006c43',
 	icon: null,
 	id: 4,
 	name: 'Montagna',
@@ -82,8 +66,6 @@ const tag = [{
 }, {
 	abstract: '',
 	category: 0,
-	color: 'blue',
-	hexColorCode: '#29338b',
 	icon: null,
 	id: 5,
 	name: 'Crociere',
@@ -91,8 +73,6 @@ const tag = [{
 }, {
 	abstract: '',
 	category: 0,
-	color: 'blue',
-	hexColorCode: '#7b2182',
 	icon: null,
 	id: 42,
 	name: 'Terme & benessere',
@@ -100,8 +80,6 @@ const tag = [{
 }, {
 	abstract: '',
 	category: 0,
-	color: 'blue',
-	hexColorCode: '#11a639',
 	icon: null,
 	id: 40,
 	name: 'Lago',
@@ -109,8 +87,6 @@ const tag = [{
 }, {
 	abstract: '',
 	category: 0,
-	color: 'blue',
-	hexColorCode: '',
 	icon: null,
 	id: 75,
 	name: 'Campagna',
@@ -118,8 +94,6 @@ const tag = [{
 }, {
 	abstract: '',
 	category: 0,
-	color: 'blue',
-	hexColorCode: '#e94e0e',
 	icon: null,
 	id: 43,
 	name: 'Vacanze a tema',
@@ -127,8 +101,6 @@ const tag = [{
 }, {
 	abstract: '',
 	category: 0,
-	color: 'blue',
-	hexColorCode: '#007bc3',
 	icon: null,
 	id: 2,
 	name: 'Mare estero',
@@ -136,8 +108,6 @@ const tag = [{
 }, {
 	abstract: '',
 	category: 0,
-	color: 'blue',
-	hexColorCode: '#8d1f24',
 	icon: null,
 	id: 41,
 	name: 'Città',
@@ -145,8 +115,6 @@ const tag = [{
 }, {
 	abstract: '',
 	category: 0,
-	color: 'blue',
-	hexColorCode: '',
 	icon: null,
 	id: 76,
 	name: 'Residence & Appartamenti',
@@ -154,8 +122,6 @@ const tag = [{
 }, {
 	abstract: '',
 	category: 0,
-	color: 'blue',
-	hexColorCode: '',
 	icon: null,
 	id: 44,
 	name: 'Tour',
@@ -163,8 +129,6 @@ const tag = [{
 }, {
 	abstract: '',
 	category: 1,
-	color: 'green',
-	hexColorCode: '',
 	icon: '104_63_novita_vuoto.png',
 	id: 63,
 	name: 'Novità',
@@ -172,8 +136,6 @@ const tag = [{
 }, {
 	abstract: '',
 	category: 1,
-	color: 'orange',
-	hexColorCode: null,
 	icon: '104_8_ico-bimbigratis.png',
 	id: 8,
 	name: 'Bimbo gratis',
@@ -181,8 +143,6 @@ const tag = [{
 }, {
 	abstract: '',
 	category: 1,
-	color: 'orange',
-	hexColorCode: null,
 	icon: '104_9_ico-amici4zampe.png',
 	id: 9,
 	name: 'Amici 4 zampe',
@@ -190,8 +150,6 @@ const tag = [{
 }, {
 	abstract: '',
 	category: 1,
-	color: 'orange',
-	hexColorCode: null,
 	icon: '',
 	id: 11,
 	name: 'Prenota prima',
@@ -199,8 +157,6 @@ const tag = [{
 }, {
 	abstract: '',
 	category: 1,
-	color: 'orange',
-	hexColorCode: '',
 	icon: '104_56_ico-last-minute.png',
 	id: 56,
 	name: 'Last minute',
@@ -208,8 +164,6 @@ const tag = [{
 }, {
 	abstract: 'Abruzzo',
 	category: 2,
-	color: 'blue',
-	hexColorCode: null,
 	icon: null,
 	id: 12,
 	name: 'Abruzzo',
@@ -217,8 +171,6 @@ const tag = [{
 }, {
 	abstract: 'Basilicata',
 	category: 2,
-	color: 'blue',
-	hexColorCode: '',
 	icon: null,
 	id: 14,
 	name: 'Basilicata',
@@ -226,8 +178,6 @@ const tag = [{
 }, {
 	abstract: 'Calabria',
 	category: 2,
-	color: 'blue',
-	hexColorCode: null,
 	icon: null,
 	id: 15,
 	name: 'Calabria',
@@ -235,8 +185,6 @@ const tag = [{
 }, {
 	abstract: 'Campania',
 	category: 2,
-	color: 'blue',
-	hexColorCode: null,
 	icon: null,
 	id: 16,
 	name: 'Campania',
@@ -244,8 +192,6 @@ const tag = [{
 }, {
 	abstract: 'Emilia Romagna',
 	category: 2,
-	color: 'blue',
-	hexColorCode: null,
 	icon: null,
 	id: 17,
 	name: 'Emilia Romagna',
@@ -253,8 +199,6 @@ const tag = [{
 }, {
 	abstract: 'Friuli Venezia Giulia',
 	category: 2,
-	color: 'blue',
-	hexColorCode: null,
 	icon: null,
 	id: 18,
 	name: 'Friuli Venezia Giulia',
@@ -262,8 +206,6 @@ const tag = [{
 }, {
 	abstract: 'Lazio',
 	category: 2,
-	color: 'blue',
-	hexColorCode: null,
 	icon: null,
 	id: 19,
 	name: 'Lazio',
@@ -271,8 +213,6 @@ const tag = [{
 }, {
 	abstract: 'Liguria',
 	category: 2,
-	color: 'blue',
-	hexColorCode: null,
 	icon: null,
 	id: 20,
 	name: 'Liguria',
@@ -280,8 +220,6 @@ const tag = [{
 }, {
 	abstract: 'Lombardia',
 	category: 2,
-	color: 'blue',
-	hexColorCode: null,
 	icon: null,
 	id: 21,
 	name: 'Lombardia',
@@ -289,8 +227,6 @@ const tag = [{
 }, {
 	abstract: 'Marche',
 	category: 2,
-	color: 'blue',
-	hexColorCode: '',
 	icon: null,
 	id: 22,
 	name: 'Marche',
@@ -298,8 +234,6 @@ const tag = [{
 }, {
 	abstract: 'Molise',
 	category: 2,
-	color: 'blue',
-	hexColorCode: '',
 	icon: null,
 	id: 47,
 	name: 'Molise',
@@ -307,8 +241,6 @@ const tag = [{
 }, {
 	abstract: 'Piemonte',
 	category: 2,
-	color: 'blue',
-	hexColorCode: null,
 	icon: null,
 	id: 23,
 	name: 'Piemonte',
@@ -316,8 +248,6 @@ const tag = [{
 }, {
 	abstract: 'Puglia',
 	category: 2,
-	color: 'blue',
-	hexColorCode: null,
 	icon: null,
 	id: 24,
 	name: 'Puglia',
@@ -325,8 +255,6 @@ const tag = [{
 }, {
 	abstract: 'Sardegna',
 	category: 2,
-	color: 'blue',
-	hexColorCode: '',
 	icon: null,
 	id: 25,
 	name: 'Sardegna',
@@ -334,8 +262,6 @@ const tag = [{
 }, {
 	abstract: 'Sicilia',
 	category: 2,
-	color: 'blue',
-	hexColorCode: null,
 	icon: null,
 	id: 26,
 	name: 'Sicilia',
@@ -343,8 +269,6 @@ const tag = [{
 }, {
 	abstract: 'Toscana',
 	category: 2,
-	color: 'blue',
-	hexColorCode: null,
 	icon: null,
 	id: 27,
 	name: 'Toscana',
@@ -352,8 +276,6 @@ const tag = [{
 }, {
 	abstract: 'Trentino Alto Adige',
 	category: 2,
-	color: 'blue',
-	hexColorCode: null,
 	icon: null,
 	id: 28,
 	name: 'Trentino Alto Adige',
@@ -361,8 +283,6 @@ const tag = [{
 }, {
 	abstract: 'Umbria',
 	category: 2,
-	color: 'blue',
-	hexColorCode: null,
 	icon: null,
 	id: 48,
 	name: 'Umbria',
@@ -370,8 +290,6 @@ const tag = [{
 }, {
 	abstract: 'Valle d\'Aosta',
 	category: 2,
-	color: 'blue',
-	hexColorCode: null,
 	icon: null,
 	id: 29,
 	name: 'Valle d\'Aosta',
@@ -379,8 +297,6 @@ const tag = [{
 }, {
 	abstract: 'Veneto',
 	category: 2,
-	color: 'blue',
-	hexColorCode: null,
 	icon: null,
 	id: 30,
 	name: 'Veneto',
@@ -388,8 +304,6 @@ const tag = [{
 }, {
 	abstract: 'Egitto',
 	category: 3,
-	color: 'blue',
-	hexColorCode: '',
 	icon: null,
 	id: 32,
 	name: 'Egitto',
@@ -397,8 +311,6 @@ const tag = [{
 }, {
 	abstract: 'Francia',
 	category: 3,
-	color: 'blue',
-	hexColorCode: '',
 	icon: null,
 	id: 49,
 	name: 'Francia',
@@ -406,8 +318,6 @@ const tag = [{
 }, {
 	abstract: 'Kenya',
 	category: 3,
-	color: 'blue',
-	hexColorCode: '',
 	icon: null,
 	id: 51,
 	name: 'Kenya',
@@ -415,8 +325,6 @@ const tag = [{
 }, {
 	abstract: 'Ungheria',
 	category: 3,
-	color: 'blue',
-	hexColorCode: '',
 	icon: null,
 	id: 67,
 	name: 'Ungheria',
@@ -424,8 +332,6 @@ const tag = [{
 }, {
 	abstract: 'Mediterraneo Occidentale',
 	category: 3,
-	color: 'blue',
-	hexColorCode: '',
 	icon: null,
 	id: 68,
 	name: 'Mediterraneo Occidentale',
@@ -433,8 +339,6 @@ const tag = [{
 }, {
 	abstract: 'Mediterraneo Orientale',
 	category: 3,
-	color: 'blue',
-	hexColorCode: '',
 	icon: null,
 	id: 69,
 	name: 'Mediterraneo Orientale',
@@ -442,8 +346,6 @@ const tag = [{
 }, {
 	abstract: 'Svizzera',
 	category: 3,
-	color: 'blue',
-	hexColorCode: '',
 	icon: null,
 	id: 78,
 	name: 'Svizzera',
@@ -451,8 +353,6 @@ const tag = [{
 }, {
 	abstract: '',
 	category: 3,
-	color: 'blue',
-	hexColorCode: '',
 	icon: null,
 	id: 62,
 	name: 'Corsica',
@@ -460,8 +360,6 @@ const tag = [{
 }, {
 	abstract: '',
 	category: 3,
-	color: 'blue',
-	hexColorCode: null,
 	icon: null,
 	id: 59,
 	name: 'Cuba',
@@ -469,8 +367,6 @@ const tag = [{
 }, {
 	abstract: '',
 	category: 3,
-	color: 'blue',
-	hexColorCode: null,
 	icon: null,
 	id: 13,
 	name: 'Austria',
@@ -478,8 +374,6 @@ const tag = [{
 }, {
 	abstract: 'Croazia',
 	category: 3,
-	color: 'blue',
-	hexColorCode: '',
 	icon: null,
 	id: 57,
 	name: 'Croazia',
@@ -487,8 +381,6 @@ const tag = [{
 }, {
 	abstract: 'Grecia',
 	category: 3,
-	color: 'blue',
-	hexColorCode: '',
 	icon: null,
 	id: 34,
 	name: 'Grecia',
@@ -496,8 +388,6 @@ const tag = [{
 }, {
 	abstract: 'Messico',
 	category: 3,
-	color: 'blue',
-	hexColorCode: null,
 	icon: null,
 	id: 35,
 	name: 'Messico',
@@ -505,8 +395,6 @@ const tag = [{
 }, {
 	abstract: 'Slovenia',
 	category: 3,
-	color: 'blue',
-	hexColorCode: null,
 	icon: null,
 	id: 53,
 	name: 'Slovenia',
@@ -514,8 +402,6 @@ const tag = [{
 }, {
 	abstract: 'Spagna',
 	category: 3,
-	color: 'blue',
-	hexColorCode: null,
 	icon: null,
 	id: 33,
 	name: 'Spagna',
@@ -523,8 +409,6 @@ const tag = [{
 }, {
 	abstract: 'Tanzania',
 	category: 3,
-	color: 'blue',
-	hexColorCode: '',
 	icon: null,
 	id: 50,
 	name: 'Tanzania',
