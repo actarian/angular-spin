@@ -45,9 +45,9 @@ export class LabelService<T extends Label> extends ApiService<T> implements Tran
 		protected injector: Injector
 	) {
 		super(injector);
-		this.getTranslation(this.lang).subscribe(
-			x => console.log(x)
-		);
+		this.getTranslation(this.lang).subscribe(x => {
+			// console.log(x);
+		});
 	}
 
 	public getTranslation(lang: string): Observable<{}> {

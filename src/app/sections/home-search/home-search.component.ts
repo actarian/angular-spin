@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { SearchService } from '../../models';
 
 @Component({
 	selector: 'home-search',
@@ -6,11 +7,10 @@ import { Component, OnInit } from '@angular/core';
 	styleUrls: ['./home-search.component.scss']
 })
 
-export class HomeSearchComponent implements OnInit {
-	constructor() {
-	}
+export class HomeSearchComponent {
 
-	ngOnInit() {
+	constructor(
+		public search: SearchService,
+	) { }
 
-	}
 }

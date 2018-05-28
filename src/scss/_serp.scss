@@ -76,7 +76,7 @@ hotel List
 
 			&:hover {
 				img {
-					transform: translate3d(-50%, -50%, 0) scale(1.05) ;
+					transform: translate3d(-50%, -50%, 0) scale(1.05);
 				}
 			}
 		}
@@ -194,6 +194,11 @@ hotel List
 			display: block;
 			width: 100%;
 		}
+	}
+
+	.hotel--region,
+	.hotel--town {
+		text-transform: uppercase;
 	}
 
 }

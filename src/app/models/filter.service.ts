@@ -1,137 +1,114 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import 'rxjs/add/observable/combineLatest';
 import { map } from 'rxjs/operators';
+import { SearchResult } from '.';
 import { Option } from '../core/models';
+import { Group, GroupType, Rating, Treatment, ratings, treatments } from './filter';
+import { SearchService } from './search.service';
 import { Tag } from './tag';
 import { TagService } from './tag.service';
 
-export enum AccordionItemType {
-	Tipology = 0,
-	Destination = 1,
-	Service = 2,
-	Treatment = 3,
-	Rating = 4
-}
-
-export class AccordionItem<T> {
-	type?: AccordionItemType = AccordionItemType.Tipology;
-	name?: string;
-	items?: T[];
-	selected?: boolean = false;
-	constructor(options?: AccordionItem<T>) {
-		if (options) {
-			this.type = options.type || AccordionItemType.Tipology;
-			this.name = options.name || 'AccordionItem';
-			this.items = options.items || [];
-			this.selected = options.selected || false;
-		}
-	}
-}
-
-export class Treatment extends Option {
-	selected?: boolean = false;
-}
-
-export const treatments: Treatment[] = [{
-	id: 1, name: 'All Inclusive'
-}, {
-	id: 2, name: 'Solo pernottamento'
-}, {
-	id: 3, name: 'Pernottamento e colazione'
-}, {
-	id: 4, name: 'Pensione completa'
-}, {
-	id: 5, name: 'Pensione completa con bevande'
-}, {
-	id: 6, name: 'Mezza pensione'
-}, {
-	id: 7, name: 'Mezza pensione con bevande'
-}, {
-	id: 8, name: 'Mezza pensione più soft drink'
-}, {
-	id: 9, name: 'Pernottamento e colazione / Mezza pensione'
-}, {
-	id: 11, name: 'Mezza pensione / Pensione completa'
-}, {
-	id: 12, name: 'Mezza pensione con bevande / Pensione completa con bevande'
-}, {
-	id: 13, name: 'Soft All Inclusive'
-}, {
-	id: 14, name: 'Come da programma'
-}, {
-	id: 15, name: 'Mezza pensione + light lunch'
-}, {
-	id: 16, name: 'Mezza pensione / All Inclusive'
-}, {
-	id: 17, name: 'Mezza pensione + Open Bar'
-}];
-
-export class Rating extends Option { }
-
-export const categories: Rating[] = [{
-	id: 1, name: '*'
-}, {
-	id: 2, name: '*S'
-}, {
-	id: 3, name: '**'
-}, {
-	id: 4, name: '**S'
-}, {
-	id: 5, name: '***'
-}, {
-	id: 6, name: '***S'
-}, {
-	id: 7, name: '****'
-}, {
-	id: 8, name: '****S'
-}, {
-	id: 9, name: '*****'
-}, {
-	id: 10, name: '*****S'
-}];
-
-@Injectable()
+@Injectable({
+	providedIn: 'root',
+})
 export class FilterService {
 
-	groupTypes: any = AccordionItemType;
+	groupTypes: any = GroupType;
+
+	private groups$ = new BehaviorSubject<Group<Option>[]>([]);
+	groups = this.groups$.asObservable();
+
+	private groupsFiltered$ = new BehaviorSubject<Group<Option>[]>([]);
+	groupsFiltered = this.groupsFiltered$.asObservable();
+
+	private resultsFiltered$ = new BehaviorSubject<SearchResult[]>([]);
+	resultsFiltered = this.resultsFiltered$.asObservable();
 
 	constructor(
 		private tagService: TagService,
-	) { }
+		private searchService: SearchService,
+	) {
+		this.getGroups().subscribe(groups => {
+			// console.log('FilterService.getGroups', groups);
+			this.groups$.next(groups);
+		});
+		Observable.combineLatest(this.groups$, this.searchService.results).subscribe((data: any[]): void => {
+			const groups = data[0];
+			const results = data[1];
+			results.forEach(result => {
+				result.visible = true;
+				this.valueSelected.forEach(group => {
+					group.forEach(option => {
+						result.visible = result.visible && result.tags.indexOf(option.id) !== -1;
+					});
+				});
+			});
+			this.resultsFiltered$.next(results);
+			groups.forEach(group => {
+				group.visible = false;
+				group.items.forEach(option => {
+					option.count = 0;
+					results.forEach(result => {
+						if ((result.visible || result.visible === undefined) && result.tags.indexOf(option.id) !== -1) {
+							option.count++;
+						}
+					});
+					option.visible = option.count > 0;
+					group.visible = group.visible || option.visible;
+				});
+			});
+			this.groupsFiltered$.next(groups);
+		});
+	}
 
-	getGroups(): Observable<AccordionItem<Option>[]> {
+	private getGroups(): Observable<Group<Option>[]> {
 		return this.tagService.get().pipe(
 			map((tags: Tag[]) => {
-				return [
-					new AccordionItem<Tag>({
-						type: AccordionItemType.Tipology,
+				const groups = [
+					new Group<Tag>({
+						type: GroupType.Tipology,
 						name: 'Tipologia',
 						items: tags.filter(tag => tag.category === 0).sort((a, b) => a.category - b.category),
 						selected: true
 					}),
-					new AccordionItem<Tag>({
-						type: AccordionItemType.Destination,
+					new Group<Tag>({
+						type: GroupType.Destination,
 						name: 'Destinazione',
 						items: tags.filter(tag => tag.category === 2 || tag.category === 3).sort((a, b) => a.category - b.category)
 					}),
-					new AccordionItem<Tag>({
-						type: AccordionItemType.Service,
+					new Group<Tag>({
+						type: GroupType.Service,
 						name: 'Servizio',
 						items: tags.filter(tag => tag.category === 1).sort((a, b) => a.category - b.category)
 					}),
-					new AccordionItem<Treatment>({
-						type: AccordionItemType.Treatment,
+					new Group<Treatment>({
+						type: GroupType.Treatment,
 						name: 'Trattamento',
 						items: treatments,
 					}),
-					new AccordionItem<Rating>({
-						type: AccordionItemType.Rating,
+					new Group<Rating>({
+						type: GroupType.Rating,
 						name: 'Categoria',
-						items: categories.sort((a, b) => b.id - a.id)
+						items: ratings.sort((a, b) => b.id - a.id)
 					})
 				];
+				return groups;
 			})
 		);
+	}
+
+	setGroups(): void {
+		this.groups$.next(this.groups$.getValue());
+	}
+
+	public get value() {
+		return this.groups$.getValue();
+	}
+
+	public get valueSelected() {
+		return this.groups$.getValue().filter(group => group.items.find(item => item.selected)).map(group => group.items.filter(item => item.selected));
 	}
 
 }

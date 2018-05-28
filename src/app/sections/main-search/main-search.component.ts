@@ -1,5 +1,5 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { fromEvent } from 'rxjs';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
@@ -21,6 +21,7 @@ export class MainSearchComponent extends DisposableComponent implements OnInit, 
 	destinationDirty: boolean = false;
 
 	constructor(
+		private route: ActivatedRoute,
 		private router: Router,
 		private renderer: Renderer2,
 		private elementRef: ElementRef,
@@ -28,7 +29,6 @@ export class MainSearchComponent extends DisposableComponent implements OnInit, 
 		public search: SearchService
 	) {
 		super();
-
 	}
 
 	@ViewChild('query') query;
@@ -36,16 +36,16 @@ export class MainSearchComponent extends DisposableComponent implements OnInit, 
 
 	@ViewChild('searchLocation') searchLocation;
 
+	@Output()
+	doSearch: EventEmitter<any> = new EventEmitter();
+
 	ngAfterViewInit() {
 		this.addListeners();
-
 		this.renderer.listen(this.searchLocation.nativeElement, 'click', () => { console.log('cliccato'); });
-
 	}
 
 	ngOnInit() {
 		// console.log('MainSearchComponent.OnInit');
-
 	}
 
 	onDestinationSet(item: any) {
@@ -55,7 +55,15 @@ export class MainSearchComponent extends DisposableComponent implements OnInit, 
 
 	onSubmit() {
 		this.active = null;
-		this.search.onSearch();
+		this.doSearch.emit();
+		/*
+		console.log('MainSearch.onSubmit', this.route.snapshot.data.pageResolver.page.component);
+		if (this.route.snapshot.data.pageResolver.page.component === 'SearchComponent') {
+			this.search.onSearchIn();
+		} else {
+			this.search.onSearch();
+		}
+		*/
 	}
 
 	addListeners() {

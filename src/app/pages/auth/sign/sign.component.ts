@@ -3,8 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PageComponent } from '../../../core/pages';
 import { FacebookService, GoogleService } from '../../../core/plugins';
 import { RouteService } from '../../../core/routes';
-import { TestService, UserAuth, UserService } from '../../../models';
-
+import { UserAuth, UserService } from '../../../models';
 
 @Component({
 	selector: 'page-sign',
@@ -20,14 +19,9 @@ export class SignComponent extends PageComponent implements OnInit {
 		private router: Router,
 		private facebookService: FacebookService,
 		private googleService: GoogleService,
-		private userService: UserService,
-		private testService: TestService
+		private userService: UserService
 	) {
 		super(route);
-		this.testService.get('/pippo')
-			.subscribe(x => {
-				console.log('SignComponent', x);
-			});
 	}
 
 	ngOnInit() {

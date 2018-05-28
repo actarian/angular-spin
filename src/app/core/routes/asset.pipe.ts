@@ -15,9 +15,13 @@ export class AssetPipe implements PipeTransform {
 	) { }
 
 	transform(data: any[] | string): string {
-		const segments = this.segment.transform(data);
-		segments.unshift(environment.assets);
-		return segments.join('/');
+		if (typeof data === 'string' && data.indexOf('http') === 0) {
+			return data;
+		} else {
+			const segments = this.segment.transform(data);
+			segments.unshift(environment.assets);
+			return segments.join('/');
+		}
 	}
 
 }

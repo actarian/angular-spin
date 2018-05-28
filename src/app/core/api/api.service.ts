@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable, Injector } from '@angular/core';
+import { Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Logger } from '../logger';
@@ -16,7 +16,6 @@ export class ApiRequestOptions {
 	}
 }
 
-@Injectable()
 export class ApiService<T extends Identity> {
 
 	protected base = '/api/';

@@ -23,10 +23,9 @@ import { MemoryService } from './core/memory';
 import { PageDirective } from './core/pages';
 import { RouteService } from './core/routes';
 import { ControlEditableComponent } from './forms';
-import { CategoryService, DestinationService, FilterService, PromotionService, RegionService, SearchService, TagService, TestService, UserService } from './models';
 import { HomeComponent, ProfileComponent, RegionDetailComponent, RegionsComponent, SearchComponent, SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent } from './pages';
 import { DestinationTypePipe } from './pipes';
-import { CategoriesComponent, DestinationHintComponent, FilterComponent, FooterComponent, HeaderComponent, HomeSearchComponent, MainSearchComponent, NotFoundComponent, PromotionsComponent, RegionSearchComponent, SvgComponent, ValuePropositionComponent } from './sections';
+import { CategoriesComponent, DestinationHintComponent, FilterComponent, FooterComponent, HeaderComponent, HomeSearchComponent, MainSearchComponent, NotFoundComponent, PromotionsComponent, RegionSearchComponent, SearchResultComponent, SvgComponent, ValuePropositionComponent } from './sections';
 
 
 registerLocaleData(localeIt, 'it');
@@ -54,7 +53,7 @@ registerLocaleData(localeIt, 'it');
 	declarations: [
 		AppComponent,
 		HomeComponent, SearchComponent, SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent, ProfileComponent, RegionDetailComponent, RegionsComponent,
-		HeaderComponent, FooterComponent, FilterComponent, CategoriesComponent, SvgComponent, ValuePropositionComponent, PromotionsComponent, RegionSearchComponent, NotFoundComponent,
+		HeaderComponent, FooterComponent, FilterComponent, CategoriesComponent, SearchResultComponent, SvgComponent, ValuePropositionComponent, PromotionsComponent, RegionSearchComponent, NotFoundComponent,
 		DestinationHintComponent,
 		ControlEditableComponent,
 		LoggerComponent, PageDirective, MainSearchComponent, HomeSearchComponent,
@@ -64,7 +63,6 @@ registerLocaleData(localeIt, 'it');
 		{ provide: LOCALE_ID, useValue: 'it' },
 		// { provide: HTTP_INTERCEPTORS, useClass: HttpResponseInterceptor, multi: true },
 		AuthAttribute,
-		CategoryService, DestinationService, FilterService, PromotionService, RegionService, SearchService, TagService, TestService, UserService,
 		Logger, TranslateService, RouteService,
 		DestinationTypePipe,
 		// { provide: RouteService, useClass: RouteService, deps: [TranslateService, Location, Router] },

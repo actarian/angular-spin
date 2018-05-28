@@ -7,7 +7,7 @@ import { LabelService } from './label.service';
 
 @Pipe({
 	name: 'label',
-	pure: false
+	pure: false,
 })
 export class LabelPipe implements PipeTransform {
 
@@ -23,7 +23,7 @@ export class LabelPipe implements PipeTransform {
 	public transform(key: string, params?: any): string {
 		// return WrappedValue.wrap(this.val);
 		const label = this.labelService.getLabel(key, params);
-		console.log('label', label, this.labelService.cache);
+		// console.log('label', label, this.labelService.cache);
 		return label;
 	}
 

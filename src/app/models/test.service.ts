@@ -3,7 +3,9 @@ import { Observable } from 'rxjs';
 import { ApiService } from '../core/api';
 import { Identity } from '../core/models';
 
-@Injectable()
+@Injectable({
+	providedIn: 'root',
+})
 export class TestService extends ApiService<Identity> {
 
 	get collection(): string {

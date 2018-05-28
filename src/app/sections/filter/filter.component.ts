@@ -1,7 +1,9 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Observable } from 'rxjs';
 import { DisposableComponent } from '../../core/disposable';
 import { Option } from '../../core/models';
-import { AccordionItem, FilterService } from '../../models';
+import { FilterService, Group } from '../../models';
+
 
 @Component({
 	selector: 'section-filter',
@@ -12,7 +14,8 @@ import { AccordionItem, FilterService } from '../../models';
 export class FilterComponent extends DisposableComponent implements OnInit {
 
 	groupTypes: any;
-	groups: AccordionItem<Option>[];
+	groupsFiltered$: Observable<Group<Option>[]>;
+	private groupsFiltered: Group<Option>[];
 
 	@Output()
 	selectFilter: EventEmitter<any> = new EventEmitter();
@@ -22,17 +25,15 @@ export class FilterComponent extends DisposableComponent implements OnInit {
 	) {
 		super();
 		this.groupTypes = this.filterService.groupTypes;
-		this.filterService.getGroups()
-			.takeUntil(this.unsubscribe)
-			.subscribe(groups => this.groups = groups);
+		this.groupsFiltered$ = this.filterService.groupsFiltered;
 	}
 
 	ngOnInit() {
+
 	}
 
 	onToggle(item: Option) {
-		console.log('FilterComponent.onToggle', item);
-		this.selectFilter.emit(item);
+		this.selectFilter.emit(this.filterService.valueSelected);
 	}
 
 }

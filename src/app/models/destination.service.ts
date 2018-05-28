@@ -4,7 +4,9 @@ import { map } from 'rxjs/operators';
 import { EntityService } from '../core/models';
 import { Destination } from './destination';
 
-@Injectable()
+@Injectable({
+	providedIn: 'root',
+})
 export class DestinationService extends EntityService<Destination> {
 
 	get collection(): string {

@@ -4,7 +4,9 @@ import { EntityService } from '../core/models';
 import { FacebookUser, GoogleUser } from '../core/plugins';
 import { User, UserAuth, UserSignForgotten } from './user';
 
-@Injectable()
+@Injectable({
+	providedIn: 'root',
+})
 export class UserService extends EntityService<User> {
 
 	get collection(): string {
