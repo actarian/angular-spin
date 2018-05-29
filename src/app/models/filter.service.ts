@@ -26,6 +26,9 @@ export class FilterService {
 	private resultsFiltered$ = new BehaviorSubject<SearchResult[]>([]);
 	resultsFiltered = this.resultsFiltered$.asObservable();
 
+	maxVisibleItems: number = 20;
+	visibleItems: number = this.maxVisibleItems;
+
 	constructor(
 		private tagService: TagService,
 		private searchService: SearchService,
@@ -40,21 +43,50 @@ export class FilterService {
 			results.forEach(result => {
 				result.visible = true;
 				this.valueSelected.forEach(group => {
-					group.forEach(option => {
-						result.visible = result.visible && result.tags.indexOf(option.id) !== -1;
+					group.items.forEach(option => {
+						switch (group.type) {
+							case this.groupTypes.Treatment:
+								result.visible = result.visible && result.accomodation === option.name;
+								break;
+							case this.groupTypes.Rating:
+								result.visible = result.visible && result.rating === option.name;
+								break;
+							default:
+								result.visible = result.visible && result.tags.indexOf(option.id) !== -1;
+						}
 					});
 				});
 			});
-			this.resultsFiltered$.next(results);
+			const sliced = results.filter(result => result.visible).sort((a, b) => a.advice - b.advice).slice(0, Math.min(this.visibleItems, results.length));
+			this.resultsFiltered$.next(sliced);
 			groups.forEach(group => {
 				group.visible = false;
 				group.items.forEach(option => {
 					option.count = 0;
 					results.forEach(result => {
-						if ((result.visible || result.visible === undefined) && result.tags.indexOf(option.id) !== -1) {
-							option.count++;
+						// if (result.visible || result.visible === undefined) {
+						switch (group.type) {
+							case this.groupTypes.Treatment:
+								option.count += result.accomodation === option.name ? 1 : 0;
+								break;
+							case this.groupTypes.Rating:
+								option.count += result.rating === option.name ? 1 : 0;
+								break;
+							default:
+								option.count += ((result.visible || result.visible === undefined) && result.tags.indexOf(option.id) !== -1) ? 1 : 0;
 						}
+						// }
 					});
+					/*
+					switch (group.type) {
+						case this.groupTypes.Treatment:
+						case this.groupTypes.Rating:
+							option.visible = true;
+							break;
+						default:
+							option.visible = option.count > 0;
+					}
+					*/
 					option.visible = option.count > 0;
 					group.visible = group.visible || option.visible;
 				});
@@ -99,16 +131,36 @@ export class FilterService {
 		);
 	}
 
-	setGroups(): void {
-		this.groups$.next(this.groups$.getValue());
-	}
-
 	public get value() {
 		return this.groups$.getValue();
 	}
 
 	public get valueSelected() {
-		return this.groups$.getValue().filter(group => group.items.find(item => item.selected)).map(group => group.items.filter(item => item.selected));
+		return this.groups$.getValue().filter(group => group.items.find(item => item.selected)).map(group => {
+			group = Object.assign({}, group);
+			group.items = group.items.filter(item => item.selected);
+			return group;
+		});
+	}
+
+	onToggle(id: number, groupType: GroupType) {
+		const groups = this.groups$.getValue();
+		groups.forEach(group => {
+			if (group.type === groupType) {
+				const item = group.items.find(item => item.id === id);
+				if (item.selected && (groupType === this.groupTypes.Treatment || groupType === this.groupTypes.Rating)) {
+					group.items.forEach(item => {
+						if (item.id !== id) {
+							item.selected = false;
+						}
+					});
+				}
+			}
+		});
+	}
+
+	setGroups(): void {
+		this.groups$.next(this.groups$.getValue());
 	}
 
 }

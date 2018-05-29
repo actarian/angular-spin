@@ -1,100 +1,111 @@
-<!-- Hotel Image -->
-<div class="hotel--image">
-	<div class="discount">
-		<img alt="" src="/assets/img/hotel/sconto20.png">
-	</div>
-	<a href="#" [routerLink]="item.slug | route">
-		<img alt="" class="hotel--image-thumb" [src]="item.photo | asset">
-	</a>
-</div>
-<!-- /Hotel Image -->
-<!-- Hotel Content -->
-<div class="hotel--content">
-	<div class="hotel--head">
-		<div class="hotel--info">
-			<div class="hotel--name">
-				<a href="#" [routerLink]="item.slug | route">
-					<span>{{item.name}}</span> <span class="stars"><em *ngFor="let star of item?.rating?.split('');" [ngClass]="{ superior: star === 'S' }">{{star}}</em></span>
-				</a>
+<div class="serp-results">
+	<div class="hotel-list">
+		<ng-container *ngFor="let item of resultsFiltered$ | async">
+			<div class="hotel--item">
+				<!-- Hotel Image -->
+				<div class="hotel--image">
+					<div class="discount" *ngIf="item.overlayCoverImage">
+						<img alt="" [src]="item.overlayCoverImage | asset">
+					</div>
+					<a href="#" [routerLink]="item.slug | route">
+						<img alt="" class="hotel--image-thumb" [src]="item.photo | asset">
+					</a>
+				</div>
+				<!-- /Hotel Image -->
+				<!-- Hotel Content -->
+				<div class="hotel--content">
+					<div class="hotel--head">
+						<div class="hotel--info">
+							<div class="hotel--name">
+								<a href="#" [routerLink]="item.slug | route">
+									<span>{{item.name}}</span> <span class="stars"><em *ngFor="let star of item?.rating?.split('');" [ngClass]="{ superior: star === 'S' }">{{star}}</em></span>
+								</a>
+							</div>
+							<div class="hotel--location">
+								<span class="hotel--region">{{item.destinationRegion}}</span>&nbsp;<span class="hotel--town">{{item.destinationDescription}} ({{item.destinationProvince}})</span>
+							</div>
+						</div>
+						<div class="hotel--trust">
+							<span class="hotel--trust__number excellent">{{item.trustPilot_averageStars}}</span>
+							<span class="hotel--trust__text excellent">{{item.trustPilot_nReviews}}</span>
+						</div>
+					</div>
+					<div class="hotel--desc">
+						<ul class="hotel--list">
+							<li class="hotel--list-item">
+								<svg class="ico">
+									<use xlink:href="#ico-calendar"></use>
+								</svg>
+								<span>{{item.abstract}}</span>
+							</li>
+							<li class="hotel--list-item">
+								<svg class="ico">
+									<use xlink:href="#ico-struttura"></use>
+								</svg>
+								<span>{{item.accomodation}}</span>
+							</li>
+							<li class="hotel--list-item">
+								<svg class="ico">
+									<use xlink:href="#ico-fav"></use>
+								</svg>
+								<span>utilizzo centro benessere</span>
+							</li>
+							<li class="hotel--list-item">
+								<svg class="ico">
+									<use xlink:href="#ico-fav"></use>
+								</svg>
+								<span>utilizzo wi-fi</span>
+							</li>
+							<li class="hotel--list-item">
+								<svg class="ico">
+									<use xlink:href="#ico-fav"></use>
+								</svg>
+								<span>utilizzo centro sportivo</span>
+							</li>
+						</ul>
+						<div class="hotel--special-msg">
+							<!-- <strong>20%</strong> PRENOTA PRIMA -->
+							{{item.earlyBookingText}}
+						</div>
+					</div>
+				</div>
+				<!-- /Hotel Content -->
+				<!-- Hotel Action -->
+				<div class="hotel--action">
+					<button type="button" class="add-to-fav">
+						<svg class="ico">
+							<use xlink:href="#ico-fav"></use>
+						</svg>
+						Preferiti
+					</button>
+					<!--
+					<div class="hotel--special-msg">
+						<strong>20%</strong> PRENOTA PRIMA {{item.earlyBookingText}}
+					</div>
+					-->
+					<div class="hotel--summary">
+						<div class="hotel--price">
+							<span class="desc">Da</span>
+							<span class="single-price">
+								<span class="value">{{item.price}}</span>
+							<span class="symbol">€</span>
+							</span>
+							<span class="desc">Prezzo per persona</span>
+						</div>
+						<div class="hotel--total-price">
+							<span class="desc">Prezzo totale</span>
+							<span class="total-price">
+								<span class="value">{{item.totalPrice}}</span>
+							<span class="symbol">€</span>
+							</span>
+						</div>
+					</div>
+					<div class="hotel--cta">
+						<a class="btn" href="#" [routerLink]="item.slug | route">Continua</a>
+					</div>
+				</div>
+				<!-- /Hotel Action -->
 			</div>
-			<div class="hotel--location">
-				<span class="hotel--region">{{item.destinationRegion}}</span>&nbsp;<span class="hotel--town">{{item.destinationDescription}} ({{item.destinationProvince}})</span>
-			</div>
-		</div>
-		<div class="hotel--trust">
-			<span class="hotel--trust__number excellent">8.7</span>
-			<span class="hotel--trust__text excellent">eccellente</span>
-		</div>
-	</div>
-	<div class="hotel--desc">
-		<ul class="hotel--list">
-			<li class="hotel--list-item">
-				<svg class="ico">
-					<use xlink:href="#ico-calendar"></use>
-				</svg>
-				<span>23 aprile 2018 - 3 notti</span>
-			</li>
-			<li class="hotel--list-item">
-				<svg class="ico">
-					<use xlink:href="#ico-struttura"></use>
-				</svg>
-				<span>mezza pensione</span>
-			</li>
-			<li class="hotel--list-item">
-				<svg class="ico">
-					<use xlink:href="#ico-fav"></use>
-				</svg>
-				<span>utilizzo centro benessere</span>
-			</li>
-			<li class="hotel--list-item">
-				<svg class="ico">
-					<use xlink:href="#ico-fav"></use>
-				</svg>
-				<span>utilizzo wi-fi</span>
-			</li>
-			<li class="hotel--list-item">
-				<svg class="ico">
-					<use xlink:href="#ico-fav"></use>
-				</svg>
-				<span>utilizzo centro sportivo</span>
-			</li>
-		</ul>
-		<div class="hotel--special-msg">
-			<strong>20%</strong> PRENOTA PRIMA
-		</div>
+		</ng-container>
 	</div>
 </div>
-<!-- /Hotel Content -->
-<!-- Hotel Action -->
-<div class="hotel--action">
-	<button type="button" class="add-to-fav">
-		<svg class="ico">
-			<use xlink:href="#ico-fav"></use>
-		</svg>
-		Preferiti
-	</button>
-	<div class="hotel--special-msg">
-		<strong>20%</strong> PRENOTA PRIMA {{item.earlyBookingText}}
-	</div>
-	<div class="hotel--summary">
-		<div class="hotel--price">
-			<span class="desc">Da</span>
-			<span class="single-price">
-				<span class="value">{{item.price}}</span>
-			<span class="symbol">€</span>
-			</span>
-			<span class="desc">Prezzo per persona</span>
-		</div>
-		<div class="hotel--total-price">
-			<span class="desc">Prezzo totale</span>
-			<span class="total-price">
-				<span class="value">{{item.totalPrice}}</span>
-			<span class="symbol">€</span>
-			</span>
-		</div>
-	</div>
-	<div class="hotel--cta">
-		<a class="btn" href="#" [routerLink]="item.slug | route">Continua</a>
-	</div>
-</div>
-<!-- /Hotel Action -->

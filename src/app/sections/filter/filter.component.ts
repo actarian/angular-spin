@@ -2,8 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DisposableComponent } from '../../core/disposable';
 import { Option } from '../../core/models';
-import { FilterService, Group } from '../../models';
-
+import { FilterService, Group, GroupType } from '../../models';
 
 @Component({
 	selector: 'section-filter',
@@ -32,7 +31,8 @@ export class FilterComponent extends DisposableComponent implements OnInit {
 
 	}
 
-	onToggle(item: Option) {
+	onToggle(id: number, groupType: GroupType) {
+		this.filterService.onToggle(id, groupType);
 		this.selectFilter.emit(this.filterService.valueSelected);
 	}
 

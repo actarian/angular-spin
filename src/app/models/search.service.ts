@@ -133,7 +133,7 @@ export class SearchService extends EntityService<SearchResult> {
 	onSearchIn() {
 		this.get().pipe(
 			tap(x => {
-				// console.log('SearchService.onSearchIn', x);
+				console.log('SearchService.onSearchIn', x[0]);
 			})
 		).subscribe(x => this.results$.next(x));
 		// this.get().subscribe(x => this.results$.next(x));

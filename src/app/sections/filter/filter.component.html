@@ -7,11 +7,11 @@
 					<li class="list--item" *ngIf="item.visible">
 						<div class="checkbox" [ngSwitch]="group.type">
 							<label *ngSwitchCase="groupTypes.Rating">
-								<input type="checkbox" [(ngModel)]="item.selected" (ngModelChange)="onToggle(item)">
+								<input type="checkbox" [(ngModel)]="item.selected" (ngModelChange)="onToggle(item.id, group.type)">
 								<span><span class="stars"> <em *ngFor="let star of item.name.split('');" [ngClass]="{ superior: star === 'S' }">{{star}}</em> </span> <em>{{item.count}}</em> </span>
 							</label>
 							<label *ngSwitchDefault>
-								<input type="checkbox" [(ngModel)]="item.selected" (ngModelChange)="onToggle(item)"> <span>{{item.name}} <em>{{item.count}}</em> </span>
+								<input type="checkbox" [(ngModel)]="item.selected" (ngModelChange)="onToggle(item.id, group.type)"> <span>{{item.name}} <em>{{item.count}}</em> </span>
 							</label>
 						</div>
 					</li>

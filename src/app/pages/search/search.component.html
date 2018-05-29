@@ -60,7 +60,7 @@
 			</div>
 			<div class="content">
 				<div class="popup-accordion">
-					<section-filter (selectFilter)="onFilterSet($event)"></section-filter>
+					<section-filter (selectFilter)="results.onFilterSet($event)"></section-filter>
 				</div>
 			</div>
 			<div class="foot"> <a href="#" class="btn-reset">Resetta filtri </a> <a href="#" class="btn">Aggiorna </a> </div>
@@ -82,21 +82,15 @@
 	</div>
 </div>
 
-<!-- <json-formatter [json]="search.model"></json-formatter> -->
-
 <div class="serp-content">
 	<div class="container">
 		<div class="serp-filter">
 			<div class="serp-filter--sticky">
-				<section-filter (selectFilter)="onFilterSet($event)"></section-filter>
+				<section-filter (selectFilter)="results.onFilterSet($event)"></section-filter>
 			</div>
 		</div>
-		<div class="serp-results">
-			<div class="hotel-list">
-				<ng-container *ngFor="let item of resultsFiltered$ | async">
-					<section-search-result class="hotel--item" [item]="item" *ngIf="item.visible"></section-search-result>
-				</ng-container>
-			</div>
-		</div>
+		<section-search-result class="serp-results" #results="results"></section-search-result>
 	</div>
 </div>
+
+<!-- <json-formatter [json]="search.model"></json-formatter> -->

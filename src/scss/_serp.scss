@@ -25,17 +25,21 @@ hotel List
 		position: relative;
 		z-index: 1;
 		width: 300px;
+		flex: 0 0 300px;
 
 		@media (width: 768px) {
 			width: 200px;
+			flex: 0 0 200px;
 		}
 
 		@include md-down {
 			width: 250px;
+			flex: 0 0 350px;
 		}
 
 		@include xs-down {
 			width: auto;
+			flex: 0 0 auto;
 		}
 
 		.discount {
@@ -238,19 +242,22 @@ hotel List
 	}
 
 	.hotel--action {
-		width: 190px;
-		padding: 8px 12px 12px;
-		background: $light-color;
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-end;
+		width: 190px;
+		flex: 0 0 190px;
+		padding: 8px 12px 12px;
+		background: $light-color;
 
 		@media (width: 768px) {
 			width: 170px;
+			flex: 0 0 170px;
 		}
 
 		@include xs-down {
 			width: auto;
+			flex: 0 0 auto;
 			display: flex;
 			flex-direction: row;
 			flex-wrap: wrap;
