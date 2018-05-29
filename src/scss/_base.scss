@@ -67,6 +67,9 @@ Card Row
 }
 
 
+/*--------------------------------------------------
+Stars
+--------------------------------------------------*/
 .stars {
 	white-space: nowrap;
 	display: inline-block;
@@ -96,6 +99,43 @@ Card Row
 			position: relative;
 			left: 2px;
 			top: 2px;
+		}
+	}
+}
+
+
+/*--------------------------------------------------
+Hotel Trust
+--------------------------------------------------*/
+.hotel--trust {
+	font-size: 10px;
+	text-transform: uppercase;
+
+	&__number {
+		display: inline-block;
+		color: #fff;
+		background-color: $rate-excellent;
+		padding: 0 5px;
+
+		&.good {
+			background-color: $rate-good;
+		}
+
+		&.poor {
+			background-color: $rate-poor;
+		}
+	}
+
+	&__text {
+		display: block;
+		color: $rate-excellent;
+
+		&.good {
+			color: $rate-good;
+		}
+
+		&.poor {
+			color: $rate-poor;
 		}
 	}
 }
