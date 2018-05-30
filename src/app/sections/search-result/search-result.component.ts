@@ -29,7 +29,7 @@ export class SearchResultComponent extends DisposableComponent implements OnInit
 	}
 
 	onFilterSet(groups: Group<Option>[]) {
-		console.log('SearchResultComponent.onFilterSet', groups);
+		// console.log('SearchResultComponent.onFilterSet', groups);
 		this.filterService.setGroups();
 	}
 

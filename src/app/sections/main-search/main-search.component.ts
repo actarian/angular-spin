@@ -41,7 +41,7 @@ export class MainSearchComponent extends DisposableComponent implements OnInit, 
 
 	ngAfterViewInit() {
 		this.addListeners();
-		this.renderer.listen(this.searchLocation.nativeElement, 'click', () => { console.log('cliccato'); });
+		// this.renderer.listen(this.searchLocation.nativeElement, 'click', () => { console.log('cliccato'); });
 	}
 
 	ngOnInit() {

@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Inject, Injectable, Injector, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
@@ -8,7 +9,7 @@ import { tap } from 'rxjs/operators';
 import { EntityService } from '../core/models';
 import { RouteService } from '../core/routes';
 import { LocalStorageService, StorageService } from '../core/storage';
-import { Destination } from './destination';
+import { Destination, DestinationTypes } from './destination';
 import { DestinationService } from './destination.service';
 import { CalendarOption, Duration, MainSearch, SearchResult, durations } from './search';
 
@@ -41,6 +42,7 @@ export class SearchService extends EntityService<SearchResult> {
 		protected injector: Injector,
 		@Inject(PLATFORM_ID) private platformId: string,
 		private storageService: LocalStorageService,
+		private location: Location,
 		private router: Router,
 		private routeService: RouteService,
 		private destinationService: DestinationService
@@ -54,24 +56,12 @@ export class SearchService extends EntityService<SearchResult> {
 		const lastDestinations = this.storage.get('lastDestinations');
 		this.lastDestinations = lastDestinations || [];
 		this.routeService.params
-			.take(1)
+			// .take(1)
 			.subscribe(model => {
 				// console.log('SearchService.constructor', model);
 				this.model = new MainSearch(model as MainSearch);
 				this.onSearchIn();
 			});
-		/*
-		// TODO subscribe to routeService page params
-		const params = this.route.params.concatMap(x => {
-			return of(this.routeService.toData(x));
-		});
-		params.subscribe(model => {
-			if (model) {
-				console.log('SearchComponent.model', model);
-				this.model = model;
-			}
-		});
-		*/
 	}
 
 	// DESSTINATION
@@ -124,18 +114,51 @@ export class SearchService extends EntityService<SearchResult> {
 
 	// CERCA
 	onSearch() {
-		console.log(this.model);
+		// console.log(this.model);
 		const segments = this.routeService.toRoute(['/search']);
 		segments.push(this.routeService.toParams(this.model));
 		this.router.navigate(segments);
 	}
 
 	onSearchIn() {
-		this.get().pipe(
+		let params = '';
+		if (this.model.destination) {
+			switch (this.model.destination.type) {
+				case DestinationTypes.Facility:
+					params = `?name=${this.model.destination.name}`;
+					break;
+				case DestinationTypes.Country:
+					params = `?destinationNation=${this.model.destination.name}`;
+					break;
+				case DestinationTypes.Region:
+					params = `?destinationRegion=${this.model.destination.name}`;
+					break;
+				case DestinationTypes.Destination:
+					params = `?destinationDescription=${this.model.destination.name}`;
+					break;
+				case DestinationTypes.Category:
+					params = '';
+					// params = `?destinationNation=${this.model.destination.name}`;
+					break;
+				case DestinationTypes.Promotion:
+					params = '';
+					// params = `?destinationNation=${this.model.destination.name}`;
+					break;
+			}
+		}
+		// console.log('SearchService.onSearchIn', params, this.model);
+		this.get(params).pipe(
 			tap(x => {
-				console.log('SearchService.onSearchIn', x[0]);
+				console.log('SearchService.onSearchIn.tap', x[0]);
 			})
-		).subscribe(x => this.results$.next(x));
+		).subscribe(x => {
+			this.results$.next(x);
+			// console.log(this.model);
+			const segments = this.routeService.toRoute(['/search']);
+			segments.push(this.routeService.toParams(this.model));
+			const path = this.router.serializeUrl(this.router.createUrlTree(segments));
+			this.location.replaceState(path);
+		});
 		// this.get().subscribe(x => this.results$.next(x));
 		// import {Location} from '@angular/common';
 		// this.location.replaceState("/some/newstate/");
