@@ -77,13 +77,15 @@ export class SearchService extends EntityService<SearchResult> {
 
 	onDestinationSet(destination: Destination) {
 		this.model.destination = destination;
-		const previous: Destination = this.lastDestinations.find(x => x.name === destination.name);
-		if (previous) {
-			const index = this.lastDestinations.indexOf(previous);
-			this.lastDestinations.splice(index, 1);
+		if (destination) {
+			const previous: Destination = this.lastDestinations.find(x => x.name === destination.name);
+			if (previous) {
+				const index = this.lastDestinations.indexOf(previous);
+				this.lastDestinations.splice(index, 1);
+			}
+			this.lastDestinations.unshift(destination);
+			this.storage.set('lastDestinations', this.lastDestinations);
 		}
-		this.lastDestinations.unshift(destination);
-		this.storage.set('lastDestinations', this.lastDestinations);
 	}
 
 	onDestinationReset() {

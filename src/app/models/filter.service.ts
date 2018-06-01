@@ -37,79 +37,77 @@ export class FilterService {
 		private tagService: TagService,
 		private searchService: SearchService,
 	) {
-		this.getGroups().subscribe(groups => {
-			// console.log('FilterService.getGroups', groups);
-			this.groups$.next(groups);
-		});
-		Observable.combineLatest(this.groups$, this.sortings$, this.searchService.results).subscribe((data: any[]): void => {
-			const groups: Group<Option>[] = data[0];
-			const sorting: Sorting = data[1];
-			let results: SearchResult[] = data[2];
-			results.forEach(result => {
-				result.visible = true;
-				this.valueSelected.forEach(group => {
+		this.onReset();
+		Observable.combineLatest(this.groups$, this.sortings$, this.searchService.results)
+			.subscribe((data: any[]): void => {
+				const groups: Group<Option>[] = data[0];
+				const sorting: Sorting = data[1];
+				let results: SearchResult[] = data[2];
+				results.forEach(result => {
+					result.visible = true;
+					this.valueSelected.forEach(group => {
+						group.items.forEach(option => {
+							switch (group.type) {
+								case this.groupTypes.Treatment:
+									result.visible = result.visible && result.accomodation === option.name;
+									break;
+								case this.groupTypes.Rating:
+									result.visible = result.visible && result.rating === option.name;
+									break;
+								default:
+									result.visible = result.visible && result.tags.indexOf(option.id) !== -1;
+							}
+						});
+					});
+				});
+				results = results.filter(result => result.visible);
+				switch (sorting.id) {
+					case 1:
+						results.sort((a, b) => a.advice - b.advice);
+						break;
+					case 2:
+						results.sort((a, b) => a.price - b.price);
+						break;
+					case 3:
+						results.sort((a, b) => b.price - a.price);
+						break;
+				}
+				const sliced = results.slice(0, Math.min(this.visibleItems, results.length));
+				this.resultsFiltered$.next(sliced);
+				groups.forEach(group => {
+					group.visible = false;
 					group.items.forEach(option => {
+						option.count = 0;
+						results.forEach(result => {
+							// if (result.visible || result.visible === undefined) {
+							switch (group.type) {
+								case this.groupTypes.Treatment:
+									option.count += result.accomodation === option.name ? 1 : 0;
+									break;
+								case this.groupTypes.Rating:
+									option.count += result.rating === option.name ? 1 : 0;
+									break;
+								default:
+									option.count += ((result.visible || result.visible === undefined) && result.tags.indexOf(option.id) !== -1) ? 1 : 0;
+							}
+							// }
+						});
+						/*
 						switch (group.type) {
 							case this.groupTypes.Treatment:
-								result.visible = result.visible && result.accomodation === option.name;
-								break;
 							case this.groupTypes.Rating:
-								result.visible = result.visible && result.rating === option.name;
+								option.visible = true;
 								break;
 							default:
-								result.visible = result.visible && result.tags.indexOf(option.id) !== -1;
+								option.visible = option.count > 0;
 						}
+						*/
+						option.visible = option.count > 0;
+						group.visible = group.visible || option.visible;
 					});
 				});
+				this.groupsFiltered$.next(groups);
 			});
-			results = results.filter(result => result.visible);
-			switch (sorting.id) {
-				case 1:
-					results.sort((a, b) => a.advice - b.advice);
-					break;
-				case 2:
-					results.sort((a, b) => a.price - b.price);
-					break;
-				case 3:
-					results.sort((a, b) => b.price - a.price);
-					break;
-			}
-			const sliced = results.slice(0, Math.min(this.visibleItems, results.length));
-			this.resultsFiltered$.next(sliced);
-			groups.forEach(group => {
-				group.visible = false;
-				group.items.forEach(option => {
-					option.count = 0;
-					results.forEach(result => {
-						// if (result.visible || result.visible === undefined) {
-						switch (group.type) {
-							case this.groupTypes.Treatment:
-								option.count += result.accomodation === option.name ? 1 : 0;
-								break;
-							case this.groupTypes.Rating:
-								option.count += result.rating === option.name ? 1 : 0;
-								break;
-							default:
-								option.count += ((result.visible || result.visible === undefined) && result.tags.indexOf(option.id) !== -1) ? 1 : 0;
-						}
-						// }
-					});
-					/*
-					switch (group.type) {
-						case this.groupTypes.Treatment:
-						case this.groupTypes.Rating:
-							option.visible = true;
-							break;
-						default:
-							option.visible = option.count > 0;
-					}
-					*/
-					option.visible = option.count > 0;
-					group.visible = group.visible || option.visible;
-				});
-			});
-			this.groupsFiltered$.next(groups);
-		});
 	}
 
 	private getGroups(): Observable<Group<Option>[]> {
@@ -157,6 +155,14 @@ export class FilterService {
 			group = Object.assign({}, group);
 			group.items = group.items.filter(item => item.selected);
 			return group;
+		});
+	}
+
+	onReset() {
+		this.sorting = this.sortings[0];
+		this.getGroups().subscribe(groups => {
+			// console.log('FilterService.getGroups', groups);
+			this.groups$.next(groups);
 		});
 	}
 

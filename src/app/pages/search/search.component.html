@@ -39,7 +39,7 @@
 					</li>
 				</ul>
 			</div>
-			<div class="foot"> <a href="#" class="btn-reset">Resetta filtri </a> <button type="button" class="btn" (click)="active = null">Aggiorna </button> </div>
+			<div class="foot"> <a href="#" class="btn-reset" (click)="filterService.onReset()">Resetta filtri </a> <button type="button" class="btn" (click)="active = null">Aggiorna </button> </div>
 		</div>
 		<!-- Order Popup -->
 		<!-- Filter Popup -->
@@ -57,7 +57,7 @@
 					<section-filter (selectFilter)="filterService.setGroups()"></section-filter>
 				</div>
 			</div>
-			<div class="foot"> <a href="#" class="btn-reset">Resetta filtri </a> <button type="button" class="btn" (click)="active = null">Aggiorna </button> </div>
+			<div class="foot"> <a href="#" class="btn-reset" (click)="filterService.onReset()">Resetta filtri </a> <button type="button" class="btn" (click)="active = null">Aggiorna </button> </div>
 		</div>
 		<!-- Filter Popup -->
 		<!-- Main Search Popup -->
@@ -70,7 +70,7 @@
 					</svg>
 				</a>
 			</div>
-			<main-search (doSearch)="active = null; search.onSearchIn()">---</main-search>
+			<main-search (doSearch)="active = null; filterService.onReset(); search.onSearchIn()">---</main-search>
 		</div>
 		<!-- Main Search Popup -->
 	</div>

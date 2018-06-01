@@ -3,7 +3,6 @@ import { Page } from '../core/pages';
 export const page: Page[] = [
 	{ id: 1001, name: 'Homepage', title: 'Homepage', slug: '/', component: 'HomeComponent' },
 	{ id: 2001, name: 'Search', title: 'Search', slug: '/search', component: 'SearchComponent' },
-	{ id: 5001, name: 'Hotel', title: 'Hotel', slug: '/hotel', component: 'HotelComponent' },
 	{ id: 2001, name: 'Profile', title: 'Profile', slug: '/profile', component: 'ProfileComponent' },
 	{ id: 2101, name: 'Sign', title: 'Sign', slug: '/accedi', component: 'SignComponent' },
 	{ id: 2201, name: 'Sign Up', title: 'Sign Up', slug: '/registrati', component: 'SignUpComponent' },
@@ -30,4 +29,5 @@ export const page: Page[] = [
 	{ id: 4018, name: 'Umbria', title: 'Region Umbria', slug: '/umbria', component: 'RegionDetailComponent' },
 	{ id: 4019, name: 'Valle d\'Aosta', title: 'Region Valle d\'Aosta', slug: '/valle-d-aosta', component: 'RegionDetailComponent' },
 	{ id: 4020, name: 'Veneto', title: 'Region Veneto', slug: '/veneto', component: 'RegionDetailComponent' },
+	{ id: 5001, name: 'Hotel', title: 'Hotel', slug: '/hotel', component: 'HotelComponent' },
 ];

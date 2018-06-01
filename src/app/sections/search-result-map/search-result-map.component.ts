@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, Renderer2, ViewChild } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import { Observable } from 'rxjs';
 import { DisposableComponent } from '../../core/disposable';
@@ -12,7 +12,7 @@ import { FilterService, SearchResult, SearchService } from '../../models';
 	exportAs: 'results'
 })
 
-export class SearchResultMapComponent extends DisposableComponent implements AfterViewInit {
+export class SearchResultMapComponent extends DisposableComponent implements AfterViewInit, OnDestroy {
 
 	@ViewChild('map') elementRef: ElementRef;
 	map: any;
@@ -36,6 +36,8 @@ export class SearchResultMapComponent extends DisposableComponent implements Aft
 
 	ngAfterViewInit() {
 		this.map$ = this.mapboxService.getMap({ elementRef: this.elementRef });
+		// todo
+		// map.on('move').takeUntil.debouce.distinct. -> search
 		Observable.combineLatest(this.map$, this.resultsFiltered$)
 			.takeUntil(this.unsubscribe)
 			.subscribe((data: any[]): void => {
@@ -57,6 +59,8 @@ export class SearchResultMapComponent extends DisposableComponent implements Aft
 					const bounds = coordinates.reduce((bounds, coord) => {
 						return bounds.extend(coord);
 					}, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
+					map.fitBounds(bounds, { linear: true, duration: 0, padding: 50, maxZoom: 13 });
+					/*
 					map.fitBounds(bounds, {
 						speed: 5,
 						curve: 1,
@@ -64,9 +68,16 @@ export class SearchResultMapComponent extends DisposableComponent implements Aft
 						linear: false,
 						maxZoom: 16,
 					});
+					*/
 					console.log('SearchResultMapComponent', bounds);
+					this.map = map;
 				}
 			});
+	}
+
+	ngOnDestroy() {
+		this.map = null;
+		this.markers = null;
 	}
 
 }
