@@ -3,6 +3,7 @@ import { Page } from '../core/pages';
 export const page: Page[] = [
 	{ id: 1001, name: 'Homepage', title: 'Homepage', slug: '/', component: 'HomeComponent' },
 	{ id: 2001, name: 'Search', title: 'Search', slug: '/search', component: 'SearchComponent' },
+	{ id: 5001, name: 'Hotel', title: 'Hotel', slug: '/hotel', component: 'HotelComponent' },
 	{ id: 2001, name: 'Profile', title: 'Profile', slug: '/profile', component: 'ProfileComponent' },
 	{ id: 2101, name: 'Sign', title: 'Sign', slug: '/accedi', component: 'SignComponent' },
 	{ id: 2201, name: 'Sign Up', title: 'Sign Up', slug: '/registrati', component: 'SignUpComponent' },

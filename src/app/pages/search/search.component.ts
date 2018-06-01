@@ -4,7 +4,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/take';
 import { PageComponent } from '../../core/pages';
-import { SearchService } from '../../models';
+import { FilterService, SearchService, SearchViewTypes } from '../../models';
 
 @Component({
 	selector: 'page-search',
@@ -14,11 +14,15 @@ import { SearchService } from '../../models';
 
 export class SearchComponent extends PageComponent {
 
+	viewTypes: any = SearchViewTypes;
+	viewType: SearchViewTypes = SearchViewTypes.List;
+
 	active: ElementRef;
 
 	constructor(
 		route: ActivatedRoute,
 		public search: SearchService,
+		public filterService: FilterService,
 	) {
 		super(route);
 	}

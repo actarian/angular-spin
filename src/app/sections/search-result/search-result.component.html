@@ -1,111 +1,138 @@
-<div class="serp-results">
-	<div class="hotel-list">
-		<ng-container *ngFor="let item of resultsFiltered$ | async">
-			<div class="hotel--item">
-				<!-- Hotel Image -->
-				<div class="hotel--image">
-					<div class="discount" *ngIf="item.overlayCoverImage">
-						<img alt="" [src]="item.overlayCoverImage | asset">
-					</div>
-					<a href="#" [routerLink]="item.slug | route">
+<div class="serp-results--head">
+	<ng-container [ngSwitch]="(resultsFiltered$ | async)?.length">
+		<ng-container *ngSwitchCase="0">
+			zero
+		</ng-container>
+		<ng-container *ngSwitchCase="null">
+			loading...
+		</ng-container>
+		<ng-container *ngSwitchDefault>
+			<div class="serp-results--tit" *ngIf="search.model.destination">Ci sono <strong>{{(resultsFiltered$ | async)?.length}}</strong> offerte per <strong>{{search.model.destination?.name}}</strong></div>
+			<div class="serp-results--tit" *ngIf="!search.model.destination">Ci sono <strong>{{(resultsFiltered$ | async)?.length}}</strong> offerte per te</div>
+		</ng-container>
+	</ng-container>
+	<div class="serp-results--filter">
+		<div class="serp-results--filter-item">
+			<label for="serp-results--order">Ordina per</label>
+			<div class="custom-select">
+				<select class="select" id="serp-results--order" [(ngModel)]="filterService.sorting" (change)="filterService.onSort()">
+					<option selected *ngFor="let option of filterService.sortings" [ngValue]="option">{{option.name}}</option>
+				</select>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="hotel-list">
+	<ng-container *ngFor="let item of resultsFiltered$ | async">
+		<div class="hotel--item">
+			<!-- Hotel Image -->
+			<div class="hotel--image">
+				<div class="discount" *ngIf="item.overlayCoverImage">
+					<img alt="" [src]="item.overlayCoverImage | asset">
+				</div>
+				<a href="#" [routerLink]="item.slug | route">
 						<img alt="" class="hotel--image-thumb" [src]="item.photo | asset">
 					</a>
-				</div>
-				<!-- /Hotel Image -->
-				<!-- Hotel Content -->
-				<div class="hotel--content">
-					<div class="hotel--head">
-						<div class="hotel--info">
-							<div class="hotel--name">
-								<a href="#" [routerLink]="item.slug | route">
+			</div>
+			<!-- /Hotel Image -->
+			<!-- Hotel Content -->
+			<div class="hotel--content">
+				<div class="hotel--head">
+					<div class="hotel--info">
+						<div class="hotel--name">
+							<a href="#" [routerLink]="item.slug | route">
 									<span>{{item.name}}</span> <span class="stars"><em *ngFor="let star of item?.rating?.split('');" [ngClass]="{ superior: star === 'S' }">{{star}}</em></span>
 								</a>
-							</div>
-							<div class="hotel--location">
-								<span class="hotel--region">{{item.destinationNation}} {{item.destinationRegion}}</span>&nbsp;<span class="hotel--town">{{item.destinationDescription}} {{item.destinationProvince}}</span>
-							</div>
 						</div>
-						<div class="hotel--trust">
-							<span class="hotel--trust__number excellent">{{item.trustPilot_averageStars}}</span>
-							<span class="hotel--trust__text excellent">{{item.trustPilot_nReviews}}</span>
+						<div class="hotel--location">
+							<span class="hotel--region">{{item.destinationNation}} {{item.destinationRegion}}</span>&nbsp;<span class="hotel--town">{{item.destinationDescription}} {{item.destinationProvince}}</span>
 						</div>
 					</div>
-					<div class="hotel--desc">
-						<ul class="hotel--list">
-							<li class="hotel--list-item">
-								<svg class="ico">
-									<use xlink:href="#ico-calendar"></use>
-								</svg>
-								<span>{{item.abstract}}</span>
-							</li>
-							<li class="hotel--list-item">
-								<svg class="ico">
-									<use xlink:href="#ico-struttura"></use>
-								</svg>
-								<span>{{item.accomodation}}</span>
-							</li>
-							<li class="hotel--list-item">
-								<svg class="ico">
-									<use xlink:href="#ico-fav"></use>
-								</svg>
-								<span>utilizzo centro benessere</span>
-							</li>
-							<li class="hotel--list-item">
-								<svg class="ico">
-									<use xlink:href="#ico-fav"></use>
-								</svg>
-								<span>utilizzo wi-fi</span>
-							</li>
-							<li class="hotel--list-item">
-								<svg class="ico">
-									<use xlink:href="#ico-fav"></use>
-								</svg>
-								<span>utilizzo centro sportivo</span>
-							</li>
-						</ul>
-						<div class="hotel--special-msg">
-							<!-- <strong>20%</strong> PRENOTA PRIMA -->
-							{{item.earlyBookingText}}
-						</div>
+					<div class="hotel--trust">
+						<span class="hotel--trust__number excellent">{{item.trustPilot_averageStars}}</span>
+						<span class="hotel--trust__text excellent">{{item.trustPilot_nReviews}}</span>
 					</div>
-				</div>
-				<!-- /Hotel Content -->
-				<!-- Hotel Action -->
-				<div class="hotel--action">
 					<button type="button" class="add-to-fav">
 						<svg class="ico">
 							<use xlink:href="#ico-fav"></use>
 						</svg>
-						Preferiti
 					</button>
-					<!--
+				</div>
+				<div class="hotel--desc">
+					<ul class="hotel--list">
+						<li class="hotel--list-item">
+							<svg class="ico">
+								<use xlink:href="#ico-calendar"></use>
+							</svg>
+							<span>{{item.abstract}}</span>
+						</li>
+						<li class="hotel--list-item">
+							<svg class="ico">
+								<use xlink:href="#ico-struttura"></use>
+							</svg>
+							<span>{{item.accomodation}}</span>
+						</li>
+						<li class="hotel--list-item">
+							<svg class="ico">
+								<use xlink:href="#ico-fav"></use>
+							</svg>
+							<span>utilizzo centro benessere</span>
+						</li>
+						<li class="hotel--list-item">
+							<svg class="ico">
+								<use xlink:href="#ico-fav"></use>
+							</svg>
+							<span>utilizzo wi-fi</span>
+						</li>
+						<li class="hotel--list-item">
+							<svg class="ico">
+								<use xlink:href="#ico-fav"></use>
+							</svg>
+							<span>utilizzo centro sportivo</span>
+						</li>
+					</ul>
 					<div class="hotel--special-msg">
-						<strong>20%</strong> PRENOTA PRIMA {{item.earlyBookingText}}
-					</div>
-					-->
-					<div class="hotel--summary">
-						<div class="hotel--price">
-							<span class="desc">Da</span>
-							<span class="single-price">
-								<span class="value">{{item.price}}</span>
-							<span class="symbol">€</span>
-							</span>
-							<span class="desc">Prezzo per persona</span>
-						</div>
-						<div class="hotel--total-price">
-							<span class="desc">Prezzo totale</span>
-							<span class="total-price">
-								<span class="value">{{item.totalPrice}}</span>
-							<span class="symbol">€</span>
-							</span>
-						</div>
-					</div>
-					<div class="hotel--cta">
-						<a class="btn" href="#" [routerLink]="item.slug | route">Continua</a>
+						<!-- <strong>20%</strong> PRENOTA PRIMA -->
+						{{item.earlyBookingText}}
 					</div>
 				</div>
-				<!-- /Hotel Action -->
 			</div>
-		</ng-container>
-	</div>
+			<!-- /Hotel Content -->
+			<!-- Hotel Action -->
+			<div class="hotel--action">
+				<button type="button" class="add-to-fav">
+					<svg class="ico">
+						<use xlink:href="#ico-fav"></use>
+					</svg>
+					Preferiti
+				</button>
+				<!--
+				<div class="hotel--special-msg">
+					<strong>20%</strong> PRENOTA PRIMA {{item.earlyBookingText}}
+				</div>
+				-->
+				<div class="hotel--summary">
+					<div class="hotel--price">
+						<span class="desc">Da</span>
+						<span class="single-price">
+								<span class="value">{{item.price}}</span>
+						<span class="symbol">€</span>
+						</span>
+						<span class="desc">Prezzo per persona</span>
+					</div>
+					<div class="hotel--total-price">
+						<span class="desc">Prezzo totale</span>
+						<span class="total-price">
+								<span class="value">{{item.totalPrice}}</span>
+						<span class="symbol">€</span>
+						</span>
+					</div>
+				</div>
+				<div class="hotel--cta">
+					<a class="btn" href="#" [routerLink]="item.slug | route">Continua</a>
+				</div>
+			</div>
+			<!-- /Hotel Action -->
+		</div>
+	</ng-container>
 </div>

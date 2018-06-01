@@ -23,9 +23,9 @@ import { MemoryService } from './core/memory';
 import { PageDirective } from './core/pages';
 import { RouteService } from './core/routes';
 import { ControlEditableComponent } from './forms';
-import { HomeComponent, ProfileComponent, RegionDetailComponent, RegionsComponent, SearchComponent, SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent } from './pages';
+import { HomeComponent, HotelComponent, ProfileComponent, RegionDetailComponent, RegionsComponent, SearchComponent, SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent } from './pages';
 import { DestinationTypePipe } from './pipes';
-import { CategoriesComponent, DestinationHintComponent, FilterComponent, FooterComponent, HeaderComponent, HomeSearchComponent, MainSearchComponent, NotFoundComponent, PromotionsComponent, RegionSearchComponent, SearchResultComponent, SvgComponent, ValuePropositionComponent } from './sections';
+import { CategoriesComponent, DestinationHintComponent, FilterComponent, FooterComponent, HeaderComponent, HomeSearchComponent, MainSearchComponent, NotFoundComponent, PromotionsComponent, RegionSearchComponent, SearchResultComponent, SearchResultMapComponent, SvgComponent, ValuePropositionComponent } from './sections';
 
 
 registerLocaleData(localeIt, 'it');
@@ -52,8 +52,8 @@ registerLocaleData(localeIt, 'it');
 	],
 	declarations: [
 		AppComponent,
-		HomeComponent, SearchComponent, SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent, ProfileComponent, RegionDetailComponent, RegionsComponent,
-		HeaderComponent, FooterComponent, FilterComponent, CategoriesComponent, SearchResultComponent, SvgComponent, ValuePropositionComponent, PromotionsComponent, RegionSearchComponent, NotFoundComponent,
+		HomeComponent, HotelComponent, SearchComponent, SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent, ProfileComponent, RegionDetailComponent, RegionsComponent,
+		HeaderComponent, FooterComponent, FilterComponent, CategoriesComponent, SearchResultComponent, SearchResultMapComponent, SvgComponent, ValuePropositionComponent, PromotionsComponent, RegionSearchComponent, NotFoundComponent,
 		DestinationHintComponent,
 		ControlEditableComponent,
 		LoggerComponent, PageDirective, MainSearchComponent, HomeSearchComponent,
@@ -67,7 +67,7 @@ registerLocaleData(localeIt, 'it');
 		DestinationTypePipe,
 		// { provide: RouteService, useClass: RouteService, deps: [TranslateService, Location, Router] },
 	],
-	entryComponents: [HomeComponent, SearchComponent, SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent, ProfileComponent, RegionDetailComponent, RegionsComponent],
+	entryComponents: [HomeComponent, HotelComponent, SearchComponent, SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent, ProfileComponent, RegionDetailComponent, RegionsComponent],
 	bootstrap: [AppComponent]
 })
 

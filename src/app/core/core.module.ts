@@ -14,7 +14,7 @@ import { CustomMissingTranslationHandler, LabelPipe, LabelService } from './labe
 import { Logger } from './logger';
 import { OnceService } from './once';
 import { PageComponent, PageHosterComponent, PageService, Pages } from './pages';
-import { FacebookService, GoogleService } from './plugins';
+import { FacebookService, GoogleService, MapboxService } from './plugins';
 import { AssetPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe } from './routes';
 import { CookieStorageService, LocalStorageService, SessionStorageService, StorageService } from './storage';
 import { TrustPipe } from './trust';
@@ -55,6 +55,7 @@ import { ClickOutsideDirective } from './ui';
 		SessionStorageService,
 		StorageService,
 		FacebookService,
+		MapboxService,
 		GoogleService,
 		Logger,
 		OnceService,

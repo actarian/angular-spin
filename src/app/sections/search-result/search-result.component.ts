@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DisposableComponent } from '../../core/disposable';
-import { Option } from '../../core/models';
-import { FilterService, Group, SearchResult } from '../../models';
+import { FilterService, SearchResult, SearchService } from '../../models';
 
 @Component({
 	selector: 'section-search-result',
@@ -19,6 +18,7 @@ export class SearchResultComponent extends DisposableComponent implements OnInit
 	// public item: SearchResult;
 
 	constructor(
+		public search: SearchService,
 		public filterService: FilterService
 	) {
 		super();
@@ -26,11 +26,6 @@ export class SearchResultComponent extends DisposableComponent implements OnInit
 
 	ngOnInit() {
 		this.resultsFiltered$ = this.filterService.resultsFiltered;
-	}
-
-	onFilterSet(groups: Group<Option>[]) {
-		// console.log('SearchResultComponent.onFilterSet', groups);
-		this.filterService.setGroups();
 	}
 
 }

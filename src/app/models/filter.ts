@@ -1,5 +1,10 @@
 import { Option } from '../core/models';
 
+export enum SearchViewTypes {
+	List = 0,
+	Map = 1,
+}
+
 export enum GroupType {
 	Tipology = 0,
 	Destination = 1,
@@ -83,4 +88,14 @@ export const ratings: Rating[] = [{
 	id: 9, name: '*****'
 }, {
 	id: 10, name: '*****S'
+}];
+
+export class Sorting extends Option { }
+
+export const sortings: Rating[] = [{
+	id: 1, name: 'Consigliati da Eurospin'
+}, {
+	id: 2, name: 'Prezzo crescente'
+}, {
+	id: 3, name: 'Prezzo decrescente'
 }];

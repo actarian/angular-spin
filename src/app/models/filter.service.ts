@@ -5,7 +5,7 @@ import 'rxjs/add/observable/combineLatest';
 import { map } from 'rxjs/operators';
 import { SearchResult } from '.';
 import { Option } from '../core/models';
-import { Group, GroupType, Rating, Treatment, ratings, treatments } from './filter';
+import { Group, GroupType, Rating, Sorting, Treatment, ratings, sortings, treatments } from './filter';
 import { SearchService } from './search.service';
 import { Tag } from './tag';
 import { TagService } from './tag.service';
@@ -26,6 +26,10 @@ export class FilterService {
 	private resultsFiltered$ = new BehaviorSubject<SearchResult[]>([]);
 	resultsFiltered = this.resultsFiltered$.asObservable();
 
+	sortings: Sorting[] = sortings;
+	sorting: Sorting = sortings[0];
+	private sortings$ = new BehaviorSubject<Sorting>(this.sorting);
+
 	maxVisibleItems: number = 20;
 	visibleItems: number = this.maxVisibleItems;
 
@@ -37,9 +41,10 @@ export class FilterService {
 			// console.log('FilterService.getGroups', groups);
 			this.groups$.next(groups);
 		});
-		Observable.combineLatest(this.groups$, this.searchService.results).subscribe((data: any[]): void => {
-			const groups = data[0];
-			const results = data[1];
+		Observable.combineLatest(this.groups$, this.sortings$, this.searchService.results).subscribe((data: any[]): void => {
+			const groups: Group<Option>[] = data[0];
+			const sorting: Sorting = data[1];
+			let results: SearchResult[] = data[2];
 			results.forEach(result => {
 				result.visible = true;
 				this.valueSelected.forEach(group => {
@@ -57,7 +62,19 @@ export class FilterService {
 					});
 				});
 			});
-			const sliced = results.filter(result => result.visible).sort((a, b) => a.advice - b.advice).slice(0, Math.min(this.visibleItems, results.length));
+			results = results.filter(result => result.visible);
+			switch (sorting.id) {
+				case 1:
+					results.sort((a, b) => a.advice - b.advice);
+					break;
+				case 2:
+					results.sort((a, b) => a.price - b.price);
+					break;
+				case 3:
+					results.sort((a, b) => b.price - a.price);
+					break;
+			}
+			const sliced = results.slice(0, Math.min(this.visibleItems, results.length));
 			this.resultsFiltered$.next(sliced);
 			groups.forEach(group => {
 				group.visible = false;
@@ -141,6 +158,10 @@ export class FilterService {
 			group.items = group.items.filter(item => item.selected);
 			return group;
 		});
+	}
+
+	onSort() {
+		this.sortings$.next(this.sorting);
 	}
 
 	onToggle(id: number, groupType: GroupType) {

@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CoreModule } from './core/core.module';
 import { Pages } from './core/pages';
-import { HomeComponent, ProfileComponent, RegionDetailComponent, RegionsComponent, SearchComponent, SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent } from './pages';
+import { HomeComponent, HotelComponent, ProfileComponent, RegionDetailComponent, RegionsComponent, SearchComponent, SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent } from './pages';
 
 const pages: Pages = {
 	HomeComponent: HomeComponent,
 	SearchComponent: SearchComponent,
+	HotelComponent: HotelComponent,
 	SignComponent: SignComponent,
 	SignUpComponent: SignUpComponent,
 	SignInComponent: SignInComponent,

@@ -160,7 +160,7 @@ a {
 }
 
 a:hover {
-	color: #0056b3;
+	color: $secondary-color;
 	text-decoration: underline;
 }
 
@@ -177,6 +177,12 @@ a:not([href]):not([tabindex]):focus {
 
 a:not([href]):not([tabindex]):focus {
 	outline: 0;
+}
+
+a:focus,
+a:active:focus,
+a:hover {
+	outline: none;
 }
 
 pre,
@@ -230,6 +236,7 @@ label {
 
 button {
 	border-radius: 0;
+	outline: none;
 }
 
 button:focus {

@@ -9,5 +9,6 @@ export * from './not-found/not-found.component';
 export * from './promotions/promotions.component';
 export * from './region-search/region-search.component';
 export * from './search-result/search-result.component';
+export * from './search-result-map/search-result-map.component';
 export * from './svg/svg.component';
 export * from './value-proposition/value-proposition.component';
