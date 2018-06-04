@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component } from '@angular/core';
 import { DisposableComponent } from '../../core/disposable';
-import { FilterService, SearchResult, SearchService } from '../../models';
+import { FilterService, SearchService } from '../../models';
 
 @Component({
 	selector: 'section-search-result',
@@ -10,22 +9,13 @@ import { FilterService, SearchResult, SearchService } from '../../models';
 	exportAs: 'results'
 })
 
-export class SearchResultComponent extends DisposableComponent implements OnInit {
-
-	resultsFiltered$: Observable<SearchResult[]>;
-
-	// @Input()
-	// public item: SearchResult;
+export class SearchResultComponent extends DisposableComponent {
 
 	constructor(
 		public search: SearchService,
 		public filterService: FilterService
 	) {
 		super();
-	}
-
-	ngOnInit() {
-		this.resultsFiltered$ = this.filterService.resultsFiltered;
 	}
 
 }

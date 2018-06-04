@@ -1,14 +1,14 @@
 <div class="serp-results--head">
-	<ng-container [ngSwitch]="(resultsFiltered$ | async)?.length">
-		<ng-container *ngSwitchCase="0">
-			zero
-		</ng-container>
+	<ng-container [ngSwitch]="(search.resultsFiltered$ | async)?.length">
 		<ng-container *ngSwitchCase="null">
 			loading...
 		</ng-container>
+		<ng-container *ngSwitchCase="0">
+			no results
+		</ng-container>
 		<ng-container *ngSwitchDefault>
-			<div class="serp-results--tit" *ngIf="search.model.destination">Ci sono <strong>{{(resultsFiltered$ | async)?.length}}</strong> offerte per <strong>{{search.model.destination?.name}}</strong></div>
-			<div class="serp-results--tit" *ngIf="!search.model.destination">Ci sono <strong>{{(resultsFiltered$ | async)?.length}}</strong> offerte per te</div>
+			<div class="serp-results--tit" *ngIf="search.model.destination">Ci sono <strong>{{(search.resultsFiltered$ | async)?.length}}</strong> offerte per <strong>{{search.model.destination?.name}}</strong></div>
+			<div class="serp-results--tit" *ngIf="!search.model.destination">Ci sono <strong>{{(search.resultsFiltered$ | async)?.length}}</strong> offerte per te</div>
 		</ng-container>
 	</ng-container>
 	<div class="serp-results--filter">
@@ -23,8 +23,8 @@
 	</div>
 </div>
 <div class="hotel-list">
-	<ng-container *ngFor="let item of resultsFiltered$ | async">
-		<div class="hotel--item">
+	<ng-container *ngFor="let item of (search.resultsFiltered$ | async); let i = index;">
+		<div class="hotel--item" *ngIf="i < search.visibleItems">
 			<!-- Hotel Image -->
 			<div class="hotel--image">
 				<div class="discount" *ngIf="item.overlayCoverImage">
@@ -135,4 +135,5 @@
 			<!-- /Hotel Action -->
 		</div>
 	</ng-container>
+	<button type="button" class="btn" *ngIf="(search.resultsFiltered$ | async)?.length > search.visibleItems" (click)="search.visibleItems = search.visibleItems + 20">carica altri</button>
 </div>

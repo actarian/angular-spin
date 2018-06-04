@@ -1,16 +1,18 @@
 import { Location } from '@angular/common';
 import { Inject, Injectable, Injector, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/take';
 import { tap } from 'rxjs/operators';
-import { EntityService } from '../core/models';
+import { EntityService, Option } from '../core/models';
 import { RouteService } from '../core/routes';
 import { LocalStorageService, StorageService } from '../core/storage';
 import { Destination, DestinationTypes } from './destination';
 import { DestinationService } from './destination.service';
+import { Group, GroupType, Sorting } from './filter';
+import { FilterService } from './filter.service';
 import { CalendarOption, Duration, MainSearch, SearchResult, durations } from './search';
 
 @Injectable({
@@ -21,8 +23,6 @@ export class SearchService extends EntityService<SearchResult> {
 	get collection(): string {
 		return 'searchResult';
 	}
-
-	model: MainSearch = new MainSearch();
 
 	calendar: CalendarOption = new CalendarOption();
 
@@ -35,8 +35,16 @@ export class SearchService extends EntityService<SearchResult> {
 	storage: StorageService;
 	lastDestinations: Destination[];
 
+	maxVisibleItems: number = 20;
+	visibleItems: number = this.maxVisibleItems;
+
+	model: MainSearch = new MainSearch();
+	private model$ = new BehaviorSubject<MainSearch>(this.model);
+
 	private results$ = new BehaviorSubject<SearchResult[]>([]);
 	results = this.results$.asObservable();
+
+	resultsFiltered$ = new BehaviorSubject<SearchResult[]>([]);
 
 	constructor(
 		protected injector: Injector,
@@ -45,13 +53,15 @@ export class SearchService extends EntityService<SearchResult> {
 		private location: Location,
 		private router: Router,
 		private routeService: RouteService,
-		private destinationService: DestinationService
+		private destinationService: DestinationService,
+		private filterService: FilterService,
 	) {
 		super(injector);
 		this.storage = this.storageService.tryGet();
 		const search = this.storage.get('search');
 		if (search) {
-			this.model = search;
+			this.model = new MainSearch(search as MainSearch);
+			this.model$.next(this.model);
 		}
 		const lastDestinations = this.storage.get('lastDestinations');
 		this.lastDestinations = lastDestinations || [];
@@ -60,11 +70,108 @@ export class SearchService extends EntityService<SearchResult> {
 			.subscribe(model => {
 				// console.log('SearchService.constructor', model);
 				this.model = new MainSearch(model as MainSearch);
+				this.model$.next(this.model);
 				this.onSearchIn();
+			});
+		this.beginObserveModel();
+		this.beginObserveResults();
+	}
+
+	// RESULTS
+	private beginObserveResults() {
+		Observable.combineLatest(this.filterService.groups$, this.filterService.sortings$, this.results)
+			.subscribe((data: any[]): void => {
+				const groups: Group<Option>[] = data[0];
+				const sorting: Sorting = data[1];
+				let results: SearchResult[] = data[2];
+				results.forEach(result => {
+					result.visible = true;
+					this.filterService.valueSelected.forEach(group => {
+						group.items.forEach(option => {
+							switch (group.type) {
+								case GroupType.Treatment:
+									result.visible = result.visible && result.accomodation === option.name;
+									break;
+								case GroupType.Rating:
+									result.visible = result.visible && result.rating === option.name;
+									break;
+								default:
+									result.visible = result.visible && result.tags.indexOf(option.id) !== -1;
+							}
+						});
+					});
+				});
+				results = results.filter(result => result.visible);
+				switch (sorting.id) {
+					case 1:
+						results.sort((a, b) => a.advice - b.advice);
+						break;
+					case 2:
+						results.sort((a, b) => a.price - b.price);
+						break;
+					case 3:
+						results.sort((a, b) => b.price - a.price);
+						break;
+				}
+				this.resultsFiltered$.next(results);
+				// const sliced = results.slice(0, Math.min(this.visibleItems, results.length));
+				this.filterService.onUpdateGroups(groups, results);
+				this.visibleItems = this.maxVisibleItems;
+				this.onUpdateLocation();
 			});
 	}
 
-	// DESSTINATION
+	private beginObserveModel() {
+		// todo check deep comparison // .distinctUntilChanged((a, b) => a.destination === b.destination).
+		this.model$.subscribe(model => {
+			let params = '';
+			if (model.destination) {
+				switch (model.destination.type) {
+					case DestinationTypes.Facility:
+						params = `?name=${model.destination.name}`;
+						break;
+					case DestinationTypes.Country:
+						params = `?destinationNation=${model.destination.name}`;
+						break;
+					case DestinationTypes.Region:
+						params = `?destinationRegion=${model.destination.name}`;
+						break;
+					case DestinationTypes.Destination:
+						params = `?destinationDescription=${model.destination.name}`;
+						break;
+					case DestinationTypes.Category:
+						params = '';
+						// params = `?destinationNation=${model.destination.name}`;
+						break;
+					case DestinationTypes.Promotion:
+						params = '';
+						// params = `?destinationNation=${model.destination.name}`;
+						break;
+				}
+			}
+			// console.log('SearchService.onSearchIn', params, model);
+			this.get(params).pipe(
+				tap(x => {
+					console.log('SearchService.onSearchIn.tap', x[0]);
+				})
+			).subscribe(x => {
+				this.results$.next(x);
+			});
+			// this.get().subscribe(x => this.results$.next(x));
+			// import {Location} from '@angular/common';
+			// this.location.replaceState("/some/newstate/");
+		});
+	}
+
+	private onUpdateLocation() {
+		// console.log(this.model);
+		const segments = this.routeService.toRoute(['/search']);
+		segments.push(this.routeService.toParams(this.model));
+		const path = this.router.serializeUrl(this.router.createUrlTree(segments));
+		this.location.replaceState(path);
+	}
+
+	// DESTINATION
 	onDestinationQuery(query: string) {
 		this.model.query = query;
 		this.destinationService.autocomplete(query)
@@ -123,47 +230,8 @@ export class SearchService extends EntityService<SearchResult> {
 	}
 
 	onSearchIn() {
-		let params = '';
-		if (this.model.destination) {
-			switch (this.model.destination.type) {
-				case DestinationTypes.Facility:
-					params = `?name=${this.model.destination.name}`;
-					break;
-				case DestinationTypes.Country:
-					params = `?destinationNation=${this.model.destination.name}`;
-					break;
-				case DestinationTypes.Region:
-					params = `?destinationRegion=${this.model.destination.name}`;
-					break;
-				case DestinationTypes.Destination:
-					params = `?destinationDescription=${this.model.destination.name}`;
-					break;
-				case DestinationTypes.Category:
-					params = '';
-					// params = `?destinationNation=${this.model.destination.name}`;
-					break;
-				case DestinationTypes.Promotion:
-					params = '';
-					// params = `?destinationNation=${this.model.destination.name}`;
-					break;
-			}
-		}
-		// console.log('SearchService.onSearchIn', params, this.model);
-		this.get(params).pipe(
-			tap(x => {
-				console.log('SearchService.onSearchIn.tap', x[0]);
-			})
-		).subscribe(x => {
-			this.results$.next(x);
-			// console.log(this.model);
-			const segments = this.routeService.toRoute(['/search']);
-			segments.push(this.routeService.toParams(this.model));
-			const path = this.router.serializeUrl(this.router.createUrlTree(segments));
-			this.location.replaceState(path);
-		});
-		// this.get().subscribe(x => this.results$.next(x));
-		// import {Location} from '@angular/common';
-		// this.location.replaceState("/some/newstate/");
+		this.model$.next(this.model);
+
 	}
 
 }

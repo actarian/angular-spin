@@ -17,11 +17,8 @@ export class SearchResultMapComponent extends DisposableComponent implements Aft
 	@ViewChild('map') elementRef: ElementRef;
 	map: any;
 
-
 	map$: Observable<mapboxgl.Map>;
 	markers: mapboxgl.Marker[];
-
-	resultsFiltered$: Observable<SearchResult[]>;
 
 	constructor(
 		private el: ElementRef,
@@ -31,14 +28,13 @@ export class SearchResultMapComponent extends DisposableComponent implements Aft
 		public mapboxService: MapboxService,
 	) {
 		super();
-		this.resultsFiltered$ = this.filterService.resultsFiltered;
 	}
 
 	ngAfterViewInit() {
 		this.map$ = this.mapboxService.getMap({ elementRef: this.elementRef });
 		// todo
 		// map.on('move').takeUntil.debouce.distinct. -> search
-		Observable.combineLatest(this.map$, this.resultsFiltered$)
+		Observable.combineLatest(this.map$, this.search.resultsFiltered$)
 			.takeUntil(this.unsubscribe)
 			.subscribe((data: any[]): void => {
 				const map: mapboxgl.Map = data[0];
