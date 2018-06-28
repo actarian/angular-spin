@@ -41,6 +41,11 @@ Header
 		img {
 			width: 89px;
 			height: 45px;
+
+			@include xs-down {
+				width: 70px;
+				height: 35px;
+			}
 		}
 	}
 

@@ -1,5 +1,205 @@
-<section class="hotel--page">
+<section class="hotel-page">
 	<div class="container">
+		<div class="hotel-sidebar">
+			<div class="sticky">
+				<div class="sidebar-group">
+					<div class="tit">Ospiti</div>
+					<div class="edit-row">
+						<div class="edit-name">
+							2 persone
+						</div>
+						<a href="#" class="edit-btn">modifica</a>
+					</div>
+				</div>
+				<div class="sidebar-group">
+					<div class="tit">Periodo</div>
+					<div class="edit-row">
+						<div class="edit-name">
+							5 notti
+						</div>
+						<a href="#" class="edit-btn">modifica</a>
+					</div>
+					<div class="edit-row">
+						<div class="edit-name">
+							18/09/2018 - 23/04/2018
+						</div>
+						<a href="#" class="edit-btn">modifica</a>
+					</div>
+				</div>
+				<div class="sidebar-group">
+					<div class="tit">
+						Tipologia di camera
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" name="tipologia-camera" checked>
+							<span>Camera doppia relax (730€)</span>
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" name="tipologia-camera">
+							<span>Camera doppia supreme (730€)</span>
+						</label>
+					</div>
+				</div>
+				<div class="sidebar-group">
+					<div class="tit">
+						Assicurazione
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" name="assicurazione" checked>
+							<span>ANNULLAMENTO (29.92€)</span>
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" name="assicurazione">
+							<span>medico e bagaglio (8.40€ a persona)</span>
+						</label>
+					</div>
+				</div>
+				<div class="sidebar-group">
+					<div class="tit">
+						Trattamento
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" name="trattamento" checked>
+							<span>Mezza pensione</span>
+						</label>
+					</div>
+				</div>
+				<div class="sidebar-group">
+					<div class="tit">
+						Totale complessivo
+					</div>
+					<div class="edit-row edit-row--total">
+						<div>
+							Per 2 persone
+						</div>
+						<div class="total-price">
+							759,93€
+						</div>
+					</div>
+				</div>
+				<div class="sidebar-cta">
+					<a href="#" class="btn">Prenota il tuo viaggio</a>
+					<span class="no-extra">(nessun costo aggiuntivo)</span>
+				</div>
+			</div>
+		</div>
+		<div class="hotel-main-content">
 
+			<div class="hotel-head">
+				<div class="hotel-info">
+					<div class="hotel-name">
+						<span>CDH HOTEL RADDA IN CHIANTI</span>
+						<span class="stars"><em>*</em><em>*</em><em>*</em><em>*</em></span>
+					</div>
+					<div class="hotel-location">
+						<span class="hotel-region">Italia Toscana</span>&nbsp;<span class="hotel-town">Radda in Chianti SI</span>
+					</div>
+				</div>
+				<div class="hotel-trust"><span class="number excellent">8.5</span><span class="text excellent">Eccellente</span></div>
+				<button class="add-to-fav" type="button">
+						<svg class="ico"><use xlink:href="#ico-fav"></use></svg>
+				</button>
+			</div>
+
+			<div class="hotel-galery swiper-container" [swiper]="config" [(index)]="index">
+				<div class="swiper-wrapper" [fancybox]="fancyboxOptions">
+					<div class="swiper-slide" *ngFor="let number of [1,2,3,4,5,6]">
+						<a href="assets/img/hotel/gallery-{{number}}.jpg" data-fancybox="gallery">
+							<img src="assets/img/hotel/gallery-{{number}}.jpg" alt="">
+						</a>
+					</div>
+				</div>
+
+				<div class="swiper-button swiper-button-prev"></div>
+				<div class="swiper-button swiper-button-next"></div>
+			</div>
+
+			<div class="hotel-desc">
+				<ul class="hotel-list">
+					<li class="hotel-list-item">
+						<svg class="ico">
+							<use xlink:href="#ico-calendar"></use>
+						</svg>
+						<span>1 o 2 notti + utilizzo centro benessere</span>
+					</li>
+					<li class="hotel-list-item">
+						<svg class="ico">
+							<use xlink:href="#ico-struttura"></use>
+						</svg>
+						<span>Mezza pensione</span>
+					</li>
+					<li class="hotel-list-item">
+						<svg class="ico">
+							<use xlink:href="#ico-fav"></use>
+						</svg>
+						<span>utilizzo centro benessere</span>
+					</li>
+					<li class="hotel-list-item">
+						<svg class="ico">
+							<use xlink:href="#ico-fav"></use>
+						</svg>
+						<span>utilizzo wi-fi</span>
+					</li>
+					<li class="hotel-list-item">
+						<svg class="ico">
+							<use xlink:href="#ico-fav"></use>
+						</svg>
+						<span>utilizzo centro sportivo</span>
+					</li>
+				</ul>
+
+
+				<div class="inclusion hotel-desc-group">
+					<div class="readmore-accordion">
+						<h2>La quota comprende</h2>
+						<div class="readmore-accordion__wrapper">
+							<div class="readmore-accordion__sizer">
+								<p><strong>Pensione completa</strong> con colazione, pranzo e cena a buffet, <strong>bevande ai pasti</strong> (acqua e vino della casa), <strong>utilizzo della piscine</strong> attrezzate con lettini e ombrelloni secondo disponibilità, <strong>animazione diurna e serale</strong>, <strong>mini club</strong> ad orari prestabiliti, navetta da/per la spiaggia (per soggiorni fino al 09/09), <strong>servizio spiaggia </strong>con 1 ombrellone e 2 lettini a camera (per soggiorni fino al 09/09), parcheggio secondo disponibilità, connessione Wi-Fi nelle aree comuni, culla per infant 0-3 anni su richiesta al momento della prenotazione secondo disponibilità.</p>
+							</div>
+						</div>
+						<a href="" class="readmore-accordion__toggler"><i class="fa fa-angle-down" aria-hidden="true"></i> <span>Leggi tutto</span> <span>Chiudi</span> </a>
+					</div>
+					<div class="readmore-accordion">
+						<h2>La quota non comprende</h2>
+						<div class="readmore-accordion__wrapper">
+							<div class="readmore-accordion__sizer">
+								<p>Eventuale tassa di soggiorno applicata in loco, quota per animali domestici di piccola taglia (10 euro al giorno da pagare in loco), extra in genere e tutto quanto non specificato nel paragrafo "La quota comprende".</p>
+							</div>
+						</div>
+						<a href="" class="readmore-accordion__toggler"> <i class="fa fa-angle-down" aria-hidden="true"></i> <span>Leggi tutto</span> <span>Chiudi</span> </a>
+					</div>
+					<div class="readmore-accordion">
+						<h2>Riduzioni</h2>
+						<div class="readmore-accordion__wrapper">
+							<div class="readmore-accordion__sizer">
+								<p><strong>Riduzioni 3° / 4° letto</strong>&nbsp;(valide con almeno 2 persone paganti quota intera)&nbsp; per prenotazioni fino al 05/08 e dal 26/08 in poi:<br> • 3&nbsp;- 13&nbsp;anni non compiuti&nbsp;<strong>GRATIS</strong>&nbsp;in 3° letto; 50% in 4° letto<br> • da 13&nbsp;anni in poi 25%</p>
+								<p>Infant 0-3 anni non compiuti GRATIS nel letto con i genitori o in culla dell'hotel secondo disponibilità, su richiesta al momento della prenotazione.&nbsp;</p>
+								<p><strong>Riduzioni 3° / 4° lett</strong>o&nbsp;(valide con almeno 2 persone paganti quota intera) &nbsp;per prenotazioni&nbsp;dal&nbsp;05/08 al 26/08:<br> • 3&nbsp;- 13&nbsp;anni non compiuti 50%<br> • da 13&nbsp;anni in poi 25%</p>
+								<p>Infant 0-3 anni non compiuti GRATIS nel letto con i genitori o in culla dell'hotel secondo disponibilità, su richiesta al momento della prenotazione.&nbsp;</p>
+							</div>
+						</div>
+						<a href="" class="readmore-accordion__toggler"> <i class="fa fa-angle-down" aria-hidden="true"></i> <span>Leggi tutto</span> <span>Chiudi</span> </a>
+					</div>
+					<div class="readmore-accordion">
+						<h2>Orario check-in/out</h2>
+						<div class="readmore-accordion__wrapper">
+							<div class="readmore-accordion__sizer">
+								<p>Check-in dalle ore 17:00<br> Check-out entro ore 10:00</p>
+							</div>
+						</div>
+						<a href="" class="readmore-accordion__toggler"><i class="fa fa-angle-down" aria-hidden="true"></i> <span>Leggi tutto</span> <span>Chiudi</span> </a>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
 	</div>
 </section>

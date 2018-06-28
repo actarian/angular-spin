@@ -13,7 +13,7 @@ Main Search
 	z-index: 10;
 	user-select: none;
 
-	&--col {
+	&__col {
 		flex: 0 0 auto;
 		position: relative;
 		z-index: 1;
@@ -48,7 +48,7 @@ Main Search
 		}
 	}
 
-	&--location {
+	&__location {
 		flex-grow: 1;
 
 		@include sm-down {
@@ -65,7 +65,7 @@ Main Search
 		}
 	}
 
-	&--date {
+	&__date {
 		flex-shrink: 1;
 
 		@include md-down {
@@ -78,7 +78,7 @@ Main Search
 		}
 	}
 
-	&--duration {
+	&__duration {
 		flex-shrink: 1;
 
 		@include md-down {
@@ -91,7 +91,7 @@ Main Search
 		}
 	}
 
-	&--adults {
+	&__adults {
 		flex-shrink: 1;
 
 		input[disabled] {
@@ -114,7 +114,7 @@ Main Search
 		}
 	}
 
-	&--childs {
+	&__childs {
 		flex-shrink: 1;
 
 		input[disabled] {
@@ -137,7 +137,7 @@ Main Search
 		}
 	}
 
-	&--submit {
+	&__submit {
 		flex-grow: 0;
 		flex-shrink: 1;
 		background: none;
@@ -304,7 +304,7 @@ Popup Hint
 		min-width: 0;
 	}
 
-	&--head {
+	.head {
 		background: $primary-color;
 		color: #fff;
 		display: flex;
@@ -334,7 +334,7 @@ Popup Hint
 		}
 	}
 
-	&--close {
+	.close {
 		display: flex;
 		cursor: pointer;
 		opacity: .5;
@@ -350,22 +350,23 @@ Popup Hint
 		}
 	}
 
-	&--body {
+	.body {
 		max-height: 300px;
 		overflow-y: auto;
+		max-width: 100%;
 
 		@include xxs-down {
 			max-height: 70vh;
 		}
 	}
 
-	&--list {
+	.popup-list {
 		margin: 0;
 		padding: 0;
 		list-style: none;
 	}
 
-	&--item {
+	.item {
 		display: flex;
 		flex-wrap: wrap;
 		position: relative;
@@ -380,7 +381,7 @@ Popup Hint
 		}
 	}
 
-	&--check {
+	.check {
 		border-bottom: 1px solid $border-color;
 		cursor: pointer;
 
@@ -411,7 +412,7 @@ Popup Hint
 	}
 
 
-	&--tit {
+	.tit {
 		font-size: 14px;
 		font-weight: 400;
 		flex: 1 0 100%;
@@ -425,7 +426,7 @@ Popup Hint
 		overflow: hidden;
 	}
 
-	&--ico {
+	.ico {
 		position: absolute;
 		z-index: 1;
 		left: 8px;
@@ -438,7 +439,7 @@ Popup Hint
 		}
 	}
 
-	&--info {
+	.info {
 		flex: 1 0 100%;
 		font-size: 9px;
 		display: flex;
@@ -475,7 +476,7 @@ Popup Hint Duration
 		width: calc(200% + 10px);
 		left: calc(-100% - 10px);
 
-		.popup-hint--head {
+		.head {
 			&:before {
 				left: calc(50% + 10px);
 			}
@@ -501,12 +502,12 @@ Popup Hint Date
 		min-width: 0;
 	}
 
-	.popup-hint--body {
+	.body {
 		max-height: none;
 	}
 }
 
-.popup-hint--flexible-date {
+.flexible-date {
 	padding: 15px 12px;
 	border-bottom: 1px solid $border-color;
 
@@ -546,7 +547,7 @@ Popup Hint Childs
 		width: calc(200% + 10px);
 		left: calc(-100% - 10px);
 
-		.popup-hint--head {
+		.head {
 			&:before {
 				left: calc(50% + 10px);
 			}

@@ -1,17 +1,17 @@
 <!-- Categories -->
 <section class="categories">
 	<div class="container">
-		<div class="head categories--head">
+		<div class="head">
 			<h2>Organizza il tuo tipo di vacanza ideale</h2>
 		</div>
-		<div class="card-row categories--row">
-			<div class="card-col categories--card" *ngFor="let category of categories" [routerLink]="['category', category.id] | route">
-				<a class="card" href="#">
-					<figure class="card--figure">
-						<img class="card--img" [src]="category.image | asset" alt="{{category.name}}">
+		<div class="card-row">
+			<div class="card-col " *ngFor="let category of categories" [routerLink]="['category', category.id] | route">
+				<a class="category-card" href="#">
+					<figure class="figure">
+						<img class="img" [src]="category.image | asset" alt="{{category.name}}">
 					</figure>
-					<div class="card--body">
-						<h3 class="card--title">{{category.name}}</h3>
+					<div class="body">
+						<h3 class="title">{{category.name}}</h3>
 					</div>
 				</a>
 			</div>

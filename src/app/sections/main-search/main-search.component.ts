@@ -77,7 +77,7 @@ export class MainSearchComponent extends DisposableComponent implements OnInit, 
 		this.query$
 			.takeUntil(this.unsubscribe)
 			.subscribe(query => {
-				if (!query && !query.trim()) {
+				if (!query || query.trim() === '') {
 					return;
 				}
 				this.destinationDirty = true;

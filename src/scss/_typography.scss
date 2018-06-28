@@ -9,6 +9,15 @@ h2 {
 	font-size: 32px;
 	line-height: 1.2;
 	font-weight: 300;
+
+	@include sm-down {
+		font-size: 24px;
+		font-weight: 600;
+	}
+
+	@include xs-down {
+		font-size: 18px;
+	}
 }
 
 h3 {
@@ -34,22 +43,6 @@ h3 {
 		display: block;
 	}
 
-	h2 {
-		color: $tit-color;
-		font-size: 32px;
-		font-weight: 300;
-		margin-bottom: 0;
-
-		@include sm-down {
-			font-size: 24px;
-			font-weight: 600;
-		}
-
-		@include xs-down {
-			font-size: 18px;
-		}
-	}
-
 	.btn {
 		margin-left: 20px;
 		white-space: nowrap;
@@ -71,6 +64,10 @@ h3 {
 	}
 }
 
+.text-muted {
+	opacity: .7;
+}
+
 
 /*--------------------------------------------------
 List
@@ -80,4 +77,50 @@ ul.list {
 	margin: 0;
 	padding: 0;
 	list-style: none;
+}
+
+
+/*--------------------------------------------------
+Alert
+--------------------------------------------------*/
+
+.alert {
+	color: $tertiary-color;
+	background-color: rgba($tertiary-color, .1);
+	display: block;
+	margin-bottom: 16px;
+	margin-top: 16px;
+	padding-bottom: 12px;
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-top: 12px;
+
+	.close {
+		position: relative;
+		top: -.75rem;
+		right: -1.25rem;
+		padding: .75rem 1.25rem;
+		color: inherit;
+		border: 0;
+		background: none;
+		cursor: pointer;
+		float: right;
+		font-size: 1.5rem;
+		font-weight: 700;
+		line-height: 1;
+		color: #000;
+		text-shadow: 0 1px 0 #fff;
+		opacity: .5;
+	}
+
+	&-danger {
+		color: $alert-color;
+		background-color: rgba($alert-color, .1);
+	}
+
+	.rounded-circle {
+		width: 30px;
+		height: 30px;
+		margin-right: 10px;
+	}
 }

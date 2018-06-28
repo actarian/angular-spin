@@ -9,6 +9,7 @@ Home Search
 	background-size: cover;
 	background-position: center;
 	margin-bottom: 60px;
+	user-select: none;
 
 	@include md-down {
 		height: 520px;

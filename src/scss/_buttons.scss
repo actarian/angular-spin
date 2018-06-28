@@ -31,7 +31,7 @@ Buttons
 		box-shadow: none;
 	}
 
-	&__ghost {
+	&--ghost {
 		background: transparent;
 		border: 1px solid $tit-color;
 		color: $tit-color;
@@ -42,13 +42,14 @@ Buttons
 		}
 
 		&:focus,
-		&:active {
+		&:active,
+		&:active:focus {
 			background: transparent;
 		}
 	}
 }
 
-.btn__secondary {
+.btn--secondary {
 	background-color: $secondary-color;
 
 	&:hover {
@@ -56,13 +57,14 @@ Buttons
 	}
 
 	&:focus,
-	&:active {
+	&:active,
+	&:active:focus {
 		background: darken($secondary-color, 8%);
 	}
 }
 
 
-.btn__tertiary {
+.btn--tertiary {
 	background-color: $tertiary-color;
 
 	&:hover {
@@ -70,7 +72,8 @@ Buttons
 	}
 
 	&:focus,
-	&:active {
+	&:active,
+	&:active:focus {
 		background: darken($tertiary-color, 8%);
 	}
 }

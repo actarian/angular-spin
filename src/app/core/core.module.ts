@@ -40,7 +40,7 @@ import { ClickOutsideDirective } from './ui';
 	declarations: [
 		PageHosterComponent, PageComponent, DisposableComponent, JsonFormatterComponent,
 		LabelPipe, AssetPipe, HighlightPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe, MatchValidator, TrustPipe,
-		ControlComponent, ClickOutsideDirective
+		ControlComponent,
 	],
 	providers: [
 		{ provide: HTTP_INTERCEPTORS, useClass: HttpResponseInterceptor, multi: true },

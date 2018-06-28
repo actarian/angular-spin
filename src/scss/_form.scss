@@ -4,6 +4,17 @@
 Form
 --------------------------------------------------*/
 
+button,
+a {
+	&:active,
+	&:focus,
+	&:active:focus {
+		box-shadow: none;
+		outline: 0;
+	}
+}
+
+
 /*--------------------------------------------------
 Select
 --------------------------------------------------*/
@@ -209,4 +220,74 @@ Ui Spinner
 			}
 		}
 	}
+}
+
+
+/*--------------------------------------------------
+Form
+--------------------------------------------------*/
+
+.form {
+	margin: 20px 0;
+
+	.form-group {
+		margin-bottom: 15px;
+
+		@include xs-down {
+			margin-bottom: 10px;
+		}
+	}
+
+	label {
+		font-size: 12px;
+		font-weight: normal;
+		color: $text-color;
+		margin-bottom: 3px;
+	}
+
+	small {
+		font-size: 12px;
+		margin: 5px 0;
+		opacity: .7;
+	}
+
+	sup {
+		top: -.3em;
+	}
+
+	.form-control,
+	textarea,
+	input[type="text"],
+	input[type="email"] {
+		border: 1px solid $border-color;
+		background: #fff;
+		border-radius: 0;
+		box-shadow: none;
+
+		&.ng-invalid:not(.ng-untouched) {
+			border-color: rgba($alert-color, .5);
+		}
+	}
+
+	.checkbox,
+	.radio {
+		label {
+			input+span {
+				&:before {
+					top: 2px;
+				}
+
+				&:after {
+					top: 5px;
+				}
+			}
+		}
+	}
+
+	.alert {
+		font-size: 12px;
+		padding: 5px 12px;
+		margin: 9px 0;
+	}
+
 }

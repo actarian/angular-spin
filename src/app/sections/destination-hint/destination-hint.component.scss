@@ -28,11 +28,11 @@ Popup Hint
 	}
 
 	@include xs-down {
-		width: calc(200% + 10px);
+		width: calc(100% - 20px);
 		min-width: 0;
 	}
 
-	&--head {
+	.head {
 		background: $primary-color;
 		color: #fff;
 		display: flex;
@@ -62,7 +62,7 @@ Popup Hint
 		}
 	}
 
-	&--close {
+	.close {
 		display: flex;
 		cursor: pointer;
 		opacity: .5;
@@ -78,103 +78,107 @@ Popup Hint
 		}
 	}
 
-	&--body {
-		max-height: 300px;
-		overflow-y: auto;
 
-		@include xxs-down {
-			max-height: 70vh;
-		}
-	}
 
-	&--list {
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
 
-	&--item {
-		display: flex;
-		flex-wrap: wrap;
-		position: relative;
-		z-index: 1;
-		color: $tit-color;
-		padding: 6px 15px 6px 32px;
-		border-bottom: 1px solid $border-color;
-		cursor: pointer;
+}
 
-		&.active {
-			background-color: #d8eeff;
-		}
-	}
 
-	&--check {
-		border-bottom: 1px solid $border-color;
-		cursor: pointer;
+.popup-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
 
-		label {
-			padding: 12px 12px;
-			margin-bottom: 0;
+.item {
+	display: flex;
+	flex-wrap: wrap;
+	position: relative;
+	z-index: 1;
+	color: $tit-color;
+	padding: 6px 15px 6px 32px;
+	border-bottom: 1px solid $border-color;
+	cursor: pointer;
 
-			input {
-				&+span {
-					color: $text-color;
-
-					&:before {
-						top: 11px;
-						left: 11px;
-					}
-
-					&:after {
-						top: 14px;
-						left: 14px;
-					}
-				}
-			}
-		}
-
-		&:hover {
-			background-color: #d8eeff;
-		}
-	}
-
-	&--tit {
-		font-size: 14px;
-		font-weight: 400;
-		flex: 1 0 100%;
-		margin: 0;
-		padding: 0;
-		line-height: 1.2;
-		padding: 2px 0;
-	}
-
-	&--ico {
-		position: absolute;
-		z-index: 1;
-		left: 8px;
-		top: 8px;
-
-		svg {
-			width: 16px;
-			height: 16px;
-			fill: #7f7f7f;
-		}
-	}
-
-	&--info {
-		flex: 1 0 100%;
-		font-size: 9px;
-		display: flex;
-		justify-content: space-between;
+	&.active {
+		background-color: #d8eeff;
 	}
 }
 
+.check {
+	border-bottom: 1px solid $border-color;
+	cursor: pointer;
+
+	label {
+		padding: 12px 12px;
+		margin-bottom: 0;
+
+		input {
+			&+span {
+				color: $text-color;
+
+				&:before {
+					top: 11px;
+					left: 11px;
+				}
+
+				&:after {
+					top: 14px;
+					left: 14px;
+				}
+			}
+		}
+	}
+
+	&:hover {
+		background-color: #d8eeff;
+	}
+}
+
+.tit {
+	font-size: 14px;
+	font-weight: 400;
+	flex: 1 0 100%;
+	margin: 0;
+	padding: 0;
+	line-height: 1.2;
+	padding: 2px 0;
+}
+
+.ico {
+	position: absolute;
+	z-index: 1;
+	left: 8px;
+	top: 8px;
+
+	svg {
+		width: 16px;
+		height: 16px;
+		fill: #7f7f7f;
+	}
+}
+
+.info {
+	flex: 1 0 100%;
+	font-size: 9px;
+	display: flex;
+	justify-content: space-between;
+}
+
+.body {
+	max-height: 300px;
+	overflow-y: auto;
+
+	@include xxs-down {
+		max-height: 70vh;
+	}
+}
 
 /*--------------------------------------------------
 Popup Hint Destination
 --------------------------------------------------*/
 
-.popup-hint__destination {
+.popup-hint--destination {
 	width: 100%;
 
 	@include xxs-down {

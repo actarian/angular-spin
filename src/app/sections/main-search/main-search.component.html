@@ -1,6 +1,6 @@
 <form class="main-search" name="mainSearch" role="form" novalidate autocomplete="off" #mainSearch="ngForm">
 	<!-- DESTINATION -->
-	<div class="main-search--col main-search--location" [ngClass]="{'active':active==searchLocation}">
+	<div class="main-search__col main-search__location" [ngClass]="{'active':active==searchLocation}" (clickOutside)="active == searchLocation ? active=null : null">
 		<div (click)="active = searchLocation" #searchLocation>
 			<label for="main-search--location">Destinazione</label>
 			<input type="text" class="with-reset" id="main-search--location" placeholder="Cerca località, regione, tipologia o nome hotel" [value]="search.model.destination.name" (focus)="search.onDestinationReset()" *ngIf="search.model.destination">
@@ -17,10 +17,10 @@
 			</span>
 		</div>
 		<!-- LAST DESTINATIONS -->
-		<div class="popup-hint popup-hint__last-search popup-hint__destination" #lastSearch *ngIf="!destinationDirty && search.lastDestinations?.length">
-			<div class="popup-hint--head">
+		<div class="popup-hint popup-hint--last-search popup-hint__destination" #lastSearch *ngIf="!destinationDirty && search.lastDestinations?.length">
+			<div class="head">
 				<h3>Le tue ultime ricerche</h3>
-				<div class="popup-hint--close" (click)="active=null">
+				<div class="close" (click)="active=null">
 					<svg>
 						<use xlink:href="#ico-close"></use>
 					</svg>
@@ -34,7 +34,7 @@
 		</div>
 	</div>
 	<!-- DATE -->
-	<div class="main-search--col main-search--date" [ngClass]="{'active':active==searchDate}">
+	<div class="main-search__col main-search__date" [ngClass]="{'active':active==searchDate}" (clickOutside)="active == searchDate ? active=null : null">
 		<div class="main-search--trigger" (click)="active = searchDate" #searchDate>
 			<label for="main-search--date">Data di partenza</label>
 			<input class="with-reset" disabled type="text" id="main-search--date" placeholder="Seleziona una data" [value]="search.model.startDate | date:'dd MMMM yyyy'">
@@ -50,16 +50,16 @@
 			</span>
 		</div>
 		<div class="popup-hint popup-hint__date">
-			<div class="popup-hint--head">
+			<div class="head">
 				<h3>Seleziona la data di partenza</h3>
-				<div class="popup-hint--close" (click)="active=null">
+				<div class="close" (click)="active=null">
 					<svg>
 						<use xlink:href="#ico-close"></use>
 					</svg>
 				</div>
 			</div>
-			<div class="popup-hint--body">
-				<div class="popup-hint--flexible-date">
+			<div class="body">
+				<div class="flexible-date">
 					<div class="checkbox">
 						<label>
 							<input checked type="checkbox" name="flexibleDates" [(ngModel)]="search.model.flexibleDates" />
@@ -74,7 +74,7 @@
 		</div>
 	</div>
 	<!-- DURATION -->
-	<div class="main-search--col main-search--duration" [ngClass]="{'active':active==searchDuration}">
+	<div class="main-search__col main-search__duration" [ngClass]="{'active':active==searchDuration}" (clickOutside)="active == searchDuration ? active=null : null">
 		<div class="main-search--trigger" (click)="active = searchDuration" #searchDuration>
 			<label for="main-search--duration">Durata viaggio</label>
 			<input disabled id="main-search--duration" type="text" class="main-search--duration-input" [value]="search.model.duration.name">
@@ -85,17 +85,17 @@
 			</span>
 		</div>
 		<div class="popup-hint popup-hint__duration">
-			<div class="popup-hint--head">
+			<div class="head">
 				<h3>Seleziona la durata del tuo viaggio</h3>
-				<div class="popup-hint--close" (click)="active=null">
+				<div class="close" (click)="active=null">
 					<svg>
 						<use xlink:href="#ico-close"></use>
 					</svg>
 				</div>
 			</div>
-			<div class="popup-hint--body">
-				<ul class="popup-hint--list">
-					<li class="popup-hint--check" *ngFor="let duration of search.durations">
+			<div class="body">
+				<ul class="popup-list">
+					<li class="check" *ngFor="let duration of search.durations">
 						<div class="radio">
 							<label>
 								<input name="main-search--duration" type="radio" name="duration" [value]="duration" [(ngModel)]="search.model.duration"/>
@@ -108,7 +108,7 @@
 		</div>
 	</div>
 	<!-- ADULTS -->
-	<div class="main-search--col main-search--adults" [ngClass]="{'active':active==searchAdults}">
+	<div class="main-search__col main-search__adults" [ngClass]="{'active':active==searchAdults}" (clickOutside)="active == searchAdults ? active=null : null">
 		<div class="main-search--trigger" (click)="active=searchAdults" #searchAdults>
 			<label for="main-search--adults">Adulti</label>
 			<input disabled id="main-search--adults" type="text" [value]="search.model.adults" #adults>
@@ -119,15 +119,15 @@
 			</span>
 		</div>
 		<div class="popup-hint popup-hint__adults">
-			<div class="popup-hint--head">
+			<div class="head">
 				<h3>Numero di adulti</h3>
-				<div class="popup-hint--close" (click)="active=null">
+				<div class="close" (click)="active=null">
 					<svg>
 						<use xlink:href="#ico-close"></use>
 					</svg>
 				</div>
 			</div>
-			<div class="popup-hint--body">
+			<div class="body">
 				<div class="spinner-input">
 					<strong for="">Adulti</strong>
 					<p-spinner size="10" readonly name="adults" [(ngModel)]="search.model.adults" [min]="1" [max]="10"></p-spinner>
@@ -136,7 +136,7 @@
 		</div>
 	</div>
 	<!-- CHILDS -->
-	<div class="main-search--col main-search--childs" [ngClass]="{'active':active==searchChilds}">
+	<div class="main-search__col main-search__childs" [ngClass]="{'active':active==searchChilds}" (clickOutside)="active == searchChilds ? active=null : null">
 		<div class="main-search--trigger" (click)="active=searchChilds" #searchChilds>
 			<label for="main-search--childs">Bambini</label>
 			<input disabled id="main-search--childs" type="text" [value]="search.model.childs" #childs>
@@ -147,15 +147,15 @@
 			</span>
 		</div>
 		<div class="popup-hint popup-hint__childs">
-			<div class="popup-hint--head">
+			<div class="head">
 				<h3>Numero di bambini</h3>
-				<div class="popup-hint--close" (click)="active=null">
+				<div class="close" (click)="active=null">
 					<svg>
 						<use xlink:href="#ico-close"></use>
 					</svg>
 				</div>
 			</div>
-			<div class="popup-hint--body">
+			<div class="body">
 				<div class="spinner-input">
 					<strong>Bambini</strong>
 					<p-spinner size="10" readonly name="childs" [(ngModel)]="search.model.childs" [min]="0" [max]="4" (onChange)="search.onChildsChanged()"></p-spinner>
@@ -174,7 +174,7 @@
 		</div>
 	</div>
 	<!-- SEARCH -->
-	<div class="main-search--col main-search--submit">
+	<div class="main-search__col main-search__submit">
 		<button type="button" class="btn" (click)="onSubmit()">{{ 'app.search' | translate }}</button>
 	</div>
 </form>

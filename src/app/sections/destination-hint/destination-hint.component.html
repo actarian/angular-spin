@@ -1,8 +1,8 @@
-<div class="popup-hint--body" #scrollable>
-	<ul class="popup-hint--list">
+<div class="body" #scrollable>
+	<ul class="popup-list">
 		<ng-template ngFor let-item [ngForOf]="destinations" let-index="index">
-			<li class="popup-hint--item" [ngClass]="{ active: index === active }" (click)="onClick(item)" (mouseover)="onMouseOver(index)" *ngIf="index < visibleItems">
-				<span class="popup-hint--ico">
+			<li class="item" [ngClass]="{ active: index === active }" (click)="onClick(item)" (mouseover)="onMouseOver(index)" *ngIf="index < visibleItems">
+				<span class="ico">
 					<svg [ngSwitch]="item.type">
 						<use *ngSwitchCase="0" xlink:href="#ico-star"></use>
 						<use *ngSwitchCase="1" xlink:href="#ico-star"></use>
@@ -12,10 +12,10 @@
 						<use *ngSwitchCase="5" xlink:href="#ico-struttura"></use>
 					</svg>
 				</span>
-				<h4 class="popup-hint--tit" [innerHTML]="query ? (item.name | highlight : query) : item.name">---</h4>
-				<div class="popup-hint--info">
-					<div class="popup-hint--location" [innerHTML]="query ? (item.abstract | highlight : query) : item.abstract">---</div>
-					<div class="popup-hint--type">{{ item | destinationType }}</div>
+				<h4 class="tit" [innerHTML]="query ? (item.name | highlight : query) : item.name">---</h4>
+				<div class="info">
+					<div class="location" [innerHTML]="query ? (item.abstract | highlight : query) : item.abstract">---</div>
+					<div class="type">{{ item | destinationType }}</div>
 				</div>
 			</li>
 		</ng-template>

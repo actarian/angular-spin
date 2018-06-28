@@ -1,22 +1,22 @@
 <div class="serp-search">
 	<div class="container">
 		<div class="serp-filters">
-			<div class="serp-filters--item">
+			<div class="item">
 				<svg class="ico ico-pin">
 					<use xlink:href="#ico-pin"></use>
 				</svg>
 				<span>Mappa </span> </div>
-			<div class="serp-filters--item" (click)="active = popupOrder" #popupOrder>
+			<div class="item" (click)="active = popupOrder" #popupOrder>
 				<svg class="ico ico-order">
 					<use xlink:href="#ico-order"></use>
 				</svg>
 				<span>Ordina </span> </div>
-			<div class="serp-filters--item" (click)="active = popupFilter" #popupFilter>
+			<div class="item" (click)="active = popupFilter" #popupFilter>
 				<svg class="ico ico-filter">
 					<use xlink:href="#ico-filter"></use>
 				</svg>
 				<span>Filtra </span> </div>
-			<div class="serp-filters--item" (click)="active = popupMainSearch" #popupMainSearch>
+			<div class="item" (click)="active = popupMainSearch" #popupMainSearch>
 				<svg class="ico ico-search">
 					<use xlink:href="#ico-search"></use>
 				</svg>

@@ -5,7 +5,7 @@ SERP
 --------------------------------------------------*/
 
 .serp-results {
-	&--head {
+	.head {
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: space-between;
@@ -17,7 +17,7 @@ SERP
 		}
 	}
 
-	&--tit {
+	.tit {
 		flex: 1 1 auto;
 		padding-right: 10px;
 		font-size: 15px;
@@ -29,7 +29,7 @@ SERP
 		}
 	}
 
-	&--filter {
+	.filter {
 		flex: 1 1 auto;
 		text-align: right;
 
@@ -53,7 +53,7 @@ SERP
 hotel List
 --------------------------------------------------*/
 
-.hotel--item {
+.hotel-item {
 	display: flex;
 	margin-bottom: 40px;
 	box-shadow: 0 3px 7px rgba(0, 0, 0, .15);
@@ -63,7 +63,7 @@ hotel List
 		flex-direction: column;
 	}
 
-	.hotel--image {
+	.image {
 		position: relative;
 		z-index: 1;
 		width: 300px;
@@ -138,7 +138,7 @@ hotel List
 		}
 	}
 
-	.hotel--content {
+	.content {
 		flex: 1 1 auto;
 		padding: 8px 12px 12px;
 
@@ -148,26 +148,27 @@ hotel List
 
 	}
 
-	.hotel--head {
+	.head {
 		display: flex;
 		justify-content: space-between;
 		margin-bottom: 10px;
 		position: relative;
 		z-index: 1;
+		flex-wrap: nowrap;
 
 		@include xs-down {
 			display: block;
 			padding-right: 30px;
 		}
 
-		.hotel--trust {
+		.hotel-trust {
 			text-align: right;
 			margin-top: 3px;
 
 			@include xs-down {
 				text-align: left;
 
-				&__text {
+				.text {
 					display: inline-block;
 					margin-left: 4px;
 				}
@@ -199,10 +200,10 @@ hotel List
 		}
 	}
 
-	.hotel--info {
+	.info {
 		padding-right: 6px;
 
-		.hotel--name {
+		.name {
 			font-weight: 600;
 			color: $tit-color;
 			font-size: 15px;
@@ -234,21 +235,17 @@ hotel List
 			}
 		}
 
-		.hotel--location {
-			font-size: 10px;
+		.location {
+			font-size: 11px;
 			line-height: 1.1;
 		}
 	}
 
-	.hotel--desc {
+	.desc {
 		font-size: 12px;
 		line-height: 1.2;
 
-		@include xs-down {
-			font-size: 11px;
-		}
-
-		.hotel--list {
+		.list {
 			margin: 0;
 			padding: 0;
 			list-style: none;
@@ -278,7 +275,7 @@ hotel List
 		}
 	}
 
-	.hotel--special-msg {
+	.special-msg {
 		color: $secondary-color;
 		font-size: 11px;
 		margin-top: 10px;
@@ -289,7 +286,7 @@ hotel List
 		}
 	}
 
-	.hotel--action {
+	.action {
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-end;
@@ -347,7 +344,7 @@ hotel List
 
 
 
-		.hotel--summary {
+		.summary {
 			flex: 1 0 auto;
 			flex: 1 0 auto;
 			display: flex;
@@ -361,7 +358,7 @@ hotel List
 		}
 	}
 
-	.hotel--price {
+	.price {
 		color: $primary-color;
 		margin-top: 5px;
 
@@ -392,11 +389,17 @@ hotel List
 		}
 	}
 
-	.hotel--total-price {
-		margin-top: 5px;
+	.total-price {
+		margin-top: 2px;
 		font-size: 9px;
 		text-transform: uppercase;
 		line-height: .9;
+
+		.desc {
+			font-size: 9px;
+			text-transform: uppercase;
+			line-height: .9;
+		}
 
 		.total-price {
 			font-weight: bold;
@@ -405,7 +408,7 @@ hotel List
 		}
 	}
 
-	.hotel--cta {
+	.cta {
 		margin-top: 10px;
 
 		@include xs-down {
@@ -419,8 +422,8 @@ hotel List
 		}
 	}
 
-	.hotel--region,
-	.hotel--town {
+	.region,
+	.town {
 		text-transform: uppercase;
 	}
 

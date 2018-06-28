@@ -29,9 +29,19 @@ Base
 	}
 }
 
+.small-container {
+	max-width: 560px;
+	margin: 30px auto;
+	padding: 0 15px;
+}
+
 img {
 	max-width: 100%;
 	height: auto;
+}
+
+.page {
+	margin: 0 0 60px;
 }
 
 
@@ -70,6 +80,7 @@ Card Row
 /*--------------------------------------------------
 Stars
 --------------------------------------------------*/
+
 .stars {
 	white-space: nowrap;
 	display: inline-block;
@@ -107,11 +118,12 @@ Stars
 /*--------------------------------------------------
 Hotel Trust
 --------------------------------------------------*/
-.hotel--trust {
+
+.hotel-trust {
 	font-size: 10px;
 	text-transform: uppercase;
 
-	&__number {
+	.number {
 		display: inline-block;
 		color: #fff;
 		background-color: $rate-excellent;
@@ -126,7 +138,7 @@ Hotel Trust
 		}
 	}
 
-	&__text {
+	.text {
 		display: block;
 		color: $rate-excellent;
 

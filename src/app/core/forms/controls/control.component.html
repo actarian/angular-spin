@@ -1,24 +1,28 @@
 <ng-container [ngSwitch]="control.schema">
 	<ng-container *ngSwitchCase="'checkbox'">
-		<b>checkbox</b><br>
+		<b>Checkbox</b><br>
 	</ng-container>
 	<ng-container *ngSwitchCase="'email'">
-		<b>email</b><br>
+		<b>Email</b><br>
 	</ng-container>
 	<ng-container *ngSwitchCase="'number'">
-		<b>number</b><br>
+		<b>Number</b><br>
 	</ng-container>
 	<ng-container *ngSwitchCase="'password'">
-		<b>password</b><br>
+		<b>Password</b><br>
 	</ng-container>
 </ng-container>
 
 <div class="form-group" [formGroup]="form">
 	<div [ngSwitch]="control.schema">
-		<div *ngSwitchCase="'checkbox'" class="form-check">
+		<div *ngSwitchCase="'checkbox'" class="form-group">
 			<!-- CHECKBOX -->
-			<input type="checkbox" class="form-check-input" [id]="control.key" [formControlName]="control.key">
-			<label class="form-check-label" [attr.for]="control.key">{{ control.label | translate }}</label>
+			<div class="checkbox">
+				<label>
+						<input type="checkbox" class="form-check-input" [id]="control.key" [formControlName]="control.key">
+						<span>{{ control.label | translate }}</span>
+				</label>
+			</div>
 		</div>
 		<div *ngSwitchCase="'email'">
 			<!-- EMAIL -->
@@ -42,10 +46,14 @@
 				</div>
 			</div>
 		</div>
-		<div *ngSwitchCase="'radio'" class="form-radio">
+		<div *ngSwitchCase="'radio'" class="form-group">
 			<!-- RADIO -->
-			<input type="radio" class="form-radio-input" [id]="control.key" [formControlName]="control.key">
-			<label class="form-radio-label" [attr.for]="control.key">{{ control.label | translate }}</label>
+			<div class="radio">
+				<label>
+					<input type="radio" class="form-radio-input" [id]="control.key" [formControlName]="control.key">
+					<span>{{ control.label | translate }}</span>
+				</label>
+			</div>
 		</div>
 		<div *ngSwitchCase="'select'">
 			<!-- SELECT -->

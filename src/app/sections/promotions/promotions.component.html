@@ -1,18 +1,18 @@
 <!-- Promotions -->
 <section class="promotions">
 	<div class="container">
-		<div class="head promotions--head">
+		<div class="head">
 			<h2>Le mete migliori per gli amanti dell'arte</h2>
-			<a href="#" class="btn btn__ghost">Visualizza tutte</a>
+			<a href="#" class="btn btn--ghost">Visualizza tutte</a>
 		</div>
-		<div class="card-row promotions--row">
-			<div class="card-col promotions--card" *ngFor="let promotion of promotions" [routerLink]="['promotion', promotion.id] | route">
+		<div class="card-row">
+			<div class="card-col" *ngFor="let promotion of promotions" [routerLink]="['promotion', promotion.id] | route">
 				<a class="card" href="#">
-					<figure class="card--figure">
-						<img class="card--img" src="{{promotion.image}}" alt="{{promotion.name}}">
+					<figure class="figure">
+						<img class="img" src="{{promotion.image}}" alt="{{promotion.name}}">
 					</figure>
-					<div class="card--body">
-						<h3 class="card--title">{{promotion.name}}</h3>
+					<div class="body">
+						<h3 class="title">{{promotion.name}}</h3>
 					</div>
 				</a>
 			</div>

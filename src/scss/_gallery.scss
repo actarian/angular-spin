@@ -1,0 +1,58 @@
+@import "~scss/variables";
+
+/*--------------------------------------------------
+Hotel Main Gallery
+--------------------------------------------------*/
+
+.hotel-galery {
+	padding-bottom: 20px;
+
+	.swiper-slide {
+		width: 300px;
+
+		@include xxs-down {
+			width: 100%;
+		}
+
+		img {
+			max-width: 100%;
+		}
+	}
+
+	.swiper-button {
+		width: 38px;
+		height: 36px;
+		background: url(assets/img/gallery-arrow.png) no-repeat center;
+		margin-top: -28px;
+		right: 0;
+		opacity: .9;
+		transition: opacity .2s ease-in-out;
+
+		&:hover {
+			opacity: 1;
+		}
+
+		&:before {
+			display: none;
+			content: '';
+		}
+	}
+
+	.swiper-button-prev {
+		left: 0;
+		transform: rotate(180deg);
+	}
+
+	.swiper-button-next {
+		right: 0;
+	}
+
+	.swiper-button-disabled {
+		opacity: .5;
+		cursor: default;
+	}
+
+	.swiper-pagination-bullet-active {
+		background: $tertiary-color;
+	}
+}

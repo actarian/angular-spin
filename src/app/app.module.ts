@@ -22,11 +22,30 @@ import { Logger, LoggerComponent } from './core/logger';
 import { MemoryService } from './core/memory';
 import { PageDirective } from './core/pages';
 import { RouteService } from './core/routes';
+import { ClickOutsideDirective } from './core/ui';
 import { ControlEditableComponent } from './forms';
-import { HomeComponent, HotelComponent, ProfileComponent, RegionDetailComponent, RegionsComponent, SearchComponent, SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent } from './pages';
+import { HomeComponent, HotelComponent, ProfileComponent, RegionDetailComponent, RegionsComponent, SearchComponent, SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent, FancyboxDirective } from './pages';
 import { DestinationTypePipe } from './pipes';
 import { CategoriesComponent, DestinationHintComponent, FilterComponent, FooterComponent, HeaderComponent, HomeSearchComponent, MainSearchComponent, NotFoundComponent, PromotionsComponent, RegionSearchComponent, SearchResultComponent, SearchResultMapComponent, SvgComponent, ValuePropositionComponent } from './sections';
+import { SwiperModule } from 'ngx-swiper-wrapper';
+import { SWIPER_CONFIG } from 'ngx-swiper-wrapper';
+import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 
+const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
+	direction: 'horizontal',
+	slidesPerView: 'auto',
+	spaceBetween: 8,
+	grabCursor: true,
+	navigation: {
+		nextEl: '.swiper-button-next',
+		prevEl: '.swiper-button-prev',
+	},
+	// pagination: {
+	//	el: '.swiper-pagination',
+	//	type: 'bullets',
+	//	clickable: true
+	// }
+};
 
 registerLocaleData(localeIt, 'it');
 
@@ -35,7 +54,7 @@ registerLocaleData(localeIt, 'it');
 		BrowserModule.withServerTransition({ appId: 'app' }),
 		PrebootModule.withConfig({ appRoot: 'app-component' }),
 		FormsModule, ReactiveFormsModule, HttpClientModule,
-		CalendarModule, SpinnerModule, GalleriaModule, AccordionModule, NoopAnimationsModule,
+		CalendarModule, SpinnerModule, GalleriaModule, AccordionModule, NoopAnimationsModule, SwiperModule,
 		// The HttpClientInMemoryWebApiModule module intercepts HTTP requests
 		// and returns simulated server responses.
 		// Remove it when a real server is ready to receive requests.
@@ -56,11 +75,18 @@ registerLocaleData(localeIt, 'it');
 		HeaderComponent, FooterComponent, FilterComponent, CategoriesComponent, SearchResultComponent, SearchResultMapComponent, SvgComponent, ValuePropositionComponent, PromotionsComponent, RegionSearchComponent, NotFoundComponent,
 		DestinationHintComponent,
 		ControlEditableComponent,
-		LoggerComponent, PageDirective, MainSearchComponent, HomeSearchComponent,
-		DestinationTypePipe,
+		LoggerComponent, PageDirective, MainSearchComponent, HomeSearchComponent, ClickOutsideDirective,
+		DestinationTypePipe, FancyboxDirective
 	],
 	providers: [
-		{ provide: LOCALE_ID, useValue: 'it' },
+		{
+			provide: LOCALE_ID,
+			useValue: 'it'
+		},
+		{
+			provide: SWIPER_CONFIG,
+			useValue: DEFAULT_SWIPER_CONFIG
+		},
 		// { provide: HTTP_INTERCEPTORS, useClass: HttpResponseInterceptor, multi: true },
 		AuthAttribute,
 		Logger, TranslateService, RouteService,
