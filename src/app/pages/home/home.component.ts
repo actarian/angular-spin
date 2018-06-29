@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
 import { PageComponent } from '../../core/pages';
 import { RouteService } from '../../core/routes';
 import { Region, RegionService } from '../../models';
@@ -28,8 +29,8 @@ export class HomeComponent extends PageComponent implements OnInit {
 	}
 
 	getRegions(): void {
-		this.regionService.getList()
-			.takeUntil(this.unsubscribe)
-			.subscribe(regions => this.regions = regions.slice(1, 5));
+		this.regionService.getList().pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(regions => this.regions = regions.slice(1, 5));
 	}
 }

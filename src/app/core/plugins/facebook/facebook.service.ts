@@ -4,8 +4,8 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import 'rxjs/add/operator/concatMap';
 import { fromPromise } from 'rxjs/observable/fromPromise';
+import { concatMap } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { OnceService } from '../../once';
 import { RouteService } from '../../routes';
@@ -84,19 +84,21 @@ export class FacebookService {
 			if (this.FB) {
 				return of(this.FB);
 			} else {
-				return this.onceService.script('//connect.facebook.net/' + this.routeService.currentLang + '/sdk.js', 'fbAsyncInit').concatMap(x => {
-					// console.log(x);
-					const FB = window['FB'];
-					FB.init({
-						appId: this.options.appId,
-						// status: true,
-						cookie: true,
-						xfbml: true,
-						version: this.options.version,
-					});
-					this.FB = FB;
-					return of(FB);
-				});
+				return this.onceService.script('//connect.facebook.net/' + this.routeService.currentLang + '/sdk.js', 'fbAsyncInit').pipe(
+					concatMap(x => {
+						// console.log(x);
+						const FB = window['FB'];
+						FB.init({
+							appId: this.options.appId,
+							// status: true,
+							cookie: true,
+							xfbml: true,
+							version: this.options.version,
+						});
+						this.FB = FB;
+						return of(FB);
+					})
+				);
 			}
 		} else {
 			return of(null);

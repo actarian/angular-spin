@@ -1,8 +1,6 @@
 import { EventEmitter, Injectable, Injector } from '@angular/core';
 import { TranslateLoader } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/shareReplay';
 import { map, take, tap } from 'rxjs/operators';
 // import { BehaviorSubject, Observable, interval } from 'rxjs';
 // import { map } from 'rxjs/operators';
@@ -14,7 +12,7 @@ import { Label } from './label';
 export class LabelService<T extends Label> extends ApiService<T> implements TranslateLoader {
 
 	get collection(): string {
-		return 'label';
+		return '/api/label';
 	}
 
 	private _language: any = new BehaviorSubject({});

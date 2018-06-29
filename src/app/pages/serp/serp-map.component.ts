@@ -1,18 +1,20 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, Renderer2, ViewChild } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import { Observable } from 'rxjs';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { takeUntil } from 'rxjs/operators';
 import { DisposableComponent } from '../../core/disposable';
 import { MapboxService } from '../../core/plugins';
 import { FilterService, SearchResult, SearchService } from '../../models';
 
 @Component({
-	selector: 'section-search-result-map',
-	templateUrl: './search-result-map.component.html',
-	styleUrls: ['./search-result-map.component.scss'],
+	selector: 'section-serp-map',
+	templateUrl: './serp-map.component.html',
+	styleUrls: ['./serp-map.component.scss'],
 	exportAs: 'results'
 })
 
-export class SearchResultMapComponent extends DisposableComponent implements AfterViewInit, OnDestroy {
+export class SerpMapComponent extends DisposableComponent implements AfterViewInit, OnDestroy {
 
 	@ViewChild('map') elementRef: ElementRef;
 	map: any;
@@ -34,41 +36,41 @@ export class SearchResultMapComponent extends DisposableComponent implements Aft
 		this.map$ = this.mapboxService.getMap({ elementRef: this.elementRef });
 		// todo
 		// map.on('move').takeUntil.debouce.distinct. -> search
-		Observable.combineLatest(this.map$, this.search.resultsFiltered$)
-			.takeUntil(this.unsubscribe)
-			.subscribe((data: any[]): void => {
-				const map: mapboxgl.Map = data[0];
-				const results: SearchResult[] = data[1].filter(result => result.latitude);
-				if (map) {
-					if (this.markers) {
-						this.markers.forEach(marker => marker.remove());
-					}
-					const markers = results.map(result => {
-						const marker = new mapboxgl.Marker().setLngLat([result.longitude, result.latitude]);
-						marker.addTo(map);
-						return marker;
-					});
-					this.markers = markers;
-					const coordinates: mapboxgl.LngLat[] = results.map(result => {
-						return new mapboxgl.LngLat(result.longitude, result.latitude);
-					});
-					const bounds = coordinates.reduce((bounds, coord) => {
-						return bounds.extend(coord);
-					}, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
-					map.fitBounds(bounds, { linear: true, duration: 0, padding: 50, maxZoom: 13 });
-					/*
-					map.fitBounds(bounds, {
-						speed: 5,
-						curve: 1,
-						padding: 30,
-						linear: false,
-						maxZoom: 16,
-					});
-					*/
-					console.log('SearchResultMapComponent', bounds);
-					this.map = map;
+		combineLatest(this.map$, this.search.resultsFiltered$).pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe((data: any[]): void => {
+			const map: mapboxgl.Map = data[0];
+			const results: SearchResult[] = data[1].filter(result => result.latitude);
+			if (map) {
+				if (this.markers) {
+					this.markers.forEach(marker => marker.remove());
 				}
-			});
+				const markers = results.map(result => {
+					const marker = new mapboxgl.Marker().setLngLat([result.longitude, result.latitude]);
+					marker.addTo(map);
+					return marker;
+				});
+				this.markers = markers;
+				const coordinates: mapboxgl.LngLat[] = results.map(result => {
+					return new mapboxgl.LngLat(result.longitude, result.latitude);
+				});
+				const bounds = coordinates.reduce((bounds, coord) => {
+					return bounds.extend(coord);
+				}, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
+				map.fitBounds(bounds, { linear: true, duration: 0, padding: 50, maxZoom: 13 });
+				/*
+				map.fitBounds(bounds, {
+					speed: 5,
+					curve: 1,
+					padding: 30,
+					linear: false,
+					maxZoom: 16,
+				});
+				*/
+				console.log('SearchResultMapComponent', bounds);
+				this.map = map;
+			}
+		});
 	}
 
 	ngOnDestroy() {

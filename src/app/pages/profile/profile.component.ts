@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
 import { PageComponent } from '../../core/pages';
 import { User, UserService } from '../../models';
 
@@ -25,16 +26,16 @@ export class ProfileComponent extends PageComponent implements OnInit {
 	}
 
 	getUser(): void {
-		this.userService.getDetailById(this.getId())
-			.takeUntil(this.unsubscribe)
-			.subscribe(user => this.user = user);
+		this.userService.getDetailById(this.getId()).pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(user => this.user = user);
 	}
 
 	save(): void {
-		this.userService.update(this.user)
-			.takeUntil(this.unsubscribe)
-			.subscribe(() => {
-				console.log('saved');
-			});
+		this.userService.update(this.user).pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(() => {
+			console.log('saved');
+		});
 	}
 }

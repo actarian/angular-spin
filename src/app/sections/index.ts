@@ -1,14 +1,8 @@
-export * from './categories/categories.component';
-export * from './destination-hint/destination-hint.component';
 export * from './footer/footer.component';
-export * from './filter/filter.component';
 export * from './header/header.component';
-export * from './home-search/home-search.component';
-export * from './main-search/main-search.component';
+export * from './main-search';
 export * from './not-found/not-found.component';
-export * from './promotions/promotions.component';
 export * from './region-search/region-search.component';
-export * from './search-result/search-result.component';
-export * from './search-result-map/search-result-map.component';
 export * from './svg/svg.component';
 export * from './value-proposition/value-proposition.component';
+

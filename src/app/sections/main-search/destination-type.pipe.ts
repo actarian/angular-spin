@@ -1,5 +1,5 @@
 import { Injectable, Pipe, PipeTransform } from '@angular/core';
-import { Destination, DestinationTypes } from '../models/destination';
+import { Destination, DestinationTypes } from '../../models/destination';
 
 @Pipe({
 	name: 'destinationType',

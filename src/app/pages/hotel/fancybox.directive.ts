@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Directive, PLATFORM_ID, Inject, ElementRef, Input, AfterViewInit } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, Inject, Input, PLATFORM_ID } from '@angular/core';
 // import * as $ from 'jquery';
 
 @Directive({
@@ -16,18 +16,11 @@ export class FancyboxDirective implements AfterViewInit {
 	) { }
 
 	ngAfterViewInit() {
-
 		if (isPlatformBrowser(this.platformId)) {
 			const $ = window['$'];
 			// this.el.nativeElement
 			$().fancybox(this.fancybox);
-
 		}
-
-
-
 	}
 
 }
-
-

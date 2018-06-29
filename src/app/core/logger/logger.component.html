@@ -2,7 +2,7 @@
 	<span>error</span>&nbsp;
 	<span class="status">{{logger.httpError.status}}</span>&nbsp;
 	<span class="url">{{logger.httpError.url}}</span>&nbsp;
-	<span class="message">{{logger.httpError.body.error}}</span>
+	<span class="message">{{logger.httpError.body?.error}}</span>
 </div>
 <!--
 <div *ngIf="logger.logs.length">

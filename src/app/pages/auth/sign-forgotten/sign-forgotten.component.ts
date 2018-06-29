@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
 import { PageComponent } from '../../../core/pages';
 import { User, UserService } from '../../../models';
 
@@ -29,14 +30,14 @@ export class SignForgottenComponent extends PageComponent implements OnInit {
 
 	onSubmit(): void {
 		this.submitted = true;
-		this.userService.signForgotten(this.model)
-			.takeUntil(this.unsubscribe)
-			.subscribe(
-				ok => {
-					this.sent = true;
-				}, error => {
-					this.error = error;
-				}
-			);
+		this.userService.signForgotten(this.model).pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(
+			ok => {
+				this.sent = true;
+			}, error => {
+				this.error = error;
+			}
+		);
 	}
 }

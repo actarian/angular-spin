@@ -1,12 +1,10 @@
 
 
-import { Location, isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { isPlatformBrowser, isPlatformServer, Location } from '@angular/common';
 import { ComponentFactory, ComponentFactoryResolver, Inject, Injector, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, ActivationEnd, NavigationStart, Params, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/shareReplay';
 import { concatMap, distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
 // import { BehaviorSubject, Observable, interval } from 'rxjs';
 // import { map } from 'rxjs/operators';
@@ -153,9 +151,11 @@ export class RouteService {
 			distinctUntilChanged(),
 			map(route => route.firstChild),
 			tap((route) => {
-				this.params = route.params.concatMap(x => {
-					return of(this.toData(x));
-				});
+				this.params = route.params.pipe(
+					concatMap(x => {
+						return of(this.toData(x));
+					})
+				);
 				// console.log('params', this.route.params);
 			}),
 			switchMap(route => route.data),

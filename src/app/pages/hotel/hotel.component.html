@@ -1,4 +1,4 @@
-<section class="hotel-page">
+<section class="hotel-page" *ngIf="hotel">
 	<div class="container">
 		<div class="hotel-sidebar">
 			<div class="sticky">
@@ -95,11 +95,11 @@
 			<div class="hotel-head">
 				<div class="hotel-info">
 					<div class="hotel-name">
-						<span>CDH HOTEL RADDA IN CHIANTI</span>
-						<span class="stars"><em>*</em><em>*</em><em>*</em><em>*</em></span>
+						<span>{{hotel.frontEndName}}</span> <span class="stars"><em *ngFor="let star of hotel?.rating?.split('');" [ngClass]="{ superior: star === 'S' }">{{star}}</em></span>
 					</div>
 					<div class="hotel-location">
-						<span class="hotel-region">Italia Toscana</span>&nbsp;<span class="hotel-town">Radda in Chianti SI</span>
+						<span class="hotel-region">{{hotel.location.avesDstCode}}</span>
+						<!-- <span class="hotel-region">Italia Toscana</span>&nbsp;<span class="hotel-town">Radda in Chianti SI</span> -->
 					</div>
 				</div>
 				<div class="hotel-trust"><span class="number excellent">8.5</span><span class="text excellent">Eccellente</span></div>
@@ -108,12 +108,17 @@
 				</button>
 			</div>
 
-			<div class="hotel-galery swiper-container" [swiper]="config" [(index)]="index">
+			<div class="hotel-gallery swiper-container" [swiper]>
 				<div class="swiper-wrapper" [fancybox]="fancyboxOptions">
 					<div class="swiper-slide" *ngFor="let number of [1,2,3,4,5,6]">
+						<a href="{{hotel.cover}}" data-fancybox="gallery">
+							<img src="{{hotel.photo}}" alt="">
+						</a>
+						<!--
 						<a href="assets/img/hotel/gallery-{{number}}.jpg" data-fancybox="gallery">
 							<img src="assets/img/hotel/gallery-{{number}}.jpg" alt="">
 						</a>
+						-->
 					</div>
 				</div>
 
@@ -127,34 +132,21 @@
 						<svg class="ico">
 							<use xlink:href="#ico-calendar"></use>
 						</svg>
-						<span>1 o 2 notti + utilizzo centro benessere</span>
+						<span>{{hotel.abstract}}</span>
 					</li>
 					<li class="hotel-list-item">
 						<svg class="ico">
 							<use xlink:href="#ico-struttura"></use>
 						</svg>
-						<span>Mezza pensione</span>
+						<span>{{hotel.accomodation}}</span>
 					</li>
-					<li class="hotel-list-item">
+					<li class="hotel-list-item" *ngFor="let item of hotel.tagList | hotelTags">
 						<svg class="ico">
 							<use xlink:href="#ico-fav"></use>
 						</svg>
-						<span>utilizzo centro benessere</span>
-					</li>
-					<li class="hotel-list-item">
-						<svg class="ico">
-							<use xlink:href="#ico-fav"></use>
-						</svg>
-						<span>utilizzo wi-fi</span>
-					</li>
-					<li class="hotel-list-item">
-						<svg class="ico">
-							<use xlink:href="#ico-fav"></use>
-						</svg>
-						<span>utilizzo centro sportivo</span>
+						<span>{{item.name}}</span>
 					</li>
 				</ul>
-
 
 				<div class="inclusion hotel-desc-group">
 					<div class="readmore-accordion">

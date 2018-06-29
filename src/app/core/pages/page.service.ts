@@ -8,7 +8,7 @@ import { Page } from './page';
 export class PageService extends EntityService<Page> {
 
 	get collection(): string {
-		return 'page';
+		return '/api/page';
 	}
 
 	getPageBySlug(slug: string): Observable<Page[]> {

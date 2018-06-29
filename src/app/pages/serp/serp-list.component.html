@@ -30,7 +30,7 @@
 				<div class="discount" *ngIf="item.overlayCoverImage">
 					<img alt="" [src]="item.overlayCoverImage | asset">
 				</div>
-				<a href="#" [routerLink]="item.slug | route">
+				<a [routerLink]="['hotel', item.id, item.slug] | route">
 					<img alt="" class="image-thumb" [src]="item.photo | asset">
 				</a>
 			</div>
@@ -40,9 +40,9 @@
 				<div class="head">
 					<div class="info">
 						<div class="name">
-							<a href="#" [routerLink]="item.slug | route">
-									<span>{{item.name}}</span> <span class="stars"><em *ngFor="let star of item?.rating?.split('');" [ngClass]="{ superior: star === 'S' }">{{star}}</em></span>
-								</a>
+							<a [routerLink]="['hotel', item.id, item.slug] | route">
+								<span>{{item.name}}</span> <span class="stars"><em *ngFor="let star of item?.rating?.split('');" [ngClass]="{ superior: star === 'S' }">{{star}}</em></span>
+							</a>
 						</div>
 						<div class="location">
 							<span class="region">{{item.destinationNation}} {{item.destinationRegion}}</span>&nbsp;<span class="town">{{item.destinationDescription}} {{item.destinationProvince}}</span>
@@ -114,22 +114,16 @@
 				<div class="summary">
 					<div class="price">
 						<span class="desc">Da</span>
-						<span class="single-price">
-								<span class="value">{{item.price}}</span>
-						<span class="symbol">€</span>
-						</span>
+						<span class="single-price"><span class="value">{{item.price}}</span><span class="symbol">€</span></span>
 						<span class="desc">Prezzo per persona</span>
 					</div>
 					<div class="total-price">
 						<span class="desc">Prezzo totale</span>
-						<span class="total-price">
-								<span class="value">{{item.totalPrice}}</span>
-						<span class="symbol">€</span>
-						</span>
+						<span class="total-price"><span class="value">{{item.totalPrice}}</span><span class="symbol">€</span></span>
 					</div>
 				</div>
 				<div class="cta">
-					<a class="btn" href="#" [routerLink]="item.slug | route">Continua</a>
+					<a class="btn" [routerLink]="['hotel', item.id, item.slug] | route">Continua</a>
 				</div>
 			</div>
 			<!-- /Hotel Action -->

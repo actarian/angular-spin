@@ -28,4 +28,8 @@ export class PageComponent extends DisposableComponent {
 		return +this.route.snapshot.paramMap.get('id') || (this.page ? this.page.id : 0);
 	}
 
+	getSlug(): string {
+		return this.route.snapshot.paramMap.get('slug') || (this.page ? this.page.slug : '');
+	}
+
 }

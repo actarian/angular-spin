@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import 'rxjs/add/observable/combineLatest';
 import { map } from 'rxjs/operators';
 import { Option } from '../core/models';
-import { Group, GroupType, Rating, Sorting, Treatment, ratings, sortings, treatments } from './filter';
+import { Group, GroupType, Rating, ratings, Sorting, sortings, Treatment, treatments } from './filter';
 import { Tag } from './tag';
 import { TagService } from './tag.service';
 

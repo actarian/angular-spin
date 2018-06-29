@@ -3,11 +3,11 @@ import { Category, CategoryService } from '../../models';
 
 @Component({
 	selector: 'section-categories',
-	templateUrl: './categories.component.html',
-	styleUrls: ['./categories.component.scss']
+	templateUrl: './home-categories.component.html',
+	styleUrls: ['./home-categories.component.scss']
 })
 
-export class CategoriesComponent implements OnInit {
+export class HomeCategoriesComponent implements OnInit {
 
 	categories: Category[] = [];
 

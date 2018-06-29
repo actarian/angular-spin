@@ -14,7 +14,7 @@ export class IdentityService<T extends Identity> extends ApiService<T> {
 	}
 
 	get colletion(): string {
-		return 'identity';
+		return '/api/identity';
 	}
 
 	getList(): Observable<T[]> {

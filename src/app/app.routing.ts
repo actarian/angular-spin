@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { environment } from '../environments/environment';
-import { HomeComponent, RegionDetailComponent } from './pages';
+import { HomeComponent, HotelComponent, RegionDetailComponent } from './pages';
 import { NotFoundComponent } from './sections';
 
 export function getRoutes(routes: Routes): Routes {
@@ -20,6 +20,8 @@ export function getRoutes(routes: Routes): Routes {
 
 const routes: Routes = [
 	{ path: '', component: HomeComponent, pathMatch: 'full' },
+	{ path: 'hotel/:id/:slug', component: HotelComponent },
+	{ path: ':lang/hotel/:id/:slug', component: HotelComponent },
 	{ path: 'region/:id', component: RegionDetailComponent },
 	{ path: ':lang/region/:id', component: RegionDetailComponent },
 	{ path: 'not-found', component: NotFoundComponent },

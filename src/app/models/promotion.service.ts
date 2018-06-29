@@ -8,7 +8,7 @@ import { Promotion } from './promotion';
 export class PromotionService extends EntityService<Promotion> {
 
 	get collection(): string {
-		return 'promotion';
+		return '/api/promotion';
 	}
 
 }

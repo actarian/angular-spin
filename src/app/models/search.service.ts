@@ -1,11 +1,9 @@
 import { Location } from '@angular/common';
 import { Inject, Injectable, Injector, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/take';
-import { tap } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { debounceTime, tap } from 'rxjs/operators';
 import { EntityService, Option } from '../core/models';
 import { RouteService } from '../core/routes';
 import { LocalStorageService, StorageService } from '../core/storage';
@@ -13,7 +11,7 @@ import { Destination, DestinationTypes } from './destination';
 import { DestinationService } from './destination.service';
 import { Group, GroupType, Sorting } from './filter';
 import { FilterService } from './filter.service';
-import { CalendarOption, Duration, MainSearch, SearchResult, durations } from './search';
+import { CalendarOption, Duration, durations, MainSearch, SearchResult } from './search';
 
 @Injectable({
 	providedIn: 'root',
@@ -21,7 +19,7 @@ import { CalendarOption, Duration, MainSearch, SearchResult, durations } from '.
 export class SearchService extends EntityService<SearchResult> {
 
 	get collection(): string {
-		return 'searchResult';
+		return '/api/searchResult';
 	}
 
 	calendar: CalendarOption = new CalendarOption();
@@ -79,7 +77,7 @@ export class SearchService extends EntityService<SearchResult> {
 
 	// RESULTS
 	private beginObserveResults() {
-		Observable.combineLatest(this.filterService.groups$, this.filterService.sortings$, this.results)
+		combineLatest(this.filterService.groups$, this.filterService.sortings$, this.results)
 			.subscribe((data: any[]): void => {
 				const groups: Group<Option>[] = data[0];
 				const sorting: Sorting = data[1];
@@ -174,12 +172,12 @@ export class SearchService extends EntityService<SearchResult> {
 	// DESTINATION
 	onDestinationQuery(query: string) {
 		this.model.query = query;
-		this.destinationService.autocomplete(query)
-			// .takeUntil(this.unsubscribe)
-			.debounceTime(200)
-			.subscribe(x => {
-				this.destinations = x;
-			});
+		this.destinationService.autocomplete(query).pipe(
+			// takeUntil(this.unsubscribe)
+			debounceTime(200)
+		).subscribe(x => {
+			this.destinations = x;
+		});
 	}
 
 	onDestinationSet(destination: Destination) {

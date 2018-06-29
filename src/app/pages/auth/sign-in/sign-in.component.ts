@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
 import { FacebookService, FacebookUser, GoogleService, GoogleUser } from '../../../core';
 import { AuthService, AuthToken } from '../../../core/auth';
 import { ControlBase, FormService } from '../../../core/forms';
@@ -85,41 +86,41 @@ export class SignInComponent extends PageComponent implements OnInit {
 		}]); // !!!
 		this.group = this.formService.getGroupFromControls(this.controls); // !!!
 		// FACEBOOK & GOOGLE
-		this.params
-			.takeUntil(this.unsubscribe)
-			.subscribe(params => {
-				if (params) {
-					console.log('SignInComponent.params', params);
-					if (params.facebook) {
-						this.facebook = params.facebook as FacebookUser;
-						this.model.firstName = this.facebook.first_name;
-						this.model.lastName = this.facebook.last_name;
-						this.model.email = this.facebook.email;
-					}
-					if (params.google) {
-						this.google = params.google as GoogleUser;
-						this.model.firstName = this.google.firstName;
-						this.model.lastName = this.google.lastName;
-						this.model.email = this.google.email;
-					}
+		this.params.pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(params => {
+			if (params) {
+				console.log('SignInComponent.params', params);
+				if (params.facebook) {
+					this.facebook = params.facebook as FacebookUser;
+					this.model.firstName = this.facebook.first_name;
+					this.model.lastName = this.facebook.last_name;
+					this.model.email = this.facebook.email;
 				}
-			});
+				if (params.google) {
+					this.google = params.google as GoogleUser;
+					this.model.firstName = this.google.firstName;
+					this.model.lastName = this.google.lastName;
+					this.model.email = this.google.email;
+				}
+			}
+		});
 	}
 
 	onSubmit(): void {
 		this.submitted = true;
-		this.userService.tryLogin(this.model)
-			.takeUntil(this.unsubscribe)
-			.subscribe(
-				users => {
-					const user = users[0];
-					this.onAuth(user);
-					console.log('onSubmit.success', user);
-				}, error => {
-					this.error = error;
-					this.submitted = false;
-					console.log('onSubmit.error', this.error);
-				});
+		this.userService.tryLogin(this.model).pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(
+			users => {
+				const user = users[0];
+				this.onAuth(user);
+				console.log('onSubmit.success', user);
+			}, error => {
+				this.error = error;
+				this.submitted = false;
+				console.log('onSubmit.error', this.error);
+			});
 	}
 
 	onSubmit2(): void {
@@ -135,20 +136,20 @@ export class SignInComponent extends PageComponent implements OnInit {
 	}
 
 	onFacebookLogout(): void {
-		this.facebookService.logout()
-			.takeUntil(this.unsubscribe)
-			.subscribe(x => {
-				console.log('SignUpComponent.onFacebookLogout', x);
-				this.facebook = null;
-			});
+		this.facebookService.logout().pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(x => {
+			console.log('SignUpComponent.onFacebookLogout', x);
+			this.facebook = null;
+		});
 	}
 
 	onGoogleLogout(): void {
-		this.googleService.logout()
-			.takeUntil(this.unsubscribe)
-			.subscribe(x => {
-				console.log('SignUpComponent.onGoogleLogout', x);
-				this.google = null;
-			});
+		this.googleService.logout().pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(x => {
+			console.log('SignUpComponent.onGoogleLogout', x);
+			this.google = null;
+		});
 	}
 }

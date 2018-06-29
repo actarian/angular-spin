@@ -3,9 +3,10 @@ import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/do';
+import { catchError, tap } from 'rxjs/operators';
 import { RouteService } from '../routes';
 import { AuthService } from './auth.service';
+
 
 @Injectable()
 export class AuthTokenInterceptor implements HttpInterceptor {
@@ -27,23 +28,27 @@ export class AuthTokenInterceptor implements HttpInterceptor {
 			});
 		}
 		// parsing response
-		return next.handle(request).do((event: HttpEvent<any>) => {
-			if (event instanceof HttpResponse) {
-				// do stuff with response if you want
-				console.log('AuthTokenInterceptor.success', event.status);
-			}
-		}, (error: any) => {
-			if (error instanceof HttpErrorResponse) {
-				if (error.status === 401) {
-					console.log('AuthTokenInterceptor.unautorized', error.status);
-					this.authService.collectFailedRequest(request);
-					const segments = this.routeService.toRoute(['/login']);
-					this.router.navigate(segments);
-					// redirect to the login route
-					// or show a modal
+		return next.handle(request).pipe(
+			tap((event: HttpEvent<any>) => {
+				if (event instanceof HttpResponse) {
+					// do stuff with response if you want
+					console.log('AuthTokenInterceptor.success', event.status);
 				}
-			}
-		});
+			}),
+			catchError((error: any) => {
+				if (error instanceof HttpErrorResponse) {
+					if (error.status === 401) {
+						console.log('AuthTokenInterceptor.unautorized', error.status, error.statusText);
+						this.authService.collectFailedRequest(request);
+						const segments = this.routeService.toRoute(['/login']);
+						this.router.navigate(segments);
+						// redirect to the login route
+						// or show a modal
+					}
+				}
+				return Observable.throw(error);
+			})
+		);
 	}
 
 }

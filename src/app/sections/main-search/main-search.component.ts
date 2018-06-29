@@ -1,10 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { fromEvent } from 'rxjs';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/switchMap';
+import { debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
 import { DisposableComponent } from '../../core/disposable';
 import { SearchService } from '../../models';
 
@@ -68,20 +65,21 @@ export class MainSearchComponent extends DisposableComponent implements OnInit, 
 
 	addListeners() {
 		// input query keyup listener
-		this.query$ = fromEvent(this.query.nativeElement, 'keyup')
-			.debounceTime(250)
-			.map((event: any) => {
+		this.query$ = fromEvent(this.query.nativeElement, 'keyup').pipe(
+			debounceTime(250),
+			map((event: any) => {
 				return event.target.value; // input value
-			})
-			.distinctUntilChanged();
-		this.query$
-			.takeUntil(this.unsubscribe)
-			.subscribe(query => {
-				if (!query || query.trim() === '') {
-					return;
-				}
-				this.destinationDirty = true;
-				this.search.onDestinationQuery(query);
-			});
+			}),
+			distinctUntilChanged()
+		);
+		this.query$.pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(query => {
+			if (!query || query.trim() === '') {
+				return;
+			}
+			this.destinationDirty = true;
+			this.search.onDestinationQuery(query);
+		});
 	}
 }

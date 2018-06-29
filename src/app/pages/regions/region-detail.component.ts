@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
 import { PageComponent } from '../../core/pages';
 import { Region, RegionService } from '../../models';
 
@@ -27,15 +28,15 @@ export class RegionDetailComponent extends PageComponent implements OnInit {
 	}
 
 	getRegion(): void {
-		this.regionService.getDetailById(this.getId())
-			.takeUntil(this.unsubscribe)
-			.subscribe(region => this.region = region);
+		this.regionService.getDetailById(this.getId()).pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(region => this.region = region);
 	}
 
 	save(): void {
-		this.regionService.update(this.region)
-			.takeUntil(this.unsubscribe)
-			.subscribe(() => this.goBack());
+		this.regionService.update(this.region).pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(() => this.goBack());
 	}
 
 	goBack(): void {

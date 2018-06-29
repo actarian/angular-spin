@@ -4,8 +4,8 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import 'rxjs/add/operator/concatMap';
 import { fromPromise } from 'rxjs/observable/fromPromise';
+import { concatMap } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { OnceService } from '../../once';
 import { RouteService } from '../../routes';
@@ -93,49 +93,57 @@ export class GoogleService {
 	}
 
 	getMe() {
-		return this.login().concatMap(x => {
-			const profile = this.instance.currentUser.get().getBasicProfile();
-			const user = {
-				id: profile.getId(),
-				name: profile.getName(),
-				firstName: profile.getGivenName(),
-				lastName: profile.getFamilyName(),
-				picture: profile.getImageUrl(),
-				email: profile.getEmail(),
-				authResponse: this.authResponse,
-				googleToken: this.authResponse.access_token,
-			} as GoogleUser;
-			return of(user);
-		});
+		return this.login().pipe(
+			concatMap(x => {
+				const profile = this.instance.currentUser.get().getBasicProfile();
+				const user = {
+					id: profile.getId(),
+					name: profile.getName(),
+					firstName: profile.getGivenName(),
+					lastName: profile.getFamilyName(),
+					picture: profile.getImageUrl(),
+					email: profile.getEmail(),
+					authResponse: this.authResponse,
+					googleToken: this.authResponse.access_token,
+				} as GoogleUser;
+				return of(user);
+			})
+		);
 	}
 
 	login() {
-		return this.auth2Instance().concatMap(x => {
-			return this.signin();
-		});
+		return this.auth2Instance().pipe(
+			concatMap(x => {
+				return this.signin();
+			})
+		);
 	}
 
 	logout() {
-		return this.auth2Instance().concatMap(x => {
-			return fromPromise(
-				new Promise((resolve, reject) => {
-					if (this.instance.isSignedIn && this.instance.isSignedIn.get()) {
-						this.instance.signOut().then((signed) => {
+		return this.auth2Instance().pipe(
+			concatMap(x => {
+				return fromPromise(
+					new Promise((resolve, reject) => {
+						if (this.instance.isSignedIn && this.instance.isSignedIn.get()) {
+							this.instance.signOut().then((signed) => {
+								resolve();
+							}, reject);
+						} else {
 							resolve();
-						}, reject);
-					} else {
-						resolve();
-					}
-				})
-			);
-		});
+						}
+					})
+				);
+			})
+		);
 	}
 
 	private once(): Observable<any> {
-		return this.onceService.script('https://apis.google.com/js/api:client.js?onload={{callback}}', true).concatMap(x => {
-			this.gapi = window['gapi'];
-			return of(this.gapi);
-		});
+		return this.onceService.script('https://apis.google.com/js/api:client.js?onload={{callback}}', true).pipe(
+			concatMap(x => {
+				this.gapi = window['gapi'];
+				return of(this.gapi);
+			})
+		);
 	}
 
 	private getAuth2() {
@@ -143,23 +151,27 @@ export class GoogleService {
 			if (this.auth2) {
 				return of(this.auth2);
 			} else {
-				return this.google().concatMap(x => {
-					if (this.gapi.auth2) {
-						return this.auth2init();
-					} else {
-						return fromPromise(
-							new Promise((resolve, reject) => {
-								this.gapi.load('auth2', () => {
-									setTimeout(() => {
-										resolve();
-									}, 200);
-								}, reject);
-							})
-						).concatMap(x => {
+				return this.google().pipe(
+					concatMap(x => {
+						if (this.gapi.auth2) {
 							return this.auth2init();
-						});
-					}
-				});
+						} else {
+							return fromPromise(
+								new Promise((resolve, reject) => {
+									this.gapi.load('auth2', () => {
+										setTimeout(() => {
+											resolve();
+										}, 200);
+									}, reject);
+								})
+							).pipe(
+								concatMap(x => {
+									return this.auth2init();
+								})
+							);
+						}
+					})
+				);
 			}
 		});
 	}
@@ -223,10 +235,12 @@ export class GoogleService {
 		if (this.instance) {
 			return of(this.instance);
 		} else {
-			return this.getAuth2().concatMap(x => {
-				this.instance = this.auth2.getAuthInstance();
-				return of(this.instance);
-			});
+			return this.getAuth2().pipe(
+				concatMap(x => {
+					this.instance = this.auth2.getAuthInstance();
+					return of(this.instance);
+				})
+			);
 		}
 	}
 

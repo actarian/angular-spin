@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import 'rxjs/add/operator/takeUntil';
+import { takeUntil } from 'rxjs/operators';
 import { PageComponent } from '../../core/pages';
 import { RouteService } from '../../core/routes';
 import { Region, RegionService } from '../../models';
@@ -28,26 +28,26 @@ export class RegionsComponent extends PageComponent implements OnInit {
 	}
 
 	getRegions(): void {
-		this.regionService.getList()
-			.takeUntil(this.unsubscribe)
-			.subscribe(regions => this.regions = regions);
+		this.regionService.getList().pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(regions => this.regions = regions);
 	}
 
 	add(name: string): void {
 		name = name.trim();
 		if (!name) { return; }
-		this.regionService.add({ name } as Region)
-			.takeUntil(this.unsubscribe)
-			.subscribe(region => {
-				this.regions.push(region);
-			});
+		this.regionService.add({ name } as Region).pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(region => {
+			this.regions.push(region);
+		});
 	}
 
 	delete(region: Region): void {
 		this.regions = this.regions.filter(h => h !== region);
-		this.regionService.delete(region)
-			.takeUntil(this.unsubscribe)
-			.subscribe();
+		this.regionService.delete(region).pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe();
 	}
 
 }

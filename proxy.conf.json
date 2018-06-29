@@ -1,0 +1,11 @@
+{
+	"/proxy": {
+		"changeOrigin": true,
+		"logLevel": "debug",
+		"pathRewrite": {
+			"^/proxy": ""
+		},
+		"secure": true,
+		"target": "https://www.eurospin-viaggi.it"
+	}
+}

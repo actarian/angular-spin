@@ -3,13 +3,13 @@ import { DisposableComponent } from '../../core/disposable';
 import { FilterService, SearchService } from '../../models';
 
 @Component({
-	selector: 'section-search-result',
-	templateUrl: './search-result.component.html',
-	styleUrls: ['./search-result.component.scss'],
+	selector: 'section-serp-list',
+	templateUrl: './serp-list.component.html',
+	styleUrls: ['./serp-list.component.scss'],
 	exportAs: 'results'
 })
 
-export class SearchResultComponent extends DisposableComponent {
+export class SerpListComponent extends DisposableComponent {
 
 	constructor(
 		public search: SearchService,

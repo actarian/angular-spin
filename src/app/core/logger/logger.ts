@@ -29,8 +29,7 @@ export class Logger {
 	http(error: HttpErrorResponse) {
 		this.httpError = error;
 		this.logs.push(error.message);
-		console.log('askdjlkasjdlkasjd');
-		console.error.apply(console, error);
+		console.warn('Logger.http.error', error.status, error.statusText, error.url);
 	}
 
 	clear() {

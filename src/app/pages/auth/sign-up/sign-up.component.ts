@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
 import { FacebookService, FacebookUser, GoogleService, GoogleUser } from '../../../core';
 import { AuthService } from '../../../core/auth';
 import { PageComponent } from '../../../core/pages';
@@ -34,57 +35,57 @@ export class SignUpComponent extends PageComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.params
-			.takeUntil(this.unsubscribe)
-			.subscribe(model => {
-				if (model) {
-					console.log('SignUpComponent.params', model);
-					if (model.facebook) {
-						this.facebook = model.facebook as FacebookUser;
-						this.model.firstName = this.facebook.first_name;
-						this.model.lastName = this.facebook.last_name;
-						this.model.email = this.facebook.email;
-						this.model.emailConfirm = this.facebook.email;
-					}
-					if (model.google) {
-						this.google = model.google as GoogleUser;
-						this.model.firstName = this.google.firstName;
-						this.model.lastName = this.google.lastName;
-						this.model.email = this.google.email;
-						this.model.emailConfirm = this.google.email;
-					}
+		this.params.pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(model => {
+			if (model) {
+				console.log('SignUpComponent.params', model);
+				if (model.facebook) {
+					this.facebook = model.facebook as FacebookUser;
+					this.model.firstName = this.facebook.first_name;
+					this.model.lastName = this.facebook.last_name;
+					this.model.email = this.facebook.email;
+					this.model.emailConfirm = this.facebook.email;
 				}
-			});
+				if (model.google) {
+					this.google = model.google as GoogleUser;
+					this.model.firstName = this.google.firstName;
+					this.model.lastName = this.google.lastName;
+					this.model.email = this.google.email;
+					this.model.emailConfirm = this.google.email;
+				}
+			}
+		});
 	}
 
 	onSubmit(): void {
 		this.submitted = true;
-		this.userService.add(this.model)
-			.takeUntil(this.unsubscribe)
-			.subscribe(
-				user => {
-					this.user = user;
-				}, error => {
-					this.error = error;
-					this.submitted = false;
-				});
+		this.userService.add(this.model).pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(
+			user => {
+				this.user = user;
+			}, error => {
+				this.error = error;
+				this.submitted = false;
+			});
 	}
 
 	onFacebookLogout(): void {
-		this.facebookService.logout()
-			.takeUntil(this.unsubscribe)
-			.subscribe(x => {
-				console.log('SignUpComponent.onFacebookLogout', x);
-				this.facebook = null;
-			});
+		this.facebookService.logout().pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(x => {
+			console.log('SignUpComponent.onFacebookLogout', x);
+			this.facebook = null;
+		});
 	}
 
 	onGoogleLogout(): void {
-		this.googleService.logout()
-			.takeUntil(this.unsubscribe)
-			.subscribe(x => {
-				console.log('SignUpComponent.onGoogleLogout', x);
-				this.google = null;
-			});
+		this.googleService.logout().pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(x => {
+			console.log('SignUpComponent.onGoogleLogout', x);
+			this.google = null;
+		});
 	}
 }

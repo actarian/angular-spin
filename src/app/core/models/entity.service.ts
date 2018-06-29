@@ -8,7 +8,7 @@ import { IdentityService } from './identity.service';
 export class EntityService<T extends Entity> extends IdentityService<T> {
 
 	get collection(): string {
-		return 'entity';
+		return '/api/entity';
 	}
 
 	getDetailByName(name: string): Observable<T[]> {

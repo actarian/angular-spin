@@ -6,7 +6,7 @@ export class AuthToken {
 	constructor(
 		public accessToken: string,
 		public expiresIn: number = 0
-	) { };
+	) { }
 }
 
 @Injectable()

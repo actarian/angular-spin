@@ -1,6 +1,6 @@
 import { Option } from '../core/models';
 
-export enum SearchViewTypes {
+export enum SerpViewTypes {
 	List = 0,
 	Map = 1,
 }

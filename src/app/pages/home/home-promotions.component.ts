@@ -3,11 +3,11 @@ import { Promotion, PromotionService } from '../../models';
 
 @Component({
 	selector: 'section-promotions',
-	templateUrl: './promotions.component.html',
-	styleUrls: ['./promotions.component.scss']
+	templateUrl: './home-promotions.component.html',
+	styleUrls: ['./home-promotions.component.scss']
 })
 
-export class PromotionsComponent implements OnInit {
+export class HomePromotionsComponent implements OnInit {
 
 	promotions: Promotion[] = [];
 

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { switchMap, takeUntil, tap } from 'rxjs/operators';
 import { PageComponent } from '../../../core/pages';
-import { FacebookService, GoogleService } from '../../../core/plugins';
+import { FacebookService, FacebookUser, GoogleService, GoogleUser } from '../../../core/plugins';
 import { RouteService } from '../../../core/routes';
 import { UserAuth, UserService } from '../../../models';
 
@@ -12,6 +13,9 @@ import { UserAuth, UserService } from '../../../models';
 })
 
 export class SignComponent extends PageComponent implements OnInit {
+
+	facebookMe: FacebookUser;
+	googleMe: GoogleUser;
 
 	constructor(
 		route: ActivatedRoute,
@@ -25,46 +29,40 @@ export class SignComponent extends PageComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.facebookService.status()
-			.takeUntil(this.unsubscribe)
-			.subscribe(x => {
-				// console.log('SignComponent.facebookService.status', x);
-			});
-		this.googleService.auth2Instance()
-			.takeUntil(this.unsubscribe)
-			.subscribe(x => {
-				// console.log('SignComponent.googleService.auth2Instance', x);
-			});
+		this.facebookService.status().pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(x => {
+			// console.log('SignComponent.facebookService.status', x);
+		});
+		this.googleService.auth2Instance().pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(x => {
+			// console.log('SignComponent.googleService.auth2Instance', x);
+		});
 	}
 
 	onFacebook(): void {
-		this.facebookService.getMe()
-			.takeUntil(this.unsubscribe)
-			.subscribe(me => {
-				this.userService.tryFacebook(me)
-					.takeUntil(this.unsubscribe)
-					.subscribe(
-						user => {
-							this.onAuth(user[0]);
-						}, error => {
-							this.onSignUp({ facebook: me });
-						});
-			});
+		this.facebookService.getMe().pipe(
+			takeUntil(this.unsubscribe),
+			tap(me => this.facebookMe = me),
+			switchMap(me => this.userService.tryFacebook(me)),
+		).subscribe(user => {
+			this.onAuth(user[0]);
+		}, error => {
+			this.onSignUp({ facebook: this.facebookMe });
+		});
 	}
 
 	onGoogle(): void {
-		this.googleService.getMe()
-			.takeUntil(this.unsubscribe)
-			.subscribe(me => {
-				this.userService.tryGoogle(me)
-					.takeUntil(this.unsubscribe)
-					.subscribe(
-						user => {
-							this.onAuth(user[0]);
-						}, error => {
-							this.onSignUp({ google: me });
-						});
-			});
+		this.googleService.getMe().pipe(
+			takeUntil(this.unsubscribe),
+			tap(me => this.googleMe = me),
+			switchMap(me => this.userService.tryGoogle(me)),
+		).subscribe(user => {
+			this.onAuth(user[0]);
+		}, error => {
+			this.onSignUp({ google: this.googleMe });
+		});
 	}
 
 	onAuth(user: UserAuth) {

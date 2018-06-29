@@ -1,10 +1,10 @@
 import { Component, ComponentFactory, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
 import { DisposableComponent } from '../disposable';
 import { RouteService } from '../routes';
 import { PageComponent } from './page.component';
 import { PageDirective } from './page.directive';
-
 
 @Component({
 	selector: 'page-hoster',
@@ -23,17 +23,17 @@ export class PageHosterComponent extends DisposableComponent implements OnInit {
 		private componentFactoryResolver: ComponentFactoryResolver
 	) {
 		super();
-		this.routeService.getPageComponentFactory()
-			.takeUntil(this.unsubscribe)
-			.subscribe(factory => {
-				// console.log('PageHosterComponent', factory);
-				this.factory = factory;
-				this.hostPageRef.clear();
-				const componentRef = this.hostPageRef.createComponent(this.factory);
-				const instance = componentRef.instance;
-				instance.page = this.routeService.page;
-				instance.params = this.routeService.params;
-			});
+		this.routeService.getPageComponentFactory().pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(factory => {
+			// console.log('PageHosterComponent', factory);
+			this.factory = factory;
+			this.hostPageRef.clear();
+			const componentRef = this.hostPageRef.createComponent(this.factory);
+			const instance = componentRef.instance;
+			instance.page = this.routeService.page;
+			instance.params = this.routeService.params;
+		});
 	}
 
 	ngOnInit() {

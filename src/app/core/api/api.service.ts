@@ -18,8 +18,6 @@ export class ApiRequestOptions {
 
 export class ApiService<T extends Identity> {
 
-	protected base = '/api/';
-
 	private _logger: Logger;
 	get logger() {
 		if (!this._logger) {
@@ -41,7 +39,7 @@ export class ApiService<T extends Identity> {
 	}
 
 	get url(): string {
-		return `${this.base}${this.collection.toLowerCase()}`;
+		return `${this.collection.toLowerCase()}`;
 	}
 
 	constructor(
@@ -88,4 +86,29 @@ export class ApiService<T extends Identity> {
 		return this.http.delete<T[]>(url, options).pipe(tap(x => this.logger.log(url)));
 	}
 
+	toCamelCase(input: any): any {
+		let output, key, keyCamelCase, value;
+		if (input instanceof Array) {
+			return input.map((value: any) => {
+				if (typeof value === 'object') {
+					value = this.toCamelCase(value);
+				}
+				return value;
+			});
+		} else {
+			output = {};
+			for (key in input) {
+				if (input.hasOwnProperty(key)) {
+					keyCamelCase = (key.charAt(0).toLowerCase() + key.slice(1) || key).toString();
+					keyCamelCase = keyCamelCase === 'url' ? 'slug' : keyCamelCase; // !!!
+					value = input[key];
+					if (value instanceof Array || (value !== null && value.constructor === Object)) {
+						value = this.toCamelCase(value);
+					}
+					output[keyCamelCase] = value;
+				}
+			}
+		}
+		return output;
+	}
 }

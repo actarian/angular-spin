@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import 'rxjs/add/operator/takeUntil';
+import { takeUntil } from 'rxjs/operators';
 import { DisposableComponent } from '../../core/disposable';
 import { Label } from '../../core/labels';
 import { RouteService } from '../../core/routes';
@@ -23,22 +23,22 @@ export class HeaderComponent extends DisposableComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.routeService.languages
-			.takeUntil(this.unsubscribe)
-			.subscribe(x => {
-				// console.log('HeaderComponent.getLanguages', x);
-				this.languages = x;
-			});
-		this.routeService.language
-			.takeUntil(this.unsubscribe)
-			.subscribe(x => {
-				// console.log('HeaderComponent.getLanguage', x);
-				this.currentLanguage = x;
-			});
+		this.routeService.languages.pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(x => {
+			// console.log('HeaderComponent.getLanguages', x);
+			this.languages = x;
+		});
+		this.routeService.language.pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(x => {
+			// console.log('HeaderComponent.getLanguage', x);
+			this.currentLanguage = x;
+		});
 		/*
-	this.routeService.clock
-		.takeUntil(this.unsubscribe)
-		.subscribe(x => this.clock$ = x);
+	this.routeService.clock.pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(x => this.clock$ = x);
 		*/
 	}
 

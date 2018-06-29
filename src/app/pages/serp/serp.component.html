@@ -5,22 +5,26 @@
 				<svg class="ico ico-pin">
 					<use xlink:href="#ico-pin"></use>
 				</svg>
-				<span>Mappa </span> </div>
+				<span>Mappa </span>
+			</div>
 			<div class="item" (click)="active = popupOrder" #popupOrder>
 				<svg class="ico ico-order">
 					<use xlink:href="#ico-order"></use>
 				</svg>
-				<span>Ordina </span> </div>
+				<span>Ordina </span>
+			</div>
 			<div class="item" (click)="active = popupFilter" #popupFilter>
 				<svg class="ico ico-filter">
 					<use xlink:href="#ico-filter"></use>
 				</svg>
-				<span>Filtra </span> </div>
+				<span>Filtra </span>
+			</div>
 			<div class="item" (click)="active = popupMainSearch" #popupMainSearch>
 				<svg class="ico ico-search">
 					<use xlink:href="#ico-search"></use>
 				</svg>
-				<span>Modifica </span> </div>
+				<span>Modifica </span>
+			</div>
 		</div>
 		<!-- Order Popup -->
 		<div class="serp-filters--popup serp-order--popup" [ngClass]="{ 'active' : active == popupOrder }">
@@ -102,8 +106,8 @@
 				<section-filter (selectFilter)="filterService.setGroups()"></section-filter>
 			</div>
 		</div>
-		<section-search-result class="serp-results" *ngIf="viewType == viewTypes.List"></section-search-result>
-		<section-search-result-map class="serp-results" *ngIf="viewType == viewTypes.Map"></section-search-result-map>
+		<section-serp-list class="serp-results" *ngIf="viewType == viewTypes.List"></section-serp-list>
+		<section-serp-map class="serp-results" *ngIf="viewType == viewTypes.Map"></section-serp-map>
 	</div>
 </div>
 

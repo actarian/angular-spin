@@ -6,11 +6,11 @@ import { FilterService, Group, GroupType } from '../../models';
 
 @Component({
 	selector: 'section-filter',
-	templateUrl: './filter.component.html',
-	styleUrls: ['./filter.component.scss']
+	templateUrl: './serp-filter.component.html',
+	styleUrls: ['./serp-filter.component.scss']
 })
 
-export class FilterComponent extends DisposableComponent implements OnInit {
+export class SerpFilterComponent extends DisposableComponent implements OnInit {
 
 	groupTypes: any;
 	groupsFiltered$: Observable<Group<Option>[]>;

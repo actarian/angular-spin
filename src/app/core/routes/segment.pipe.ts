@@ -15,6 +15,19 @@ export class SegmentPipe implements PipeTransform {
 
 	transform(segments: any[] | string): any[] {
 		segments = segments != null ? (Array.isArray(segments) ? segments : segments.split('/')) : [];
+		let path: string = segments.join('/');
+		path = this.location.normalize(path);
+		if (path.indexOf('/') !== 0) {
+			path = `/${path}`;
+		}
+		segments = path.split('/');
+		// console.log('SegmentPipe', segments.length);
+		return segments;
+	}
+
+	/*
+	__transform(segments: any[] | string): any[] {
+		segments = segments != null ? (Array.isArray(segments) ? segments : segments.split('/')) : [];
 		let paths = segments.filter(x => {
 			return typeof x === 'string';
 		});
@@ -30,4 +43,6 @@ export class SegmentPipe implements PipeTransform {
 		// console.log('SegmentPipe', paths.length, datas.length);
 		return paths.concat(datas);
 	}
+	*/
+
 }
