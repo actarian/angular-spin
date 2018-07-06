@@ -13,20 +13,56 @@ export enum GroupType {
 	Rating = 4
 }
 
-export class Group<T> {
+export enum GroupSelectionType {
+	And = 0,
+	Or = 1,
+	Multiple = 2
+}
+
+export class Group {
 	type?: GroupType = GroupType.Tipology;
-	name?: string;
-	items?: T[];
+	selectionType?: GroupSelectionType = GroupSelectionType.And;
+	name?: string = 'Group';
+	items?: Option[] = [];
+	active?: boolean = false;
 	selected?: boolean = false;
 	visible?: boolean = false;
-	constructor(options?: Group<T>) {
+	matches?: any = {};
+	constructor(options?: Group) {
 		if (options) {
-			this.type = options.type || GroupType.Tipology;
-			this.name = options.name || 'Group';
-			this.items = options.items || [];
-			this.selected = options.selected || false;
-			this.visible = options.visible || false;
+			this.type = options.type || this.type;
+			this.selectionType = options.selectionType || this.selectionType;
+			this.name = options.name || this.name;
+			this.items = options.items || this.items;
+			this.active = options.active || this.active;
+			this.selected = options.selected || this.selected;
+			this.visible = options.visible || this.visible;
+			this.match = typeof options.match === 'function' ? options.match : this.match;
 		}
+	}
+	match?(result: any, option: Option) {
+		return true;
+	}
+	clear?() {
+		this.matches = {};
+		this.selected = this.items.find(option => option.selected) !== undefined;
+		this.items.forEach(option => option.count = 0);
+	}
+	filter?(result: any) {
+		let visible = true;
+		this.matches[result.id] = false;
+		this.items.forEach(option => {
+			if (option.selected) {
+				let match = this.match(result, option);
+				if (this.selectionType === GroupSelectionType.Multiple) {
+					match = match || this.matches[result.id];
+				}
+				if (match) {
+					this.matches[result.id] = true;
+				}
+				visible = visible && match;
+			}
+		});
 	}
 }
 

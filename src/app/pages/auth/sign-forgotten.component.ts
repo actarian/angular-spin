@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
-import { PageComponent } from '../../../core/pages';
-import { User, UserService } from '../../../models';
+import { PageComponent } from '../../core/pages';
+import { User, UserService } from '../../models';
 
 @Component({
 	selector: 'page-sign-forgotten',

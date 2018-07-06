@@ -1,9 +1,6 @@
-
-
-
 <p-accordion [multiple]="true">
 
-	<p-accordionTab [header]="group.name" [(selected)]="group.selected" *ngFor="let group of groupsFiltered$ | async">
+	<p-accordionTab [header]="group.name" [(selected)]="group.active" *ngFor="let group of groupsFiltered$ | async">
 		<ng-container *ngIf="group.visible">
 			<ul class="list">
 				<ng-container *ngFor="let item of group.items; let i = index;">

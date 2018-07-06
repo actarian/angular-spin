@@ -1,7 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DisposableComponent } from '../../core/disposable';
-import { Option } from '../../core/models';
 import { FilterService, Group, GroupType } from '../../models';
 
 @Component({
@@ -13,8 +12,8 @@ import { FilterService, Group, GroupType } from '../../models';
 export class SerpFilterComponent extends DisposableComponent implements OnInit {
 
 	groupTypes: any;
-	groupsFiltered$: Observable<Group<Option>[]>;
-	private groupsFiltered: Group<Option>[];
+	groupsFiltered$: Observable<Group[]>;
+	private groupsFiltered: Group[];
 
 	@Output()
 	selectFilter: EventEmitter<any> = new EventEmitter();

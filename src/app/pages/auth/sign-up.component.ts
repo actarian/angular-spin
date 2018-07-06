@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
-import { FacebookService, FacebookUser, GoogleService, GoogleUser } from '../../../core';
-import { AuthService } from '../../../core/auth';
-import { PageComponent } from '../../../core/pages';
-import { RouteService } from '../../../core/routes';
-import { User, UserService, UserSignUp } from '../../../models';
+import { FacebookService, FacebookUser, GoogleService, GoogleUser } from '../../core';
+import { AuthService } from '../../core/auth';
+import { PageComponent } from '../../core/pages';
+import { RouteService } from '../../core/routes';
+import { User, UserService, UserSignUp } from '../../models';
 
 @Component({
 	selector: 'page-sign-up',

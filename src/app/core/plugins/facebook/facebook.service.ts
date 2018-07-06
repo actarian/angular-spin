@@ -106,6 +106,26 @@ export class FacebookService {
 	}
 
 	status() {
+		return this.facebook().pipe(
+			concatMap(f => {
+				return fromPromise(new Promise((resolve, reject) => {
+					f.getLoginStatus((r) => {
+						this.authResponse = null;
+						if (r.status === 'connected') {
+							this.authResponse = r.authResponse;
+							this.storage.set('facebook', r.authResponse);
+							resolve(r);
+						} else if (r.status === 'not_authorized') {
+							this.storage.delete('facebook');
+							reject(r);
+						} else {
+							reject(r);
+						}
+					}, { scope: this.options.scope });
+				}));
+			})
+		);
+		/*
 		return fromPromise(new Promise((resolve, reject) => {
 			this.facebook().subscribe(x => {
 				x.getLoginStatus((r) => {
@@ -123,9 +143,30 @@ export class FacebookService {
 				}, { scope: this.options.scope });
 			});
 		}));
+		*/
 	}
 
 	login() {
+		return this.facebook().pipe(
+			concatMap(f => {
+				return fromPromise(new Promise((resolve, reject) => {
+					f.login((r) => {
+						this.authResponse = null;
+						if (r.status === 'connected') {
+							this.authResponse = r.authResponse;
+							this.storage.set('facebook', r.authResponse);
+							resolve(r);
+						} else if (r.status === 'not_authorized') {
+							this.storage.delete('facebook');
+							reject(r);
+						} else {
+							reject(r);
+						}
+					}, { scope: this.options.scope });
+				}));
+			})
+		);
+		/*
 		return fromPromise(new Promise((resolve, reject) => {
 			this.facebook().subscribe(x => {
 				x.login((r) => {
@@ -143,9 +184,22 @@ export class FacebookService {
 				}, { scope: this.options.scope });
 			});
 		}));
+		*/
 	}
 
 	logout(): Observable<any> {
+		return this.facebook().pipe(
+			concatMap(f => {
+				return fromPromise(new Promise((resolve, reject) => {
+					console.log('f', f);
+					f.logout(r => {
+						resolve(r);
+						this.storage.delete('facebook');
+					});
+				}));
+			})
+		);
+		/*
 		return fromPromise(new Promise((resolve, reject) => {
 			this.facebook().subscribe(x => {
 				x.logout(r => {
@@ -154,9 +208,35 @@ export class FacebookService {
 				});
 			});
 		}));
+		*/
 	}
 
 	getMe(fields?: string): Observable<FacebookUser> {
+		return this.login().pipe(
+			concatMap(l => {
+				return fromPromise(new Promise((resolve, reject) => {
+					fields = fields || this.options.fields;
+					// console.log(x);
+					this.FB.api('/me', {
+						fields: fields,
+						accessToken: this.options.tokenClient,
+					}, (r) => {
+						if (!r || r.error) {
+							const error = r ? r.error : 'error';
+							console.log('FacebookService.getMe.error', error);
+							reject(r.error);
+						} else {
+							const user = r as FacebookUser;
+							user.authResponse = this.authResponse;
+							user.facebookToken = this.authResponse.accessToken;
+							// console.log('FacebookService.getMe.success', user);
+							resolve(user);
+						}
+					});
+				}));
+			})
+		);
+		/*
 		return fromPromise(new Promise((resolve, reject) => {
 			return this.login().subscribe(x => {
 				fields = fields || this.options.fields;
@@ -179,6 +259,7 @@ export class FacebookService {
 				});
 			});
 		}));
+		*/
 	}
 
 }

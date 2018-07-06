@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, NgZone, OnDestroy, Renderer2, ViewChild } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import { Observable } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
@@ -6,6 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { DisposableComponent } from '../../core/disposable';
 import { MapboxService } from '../../core/plugins';
 import { FilterService, SearchResult, SearchService } from '../../models';
+
 
 @Component({
 	selector: 'section-serp-map',
@@ -18,11 +19,12 @@ export class SerpMapComponent extends DisposableComponent implements AfterViewIn
 
 	@ViewChild('map') elementRef: ElementRef;
 	map: any;
-
 	map$: Observable<mapboxgl.Map>;
 	markers: mapboxgl.Marker[];
+	ready: boolean = false;
 
 	constructor(
+		private zone: NgZone,
 		private el: ElementRef,
 		private renderer: Renderer2,
 		public search: SearchService,
@@ -39,38 +41,150 @@ export class SerpMapComponent extends DisposableComponent implements AfterViewIn
 		combineLatest(this.map$, this.search.resultsFiltered$).pipe(
 			takeUntil(this.unsubscribe)
 		).subscribe((data: any[]): void => {
-			const map: mapboxgl.Map = data[0];
-			const results: SearchResult[] = data[1].filter(result => result.latitude);
-			if (map) {
-				if (this.markers) {
-					this.markers.forEach(marker => marker.remove());
-				}
-				const markers = results.map(result => {
-					const marker = new mapboxgl.Marker().setLngLat([result.longitude, result.latitude]);
-					marker.addTo(map);
-					return marker;
+
+			this.zone.runOutsideAngular(() => {
+				const map: mapboxgl.Map = data[0];
+				const results: SearchResult[] = data[1].filter(result => result.latitude);
+				this.onUpdateMapResults(map, results);
+				this.zone.run(() => {
+					this.map = map;
+					this.ready = true;
 				});
-				this.markers = markers;
-				const coordinates: mapboxgl.LngLat[] = results.map(result => {
-					return new mapboxgl.LngLat(result.longitude, result.latitude);
-				});
-				const bounds = coordinates.reduce((bounds, coord) => {
-					return bounds.extend(coord);
-				}, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
-				map.fitBounds(bounds, { linear: true, duration: 0, padding: 50, maxZoom: 13 });
-				/*
-				map.fitBounds(bounds, {
-					speed: 5,
-					curve: 1,
-					padding: 30,
-					linear: false,
-					maxZoom: 16,
-				});
-				*/
-				console.log('SearchResultMapComponent', bounds);
-				this.map = map;
-			}
+			});
+
 		});
+	}
+
+	onUpdateMapResults(map: mapboxgl.Map, results: SearchResult[]) {
+		// results to features
+		const features = results.map(result => {
+			return {
+				type: 'Feature',
+				geometry: {
+					type: 'Point',
+					coordinates: [result.longitude, result.latitude, 0.0]
+				},
+				properties: result,
+			};
+		});
+
+		const geoJsonResults = {
+			type: 'FeatureCollection',
+			crs: {
+				type: 'name',
+				properties: {
+					name: 'ResultsFeatures'
+				}
+			},
+			features: features
+		};
+
+		if (map) {
+
+			if (map.getSource('results')) {
+				map.getSource('results').setData(geoJsonResults);
+			} else {
+				map.addSource('results', {
+					type: 'geojson',
+					data: geoJsonResults,
+					cluster: true,
+					clusterMaxZoom: 14, // Max zoom to cluster points on
+					clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
+				});
+			}
+
+			if (!map.getLayer('clusters')) {
+				map.addLayer({
+					id: 'clusters',
+					type: 'circle',
+					source: 'results',
+					filter: ['has', 'point_count'],
+					paint: {
+						'circle-color': [
+							'step',
+							['get', 'point_count'],
+							'#51bbd6', 100,
+							'#f1f075', 750,
+							'#f28cb1'
+						],
+						'circle-radius': [
+							'step',
+							['get', 'point_count'],
+							20, 100,
+							30, 750,
+							40
+						]
+					}
+				});
+			}
+
+			if (!map.getLayer('cluster-count')) {
+				map.addLayer({
+					id: 'cluster-count',
+					type: 'symbol',
+					source: 'results',
+					filter: ['has', 'point_count'],
+					layout: {
+						'text-field': '{point_count_abbreviated}',
+						'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+						'text-size': 12
+					}
+				});
+			}
+
+			if (!map.getLayer('unclustered-point')) {
+				const unclustered = map.addLayer({
+					id: 'unclustered-point',
+					type: 'circle',
+					source: 'results',
+					filter: ['!has', 'point_count'],
+					paint: {
+						'circle-color': '#11b4da',
+						'circle-radius': 4,
+						'circle-stroke-width': 1,
+						'circle-stroke-color': '#fff'
+					}
+				});
+				unclustered.on('click', (e) => {
+					this.zone.run(() => {
+						console.log('aaa');
+					});
+				});
+			}
+
+			/*
+			// remove add markers
+			if (this.markers) {
+				this.markers.forEach(marker => marker.remove());
+			}
+			const markers = results.map(result => {
+				const marker = new mapboxgl.Marker().setLngLat([result.longitude, result.latitude]);
+				marker.addTo(map);
+				return marker;
+			});
+			this.markers = markers;
+			*/
+
+			const coordinates: mapboxgl.LngLat[] = results.map(result => {
+				return new mapboxgl.LngLat(result.longitude, result.latitude);
+			});
+			const bounds = coordinates.reduce((bounds, coord) => {
+				return bounds.extend(coord);
+			}, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
+			map.fitBounds(bounds, { linear: true, duration: 0, padding: 50, maxZoom: 13 });
+
+			/*
+			map.fitBounds(bounds, {
+				speed: 5,
+				curve: 1,
+				padding: 30,
+				linear: false,
+				maxZoom: 16,
+			});
+			*/
+
+			console.log('finish!');
+		}
 	}
 
 	ngOnDestroy() {

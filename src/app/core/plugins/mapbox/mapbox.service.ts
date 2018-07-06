@@ -50,6 +50,7 @@ export class MapboxService {
 			const source = fromEvent(map, 'load').pipe(
 				concatMap(() => {
 					map.resize();
+					console.log('loaded!');
 					return of(map);
 				})
 			);

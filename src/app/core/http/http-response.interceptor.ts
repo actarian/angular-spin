@@ -1,5 +1,5 @@
 
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import 'rxjs/add/observable/throw';
@@ -47,10 +47,12 @@ export class HttpResponseInterceptor implements HttpInterceptor {
 				// console.log('HttpResponseInterceptor', event);
 				this.logger.httpError = null;
 				this.logger.log(event);
+				/*
 				if (event instanceof HttpResponse) {
 					console.log('event instanceof HttpResponse');
 					// do stuff with response if you want
 				}
+				*/
 			}),
 			catchError((error: any) => {
 				// console.warn('HttpResponseInterceptor', error);

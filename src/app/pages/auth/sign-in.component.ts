@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
-import { FacebookService, FacebookUser, GoogleService, GoogleUser } from '../../../core';
-import { AuthService, AuthToken } from '../../../core/auth';
-import { ControlBase, FormService } from '../../../core/forms';
-import { PageComponent } from '../../../core/pages';
-import { RouteService } from '../../../core/routes';
-import { UserAuth, UserService, UserSignIn } from '../../../models';
+import { FacebookService, FacebookUser, GoogleService, GoogleUser } from '../../core';
+import { AuthService, AuthToken } from '../../core/auth';
+import { ControlBase, FormService } from '../../core/forms';
+import { PageComponent } from '../../core/pages';
+import { RouteService } from '../../core/routes';
+import { UserAuth, UserService, UserSignIn } from '../../models';
 
 @Component({
 	selector: 'page-sign-in',

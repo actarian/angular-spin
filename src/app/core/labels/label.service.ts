@@ -53,7 +53,6 @@ export class LabelService<T extends Label> extends ApiService<T> implements Tran
 			return of(null);
 		}
 		this.lang = lang;
-		console.log(this.lang);
 		if (this.cache[lang]) {
 			return of(this.cache[lang]);
 		} else {

@@ -12,7 +12,7 @@ export const label: Label[] = [{
 		},
 		errors: {
 			required: 'campo obbligatorio',
-			email: 'l\indirizzo email non è valido',
+			email: 'l\'indirizzo email non è valido',
 			minlength: 'dev\'essere almento {{value}} caratteri',
 			match: 'I campi devono corrispondere',
 		},
@@ -51,6 +51,7 @@ export const label: Label[] = [{
 			title: 'Recupera la password',
 			email: 'Email',
 			send: 'Invia',
+			forgottenSent: 'Un\'email con le istruzioni per il recupero della password è stata inviata all\'indirizzo email fornito.',
 		},
 		signUp: {
 			title: 'Crea il tuo account',
@@ -58,6 +59,7 @@ export const label: Label[] = [{
 			lastName: 'Cognome',
 			email: 'Email',
 			emailConfirm: 'Conferma email',
+			logout: 'Esci',
 			password: 'Password',
 			privacyLink: 'Privacy link',
 			privacy: 'Privacy',

@@ -4,12 +4,12 @@ import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { debounceTime, tap } from 'rxjs/operators';
-import { EntityService, Option } from '../core/models';
+import { EntityService } from '../core/models';
 import { RouteService } from '../core/routes';
 import { LocalStorageService, StorageService } from '../core/storage';
 import { Destination, DestinationTypes } from './destination';
 import { DestinationService } from './destination.service';
-import { Group, GroupType, Sorting } from './filter';
+import { Group, Sorting } from './filter';
 import { FilterService } from './filter.service';
 import { CalendarOption, Duration, durations, MainSearch, SearchResult } from './search';
 
@@ -79,24 +79,17 @@ export class SearchService extends EntityService<SearchResult> {
 	private beginObserveResults() {
 		combineLatest(this.filterService.groups$, this.filterService.sortings$, this.results)
 			.subscribe((data: any[]): void => {
-				const groups: Group<Option>[] = data[0];
+				const groups: Group[] = data[0];
 				const sorting: Sorting = data[1];
 				let results: SearchResult[] = data[2];
+				groups.forEach(group => group.clear());
 				results.forEach(result => {
 					result.visible = true;
-					this.filterService.valueSelected.forEach(group => {
-						group.items.forEach(option => {
-							switch (group.type) {
-								case GroupType.Treatment:
-									result.visible = result.visible && result.accomodation === option.name;
-									break;
-								case GroupType.Rating:
-									result.visible = result.visible && result.rating === option.name;
-									break;
-								default:
-									result.visible = result.visible && result.tags.indexOf(option.id) !== -1;
-							}
-						});
+					groups.forEach(group => {
+						if (group.selected) {
+							group.filter(result);
+							result.visible = result.visible && group.matches[result.id];
+						}
 					});
 				});
 				results = results.filter(result => result.visible);
@@ -150,7 +143,7 @@ export class SearchService extends EntityService<SearchResult> {
 			// console.log('SearchService.onSearchIn', params, model);
 			this.get(params).pipe(
 				tap(x => {
-					console.log('SearchService.onSearchIn.tap', x[0]);
+					// console.log('SearchService.onSearchIn.tap', x[0]);
 				})
 			).subscribe(x => {
 				this.results$.next(x);

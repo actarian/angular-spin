@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
-import { PageComponent } from '../../../core/pages';
-import { FacebookService, FacebookUser, GoogleService, GoogleUser } from '../../../core/plugins';
-import { RouteService } from '../../../core/routes';
-import { UserAuth, UserService } from '../../../models';
+import { PageComponent } from '../../core/pages';
+import { FacebookService, FacebookUser, GoogleService, GoogleUser } from '../../core/plugins';
+import { RouteService } from '../../core/routes';
+import { UserAuth, UserService } from '../../models';
 
 @Component({
 	selector: 'page-sign',

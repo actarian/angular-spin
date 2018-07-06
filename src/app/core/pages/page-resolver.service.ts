@@ -27,7 +27,7 @@ export class PageResolverService implements Resolve<PageResolver> {
 			return x.path;
 		});
 		const slug = this.routeService.toSlug(paths).join('/');
-		console.log('PageResolverService.resolve', slug);
+		// console.log('PageResolverService.resolve', slug);
 		return this.pageService.getPageBySlug(slug).pipe(
 			take(1),
 			map(pages => {

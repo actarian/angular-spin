@@ -17,18 +17,19 @@
 			</button>
 		</div>
 
-		<form class="form" name="signIn" role="form" novalidate autocomplete="off" (ngSubmit)="onSubmit()" #signIn="ngForm">
+		<form class="form" name="signIn" role="form" novalidate autocomplete="off" (ngSubmit)="signIn.valid && onSubmit()" #signIn="ngForm">
 			<div class="form-group">
 				<label for="email">{{ 'signIn.email' | translate }}</label>
-				<input type="email" class="form-control" required [(ngModel)]="model.email" name="email" placeholder="{{ 'signIn.email' | translate }}" #email="ngModel" #input>
-				<div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
+				<input type="email" class="form-control" required pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" [(ngModel)]="model.email" name="email" placeholder="{{ 'signIn.email' | translate }}" #email="ngModel">
+				<div *ngIf="email.invalid && (signIn.submitted || email.dirty || email.touched)" class="alert alert-danger">
 					<div *ngIf="email.errors.required">{{ 'errors.required' | translate }}</div>
+					<div *ngIf="email.errors.pattern">{{ 'errors.email' | translate }}</div>
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="password">{{ 'signIn.password' | translate }}</label>
 				<input [type]="passwordReveal.value ? 'text' : 'password'" class="form-control" required [(ngModel)]="model.password" name="password" placeholder="{{ 'signIn.password' | translate }}" #password="ngModel">
-				<div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger">
+				<div *ngIf="password.invalid && (signIn.submitted || password.dirty || password.touched)" class="alert alert-danger">
 					<div *ngIf="password.errors.required">{{ 'errors.required' | translate }}</div>
 				</div>
 			</div>
@@ -48,7 +49,7 @@
 					</label>
 				</div>
 			</div>
-			<button type="submit" class="btn btn-primary" [disabled]="submitted || !signIn.form.valid">{{ 'signIn.register' | translate }}</button>
+			<button type="submit" class="btn btn-primary" [ngClass]="{ disabled: submitted, invalid: !signIn.valid }">{{ 'signIn.register' | translate }}</button>
 			<button type="button" class="btn-text" [routerLink]="'recupera-password' | route"><span>{{ 'signIn.passwordForgotten' | translate }}</span></button>
 		</form>
 

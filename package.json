@@ -45,6 +45,7 @@
 		"primeng": "^5.2.6",
 		"rxjs": "^6.1.0",
 		"rxjs-compat": "^6.1.0",
+		"supercluster": "^4.0.1",
 		"zone.js": "^0.8.26"
 	},
 	"devDependencies": {
