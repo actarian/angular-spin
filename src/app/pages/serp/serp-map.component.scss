@@ -20,4 +20,9 @@
 		opacity: 1;
 		pointer-events: all;
 	}
+
+	a.mapboxgl-ctrl-logo,
+	.mapboxgl-ctrl.mapboxgl-ctrl-attrib {
+		display: none;
+	}
 }

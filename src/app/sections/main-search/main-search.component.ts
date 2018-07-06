@@ -21,7 +21,7 @@ export class MainSearchComponent extends DisposableComponent implements OnInit, 
 		private route: ActivatedRoute,
 		private router: Router,
 		private renderer: Renderer2,
-		private elementRef: ElementRef,
+		private element: ElementRef,
 		private changeDetector: ChangeDetectorRef,
 		public search: SearchService
 	) {

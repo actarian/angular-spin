@@ -27,7 +27,7 @@ export const environment = {
 		},
 		mapbox: {
 			accessToken: 'pk.eyJ1IjoiYWN0YXJpYW4iLCJhIjoiY2lqNWU3MnBzMDAyZndnbTM1cjMyd2N2MiJ9.CbuEGSvOAfIYggQv854pRQ',
-			style: 'mapbox://styles/actarian/cjhw1qc7r13t42rnlesk0ul6d',
+			style: 'mapbox://styles/actarian/cjj9o6abv2ma42so5mt78oyoq',
 		},
 	}
 };

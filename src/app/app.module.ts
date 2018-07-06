@@ -23,14 +23,14 @@ import { Logger, LoggerComponent } from './core/logger';
 import { MemoryService } from './core/memory';
 import { PageDirective } from './core/pages';
 import { RouteService } from './core/routes';
-import { ClickOutsideDirective } from './core/ui';
+import { ClickOutsideDirective, LazyImagesDirective } from './core/ui';
 import { ControlEditableComponent } from './forms';
 import { SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent } from './pages/auth';
 import { HomeCategoriesComponent, HomeComponent, HomePromotionsComponent, HomeSearchComponent } from './pages/home';
 import { FancyboxDirective, HotelComponent, HotelTagsPipe } from './pages/hotel';
 import { ProfileComponent } from './pages/profile';
 import { RegionDetailComponent, RegionsComponent } from './pages/regions';
-import { SerpComponent, SerpFilterComponent, SerpListComponent, SerpMapComponent } from './pages/serp';
+import { SerpComponent, SerpFilterComponent, SerpItemComponent, SerpListComponent, SerpMapComponent } from './pages/serp';
 import { FooterComponent, HeaderComponent, NotFoundComponent, RegionSearchComponent, SvgComponent, ValuePropositionComponent } from './sections';
 import { DestinationHintComponent, DestinationTypePipe, MainSearchComponent } from './sections/main-search';
 
@@ -75,11 +75,11 @@ registerLocaleData(localeIt, 'it');
 		AppComponent,
 		SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent, ProfileComponent,
 		HomeComponent, HomeCategoriesComponent, HomePromotionsComponent, HomeSearchComponent,
-		SerpComponent, SerpListComponent, SerpMapComponent,
+		SerpComponent, SerpItemComponent, SerpListComponent, SerpMapComponent,
 		HotelComponent, HotelTagsPipe,
 		RegionsComponent, RegionDetailComponent, RegionSearchComponent,
 		HeaderComponent, DestinationHintComponent, FooterComponent, SerpFilterComponent, NotFoundComponent, SvgComponent, ValuePropositionComponent,
-		ClickOutsideDirective, ControlEditableComponent, DestinationTypePipe, FancyboxDirective, MainSearchComponent, PageDirective, LoggerComponent
+		ClickOutsideDirective, ControlEditableComponent, DestinationTypePipe, FancyboxDirective, LazyImagesDirective, MainSearchComponent, PageDirective, LoggerComponent
 	],
 	providers: [
 		{ provide: LOCALE_ID, useValue: 'it' },

@@ -4,15 +4,17 @@ import { Directive, ElementRef, EventEmitter, HostListener, Output } from '@angu
 	selector: '[clickOutside]'
 })
 export class ClickOutsideDirective {
-	constructor(private elementRef: ElementRef) {
-	}
+
+	constructor(
+		private element: ElementRef
+	) { }
 
 	@Output()
 	public clickOutside = new EventEmitter();
 
 	@HostListener('document:click', ['$event.target'])
 	public onClick(targetElement) {
-		const clickedInside = this.elementRef.nativeElement.contains(targetElement);
+		const clickedInside = this.element.nativeElement.contains(targetElement);
 		if (!clickedInside) {
 			this.clickOutside.emit(null);
 		}

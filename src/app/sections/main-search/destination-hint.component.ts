@@ -33,7 +33,7 @@ export class DestinationHintComponent extends DisposableComponent implements OnI
 
 	constructor(
 		private renderer: Renderer2,
-		private elementRef: ElementRef
+		private element: ElementRef
 	) {
 		super();
 	}

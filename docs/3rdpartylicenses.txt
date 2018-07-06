@@ -350,6 +350,10 @@ MIT
 MIT
 MIT
 
+intersection-observer@0.5.0
+W3C-20150513
+W3C-20150513
+
 json-formatter-js@2.2.0
 MIT
 The MIT License (MIT)

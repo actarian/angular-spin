@@ -13,12 +13,11 @@ import { JsonFormatterComponent } from './json-formatter';
 import { CustomMissingTranslationHandler, LabelPipe, LabelService } from './labels';
 import { Logger } from './logger';
 import { OnceService } from './once';
-import { PageComponent, PageHosterComponent, PageService, Pages } from './pages';
+import { PageComponent, PageHosterComponent, Pages, PageService } from './pages';
 import { FacebookService, GoogleService, MapboxService } from './plugins';
 import { AssetPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe } from './routes';
 import { CookieStorageService, LocalStorageService, SessionStorageService, StorageService } from './storage';
 import { TrustPipe } from './trust';
-import { ClickOutsideDirective } from './ui';
 
 // import { AuthService, AuthTokenInterceptor } from './auth';
 

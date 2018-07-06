@@ -98,7 +98,7 @@
 						<span>{{hotel.frontEndName}}</span> <span class="stars"><em *ngFor="let star of hotel?.rating?.split('');" [ngClass]="{ superior: star === 'S' }">{{star}}</em></span>
 					</div>
 					<div class="hotel-location">
-						<span class="hotel-region">{{hotel.location.avesDstCode}}</span>
+						<span class="hotel-region">{{hotel.location?.avesDstCode}}</span>
 						<!-- <span class="hotel-region">Italia Toscana</span>&nbsp;<span class="hotel-town">Radda in Chianti SI</span> -->
 					</div>
 				</div>
@@ -140,12 +140,14 @@
 						</svg>
 						<span>{{hotel.accomodation}}</span>
 					</li>
-					<li class="hotel-list-item" *ngFor="let item of hotel.tagList | hotelTags">
-						<svg class="ico">
-							<use xlink:href="#ico-fav"></use>
-						</svg>
-						<span>{{item.name}}</span>
-					</li>
+					<ng-container *ngIf="hotel.tagList">
+						<li class="hotel-list-item" *ngFor="let item of hotel.tagList | hotelTags">
+							<svg class="ico">
+								<use xlink:href="#ico-fav"></use>
+							</svg>
+							<span>{{item.name}}</span>
+						</li>
+					</ng-container>
 				</ul>
 
 				<div class="inclusion hotel-desc-group">
@@ -189,7 +191,6 @@
 						<a href="" class="readmore-accordion__toggler"><i class="fa fa-angle-down" aria-hidden="true"></i> <span>Leggi tutto</span> <span>Chiudi</span> </a>
 					</div>
 				</div>
-
 
 			</div>
 		</div>

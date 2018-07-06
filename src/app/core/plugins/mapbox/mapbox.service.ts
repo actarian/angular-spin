@@ -15,7 +15,7 @@ export class MapboxConfig {
 }
 
 export class MapboxMapOptions {
-	public elementRef: ElementRef;
+	public element: ElementRef;
 	public style?: string;
 }
 
@@ -44,7 +44,7 @@ export class MapboxService {
 			mapboxgl.accessToken = this.options.accessToken;
 			options.style = options.style || this.options.style || 'mapbox://styles/mapbox/streets-v10';
 			const map = new mapboxgl.Map({
-				container: options.elementRef.nativeElement,
+				container: options.element.nativeElement,
 				style: options.style
 			});
 			const source = fromEvent(map, 'load').pipe(
