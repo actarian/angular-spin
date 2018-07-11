@@ -2,16 +2,10 @@
 
 
 .hotel-item {
-	&.appear {
+	&.inside {
 		position: relative;
-		z-index: 10;
 		background: white;
-		opacity: 0;
-		transform: translateY(0);
-		translate: all ease-in-out 350ms;
-		&.appeared {
-			transform: translateY(-100%);
-			opacity: 1;
-		}
+		z-index: 10;
+		transform: translateY(-100%);
 	}
 }

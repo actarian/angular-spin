@@ -13,7 +13,7 @@
 					"options": {
 						"outputPath": "dist/browser",
 						"index": "src/index.html",
-						"main": "src/main.ts",
+						"main": "src/main.browser.ts",
 						"tsConfig": "src/tsconfig.app.json",
 						"polyfills": "src/polyfills.ts",
 						"assets": [
@@ -23,7 +23,10 @@
 						"styles": [
               				"src/styles.scss"
             			],
-						"scripts": []
+						"scripts": [
+							"./node_modules/jquery/dist/jquery.js",
+							"./node_modules/@fancyapps/fancybox/dist/jquery.fancybox.js"
+						]
 					},
 					"configurations": {
 						"server": {
@@ -172,7 +175,7 @@
 					"options": {
 						"outputPath": "docs",
 						"index": "src/index.html",
-						"main": "src/main.ts",
+						"main": "src/main.browser.ts",
 						"tsConfig": "src/tsconfig.app.json",
 						"polyfills": "src/polyfills.ts",
 						"assets": [
@@ -182,7 +185,10 @@
 						"styles": [
               				"src/styles.scss"
             			],
-						"scripts": []
+						"scripts": [
+							"./node_modules/jquery/dist/jquery.js",
+							"./node_modules/@fancyapps/fancybox/dist/jquery.fancybox.js"
+						]
 					},
 					"configurations": {
 						"docs": {

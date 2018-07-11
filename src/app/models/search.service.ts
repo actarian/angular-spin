@@ -108,7 +108,7 @@ export class SearchService extends EntityService<SearchResult> {
 				// const sliced = results.slice(0, Math.min(this.visibleItems, results.length));
 				this.filterService.onUpdateGroups(groups, results);
 				this.visibleItems = this.maxVisibleItems;
-				this.onUpdateLocation();
+				this.doUpdateLocation();
 			});
 	}
 
@@ -154,7 +154,7 @@ export class SearchService extends EntityService<SearchResult> {
 		});
 	}
 
-	private onUpdateLocation() {
+	private doUpdateLocation() {
 		// console.log(this.model);
 		const segments = this.routeService.toRoute(['/search']);
 		segments.push(this.routeService.toParams(this.model));

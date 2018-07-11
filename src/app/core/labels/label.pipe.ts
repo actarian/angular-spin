@@ -21,6 +21,7 @@ export class LabelPipe implements PipeTransform {
 	}
 
 	public transform(key: string, params?: any): string {
+		console.log(key, params);
 		// return WrappedValue.wrap(this.val);
 		const label = this.labelService.getLabel(key, params);
 		// console.log('label', label, this.labelService.cache);

@@ -1,4 +1,5 @@
-<div class="hotel-item" [ngClass]="{ appear: appear, appeared: appeared }">
+<!-- <div class="hotel-item" [@animationState]="state"> -->
+<div class="hotel-item" [ngClass]="{ inside: state === 'inside' }">
 	<!-- Hotel Image -->
 	<div class="image">
 		<div class="discount" *ngIf="item.overlayCoverImage">

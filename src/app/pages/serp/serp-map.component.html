@@ -1,6 +1,6 @@
 <div (clickOutside)="hotel = null">
 	<div #map [ngClass]="{ active: ready }"></div>
 	<ng-container *ngIf="hotel">
-		<serp-item [item]="hotel" [appear]="true"></serp-item>
+		<serp-item [item]="hotel" [state]="'inside'"></serp-item>
 	</ng-container>
 </div>

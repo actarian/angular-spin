@@ -50,7 +50,7 @@
 				<input [type]="passwordReveal.value ? 'text' : 'password'" class="form-control" required minlength="6" [(ngModel)]="model.password" name="password" placeholder="{{ 'signUp.password' | translate }}" #password="ngModel" autocomplete="password">
 				<div *ngIf="password.invalid && (signUp.submitted || password.dirty || password.touched)" class="alert alert-danger">
 					<div *ngIf="password.errors.required">{{ 'errors.required' | translate }}</div>
-					<div *ngIf="password.errors.minlength">{{ 'errors.minlength' | translate }}</div>
+					<div *ngIf="password.errors.minlength">{{ 'errors.minlength' | label : { value: password.errors.minlength.requiredLength } }}</div>
 				</div>
 			</div>
 			<div class="form-group">
@@ -70,7 +70,7 @@
 					</label>
 				</div>
 				<div *ngIf="privacyAccepted.invalid && (signUp.submitted || privacyAccepted.dirty || privacyAccepted.touched)" class="alert alert-danger">
-					<div *ngIf="password.errors.required">{{ 'errors.required' | translate }}</div>
+					<div *ngIf="privacyAccepted.errors.required">{{ 'errors.required' | translate }}</div>
 				</div>
 			</div>
 			<br>

@@ -1,30 +1,44 @@
-import { AfterViewInit, ChangeDetectorRef, Component, Input } from '@angular/core';
+
+// import { animate, state, style, transition, trigger } from '@angular/animations';
+import { AfterViewInit, Component, Input } from '@angular/core';
+// import { ChangeDetectorRef } from '@angular/core';
 import { SearchResult } from '../../models';
 
 @Component({
 	selector: 'serp-item',
 	templateUrl: './serp-item.component.html',
 	styleUrls: ['./serp-item.component.scss'],
-	exportAs: 'results'
+	exportAs: 'results',
+	/*
+	animations: [
+		trigger('animationState', [
+			state('outside', style({
+				opacity: 0, transform: 'translateY(0)'
+			})),
+			state('inside', style({
+				opacity: 1, transform: 'translateY(-100%)'
+			})),
+			transition('void => inside', animate('250ms ease-in-out')),
+			transition('inside => void', animate('250ms ease-in-out')),
+		])
+	]
+	*/
 })
 
 export class SerpItemComponent implements AfterViewInit {
 
 	@Input()
-	item: SearchResult;
+	state: string;
 
 	@Input()
-	appear: boolean;
-
-	appeared: boolean;
+	item: SearchResult;
 
 	constructor(
-		private changeDetector: ChangeDetectorRef
+		// private changeDetector: ChangeDetectorRef
 	) { }
 
 	ngAfterViewInit() {
-		this.appeared = true;
-		this.changeDetector.detectChanges();
+		// this.changeDetector.detectChanges();
 	}
 
 }

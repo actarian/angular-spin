@@ -5,7 +5,6 @@ import localeIt from '@angular/common/locales/it';
 import { Injector, LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { SwiperConfigInterface, SwiperModule, SWIPER_CONFIG } from 'ngx-swiper-wrapper';
@@ -23,11 +22,11 @@ import { Logger, LoggerComponent } from './core/logger';
 import { MemoryService } from './core/memory';
 import { PageDirective } from './core/pages';
 import { RouteService } from './core/routes';
-import { ClickOutsideDirective, LazyImagesDirective } from './core/ui';
+import { ClickOutsideDirective, FancyboxDirective, LazyImagesDirective } from './core/ui';
 import { ControlEditableComponent } from './forms';
 import { SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent } from './pages/auth';
 import { HomeCategoriesComponent, HomeComponent, HomePromotionsComponent, HomeSearchComponent } from './pages/home';
-import { FancyboxDirective, HotelComponent, HotelTagsPipe } from './pages/hotel';
+import { HotelComponent, HotelTagsPipe } from './pages/hotel';
 import { ProfileComponent } from './pages/profile';
 import { RegionDetailComponent, RegionsComponent } from './pages/regions';
 import { SerpComponent, SerpFilterComponent, SerpItemComponent, SerpListComponent, SerpMapComponent } from './pages/serp';
@@ -57,7 +56,7 @@ registerLocaleData(localeIt, 'it');
 		BrowserModule.withServerTransition({ appId: 'app' }),
 		PrebootModule.withConfig({ appRoot: 'app-component' }),
 		HttpClientModule, FormsModule, ReactiveFormsModule,
-		CalendarModule, SpinnerModule, GalleriaModule, AccordionModule, NoopAnimationsModule, SwiperModule,
+		CalendarModule, SpinnerModule, GalleriaModule, AccordionModule, SwiperModule,
 		// The HttpClientInMemoryWebApiModule module intercepts HTTP requests
 		// and returns simulated server responses.
 		// Remove it when a real server is ready to receive requests.

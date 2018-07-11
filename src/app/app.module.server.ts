@@ -14,11 +14,11 @@ const inlineCode = getInlinePrebootCode(prebootOptions);
 @NgModule({
 	imports: [
 		// by the ServerModule from @angular/platform-server.
+		NoopAnimationsModule,
 		AppModule,
 		ServerModule,
 		ModuleMapLoaderModule, // <-- *Important* to have lazy-loaded routes work
 		// ServerPrebootModule.recordEvents({ appRoot: 'app-root' }),
-		NoopAnimationsModule,
 		// HttpTransferCacheModule still needs fixes for 5.0
 		//   Leave this commented out for now, as it breaks Server-renders
 		//   Looking into fixes for this! - @MarkPieszak

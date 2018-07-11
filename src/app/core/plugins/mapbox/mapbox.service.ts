@@ -40,24 +40,26 @@ export class MapboxService {
 	}
 
 	getMap(options: MapboxMapOptions): Observable<mapboxgl.Map> {
-		if (isPlatformBrowser(this.platformId)) {
-			mapboxgl.accessToken = this.options.accessToken;
-			options.style = options.style || this.options.style || 'mapbox://styles/mapbox/streets-v10';
-			const map = new mapboxgl.Map({
-				container: options.element.nativeElement,
-				style: options.style
-			});
-			const source = fromEvent(map, 'load').pipe(
-				concatMap(() => {
-					map.resize();
-					console.log('loaded!');
-					return of(map);
-				})
-			);
-			return source;
-		} else {
-			return of(null);
-		}
+		return this.zone.runOutsideAngular(() => {
+			if (isPlatformBrowser(this.platformId)) {
+				mapboxgl.accessToken = this.options.accessToken;
+				options.style = options.style || this.options.style || 'mapbox://styles/mapbox/streets-v10';
+				const map = new mapboxgl.Map({
+					container: options.element.nativeElement,
+					style: options.style
+				});
+				const source = fromEvent(map, 'load').pipe(
+					concatMap(() => {
+						map.resize();
+						console.log('loaded!');
+						return of(map);
+					})
+				);
+				return source;
+			} else {
+				return of(null);
+			}
+		});
 	}
 
 }

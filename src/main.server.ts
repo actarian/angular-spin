@@ -5,10 +5,13 @@ import { enableProdMode } from '@angular/core';
 // import { createServerRenderer } from 'aspnet-prerendering';
 // import 'reflect-metadata';
 // import 'zone.js/dist/zone-node';
+import { environment } from './environments/environment';
 
 export { AppModuleServer } from './app/app.module.server';
 
-enableProdMode();
+if (environment.production) {
+	enableProdMode();
+}
 
 /*
 export default createServerRenderer(params => {
