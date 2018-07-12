@@ -1,5 +1,6 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, NgZone, OnDestroy, Renderer2, ViewChild } from '@angular/core';
-import * as mapboxgl from 'mapbox-gl';
+import { isPlatformBrowser } from '@angular/common';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inject, NgZone, OnDestroy, PLATFORM_ID, ViewChild } from '@angular/core';
+// import * as mapboxgl from 'mapbox-gl';
 import { Observable } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { takeUntil } from 'rxjs/operators';
@@ -26,10 +27,9 @@ export class SerpMapComponent extends DisposableComponent implements AfterViewIn
 	hotel: SearchResult;
 
 	constructor(
+		@Inject(PLATFORM_ID) private platformId: string,
 		private zone: NgZone,
 		private changeDetection: ChangeDetectorRef,
-		private el: ElementRef,
-		private renderer: Renderer2,
 		public search: SearchService,
 		public filterService: FilterService,
 		public mapboxService: MapboxService,
@@ -41,29 +41,30 @@ export class SerpMapComponent extends DisposableComponent implements AfterViewIn
 		this.map$ = this.mapboxService.getMap({
 			element: this.element
 		});
-		// todo
-		// map.on('move').takeUntil.debouce.distinct. -> search
-		combineLatest(this.map$, this.search.resultsFiltered$).pipe(
-			takeUntil(this.unsubscribe)
-		).subscribe((data: any[]): void => {
-			this.zone.runOutsideAngular(() => {
-				const map: mapboxgl.Map = data[0];
-				const results: SearchResult[] = data[1].filter(result => result.latitude);
-				this.onUpdateMapResults(map, results);
-				this.zone.run(() => {
-					this.map = map;
-					this.ready = true;
-					this.changeDetection.markForCheck();
+		if (isPlatformBrowser(this.platformId)) {
+			combineLatest(this.map$, this.search.resultsFiltered$).pipe(
+				takeUntil(this.unsubscribe)
+			).subscribe((data: any[]): void => {
+				this.zone.runOutsideAngular(() => {
+					const map: mapboxgl.Map = data[0];
+					const results: SearchResult[] = data[1].filter(result => result.latitude);
+					this.onUpdateMapResults(map, results);
+					this.zone.run(() => {
+						this.map = map;
+						this.ready = true;
+						this.changeDetection.markForCheck();
+					});
 				});
 			});
-		});
+		}
 	}
 
 	onUpdateMapResults(map: mapboxgl.Map, results: SearchResult[]) {
-		const geoJsonResults = this.getGeoJson(results);
+		const geoJsonResults = this.getGeoJson(results) as GeoJSON.FeatureCollection<mapboxgl.GeoJSONGeometry>;
 		if (map) {
 			if (map.getSource('results')) {
-				map.getSource('results').setData(geoJsonResults);
+				const source = map.getSource('results') as mapboxgl.GeoJSONSource;
+				source.setData(geoJsonResults);
 
 			} else {
 				map.addSource('results', {
@@ -170,8 +171,10 @@ export class SerpMapComponent extends DisposableComponent implements AfterViewIn
 		const bounds = coordinates.reduce((bounds, coord) => {
 			return bounds.extend(coord);
 		}, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
-		// map.fitBounds(bounds, { linear: true, duration: 0, padding: 50, maxZoom: 13 });
-		map.fitBounds(bounds, { linear: false, speed: 5, curve: 1, padding: 30, maxZoom: 16, });
+		if (bounds) {
+			// map.fitBounds(bounds, { linear: true, duration: 0, padding: 50, maxZoom: 13 });
+			map.fitBounds(bounds, { linear: false, speed: 5, curve: 1, padding: 30, maxZoom: 16, });
+		}
 	}
 
 	getGeoJson(results: SearchResult[]) {

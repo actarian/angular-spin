@@ -22,10 +22,12 @@
 						],
 						"styles": [
               				"src/styles.scss"
-            			],
+						],
 						"scripts": [
-							"./node_modules/jquery/dist/jquery.js",
-							"./node_modules/@fancyapps/fancybox/dist/jquery.fancybox.js"
+							{ "input": "./node_modules/jquery/dist/jquery.js", "lazy": false },
+							{ "input": "./node_modules/@fancyapps/fancybox/dist/jquery.fancybox.js", "lazy": false },
+							{ "input": "./node_modules/mapbox-gl/dist/mapbox-gl.js", "lazy": false },
+							{ "input": "./node_modules/json-formatter-js/dist/json-formatter.js", "lazy": true }
 						]
 					},
 					"configurations": {
@@ -117,33 +119,21 @@
 			"projectType": "application",
 			"architect": {
 				"build": {
-					"builder": "@angular-devkit/build-angular:browser",
+					"builder": "@angular-devkit/build-angular:server",
 					"options": {
 						"outputPath": "dist/server",
-						"index": "src/index.html",
 						"main": "src/main.server.ts",
 						"tsConfig": "src/tsconfig.server.json",
-						"polyfills": "src/polyfills.ts",
-						"assets": [
-							"src/assets",
-							"src/favicon.ico"
-						],
-						"styles": [
-              				"src/styles.scss"
-            			],
-						"scripts": []
+						"bundleDependencies": "all"
 					},
 					"configurations": {
 						"production": {
 							"optimization": true,
 							"outputHashing": "media",
 							"sourceMap": false,
-							"extractCss": true,
 							"namedChunks": false,
-							"aot": true,
 							"extractLicenses": true,
 							"vendorChunk": false,
-							"buildOptimizer": true,
 							"fileReplacements": [{
 								"replace": "src/environments/environment.ts",
 								"with": "src/environments/environment.prod.ts"
@@ -186,8 +176,10 @@
               				"src/styles.scss"
             			],
 						"scripts": [
-							"./node_modules/jquery/dist/jquery.js",
-							"./node_modules/@fancyapps/fancybox/dist/jquery.fancybox.js"
+							{ "input": "./node_modules/jquery/dist/jquery.js", "lazy": false },
+							{ "input": "./node_modules/@fancyapps/fancybox/dist/jquery.fancybox.js", "lazy": false },
+							{ "input": "./node_modules/mapbox-gl/dist/mapbox-gl.js", "lazy": false },
+							{ "input": "./node_modules/json-formatter-js/dist/json-formatter.js", "lazy": true }
 						]
 					},
 					"configurations": {

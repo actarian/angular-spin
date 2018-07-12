@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { environment } from '../environments/environment';
-import { HomeComponent, HotelComponent, RegionDetailComponent } from './pages';
+import { HomeComponent, HotelComponent, RegionDetailComponent, SerpComponent, SerpListComponent, SerpMapComponent } from './pages';
 import { NotFoundComponent } from './sections';
 
 export function getRoutes(routes: Routes): Routes {
@@ -20,6 +20,20 @@ export function getRoutes(routes: Routes): Routes {
 
 const routes: Routes = [
 	{ path: '', component: HomeComponent, pathMatch: 'full' },
+	{
+		path: 'search', component: SerpComponent, children: [
+			{ path: '', redirectTo: 'list', pathMatch: 'full' },
+			{ path: 'list', component: SerpListComponent },
+			{ path: 'map', component: SerpMapComponent },
+		]
+	},
+	{
+		path: ':lang/search', component: SerpComponent, children: [
+			{ path: '', redirectTo: 'list', pathMatch: 'full' },
+			{ path: 'list', component: SerpListComponent },
+			{ path: 'map', component: SerpMapComponent },
+		]
+	},
 	{ path: 'hotel/:id/:slug', component: HotelComponent },
 	{ path: ':lang/hotel/:id/:slug', component: HotelComponent },
 	{ path: 'region/:id', component: RegionDetailComponent },
@@ -30,8 +44,7 @@ const routes: Routes = [
 
 @NgModule({
 	imports: [RouterModule.forRoot(
-		routes,
-		{
+		routes, {
 			enableTracing: environment.enableTracing,
 			useHash: environment.useHash,
 		}

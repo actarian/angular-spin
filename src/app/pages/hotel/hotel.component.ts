@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, Inject, Input, OnInit, PLATFORM_ID } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, Input, NgZone, OnInit, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { PageComponent } from '../../core/pages';
@@ -35,6 +35,7 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 
 	constructor(
 		@Inject(PLATFORM_ID) private platformId: string,
+		private zone: NgZone,
 		private el: ElementRef,
 		route: ActivatedRoute,
 		private hotelService: HotelService
@@ -53,56 +54,52 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 
 	ngAfterViewInit() {
 		if (isPlatformBrowser(this.platformId)) {
-			const $ = window['$'];
-			const animationSpeed = 200;
-			$('.readmore-accordion').each(function (i, e) {
-
-				const $wrapper = $('.readmore-accordion__wrapper', e),
-					$sizer = $('.readmore-accordion__sizer', e),
-					$button = $('.readmore-accordion__toggler', e),
-					initH = 75;
-
-				let endH;
-
-				function activationCheck() {
-					if ($sizer.height() < initH) {
-						$wrapper.addClass('inactive');
-						$button.hide();
-					} else {
-						endH = $sizer.height();
-						setEvents();
-					}
-				}
-
-				function backToElement() {
-					$('html, body').animate({
-						scrollTop: $(e).offset().top
-					}, 1000);
-				}
-
-				function setEvents() {
-					$wrapper.height(initH + 'px');
-					$button.on('click', function (ev) {
-						endH = $sizer.height();
-						if (!$wrapper.hasClass('open')) {
-							$wrapper.animate({ height: endH + 'px' }, animationSpeed, function () {
-								$wrapper.addClass('open');
-								// backToElement();
-								$button.find('span').toggle();
-							});
-						} else {
-							$wrapper.animate({ height: initH + 'px' }, animationSpeed, function () {
-								$wrapper.removeClass('open');
-								// backToElement();
-								$button.find('span').toggle();
+			this.zone.runOutsideAngular(() => {
+				$(() => {
+					const animationSpeed = 200;
+					$('.readmore-accordion').each(function (i, e) {
+						const $wrapper = $('.readmore-accordion__wrapper', e),
+							$sizer = $('.readmore-accordion__sizer', e),
+							$button = $('.readmore-accordion__toggler', e),
+							initH = 75;
+						let endH;
+						function activationCheck() {
+							if ($sizer.height() < initH) {
+								$wrapper.addClass('inactive');
+								$button.hide();
+							} else {
+								endH = $sizer.height();
+								setEvents();
+							}
+						}
+						function backToElement() {
+							$('html, body').animate({
+								scrollTop: $(e).offset().top
+							}, 1000);
+						}
+						function setEvents() {
+							$wrapper.height(initH + 'px');
+							$button.on('click', function (e) {
+								endH = $sizer.height();
+								if (!$wrapper.hasClass('open')) {
+									$wrapper.animate({ height: endH + 'px' }, animationSpeed, function () {
+										$wrapper.addClass('open');
+										// backToElement();
+										$button.find('span').toggle();
+									});
+								} else {
+									$wrapper.animate({ height: initH + 'px' }, animationSpeed, function () {
+										$wrapper.removeClass('open');
+										// backToElement();
+										$button.find('span').toggle();
+									});
+								}
+								e.preventDefault();
 							});
 						}
-
-						ev.preventDefault();
+						activationCheck();
 					});
-				}
-
-				activationCheck();
+				});
 			});
 		}
 	}

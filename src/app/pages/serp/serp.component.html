@@ -84,6 +84,24 @@
 	<div class="container" lazy-images>
 		<div class="serp-filter">
 			<div class="switch-map-list">
+				<div class="switch-map-list--item switch-map-list--item__map" [ngClass]="{ active: rList.isActive }">
+					<img src="assets/img/map.png">
+					<a class="btn" [routerLink]="['map']" routerLinkActive #rMap="routerLinkActive">
+						<svg class="ico">
+							<use xlink:href="#ico-pin"></use>
+						</svg>
+						Visualizza nella mappa
+					</a>
+				</div>
+				<div class="switch-map-list--item switch-map-list--item__list" [ngClass]="{ active: rMap.isActive }">
+					<a class="btn" [routerLink]="['list']" routerLinkActive #rList="routerLinkActive">
+						<svg class="ico">
+							<use xlink:href="#ico-list"></use>
+						</svg>
+						Torna all'elenco
+					</a>
+				</div>
+				<!--
 				<div class="switch-map-list--item switch-map-list--item__map" [ngClass]="{ active: viewType == viewTypes.List }">
 					<img src="assets/img/map.png">
 					<button type="button" class="btn" (click)="viewType = viewTypes.Map">
@@ -101,14 +119,18 @@
 						Torna all'elenco
 					</button>
 				</div>
+				-->
 			</div>
 			<div class="serp-filter--sticky">
 				<section-filter (selectFilter)="filterService.setGroups()"></section-filter>
 			</div>
 		</div>
+		<router-outlet></router-outlet>
+		<!--
 		<section-serp-list class="serp-results" *ngIf="viewType == viewTypes.List"></section-serp-list>
 		<section-serp-map class="serp-results" *ngIf="viewType == viewTypes.Map"></section-serp-map>
+		-->
 	</div>
 </div>
 
-<!-- <json-formatter [json]="search.model"></json-formatter> -->
+<json-formatter [json]="search.model"></json-formatter>

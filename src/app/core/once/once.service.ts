@@ -1,10 +1,10 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { Observable, fromEvent, of } from 'rxjs';
+import { fromEvent, Observable, of } from 'rxjs';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { map } from 'rxjs/operators';
 
-export class OnceEvent extends Event { }
+// export class OnceEvent extends Event { }
 
 @Injectable()
 export class OnceService {
@@ -16,7 +16,7 @@ export class OnceService {
 		@Inject(PLATFORM_ID) private platformId: string
 	) { }
 
-	script(url: string, callback?: string | boolean): Observable<OnceEvent> {
+	script(url: string, callback?: string | boolean): Observable<Event> {
 		if (isPlatformBrowser(this.platformId)) {
 			if (this.paths.indexOf(url) === -1) {
 				this.paths.push(url);
@@ -44,11 +44,11 @@ export class OnceService {
 					);
 				} else {
 					return fromEvent(fragment, 'load').pipe(
-						map(x => x as OnceEvent)
+						map(x => x as Event)
 					);
 				}
 			} else {
-				return of(new OnceEvent('loaded!'));
+				return of(new Event('loaded!'));
 			}
 		} else {
 			return of(null);

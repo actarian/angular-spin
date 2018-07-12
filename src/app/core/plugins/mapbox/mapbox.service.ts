@@ -3,7 +3,7 @@
 
 import { isPlatformBrowser } from '@angular/common';
 import { ElementRef, Inject, Injectable, NgZone, PLATFORM_ID } from '@angular/core';
-import * as mapboxgl from 'mapbox-gl';
+// import * as mapboxgl from 'mapbox-gl';
 import { fromEvent, Observable, of } from 'rxjs';
 import { concatMap } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
@@ -51,7 +51,6 @@ export class MapboxService {
 				const source = fromEvent(map, 'load').pipe(
 					concatMap(() => {
 						map.resize();
-						console.log('loaded!');
 						return of(map);
 					})
 				);

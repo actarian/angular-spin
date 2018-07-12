@@ -13,7 +13,6 @@ export class SerpFilterComponent extends DisposableComponent implements OnInit {
 
 	groupTypes: any;
 	groupsFiltered$: Observable<Group[]>;
-	private groupsFiltered: Group[];
 
 	@Output()
 	selectFilter: EventEmitter<any> = new EventEmitter();

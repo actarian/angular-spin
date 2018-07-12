@@ -43,6 +43,7 @@ export class Group {
 	match?(result: any, option: Option) {
 		return true;
 	}
+	/*
 	clear?() {
 		this.matches = {};
 		this.selected = this.items.find(option => option.selected) !== undefined;
@@ -64,6 +65,7 @@ export class Group {
 			}
 		});
 	}
+	*/
 }
 
 export class Treatment extends Option { }

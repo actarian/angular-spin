@@ -2,55 +2,6 @@
 @import "~scss/variables";
 
 /*--------------------------------------------------
-SERP
---------------------------------------------------*/
-
-.serp-results {
-	.head {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: space-between;
-		margin: 0 0 25px;
-		padding: 8px 0 0;
-
-		@include sm-down {
-			padding-top: 0;
-		}
-	}
-
-	.tit {
-		flex: 1 1 auto;
-		padding-right: 10px;
-		font-size: 15px;
-		color: $tit-color;
-
-		strong {
-			font-size: 16px;
-			color: $tertiary-color;
-		}
-	}
-
-	.filter {
-		flex: 1 1 auto;
-		text-align: right;
-
-		@include sm-down {
-			display: none;
-		}
-
-		&-item {
-			white-space: nowrap;
-
-			label {
-				margin-right: 10px;
-			}
-
-		}
-	}
-}
-
-
-/*--------------------------------------------------
 hotel List
 --------------------------------------------------*/
 

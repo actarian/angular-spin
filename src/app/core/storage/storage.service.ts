@@ -4,19 +4,15 @@ import { Observable, of } from 'rxjs';
 
 const TIMEOUT = 5 * 60 * 1000; // five minutes
 
-export class StorageEvent extends Event {
-	/*
-	constructor(message: string, data?: any) {
-		super(message, data);
-	}
-	*/
-}
+/*
+export class StorageEvent extends Event {}
 
 export class CookieStorageEvent extends StorageEvent { }
 
 export class SessionStorageEvent extends StorageEvent { }
 
 export class LocalStorageEvent extends StorageEvent { }
+*/
 
 @Injectable()
 export class StorageService {

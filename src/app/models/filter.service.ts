@@ -55,7 +55,7 @@ export class FilterService {
 					}),
 					new Group({
 						type: GroupType.Service,
-						selectionType: GroupSelectionType.And,
+						selectionType: GroupSelectionType.Or,
 						name: 'Servizio',
 						items: tags.filter(tag => tag.category === 1).sort((a, b) => a.category - b.category),
 						match: function (result, option) {
@@ -129,20 +129,39 @@ export class FilterService {
 
 	onToggle(id: number, groupType: GroupType) {
 		const groups = this.groups$.getValue();
-		groups.forEach(group => {
+		const group = groups.find(group => group.type === groupType);
+		if (group) {
 			if (group.type === groupType) {
-				const item = group.items.find(item => item.id === id);
-				/*
-				if (item.selected && (groupType === GroupType.Treatment || groupType === GroupType.Rating)) {
+				if (group.selectionType === GroupSelectionType.Or) {
 					group.items.forEach(item => {
 						if (item.id !== id) {
 							item.selected = false;
 						}
 					});
 				}
-				*/
 			}
-		});
+			const item = group.items.find(item => item.id === id);
+			console.log('FilterService.onToggle', item, group);
+		}
+	}
+
+	onSet(id: number, groupType: GroupType) {
+		const groups = this.groups$.getValue();
+		const group = groups.find(group => group.type === groupType);
+		if (group) {
+			if (group.selectionType === GroupSelectionType.Or) {
+				group.items.forEach(item => {
+					if (item.id !== id) {
+						item.selected = false;
+					}
+				});
+			}
+			const item = group.items.find(item => item.id === id);
+			item.selected = true;
+			group.selected = true;
+			group.active = true;
+			console.log('FilterService.setPromotion', item, group);
+		}
 	}
 
 	setGroups(): void {

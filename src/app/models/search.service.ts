@@ -9,7 +9,7 @@ import { RouteService } from '../core/routes';
 import { LocalStorageService, StorageService } from '../core/storage';
 import { Destination, DestinationTypes } from './destination';
 import { DestinationService } from './destination.service';
-import { Group, Sorting } from './filter';
+import { Group, GroupSelectionType, GroupType, Sorting } from './filter';
 import { FilterService } from './filter.service';
 import { CalendarOption, Duration, durations, MainSearch, SearchResult } from './search';
 
@@ -23,25 +23,17 @@ export class SearchService extends EntityService<SearchResult> {
 	}
 
 	calendar: CalendarOption = new CalendarOption();
-
 	destinations: Destination[];
-
 	durations: Duration[] = durations;
-
 	ages: number[] = new Array(18).fill(0).map((x, i) => i); // 0 - 17
-
 	storage: StorageService;
 	lastDestinations: Destination[];
-
 	maxVisibleItems: number = 20;
 	visibleItems: number = this.maxVisibleItems;
-
 	model: MainSearch = new MainSearch();
 	private model$ = new BehaviorSubject<MainSearch>(this.model);
-
 	private results$ = new BehaviorSubject<SearchResult[]>([]);
 	results = this.results$.asObservable();
-
 	resultsFiltered$ = new BehaviorSubject<SearchResult[]>([]);
 
 	constructor(
@@ -63,14 +55,13 @@ export class SearchService extends EntityService<SearchResult> {
 		}
 		const lastDestinations = this.storage.get('lastDestinations');
 		this.lastDestinations = lastDestinations || [];
-		this.routeService.params
-			// .take(1)
-			.subscribe(model => {
-				// console.log('SearchService.constructor', model);
+		if (this.routeService.params) {
+			this.routeService.params.subscribe(model => {
 				this.model = new MainSearch(model as MainSearch);
 				this.model$.next(this.model);
 				this.onSearchIn();
 			});
+		}
 		this.beginObserveModel();
 		this.beginObserveResults();
 	}
@@ -82,13 +73,30 @@ export class SearchService extends EntityService<SearchResult> {
 				const groups: Group[] = data[0];
 				const sorting: Sorting = data[1];
 				let results: SearchResult[] = data[2];
-				groups.forEach(group => group.clear());
+				groups.forEach(group => {
+					// group.clear();
+					group.matches = {};
+					group.selected = group.items.find(option => option.selected) !== undefined;
+					group.items.forEach(option => option.count = 0);
+				});
 				results.forEach(result => {
 					result.visible = true;
 					groups.forEach(group => {
 						if (group.selected) {
-							group.filter(result);
-							result.visible = result.visible && group.matches[result.id];
+							// group.filter(result);
+							let visible = true;
+							group.matches[result.id] = false;
+							group.items.forEach(option => {
+								if (option.selected) {
+									let match = group.match(result, option);
+									if (group.selectionType === GroupSelectionType.Multiple) {
+										match = match || group.matches[result.id];
+									}
+									group.matches[result.id] = match;
+									visible = visible && match;
+								}
+							});
+							result.visible = result.visible && visible;
 						}
 					});
 				});
@@ -115,6 +123,7 @@ export class SearchService extends EntityService<SearchResult> {
 	private beginObserveModel() {
 		// todo check deep comparison // .distinctUntilChanged((a, b) => a.destination === b.destination).
 		this.model$.subscribe(model => {
+			console.log(model.destination);
 			let params = '';
 			if (model.destination) {
 				switch (model.destination.type) {
@@ -137,6 +146,7 @@ export class SearchService extends EntityService<SearchResult> {
 					case DestinationTypes.Promotion:
 						params = '';
 						// params = `?destinationNation=${model.destination.name}`;
+						this.filterService.onSet(model.destination.id, GroupType.Service);
 						break;
 				}
 			}
@@ -222,7 +232,6 @@ export class SearchService extends EntityService<SearchResult> {
 
 	onSearchIn() {
 		this.model$.next(this.model);
-
 	}
 
 }

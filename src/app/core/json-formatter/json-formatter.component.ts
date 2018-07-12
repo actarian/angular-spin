@@ -1,5 +1,6 @@
-import { Component, ElementRef, Input, OnChanges, ViewChild } from '@angular/core';
-import JSONFormatter from 'json-formatter-js';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, ElementRef, Inject, Input, OnChanges, PLATFORM_ID, ViewChild } from '@angular/core';
+// import JSONFormatter from 'json-formatter-js';
 import { isArray } from 'rxjs/util/isArray';
 import { isObject } from 'rxjs/util/isObject';
 
@@ -15,18 +16,23 @@ export class JsonFormatterComponent implements OnChanges {
 
 	render: ElementRef;
 
-	constructor() { }
+	constructor(
+		@Inject(PLATFORM_ID) private platformId: string,
+	) { }
 
 	ngOnChanges() {
-		if (!isObject(this.json) && !isArray(this.json)) {
-			return;
+		if (isPlatformBrowser(this.platformId)) {
+			if (!isObject(this.json) && !isArray(this.json)) {
+				return;
+			}
+			if (this.render) {
+				this.input.nativeElement.removeChild(this.render.nativeElement);
+			}
+			const JSONFormatter = require('json-formatter-js').default;
+			const formatter = new JSONFormatter(this.json);
+			const render = formatter.render();
+			this.input.nativeElement.appendChild(render);
+			this.render = new ElementRef(render);
 		}
-		if (this.render) {
-			this.input.nativeElement.removeChild(this.render.nativeElement);
-		}
-		const formatter = new JSONFormatter(this.json);
-		const render = formatter.render();
-		this.input.nativeElement.appendChild(render);
-		this.render = new ElementRef(render);
 	}
 }
