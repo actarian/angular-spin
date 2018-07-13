@@ -8,7 +8,11 @@ if (environment.production) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-	platformBrowserDynamic().bootstrapModule(AppModuleBrowser)
+	platformBrowserDynamic().bootstrapModule(AppModuleBrowser, {
+		providers: [
+			{ provide: 'ORIGIN_URL', useValue: '' }
+		]
+	})
 		.then(success => console.log(`Bootstrap success`))
 		.catch(err => console.log(err));
 });
