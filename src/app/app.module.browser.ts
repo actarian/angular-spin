@@ -22,16 +22,11 @@ export function getRequest() {
 		AppModule
 	],
 	providers: [
-		{
-			// We need this for our Http calls since they'll be using an ORIGIN_URL provided in main.server
-			// (Also remember the Server requires Absolute URLs)
-			provide: ORIGIN_URL,
-			useFactory: (getOriginUrl)
-		}, {
-			// The server provides these in main.server
-			provide: REQUEST,
-			useFactory: (getRequest)
-		}
+		// We need this for our Http calls since they'll be using an ORIGIN_URL provided in main.server
+		// (Also remember the Server requires Absolute URLs)
+		{ provide: ORIGIN_URL, useFactory: (getOriginUrl) },
+		// The server provides these in main.server
+		{ provide: REQUEST, useFactory: (getRequest) }
 	]
 })
 

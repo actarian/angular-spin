@@ -20,7 +20,6 @@ export class PageComponent extends DisposableComponent {
 		protected route: ActivatedRoute
 	) {
 		super();
-		// this.titleService.setTitle();
 		// console.log('CreatePageComponent');
 	}
 
