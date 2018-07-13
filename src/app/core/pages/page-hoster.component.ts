@@ -1,4 +1,4 @@
-import { isPlatformBrowser } from '@angular/common';
+// import { isPlatformBrowser } from '@angular/common';
 import { Component, ComponentFactory, Inject, PLATFORM_ID, ViewChild, ViewContainerRef } from '@angular/core';
 import { Meta, MetaDefinition, Title } from '@angular/platform-browser';
 import { ORIGIN_URL } from '@nguniversal/aspnetcore-engine/tokens';
@@ -43,19 +43,20 @@ export class PageHosterComponent extends DisposableComponent {
 	}
 
 	updatePageData(page: Page) {
-		if (isPlatformBrowser(this.platformId)) {
-			const fbAppId: string = environment['plugins'] && environment['plugins']['facebook'] ? environment.plugins.facebook.appId.toString() : '';
-			this.titleService.setTitle(page.title);
-			this.addOrUpdateMeta({ name: 'description', content: 'Servizio di qualità senza costi aggiuntivi con i convenienti pacchetti viaggio Eurospin. Prenota comodamente online!' });
-			this.addOrUpdateMeta({ name: 'keywords', content: 'viaggi,viaggi eurospin' });
-			this.addOrUpdateMeta({ name: 'robots', content: 'index,follow' });
-			this.addOrUpdateMeta({ property: 'fb:app_id', content: fbAppId });
-			this.addOrUpdateMeta({ property: 'og:title', content: page.title });
-			this.addOrUpdateMeta({ property: 'og:url', content: this.originUrl });
-			this.addOrUpdateMeta({ property: 'og:image', content: 'https://s-static.ak.fbcdn.net/images/devsite/attachment_blank.png' });
-			this.addOrUpdateMeta({ property: 'og:locale', content: 'it_IT' });
-			this.addOrUpdateMeta({ property: 'og:type', content: 'article' });
-		}
+		// if (isPlatformBrowser(this.platformId)) {
+		// this code should run in ssr too
+		const fbAppId: string = environment['plugins'] && environment['plugins']['facebook'] ? environment.plugins.facebook.appId.toString() : '';
+		this.titleService.setTitle(page.title);
+		this.addOrUpdateMeta({ name: 'description', content: 'Servizio di qualità senza costi aggiuntivi con i convenienti pacchetti viaggio Eurospin. Prenota comodamente online!' });
+		this.addOrUpdateMeta({ name: 'keywords', content: 'viaggi,viaggi eurospin' });
+		this.addOrUpdateMeta({ name: 'robots', content: 'index,follow' });
+		this.addOrUpdateMeta({ property: 'fb:app_id', content: fbAppId });
+		this.addOrUpdateMeta({ property: 'og:image', content: 'https://s-static.ak.fbcdn.net/images/devsite/attachment_blank.png' });
+		this.addOrUpdateMeta({ property: 'og:locale', content: 'it_IT' });
+		this.addOrUpdateMeta({ property: 'og:title', content: page.title });
+		this.addOrUpdateMeta({ property: 'og:type', content: 'article' });
+		this.addOrUpdateMeta({ property: 'og:url', content: this.originUrl });
+		// }
 	}
 
 	addOrUpdateMeta(definition: MetaDefinition) {
