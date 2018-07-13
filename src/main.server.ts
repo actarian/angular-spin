@@ -35,23 +35,9 @@ export default createServerRenderer((params: BootFuncParams) => {
 				// .first(isStable => isStable)
 				// Because 'onStable' fires before 'onError', we have to delay slightly before
 				// completing the request in case there's an error to report
-				/*
-				setImmediate(() => {
-					resolve({
-						html: state.renderToString()
-					});
-					module.destroy();
-				});
-				*/
 				setImmediate(() => {
 					resolve({
 						html: state.renderToString(), // `<h1>Hello, ${params.data.userName}</h1>`;
-						globals: {
-							postList: [
-								'Title Title Title',
-								'Lorem ipsum dolor sit amet'
-							]
-						}
 					});
 					module.destroy();
 				});
@@ -59,24 +45,5 @@ export default createServerRenderer((params: BootFuncParams) => {
 		});
 	});
 
-	/*
-	const { AppServerModule, AppServerModuleNgFactory, LAZY_MODULE_MAP } = (module as any).exports;
-	const options = {
-		document: params.data.originalHtml,
-		url: params.url,
-		extraProviders: [
-			provideModuleMap(LAZY_MODULE_MAP),
-			{ provide: APP_BASE_HREF, useValue: params.baseUrl },
-			{ provide: 'BASE_URL', useValue: params.origin + params.baseUrl }
-		]
-	};
-	console.log('options', options);
-	const renderPromise = AppServerModuleNgFactory
-		? renderModuleFactory(AppServerModuleNgFactory, options)
-		: renderModule(AppServerModule, options);
-	console.log('renderPromise', renderPromise);
-	// AoT : dev
-	return renderPromise.then(html => ({ html }));
-	*/
 });
 
