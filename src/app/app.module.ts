@@ -4,11 +4,13 @@ import { HttpClientModule } from '@angular/common/http';
 import localeIt from '@angular/common/locales/it';
 import { Injector, LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
+import { TransferHttpCacheModule } from '@nguniversal/common';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { SwiperConfigInterface, SwiperModule, SWIPER_CONFIG } from 'ngx-swiper-wrapper';
-import { PrebootModule } from 'preboot';
+// import { ORIGIN_URL } from '@nguniversal/aspnetcore-engine/tokens';
+// import { PrebootModule } from 'preboot';
 import { AccordionModule } from 'primeng/accordion';
 import { CalendarModule } from 'primeng/calendar';
 import { GalleriaModule } from 'primeng/galleria';
@@ -54,8 +56,11 @@ registerLocaleData(localeIt, 'it');
 @NgModule({
 	imports: [
 		BrowserModule.withServerTransition({ appId: 'app' }),
-		PrebootModule.withConfig({ appRoot: 'app-component' }),
-		HttpClientModule, FormsModule, ReactiveFormsModule,
+		HttpClientModule,
+		TransferHttpCacheModule,
+		BrowserTransferStateModule,
+		// PrebootModule.withConfig({ appRoot: 'app-component' }),
+		FormsModule, ReactiveFormsModule,
 		CalendarModule, SpinnerModule, GalleriaModule, AccordionModule, SwiperModule,
 		// The HttpClientInMemoryWebApiModule module intercepts HTTP requests
 		// and returns simulated server responses.
