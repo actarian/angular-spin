@@ -123,7 +123,7 @@ export class SearchService extends EntityService<SearchResult> {
 	private beginObserveModel() {
 		// todo check deep comparison // .distinctUntilChanged((a, b) => a.destination === b.destination).
 		this.model$.subscribe(model => {
-			console.log(model.destination);
+			console.log('model.destination', model.destination);
 			let params = '';
 			if (model.destination) {
 				switch (model.destination.type) {

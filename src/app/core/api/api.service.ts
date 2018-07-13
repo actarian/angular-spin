@@ -18,6 +18,8 @@ export class ApiRequestOptions {
 
 export class ApiService<T extends Identity> {
 
+	public static domain: string = '';
+
 	private _logger: Logger;
 	get logger() {
 		if (!this._logger) {
@@ -39,7 +41,12 @@ export class ApiService<T extends Identity> {
 	}
 
 	get url(): string {
-		return `${this.collection.toLowerCase()}`;
+		let base: string = ApiService.domain;
+		const collection = this.collection.toLowerCase();
+		if (collection.indexOf('http') === 0) {
+			base = '';
+		}
+		return `${base}${collection}`;
 	}
 
 	constructor(

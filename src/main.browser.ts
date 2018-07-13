@@ -7,6 +7,10 @@ if (environment.production) {
 	enableProdMode();
 }
 
-platformBrowserDynamic().bootstrapModule(AppModuleBrowser)
+const providers = [{ provide: 'ServerParams', useValue: { origin: '' } }
+	// { provide: INITIAL_CONFIG, useValue: { document: '<app></app>', url: params.url } },
+];
+
+platformBrowserDynamic(providers).bootstrapModule(AppModuleBrowser)
 	.then(success => console.log(`Bootstrap success`))
 	.catch(err => console.error(err));
