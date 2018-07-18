@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { FacebookService, FacebookUser, GoogleService, GoogleUser } from '../../core';
 import { AuthService } from '../../core/auth';
@@ -23,15 +23,14 @@ export class SignUpComponent extends PageComponent implements OnInit {
 	submitted: boolean = false;
 
 	constructor(
-		route: ActivatedRoute,
-		private routeService: RouteService,
+		protected routeService: RouteService,
 		private router: Router,
 		private authService: AuthService,
 		private facebookService: FacebookService,
 		private googleService: GoogleService,
 		private userService: UserService
 	) {
-		super(route);
+		super(routeService);
 	}
 
 	ngOnInit() {

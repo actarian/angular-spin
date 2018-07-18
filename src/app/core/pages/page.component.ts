@@ -1,8 +1,9 @@
 
 import { Component, HostBinding, Input } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { Params } from '@angular/router';
 import { Observable } from 'rxjs';
 import { DisposableComponent } from '../disposable';
+import { RouteService } from '../routes';
 import { Page } from './page';
 
 
@@ -17,18 +18,26 @@ export class PageComponent extends DisposableComponent {
 	@HostBinding('attr.class') attrClass = 'page';
 
 	constructor(
-		protected route: ActivatedRoute
+		protected routeService: RouteService
 	) {
 		super();
-		// console.log('CreatePageComponent');
+		/*
+		console.log('PageComponent.create');
+		this.routeService.getPageParams().pipe(
+			takeUntil(this.unsubscribe),
+			distinctUntilChanged()
+		).subscribe(queryParams => {
+			console.log('queryParams', queryParams);
+		});
+		*/
 	}
 
 	getId(): number {
-		return +this.route.snapshot.paramMap.get('id') || (this.page ? this.page.id : 0);
+		return this.routeService.getId() || (this.page ? this.page.id : 0);
 	}
 
 	getSlug(): string {
-		return this.route.snapshot.paramMap.get('slug') || (this.page ? this.page.slug : '');
+		return this.routeService.getSlug() || (this.page ? this.page.slug : '');
 	}
 
 }

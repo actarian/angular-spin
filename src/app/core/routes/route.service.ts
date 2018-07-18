@@ -45,6 +45,7 @@ export class RouteService {
 
 	public page: Page;
 	public params: Observable<Params>;
+	public queryParams: Observable<Params>;
 
 	public get currentLang(): string {
 		return this._lang;
@@ -67,6 +68,38 @@ export class RouteService {
 	}
 
 	// PUBLIC METHODS
+	public pageParams$: BehaviorSubject<Params> = new BehaviorSubject({});
+	public getPageParams(): Observable<Params> {
+		return this.route.queryParams.pipe(
+			distinctUntilChanged(),
+			switchMap(params => {
+				const parsed = this.parseParams(params);
+				this.pageParams$.next(parsed);
+				return of(parsed);
+			}),
+			// tap(params => console.log('RouteService.getPageParams', params)),
+		);
+	}
+
+	public parseParams(params: any) {
+		const parsed = {};
+		for (const key in params) {
+			if (typeof (params[key]) === 'string') {
+				parsed[key] = JSON.parse(params[key]);
+			} else {
+				parsed[key] = params[key];
+			}
+		}
+		return parsed;
+	}
+
+	public getId(): number {
+		return +this.route.snapshot.paramMap.get('id');
+	}
+
+	public getSlug(): string {
+		return this.route.snapshot.paramMap.get('slug');
+	}
 
 	public toRoute(data: any[] | string): any[] {
 		const segments = this.segment.transform(data);
@@ -156,6 +189,12 @@ export class RouteService {
 						return of(this.toData(x));
 					})
 				);
+				this.queryParams = route.queryParams.pipe(
+					tap(x => console.log(x)),
+					concatMap(x => {
+						return of(this.toData(x));
+					})
+				);
 				// console.log('params', this.route.params);
 			}),
 			switchMap(route => route.data),
@@ -215,7 +254,7 @@ export class RouteService {
 					const language = this._languages.getValue().find(x => x.lang === lang);
 					this._language.next(language);
 					this.translateService.use(lang);
-					console.log('RouteService.setLang', lang, this._lang, langIndex, location, event.url);
+					// console.log('RouteService.setLang', lang, this._lang, langIndex, location, event.url);
 				}
 			}
 		});

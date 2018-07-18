@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { PageComponent } from '../../core/pages';
 import { RouteService } from '../../core/routes';
@@ -16,11 +15,10 @@ export class RegionsComponent extends PageComponent implements OnInit {
 	regions: Region[];
 
 	constructor(
-		route: ActivatedRoute,
+		protected routeService: RouteService,
 		private regionService: RegionService,
-		public routeService: RouteService
 	) {
-		super(route);
+		super(routeService);
 	}
 
 	ngOnInit() {

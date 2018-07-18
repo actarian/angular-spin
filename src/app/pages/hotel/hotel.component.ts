@@ -1,7 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, Inject, Input, NgZone, OnInit, PLATFORM_ID } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { AfterViewInit, Component, Inject, Input, NgZone, OnInit, PLATFORM_ID } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
+import { RouteService } from '../../core';
 import { PageComponent } from '../../core/pages';
 import { Hotel, HotelService } from '../../models';
 
@@ -36,10 +36,11 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 	constructor(
 		@Inject(PLATFORM_ID) private platformId: string,
 		private zone: NgZone,
-		private el: ElementRef,
-		route: ActivatedRoute,
+		protected routeService: RouteService,
 		private hotelService: HotelService
-	) { super(route); }
+	) {
+		super(routeService);
+	}
 
 	ngOnInit() {
 		console.log(`HotelComponent.OnInit ${this.getId()}`);

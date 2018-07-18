@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
+import { Params } from '@angular/router';
 import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { map } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
+import { RouteService } from '../core/routes';
+import { DestinationTypes } from './destination';
 import { Group, GroupSelectionType, GroupType, ratings, Sorting, sortings, treatments } from './filter';
 import { Tag } from './tag';
 import { TagService } from './tag.service';
@@ -9,8 +12,8 @@ import { TagService } from './tag.service';
 @Injectable({
 	providedIn: 'root',
 })
-export class FilterService {
 
+export class FilterService {
 	groupTypes: any = GroupType;
 	groupSelectionTypes: any = GroupSelectionType;
 
@@ -25,9 +28,63 @@ export class FilterService {
 	public sortings$ = new BehaviorSubject<Sorting>(this.sorting);
 
 	constructor(
-		private tagService: TagService
+		private tagService: TagService,
+		private routeService: RouteService,
 	) {
 		this.onReset();
+	}
+
+	// setting params from querystring
+	public setParams(params: Params) {
+		this.sorting = this.sortings[0];
+		if (params.order) {
+			const sorting = sortings.find(sorting => sorting.id === params.order);
+			this.sorting = sorting;
+			this.sortings$.next(sorting);
+		}
+		params.filters = params.filters || [];
+		if (params.search && params.search.destination) {
+			switch (params.search.destination.type) {
+				case DestinationTypes.Category:
+					params.filters.push({ type: GroupType.Tipology, id: params.search.destination.id, unique: true });
+					break;
+				case DestinationTypes.Region:
+					params.filters.push({ type: GroupType.Destination, id: params.search.destination.id, unique: true });
+					break;
+				case DestinationTypes.Promotion:
+					params.filters.push({ type: GroupType.Service, id: params.search.destination.id, unique: true });
+					break;
+			}
+		}
+		console.log(params);
+		this.getGroups().pipe(
+			first(),
+		).subscribe(groups => {
+			groups.forEach(group => {
+				group.selected = false;
+				group.active = false;
+				const g = params.filters.find(g => g.type === group.type);
+				group.items.forEach(item => {
+					const has = g ? g.id === item.id : false;
+					item.selected = has;
+					group.selected = has || group.selected;
+					group.active = has || group.active;
+				});
+			});
+			this.groups$.next(groups);
+		});
+	}
+
+	public get value() {
+		return this.groups$.getValue();
+	}
+
+	public get valueSelected() {
+		return this.groups$.getValue().filter(group => group.items.find(item => item.selected)).map(group => {
+			group = Object.assign({}, group);
+			group.items = group.items.filter(item => item.selected);
+			return group;
+		});
 	}
 
 	private getGroups(): Observable<Group[]> {
@@ -86,18 +143,6 @@ export class FilterService {
 		);
 	}
 
-	public get value() {
-		return this.groups$.getValue();
-	}
-
-	public get valueSelected() {
-		return this.groups$.getValue().filter(group => group.items.find(item => item.selected)).map(group => {
-			group = Object.assign({}, group);
-			group.items = group.items.filter(item => item.selected);
-			return group;
-		});
-	}
-
 	onUpdateGroups(groups, results) {
 		groups.forEach(group => {
 			group.visible = false;
@@ -116,8 +161,11 @@ export class FilterService {
 	}
 
 	onReset() {
+		// console.log('FilterService.onReset');
 		this.sorting = this.sortings[0];
-		this.getGroups().subscribe(groups => {
+		this.getGroups().pipe(
+			first(),
+		).subscribe(groups => {
 			// console.log('FilterService.getGroups', groups);
 			this.groups$.next(groups);
 		});
@@ -140,8 +188,10 @@ export class FilterService {
 					});
 				}
 			}
+			/*
 			const item = group.items.find(item => item.id === id);
 			console.log('FilterService.onToggle', item, group);
+			*/
 		}
 	}
 
@@ -160,7 +210,7 @@ export class FilterService {
 			item.selected = true;
 			group.selected = true;
 			group.active = true;
-			console.log('FilterService.setPromotion', item, group);
+			// console.log('FilterService.setPromotion', item, group);
 		}
 	}
 

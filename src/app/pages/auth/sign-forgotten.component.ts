@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
+import { RouteService } from '../../core';
 import { PageComponent } from '../../core/pages';
 import { User, UserService } from '../../models';
 
@@ -18,10 +18,10 @@ export class SignForgottenComponent extends PageComponent implements OnInit {
 	error: any;
 
 	constructor(
-		route: ActivatedRoute,
+		protected routeService: RouteService,
 		private userService: UserService
 	) {
-		super(route);
+		super(routeService);
 	}
 
 	ngOnInit() {

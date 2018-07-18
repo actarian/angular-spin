@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
+import { RouteService } from '../../core';
 import { PageComponent } from '../../core/pages';
 import { Region, RegionService } from '../../models';
 
@@ -15,11 +15,11 @@ export class RegionDetailComponent extends PageComponent implements OnInit {
 	@Input() region: Region;
 
 	constructor(
-		route: ActivatedRoute,
+		protected routeService: RouteService,
 		private location: Location,
 		private regionService: RegionService
 	) {
-		super(route);
+		super(routeService);
 	}
 
 	ngOnInit() {

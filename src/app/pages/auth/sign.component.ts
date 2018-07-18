@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
 import { PageComponent } from '../../core/pages';
 import { FacebookService, FacebookUser, GoogleService, GoogleUser } from '../../core/plugins';
@@ -18,14 +18,13 @@ export class SignComponent extends PageComponent implements OnInit {
 	googleMe: GoogleUser;
 
 	constructor(
-		route: ActivatedRoute,
-		private routeService: RouteService,
+		protected routeService: RouteService,
 		private router: Router,
 		private facebookService: FacebookService,
 		private googleService: GoogleService,
 		private userService: UserService
 	) {
-		super(route);
+		super(routeService);
 	}
 
 	ngOnInit() {

@@ -87,6 +87,7 @@
 				<div class="switch-map-list--item switch-map-list--item__map" [ngClass]="{ active: rList.isActive }">
 					<img src="assets/img/map.png">
 					<a class="btn" [routerLink]="['map']" routerLinkActive #rMap="routerLinkActive">
+						<!-- [queryParams]="search.queryParams" queryParamsHandling="merge" -->
 						<svg class="ico">
 							<use xlink:href="#ico-pin"></use>
 						</svg>

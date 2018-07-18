@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { takeUntil } from 'rxjs/operators';
+import { first, takeUntil } from 'rxjs/operators';
 import { PageComponent } from '../../core/pages';
 import { RouteService } from '../../core/routes';
-import { Region, RegionService } from '../../models';
+import { Region, RegionService, SearchService } from '../../models';
 
 @Component({
 	selector: 'page-home',
@@ -16,11 +15,18 @@ export class HomeComponent extends PageComponent implements OnInit {
 	regions: Region[] = [];
 
 	constructor(
-		route: ActivatedRoute,
+		protected routeService: RouteService,
+		private search: SearchService,
 		private regionService: RegionService,
-		public routeService: RouteService
 	) {
-		super(route);
+		super(routeService);
+		this.routeService.getPageParams().pipe(
+			takeUntil(this.unsubscribe),
+			first()
+		).subscribe(params => {
+			// console.log('HomeComponent.queryParams', params);
+			this.search.setParams(params);
+		});
 		this.attrClass = 'home';
 	}
 

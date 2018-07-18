@@ -1,5 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 import { fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
 import { DisposableComponent } from '../../core/disposable';
@@ -12,16 +11,12 @@ import { SearchService } from '../../models';
 	styleUrls: ['./main-search.component.scss']
 })
 
-export class MainSearchComponent extends DisposableComponent implements OnInit, AfterViewInit {
+export class MainSearchComponent extends DisposableComponent implements AfterViewInit {
 
 	active: ElementRef;
 	destinationDirty: boolean = false;
 
 	constructor(
-		private route: ActivatedRoute,
-		private router: Router,
-		private renderer: Renderer2,
-		private element: ElementRef,
 		private changeDetector: ChangeDetectorRef,
 		public search: SearchService
 	) {
@@ -38,11 +33,6 @@ export class MainSearchComponent extends DisposableComponent implements OnInit, 
 
 	ngAfterViewInit() {
 		this.addListeners();
-		// this.renderer.listen(this.searchLocation.nativeElement, 'click', () => { console.log('cliccato'); });
-	}
-
-	ngOnInit() {
-		// console.log('MainSearchComponent.OnInit');
 	}
 
 	onDestinationSet(item: any) {
@@ -53,14 +43,6 @@ export class MainSearchComponent extends DisposableComponent implements OnInit, 
 	onSubmit() {
 		this.active = null;
 		this.doSearch.emit();
-		/*
-		console.log('MainSearch.onSubmit', this.route.snapshot.data.pageResolver.page.component);
-		if (this.route.snapshot.data.pageResolver.page.component === 'SearchComponent') {
-			this.search.onSearchIn();
-		} else {
-			this.search.onSearch();
-		}
-		*/
 	}
 
 	addListeners() {

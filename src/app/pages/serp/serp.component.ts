@@ -1,5 +1,6 @@
 import { Component, ElementRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { first, takeUntil } from 'rxjs/operators';
+import { RouteService } from '../../core';
 import { PageComponent } from '../../core/pages';
 import { FilterService, SearchService, SerpViewTypes } from '../../models';
 
@@ -17,10 +18,18 @@ export class SerpComponent extends PageComponent {
 	active: ElementRef;
 
 	constructor(
-		route: ActivatedRoute,
+		protected routeService: RouteService,
 		public search: SearchService,
 		public filterService: FilterService,
 	) {
-		super(route);
+		super(routeService);
+		this.routeService.getPageParams().pipe(
+			takeUntil(this.unsubscribe),
+			first()
+		).subscribe(params => {
+			// console.log('SerpComponent.queryParams', params);
+			this.search.setParams(params);
+		});
 	}
+
 }
