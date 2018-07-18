@@ -1,6 +1,7 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { ApplicationRef, enableProdMode, NgZone } from '@angular/core';
 import { INITIAL_CONFIG, platformDynamicServer, PlatformState } from '@angular/platform-server';
+import { ORIGIN_URL } from '@nguniversal/aspnetcore-engine/tokens';
 import { BootFuncParams, createServerRenderer, RenderResult } from 'aspnet-prerendering';
 import 'reflect-metadata';
 import 'zone.js/dist/zone-node';
@@ -18,7 +19,7 @@ export default createServerRenderer((params: BootFuncParams) => {
 	const providers = [
 		{ provide: INITIAL_CONFIG, useValue: { document: params.data.originalHtml, url: params.url } },
 		{ provide: APP_BASE_HREF, useValue: params.baseUrl },
-		{ provide: 'ORIGIN_URL', useValue: params.origin },
+		{ provide: ORIGIN_URL, useValue: params.origin },
 	];
 
 	// console.log(params, providers);
