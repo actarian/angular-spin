@@ -77,6 +77,7 @@ export class SearchService extends EntityService<SearchResult> {
 			});
 		}
 		*/
+		console.log('SearchService.model.startDate', this.model.startDate);
 		this.beginObserveModel();
 		this.beginObserveResults();
 	}
@@ -285,6 +286,7 @@ export class SearchService extends EntityService<SearchResult> {
 		const segments = this.routeService.toRoute(['/search']);
 		segments.push(this.routeService.toParams(this.model));
 		*/
+		this.model.startDate = this.model.startDate || new Date();
 		this.queryParams = this.queryParams || {};
 		this.queryParams.search = JSON.stringify(this.model);
 		// console.log('SearchService.onSearch', this.queryParams, this.model);
@@ -298,6 +300,7 @@ export class SearchService extends EntityService<SearchResult> {
 
 	onSearchIn() {
 		this.queryParams = this.queryParams || {};
+		this.model.startDate = this.model.startDate || new Date();
 		this.queryParams.search = JSON.stringify(this.model);
 		this.setParams(this.routeService.parseParams(this.queryParams));
 		this.model$.next(this.model);

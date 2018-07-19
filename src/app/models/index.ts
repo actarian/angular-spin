@@ -15,6 +15,7 @@ export * from './search.service';
 export * from './tag';
 export * from './tag.service';
 export * from './test.service';
+export * from './trustPilot';
 export * from './user';
 export * from './user.service';
 

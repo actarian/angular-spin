@@ -32,7 +32,7 @@ import { HotelComponent, HotelTagsPipe } from './pages/hotel';
 import { ProfileComponent } from './pages/profile';
 import { RegionDetailComponent, RegionsComponent } from './pages/regions';
 import { SerpComponent, SerpFilterComponent, SerpItemComponent, SerpListComponent, SerpMapComponent } from './pages/serp';
-import { FooterComponent, HeaderComponent, NotFoundComponent, RegionSearchComponent, SvgComponent, ValuePropositionComponent } from './sections';
+import { FooterComponent, HeaderComponent, NotFoundComponent, RegionSearchComponent, SvgComponent, TrustPilotComponent, ValuePropositionComponent } from './sections';
 import { DestinationHintComponent, DestinationTypePipe, MainSearchComponent } from './sections/main-search';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
@@ -82,7 +82,7 @@ registerLocaleData(localeIt, 'it');
 		SerpComponent, SerpItemComponent, SerpListComponent, SerpMapComponent,
 		HotelComponent, HotelTagsPipe,
 		RegionsComponent, RegionDetailComponent, RegionSearchComponent,
-		HeaderComponent, DestinationHintComponent, FooterComponent, SerpFilterComponent, NotFoundComponent, SvgComponent, ValuePropositionComponent,
+		HeaderComponent, DestinationHintComponent, FooterComponent, SerpFilterComponent, NotFoundComponent, SvgComponent, TrustPilotComponent, ValuePropositionComponent,
 		ClickOutsideDirective, ControlEditableComponent, DestinationTypePipe, FancyboxDirective, LazyImagesDirective, MainSearchComponent, PageDirective, LoggerComponent
 	],
 	providers: [
@@ -98,4 +98,10 @@ registerLocaleData(localeIt, 'it');
 	bootstrap: [AppComponent]
 })
 
-export class AppModule { }
+export class AppModule {
+	constructor(
+		protected injector: Injector,
+	) {
+		RouteService.injector = this.injector;
+	}
+}

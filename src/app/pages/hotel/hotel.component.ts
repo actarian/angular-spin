@@ -3,7 +3,8 @@ import { AfterViewInit, Component, Inject, Input, NgZone, OnInit, PLATFORM_ID } 
 import { takeUntil } from 'rxjs/operators';
 import { RouteService } from '../../core';
 import { PageComponent } from '../../core/pages';
-import { Hotel, HotelService } from '../../models';
+import { Hotel, HotelService, SearchService } from '../../models';
+import { Booking, BookingAvailability, BookingCalendar, BookingOptions } from '../../models/booking';
 
 @Component({
 	selector: 'page-hotel',
@@ -33,24 +34,85 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 
 	@Input() hotel: Hotel;
 
+	booking: Booking = new Booking();
+	calendar: BookingCalendar = new BookingCalendar();
+
 	constructor(
 		@Inject(PLATFORM_ID) private platformId: string,
 		private zone: NgZone,
 		protected routeService: RouteService,
+		public search: SearchService,
 		private hotelService: HotelService
 	) {
 		super(routeService);
 	}
 
 	ngOnInit() {
-		console.log(`HotelComponent.OnInit ${this.getId()}`);
 		this.getHotel();
+		if (isPlatformBrowser(this.platformId)) {
+			this.getFirstInOut();
+		}
 	}
 
 	getHotel(): void {
+		console.log(`HotelComponent.getHotel ${this.getId()}`);
+		this.hotelService.get(`/api/hotel/${this.getId()}`).pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(hotel => this.hotel = hotel);
+		/*
 		this.hotelService.getTopServiceDetailsById(this.getId()).pipe(
 			takeUntil(this.unsubscribe)
 		).subscribe(hotel => this.hotel = hotel);
+		*/
+	}
+
+	getFirstInOut(): void {
+		this.hotelService.getBookingCheckInById(this.getId(), this.booking)
+			.subscribe((checkins: any[]) => {
+				if (checkins.length === 0) {
+					return;
+				}
+				const startDate: Date = new Date(); // goal startDate
+				checkins = checkins.map(a => new BookingAvailability(a));
+				const nearestCheckIn = checkins.reduce((a: BookingAvailability, b: BookingAvailability) => {
+					return (Math.abs(b.getDate().getTime() - startDate.getTime()) < Math.abs(a.getDate().getTime() - startDate.getTime()) ? b : a);
+				}).date;
+				this.calendar.checkins = checkins;
+				this.booking.checkIn = nearestCheckIn;
+				// console.log('HotelService.getFirstInOut.getBookingCheckInById', this.calendar);
+				this.hotelService.getBookingCheckOutById(this.getId(), this.booking)
+					.subscribe((checkouts: any[]) => {
+						if (checkouts.length === 0) {
+							return;
+						}
+						checkouts = checkouts.map(a => new BookingAvailability(a));
+						const nearestCheckOut = checkouts.reduce((a: BookingAvailability, b: BookingAvailability) => {
+							return (Math.abs(b.getDate().getTime() - startDate.getTime()) < Math.abs(a.getDate().getTime() - startDate.getTime()) ? b : a);
+						}).date;
+						this.booking.checkOut = nearestCheckOut;
+						this.calendar.checkouts = checkouts;
+						// console.log('HotelService.getCheckOut.getBookingCheckOutById', this.calendar);
+						this.hotelService.getBookingOptionsById(this.getId(), this.booking)
+							.subscribe((options: BookingOptions) => {
+								this.booking.options = options;
+								// console.log('HotelService.getCheckOut.getBookingOptionsById', this.options);
+							});
+					});
+			});
+	}
+
+	getCheckIn(): void {
+		this.hotelService.getBookingCheckInById(this.getId(), this.booking)
+			.subscribe((checkins: any[]) => {
+				console.log('HotelService.getCheckIn', checkins);
+			});
+	}
+
+	getCheckOut(): void {
+		this.hotelService.getBookingCheckOutById(this.getId(), this.booking)
+			.subscribe((checkouts: any[]) => {
+				console.log('HotelService.getCheckOut', checkouts);
+			});
 	}
 
 	ngAfterViewInit() {

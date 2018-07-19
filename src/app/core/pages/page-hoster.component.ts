@@ -5,11 +5,11 @@ import { ORIGIN_URL } from '@nguniversal/aspnetcore-engine/tokens';
 import { takeUntil } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { DisposableComponent } from '../disposable';
+import { Image, ImageType } from '../models';
 import { RouteService } from '../routes';
 import { Page } from './page';
 import { PageComponent } from './page.component';
 import { PageDirective } from './page.directive';
-
 @Component({
 	selector: 'page-hoster',
 	template: `<ng-template #hostPage>Your View should load here..</ng-template>`,
@@ -47,23 +47,39 @@ export class PageHosterComponent extends DisposableComponent {
 		// this code should run in ssr too
 		const fbAppId: string = environment['plugins'] && environment['plugins']['facebook'] ? environment.plugins.facebook.appId.toString() : '';
 		this.titleService.setTitle(page.title);
-		this.addOrUpdateMeta({ name: 'description', content: 'Servizio di qualità senza costi aggiuntivi con i convenienti pacchetti viaggio Eurospin. Prenota comodamente online!' });
-		this.addOrUpdateMeta({ name: 'keywords', content: 'viaggi,viaggi eurospin' });
-		this.addOrUpdateMeta({ name: 'robots', content: 'index,follow' });
-		this.addOrUpdateMeta({ property: 'fb:app_id', content: fbAppId });
-		this.addOrUpdateMeta({ property: 'og:image', content: 'https://s-static.ak.fbcdn.net/images/devsite/attachment_blank.png' });
-		this.addOrUpdateMeta({ property: 'og:locale', content: 'it_IT' });
 		this.addOrUpdateMeta({ property: 'og:title', content: page.title });
-		this.addOrUpdateMeta({ property: 'og:type', content: 'article' });
-		this.addOrUpdateMeta({ property: 'og:url', content: this.originUrl });
+		this.addOrUpdateMeta({ property: 'og:image', content: this.getSocialImage(page).slug });
+		this.addOrUpdateMeta({ property: 'fb:app_id', content: fbAppId });
+		const meta = page.meta;
+		if (meta) {
+			this.addOrUpdateMeta({ name: 'description', content: meta.description || 'Servizio di qualità senza costi aggiuntivi con i convenienti pacchetti viaggio Eurospin. Prenota comodamente online!' });
+			this.addOrUpdateMeta({ name: 'keywords', content: meta.keywords || 'viaggi,viaggi eurospin' });
+			this.addOrUpdateMeta({ name: 'robots', content: meta.robots || 'index,follow' });
+			this.addOrUpdateMeta({ property: 'og:locale', content: meta.locale || 'it_IT' });
+			this.addOrUpdateMeta({ property: 'og:type', content: meta.type || 'article' });
+			this.addOrUpdateMeta({ property: 'og:author', content: meta.author || 'Eurospin Viaggi' });
+			this.addOrUpdateMeta({ property: 'og:url', content: meta.url || this.originUrl });
+		}
 		// }
+	}
+
+	getSocialImage(page: Page): Image {
+		return page.images ? (
+			page.images.find(i => i.type === ImageType.Share) ||
+			page.images.find(i => i.type === ImageType.Default) ||
+			page.images.find(i => i.type === ImageType.Gallery)
+		) : { slug: 'https://s-static.ak.fbcdn.net/images/devsite/attachment_blank.png' } as Image;
 	}
 
 	addOrUpdateMeta(definition: MetaDefinition) {
 		const selector = definition.name ? `name="${definition.name}"` : `property="${definition.property}"`;
 		if (this.metaService.getTag(selector)) {
-			this.metaService.updateTag(definition, selector);
-		} else {
+			if (definition.content) {
+				this.metaService.updateTag(definition, selector);
+			} else {
+				this.metaService.removeTag(selector);
+			}
+		} else if (definition.content) {
 			this.metaService.addTag(definition);
 		}
 	}

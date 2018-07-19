@@ -1,5 +1,6 @@
 import { Document } from '../core/models';
 import { Destination } from './destination';
+import { TrustPilot } from './trustPilot';
 
 export class Duration {
 	id: number;
@@ -94,8 +95,7 @@ export class SearchResult implements Document {
 	to: string; // "15/06"
 	topDestinationDescription?: string;
 	totalPrice: number;
-	trustPilot_averageStars: number;
-	trustPilot_nReviews: number;
+	trustPilot?: TrustPilot;
 	type: string;
 	slug: string;
 	visible?: boolean = true;
@@ -128,10 +128,10 @@ export class SearchResult implements Document {
 			this.to = options.to;
 			this.topDestinationDescription = options.topDestinationDescription;
 			this.totalPrice = options.totalPrice;
-			this.trustPilot_averageStars = options.trustPilot_averageStars;
-			this.trustPilot_nReviews = options.trustPilot_nReviews;
+			this.trustPilot = options.trustPilot;
 			this.type = options.type;
 			this.slug = options.slug;
 		}
 	}
+
 }

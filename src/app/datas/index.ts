@@ -1,5 +1,6 @@
 export * from './category';
 export * from './destination';
+export * from './hotel';
 export * from './label';
 export * from './page';
 export * from './promotion';

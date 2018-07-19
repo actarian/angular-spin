@@ -1,0 +1,66 @@
+@import "~scss/variables";
+
+.table-wrap {
+	padding: 10px 0;
+
+	.table {
+		margin-bottom: 20px;
+		border-bottom: 1px solid #ddd;
+
+		tr {
+			td,
+			th {
+				font-size: 13px;
+				border-right: 1px dashed #ddd;
+				vertical-align: middle;
+			}
+
+			&>td:first-child,
+			&>th:first-child {
+				padding-left: 0;
+			}
+			&>td:last-child,
+			&>th:last-child {
+				border-right: none;
+			}
+
+		}
+
+		&>thead,
+		&>tbody,
+		&>tfoot {
+			&>tr {
+				&>th,
+				&>td {
+					padding: 8px;
+					line-height: 1.42857143;
+					vertical-align: top;
+					border-top: 1px solid $border-color;
+				}
+			}
+		}
+
+		td,
+		th {
+			padding: 0;
+		}
+	}
+
+	small {
+		color: $alert-color;
+		line-height: 1.2;
+		margin-bottom: 20px;
+		display: block;
+	}
+}
+
+.readmore-accordion {
+
+	.table {
+		td {
+			padding: 5px 0;
+			border-bottom: 1px solid #dadada;
+		}
+	}
+
+}

@@ -126,28 +126,57 @@ Hotel Trust
 	.number {
 		display: inline-block;
 		color: #fff;
-		background-color: $rate-excellent;
 		padding: 0 5px;
-
-		&.good {
-			background-color: $rate-good;
-		}
-
-		&.poor {
-			background-color: $rate-poor;
-		}
 	}
 
 	.text {
-		display: block;
-		color: $rate-excellent;
+		display: inline-block;
+		margin-left: 4px;
+	}
 
-		&.good {
+	&.excellent {
+		.number {
+			background-color: $rate-excellent;
+		}
+		.text {
+			color: $rate-excellent;
+		}
+	}
+
+	&.good {
+		.number {
+			background-color: $rate-good;
+		}
+		.text {
 			color: $rate-good;
 		}
+	}
 
-		&.poor {
+	&.average {
+		.number {
+			background-color: $rate-average;
+		}
+		.text {
+			color: $rate-average;
+		}
+	}
+
+	&.poor {
+		.number {
+			background-color: $rate-poor;
+		}
+		.text {
 			color: $rate-poor;
 		}
 	}
+
+	&.bad {
+		.number {
+			background-color: $rate-bad;
+		}
+		.text {
+			color: $rate-bad;
+		}
+	}
+
 }

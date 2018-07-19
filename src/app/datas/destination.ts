@@ -2942,6 +2942,16 @@ export const destination: Destination[] = [{
 	],
 	type: 5
 }, {
+	code: '9340',
+	id: 0,
+	name: 'VILLAGGIO ELISENA',
+	slug: 'villaggio_elisena_5',
+	texts: [
+		'Vieste(FG)',
+		'dal 25/05 al 16/09'
+	],
+	type: 5
+}, {
 	code: '8597',
 	id: 0,
 	name: 'GRAND HOTEL EXCELSIOR',

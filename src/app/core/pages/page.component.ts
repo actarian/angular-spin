@@ -1,10 +1,12 @@
 
-import { Component, HostBinding, Input } from '@angular/core';
-import { Params } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, HostBinding, Input, PLATFORM_ID } from '@angular/core';
+import { NavigationEnd, Params, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { DisposableComponent } from '../disposable';
 import { RouteService } from '../routes';
 import { Page } from './page';
+
 
 
 @Component({
@@ -13,6 +15,7 @@ import { Page } from './page';
 })
 
 export class PageComponent extends DisposableComponent {
+
 	@Input() page: Page;
 	@Input() params: Observable<Params>;
 	@HostBinding('attr.class') attrClass = 'page';
@@ -21,6 +24,8 @@ export class PageComponent extends DisposableComponent {
 		protected routeService: RouteService
 	) {
 		super();
+		this.scrollToTop();
+		// console.log('platformId', platformId);
 		/*
 		console.log('PageComponent.create');
 		this.routeService.getPageParams().pipe(
@@ -30,6 +35,21 @@ export class PageComponent extends DisposableComponent {
 			console.log('queryParams', queryParams);
 		});
 		*/
+	}
+
+	private scrollToTop(): void {
+		// scroll to top on page change;
+		// dependancy manually activated;
+		const platformId: string = RouteService.injector.get(PLATFORM_ID) as string;
+		if (isPlatformBrowser(platformId)) {
+			const router = RouteService.injector.get(Router);
+			router.events.subscribe((e) => {
+				if (!(e instanceof NavigationEnd)) {
+					return;
+				}
+				window.scrollTo(0, 0);
+			});
+		}
 	}
 
 	getId(): number {

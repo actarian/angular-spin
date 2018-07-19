@@ -14,6 +14,8 @@ import { SegmentPipe } from './segment.pipe';
 
 export class RouteService {
 
+	static injector: Injector;
+
 	private urlStrategy: string = environment.urlStrategy;
 	private _language: any = new BehaviorSubject({});
 	public readonly language: Observable<any> = this._language.asObservable();

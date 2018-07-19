@@ -48,7 +48,7 @@
 	"weekDaysIn": 127,
 	"weekDaysOut": 127,
 	"baseTags": [{ "key": "9" }, { "key": "21" }, { "key": "37" }, { "key": "40" }, { "key": "43" }],
-	"tagList": [{
+	"tags": [{
 		"id": 9,
 		"category": 1,
 		"name": "Amici 4 zampe",

@@ -1,5 +1,6 @@
 import { Document } from '../core/models';
 import { Tag } from './tag';
+import { TrustPilot } from './trustPilot';
 
 export class HotelLocation {
 	cityCode: string;
@@ -30,24 +31,23 @@ export class Hotel implements Document {
 	name: string;
 	active: boolean;
 	destinationDescription: string;
-	destinationProvince: number;
+	destinationProvince: string;
 	structureID: number;
 	overlayCoverImage: string;
 	overlayCoverText: string;
 	frontEndName: string;
-	trustPilot_nReviews: number;
-	trustPilot_averageStars: number;
+	trustPilot?: TrustPilot;
 	accomodation: string;
 	rating: string;
 	abstract: string;
 	photo: string;
 	cover: string;
 	excludeFeed: boolean;
-	from: Date;
-	to: Date;
-	created: Date;
-	bookFrom: Date;
-	bookTo: Date;
+	from: Date | string;
+	to: Date | string;
+	created: Date | string;
+	bookFrom: Date | string;
+	bookTo: Date | string;
 	price: number;
 	advice: number;
 	mandatoryDocument: number;
@@ -61,8 +61,7 @@ export class Hotel implements Document {
 	//
 	location: HotelLocation;
 	address: HotelAddress;
-	baseTags: BaseTag[];
-	tagList: Tag[];
+	tags: Tag[];
 	statisticCodes: any;
 	//
 	constructor(options?: Hotel) {
@@ -81,8 +80,7 @@ export class Hotel implements Document {
 			this.overlayCoverImage = options.overlayCoverImage;
 			this.overlayCoverText = options.overlayCoverText;
 			this.frontEndName = options.frontEndName;
-			this.trustPilot_nReviews = options.trustPilot_nReviews;
-			this.trustPilot_averageStars = options.trustPilot_averageStars;
+			this.trustPilot = options.trustPilot;
 			this.accomodation = options.accomodation;
 			this.rating = options.rating;
 			this.abstract = options.abstract;
@@ -105,8 +103,7 @@ export class Hotel implements Document {
 			//
 			this.location = options.location;
 			this.address = options.address;
-			this.baseTags = options.baseTags;
-			this.tagList = options.tagList;
+			this.tags = options.tags;
 			this.statisticCodes = options.statisticCodes;
 			//
 		}

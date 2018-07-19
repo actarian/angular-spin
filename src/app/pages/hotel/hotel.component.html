@@ -1,139 +1,144 @@
-<!--
 <section>
 	<div class="container">
-		<main-search (doSearch)="filterService.onReset(); search.onSearchIn()">---</main-search>
+		<main-search (doSearch)="search.onSearch()">---</main-search>
 	</div>
 </section>
--->
 
 <section class="hotel-page" *ngIf="hotel">
 	<div class="container">
+		<!-- SIDEBAR -->
 		<div class="hotel-sidebar">
 			<div class="sticky">
-				<div class="sidebar-group">
-					<div class="tit">Ospiti</div>
-					<div class="edit-row">
-						<div class="edit-name">
-							2 persone
+				<ng-container *ngIf="!booking.options">
+					<div class="sidebar-group">
+						<div class="tit">Attendere...</div>
+					</div>
+				</ng-container>
+				<ng-container *ngIf="booking.options">
+					<div class="sidebar-group">
+						<div class="tit">Ospiti</div>
+						<div class="edit-row">
+							<div class="edit-name">
+								2 persone
+							</div>
+							<a href="#" class="edit-btn">modifica</a>
 						</div>
-						<a href="#" class="edit-btn">modifica</a>
 					</div>
-				</div>
-				<div class="sidebar-group">
-					<div class="tit">Periodo</div>
-					<div class="edit-row">
-						<div class="edit-name">
-							5 notti
+					<div class="sidebar-group">
+						<div class="tit">Periodo</div>
+						<div class="edit-row">
+							<div class="edit-name">
+								{{booking.daysTotal}} notti
+							</div>
+							<a href="#" class="edit-btn">modifica</a>
 						</div>
-						<a href="#" class="edit-btn">modifica</a>
-					</div>
-					<div class="edit-row">
-						<div class="edit-name">
-							18/09/2018 - 23/04/2018
+						<div class="edit-row">
+							<div class="edit-name">
+								{{booking.checkIn | date : 'shortDate'}} - {{booking.checkOut | date : 'shortDate'}}
+							</div>
+							<a href="#" class="edit-btn">modifica</a>
 						</div>
-						<a href="#" class="edit-btn">modifica</a>
 					</div>
-				</div>
-				<div class="sidebar-group">
-					<div class="tit">
-						Tipologia di camera
+					<div class="sidebar-group">
+						<div class="tit">
+							Tipologia di camera
+						</div>
+						<div class="radio type-{{item.type}}" *ngFor="let item of booking.options.accomodations">
+							<label>
+								<input type="radio" name="tipologia-camera" value="{{item.code}}" [checked]="item.checked">
+								<span>{{item.name}} ({{item.price}}€)</span>
+							</label>
+						</div>
 					</div>
-					<div class="radio">
-						<label>
-							<input type="radio" name="tipologia-camera" checked>
-							<span>Camera doppia relax (730€)</span>
-						</label>
-					</div>
-					<div class="radio">
-						<label>
-							<input type="radio" name="tipologia-camera">
-							<span>Camera doppia supreme (730€)</span>
-						</label>
-					</div>
-				</div>
-				<div class="sidebar-group">
-					<div class="tit">
-						Assicurazione
-					</div>
-					<div class="radio">
-						<label>
+					<div class="sidebar-group">
+						<div class="tit">
+							Assicurazione
+						</div>
+						<div class="radio type-{{item.type}}" *ngFor="let item of booking.options.extraQuotes">
+							<label>
+								<input type="radio" name="assicurazione" value="{{item.code}}" [checked]="item.checked">
+								<span>{{item.name}} ({{item.price}}€)</span>
+							</label>
+						</div>
+						<!--
+						<div class="radio">
+							<label>
 							<input type="radio" name="assicurazione" checked>
 							<span>ANNULLAMENTO (29.92€)</span>
 						</label>
-					</div>
-					<div class="radio">
-						<label>
+						</div>
+						<div class="radio">
+							<label>
 							<input type="radio" name="assicurazione">
 							<span>medico e bagaglio (8.40€ a persona)</span>
 						</label>
+						</div>
+						-->
 					</div>
-				</div>
-				<div class="sidebar-group">
-					<div class="tit">
-						Trattamento
-					</div>
-					<div class="radio">
-						<label>
+					<div class="sidebar-group">
+						<div class="tit">
+							Trattamento
+						</div>
+						<div class="radio">
+							<label>
 							<input type="radio" name="trattamento" checked>
-							<span>Mezza pensione</span>
+							<span>{{hotel.accomodation}}</span>
 						</label>
-					</div>
-				</div>
-				<div class="sidebar-group">
-					<div class="tit">
-						Totale complessivo
-					</div>
-					<div class="edit-row edit-row--total">
-						<div>
-							Per 2 persone
-						</div>
-						<div class="total-price">
-							759,93€
 						</div>
 					</div>
-				</div>
-				<div class="sidebar-cta">
-					<a href="#" class="btn">Prenota il tuo viaggio</a>
-					<span class="no-extra">(nessun costo aggiuntivo)</span>
-				</div>
+					<div class="sidebar-group">
+						<div class="tit">
+							Totale complessivo
+						</div>
+						<div class="edit-row edit-row--total">
+							<div>
+								Per {{booking.paxTotal}} persone
+							</div>
+							<div class="total-price">
+								{{booking.priceTotal}}€
+							</div>
+						</div>
+					</div>
+					<div class="sidebar-cta">
+						<a href="#" class="btn">Prenota il tuo viaggio</a>
+						<span class="no-extra">(nessun costo aggiuntivo)</span>
+					</div>
+				</ng-container>
 			</div>
 		</div>
+		<!-- MAIN -->
 		<div class="hotel-main-content">
-
+			<!-- HEAD -->
 			<div class="hotel-head">
 				<div class="hotel-info">
 					<div class="hotel-name">
-						<span>{{hotel.frontEndName}}</span> <span class="stars"><em *ngFor="let star of hotel?.rating?.split('');" [ngClass]="{ superior: star === 'S' }">{{star}}</em></span>
+						<span>{{hotel.frontEndName}}</span> <span class="stars"><em *ngFor="let star of hotel.rating?.split('');" [ngClass]="{ superior: star === 'S' }">{{star}}</em></span>
 					</div>
 					<div class="hotel-location">
 						<span class="hotel-region">{{hotel.location?.avesDstCode}}</span>
 						<!-- <span class="hotel-region">Italia Toscana</span>&nbsp;<span class="hotel-town">Radda in Chianti SI</span> -->
 					</div>
 				</div>
-				<div class="hotel-trust"><span class="number excellent">8.5</span><span class="text excellent">Eccellente</span></div>
+				<ng-container *ngIf="hotel.trustPilot">
+					<span [trustPilot]="hotel.trustPilot"></span>
+				</ng-container>
 				<button class="add-to-fav" type="button">
-						<svg class="ico"><use xlink:href="#ico-fav"></use></svg>
+					<svg class="ico"><use xlink:href="#ico-fav"></use></svg>
 				</button>
 			</div>
-
+			<!-- SWIPER -->
 			<div class="hotel-gallery swiper-container" [swiper]>
 				<div class="swiper-wrapper" [fancybox]="fancyboxOptions">
-					<div class="swiper-slide" *ngFor="let number of [1,2,3,4,5,6]">
-						<a href="{{hotel.cover}}" data-fancybox="gallery">
-							<img src="{{hotel.photo}}" alt="">
+					<div class="swiper-slide" *ngFor="let image of page.images">
+						<a href="{{image.slug}}" data-fancybox="gallery">
+							<img src="{{image.slug}}" alt="{{image.name}}">
 						</a>
-						<!--
-						<a href="assets/img/hotel/gallery-{{number}}.jpg" data-fancybox="gallery">
-							<img src="assets/img/hotel/gallery-{{number}}.jpg" alt="">
-						</a>
-						-->
 					</div>
 				</div>
-
 				<div class="swiper-button swiper-button-prev"></div>
 				<div class="swiper-button swiper-button-next"></div>
 			</div>
-
+			<!-- DESCRIPTION -->
 			<div class="hotel-desc">
 				<ul class="hotel-list">
 					<li class="hotel-list-item">
@@ -148,8 +153,9 @@
 						</svg>
 						<span>{{hotel.accomodation}}</span>
 					</li>
-					<ng-container *ngIf="hotel.tagList">
-						<li class="hotel-list-item" *ngFor="let item of hotel.tagList | hotelTags">
+					<!-- TAGS -->
+					<ng-container *ngIf="hotel.tags">
+						<li class="hotel-list-item item-{{item.id}} category-{{item.category}}" *ngFor="let item of hotel.tags | hotelTags">
 							<svg class="ico">
 								<use xlink:href="#ico-fav"></use>
 							</svg>
@@ -157,7 +163,20 @@
 						</li>
 					</ng-container>
 				</ul>
+				<!-- FEATURES -->
+				<ng-container *ngIf="page.features">
+					<div class="inclusion hotel-desc-group">
+						<div class="readmore-accordion" *ngFor="let feature of page.features">
+							<h2>{{feature.title}}</h2>
+							<div class="readmore-accordion__wrapper">
+								<div class="readmore-accordion__sizer" [innerHTML]="feature.description"></div>
+							</div>
+							<button type="button" class="readmore-accordion__toggler"><i class="fa fa-angle-down" aria-hidden="true"></i> <span>Leggi tutto</span> <span>Chiudi</span></button>
+						</div>
+					</div>
+				</ng-container>
 
+				<!--
 				<div class="inclusion hotel-desc-group">
 					<div class="readmore-accordion">
 						<h2>La quota comprende</h2>
@@ -199,6 +218,7 @@
 						<a href="" class="readmore-accordion__toggler"><i class="fa fa-angle-down" aria-hidden="true"></i> <span>Leggi tutto</span> <span>Chiudi</span> </a>
 					</div>
 				</div>
+				-->
 
 			</div>
 		</div>

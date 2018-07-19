@@ -1,0 +1,44 @@
+{
+	"Accomodations": [{
+		"Price": 770.00,
+		"Type": 1,
+		"Code": "D01",
+		"Name": "MONOLOCALE 2 PERSONE"
+	}, {
+		"Price": 770.00,
+		"Type": 1,
+		"Code": "D02",
+		"Name": "MONOLOCALE 2-4 PERSONE"
+	}],
+	"ExtraQuotes": [{
+		"Price": 0.0,
+		"Type": 8,
+		"Detail": {
+			"Code": "ZASSICANN",
+			"Rate": 4.10,
+			"xPaxAmount": 0.00,
+			"xPaxTax": 0.00,
+			"AcceptTitle": "Condizioni polizza assicurativa Annullamento Europ Assistance",
+			"AcceptText": "Dichiaro <em> di aver salvato, letto e di conoscere le Condizioni di polizza di Europ Assistance, di accettarle, in particolare i seguenti articoli: “Legge regolatrice della Polizza e giurisdizione”, “Recesso in caso di sinistro”, “Oggetto dell’assicurazione”, “Esclusioni”, “Obblighi dell’Assicurato in caso di sinistro” e di acconsentire al trattamento dei miei dati ivi compresi i dati sensibili, per le finalità di adempimento delle obbligazioni di polizza secondo quanto previsto nell’informativa per il trattamento dei dati personali contenuta nelle condizioni di polizza.</em>",
+			"Country": ""
+		},
+		"Code": "ZASSICANN",
+		"Name": "ASSICURAZIONE ANNULLAMENTO",
+		"Description": "+ 4.10 % del costo totale = € {0} per soli residenti in Italia. Ti invitiamo a salvare o stampare le condizioni della polizza assicurativa, <a href=\"/media/userfiles/files/Pol 34802Q.Tessera Ann.01.10.2017.pdf\" target=\"_blank\">Clicca qui</a>."
+	}, {
+		"Price": 0.0,
+		"Type": 8,
+		"Detail": {
+			"Code": "ZASSMEDBAG",
+			"Rate": 0.00,
+			"xPaxAmount": 4.20,
+			"xPaxTax": 0.30,
+			"AcceptTitle": "Condizioni polizza assicurativa Medico e Bagaglio Europ Assistance",
+			"AcceptText": "Dichiaro <em> di aver salvato, letto e di conoscere le Condizioni di polizza di Europ Assistance, di accettarle, in particolare i seguenti articoli: “Legge regolatrice della Polizza e giurisdizione”, “Recesso in caso di sinistro”, “Oggetto dell’assicurazione”, “Esclusioni”, “Obblighi dell’Assicurato in caso di sinistro” e di acconsentire al trattamento dei miei dati ivi compresi i dati sensibili, per le finalità di adempimento delle obbligazioni di polizza secondo quanto previsto nell’informativa per il trattamento dei dati personali contenuta nelle condizioni di polizza.</em>",
+			"Country": ",ITA,LIV,SMR,"
+		},
+		"Code": "ZASSMEDBAG",
+		"Name": "ASSICURAZIONE MEDICO E BAGAGLIO",
+		"Description": "+ 4.20 € a persona = € {0} totali (di cui 0.30 euro di imposte a persona). Ti invitiamo a salvare o stampare le condizioni della polizza assicurativa, <a href=\"/media/userfiles/files/Eurospin_Assicurazione_medico_bagaglio.pdf\" target=\"_blank\">Clicca qui</a>."
+	}]
+}
