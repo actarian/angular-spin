@@ -1,3 +1,4 @@
+export * from './calendar-options';
 export * from './category';
 export * from './category.service';
 export * from './destination';

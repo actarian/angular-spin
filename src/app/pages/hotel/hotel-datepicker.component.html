@@ -1,0 +1,11 @@
+<div class="hotel-datepicker" (clickOutside)="active = false">
+	<div class="edit-row">
+		<div class="edit-name">
+			<input class="with-reset" disabled type="text" placeholder="Seleziona una data" [value]="ngModel | date:'dd MMMM yyyy'">
+		</div>
+		<button class="edit-btn" (click)="active = true" *ngIf="!disabled">modifica</button>
+	</div>
+	<div class="calendar popup-calendar" *ngIf="active && !disabled">
+		<p-calendar name="startDate" (onSelect)="onSelect($event)" (onMonthChange)="onMonthChange($event)" [(ngModel)]="ngModel" [disabledDates]="disabledDates" [inline]="true" [monthNavigator]="true" [yearNavigator]="true" [yearRange]="calendar.minYear + ':' + calendar.maxYear" [minDate]="minDate" [maxDate]="maxDate" [locale]="calendar.it" dateFormat="dd/mm/yy"></p-calendar>
+	</div>
+</div>

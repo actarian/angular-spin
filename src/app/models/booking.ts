@@ -45,8 +45,10 @@ export class Booking {
 	adults?: number = 2;
 	children?: any[] = [];
 	childrenCount?: number = 0;
-	checkIn?: string | Date;
-	checkOut?: string | Date;
+	startDate?: Date;
+	checkIn?: Date;
+	checkOut?: Date;
+	flexibleDate?: boolean = true;
 	options?: BookingOptions;
 	accomodation?: any = null;
 	extraQuotes?: any[] = [];
@@ -55,30 +57,32 @@ export class Booking {
 	treatment?: any = null;
 	principal?: any = null;
 	duration?: number = 0;
-	flexibleDate?: boolean = true;
 
-	constructor(options?: Booking) {
+	constructor(options?: any) {
 		if (options) {
 			Object.assign(this, options);
 		}
 	}
 
-	getPayload(): Booking {
-		const payload = new Booking(this);
-		payload.checkIn = this.getPayloadDate(payload.checkIn);
-		return payload;
+	getPayload?(): any {
+		return {
+			adults: this.adults,
+			children: this.children,
+			childrenCount: this.childrenCount,
+			checkIn: this.dateToKey(this.checkIn),
+			checkOut: this.dateToKey(this.checkOut),
+			flexibleDate: this.flexibleDate,
+			options: this.options,
+		};
 	}
 
-	getPayloadDate(date: string | Date) {
-		if (date instanceof Date) {
-			date = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
-		}
-		return date;
+	dateToKey?(date: Date): string {
+		return date ? `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}` : null;
 	}
 
 	get daysTotal(): number {
 		const oneDay = 24 * 60 * 60 * 1000; // hours * minutes * seconds * milliseconds
-		return Math.round(Math.abs((this.getDate(this.checkIn).getTime() - this.getDate(this.checkOut).getTime()) / (oneDay)));
+		return Math.max(0, Math.round(Math.abs((this.getDate(this.checkIn).getTime() - this.getDate(this.checkOut).getTime()) / (oneDay))) - 1);
 	}
 
 	get paxTotal(): number {
@@ -94,7 +98,7 @@ export class Booking {
 		return total;
 	}
 
-	getDate(date: string | Date): Date {
+	getDate?(date: string | Date): Date {
 		if (typeof (date) === 'string') {
 			return new Date(date);
 		} else {
@@ -120,6 +124,14 @@ export class BookingAvailability {
 			return new Date(this.date);
 		} else {
 			return this.date;
+		}
+	}
+
+	getKey(): string {
+		if (typeof (this.date) === 'string') {
+			return this.date;
+		} else {
+			return `${this.date.getFullYear()}-${this.date.getMonth() + 1}-${this.date.getDate()}`;
 		}
 	}
 }

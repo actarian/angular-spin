@@ -7,11 +7,12 @@ import { debounceTime, tap } from 'rxjs/operators';
 import { EntityService, Option } from '../core/models';
 import { RouteService } from '../core/routes';
 import { LocalStorageService, StorageService } from '../core/storage';
+import { CalendarOptions } from './calendar-options';
 import { Destination, DestinationTypes } from './destination';
 import { DestinationService } from './destination.service';
 import { Group, GroupSelectionType, Sorting } from './filter';
 import { FilterService } from './filter.service';
-import { CalendarOption, Duration, durations, MainSearch, SearchResult } from './search';
+import { Duration, durations, MainSearch, SearchResult } from './search';
 
 @Injectable({
 	providedIn: 'root',
@@ -22,7 +23,7 @@ export class SearchService extends EntityService<SearchResult> {
 		return '/api/searchResult';
 	}
 
-	calendar: CalendarOption = new CalendarOption();
+	calendar: CalendarOptions = new CalendarOptions();
 	destinations: Destination[];
 	durations: Duration[] = durations;
 	ages: number[] = new Array(18).fill(0).map((x, i) => i); // 0 - 17

@@ -1,0 +1,34 @@
+@import "~scss/variables";
+
+.edit-row {
+	margin-bottom: 5px;
+	display: flex;
+	justify-content: space-between;
+	position: relative;
+	z-index: 1000;
+}
+
+.edit-name {
+	display: inline-block;
+	input {
+		border: 0;
+		outline: none;
+		max-width: 120px;
+	}
+}
+
+.edit-btn {
+	font-size: 11px;
+	text-decoration: underline;
+}
+
+.popup-calendar {
+	position: absolute;
+	top: 0;
+	left: 100%;
+	width: 300px;
+	height: 300px;
+	z-index: 100;
+	background: white;
+	border: 1px solid $primary-color;
+}

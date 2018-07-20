@@ -9,34 +9,49 @@
 		<!-- SIDEBAR -->
 		<div class="hotel-sidebar">
 			<div class="sticky">
-				<ng-container *ngIf="!booking.options">
-					<div class="sidebar-group">
-						<div class="tit">Attendere...</div>
-					</div>
-				</ng-container>
+				<div class="sidebar-group" *ngIf="calendar.checkins">
+					<div class="tit">Arrivo</div>
+					<ng-container *ngIf="calendar.checkins.length === 0">
+						nessuna data disponibile
+					</ng-container>
+					<ng-container *ngIf="calendar.checkins.length > 0">
+						<hotel-datepicker (doSelect)="setCheckIn()" [(ngModel)]="booking.checkIn" [availableDates]="calendar.checkins" [disabled]="busy"></hotel-datepicker>
+					</ng-container>
+				</div>
+				<div class="sidebar-group" *ngIf="calendar.checkouts">
+					<div class="tit">Partenza</div>
+					<ng-container *ngIf="calendar.checkouts.length === 0">
+						nessuna data disponibile
+					</ng-container>
+					<ng-container *ngIf="calendar.checkouts.length > 0">
+						<hotel-datepicker (doSelect)="setCheckOut()" [(ngModel)]="booking.checkOut" [availableDates]="calendar.checkouts" [disabled]="busy"></hotel-datepicker>
+					</ng-container>
+				</div>
 				<ng-container *ngIf="booking.options">
+					<!--
 					<div class="sidebar-group">
 						<div class="tit">Ospiti</div>
 						<div class="edit-row">
 							<div class="edit-name">
 								2 persone
 							</div>
-							<a href="#" class="edit-btn">modifica</a>
+							<button class="edit-btn">modifica</button>
 						</div>
 					</div>
+                    -->
 					<div class="sidebar-group">
 						<div class="tit">Periodo</div>
 						<div class="edit-row">
 							<div class="edit-name">
 								{{booking.daysTotal}} notti
 							</div>
-							<a href="#" class="edit-btn">modifica</a>
+							<!-- <button class="edit-btn">modifica</button> -->
 						</div>
 						<div class="edit-row">
 							<div class="edit-name">
 								{{booking.checkIn | date : 'shortDate'}} - {{booking.checkOut | date : 'shortDate'}}
 							</div>
-							<a href="#" class="edit-btn">modifica</a>
+							<!-- <button class="edit-btn">modifica</button> -->
 						</div>
 					</div>
 					<div class="sidebar-group">
@@ -102,6 +117,11 @@
 					<div class="sidebar-cta">
 						<a href="#" class="btn">Prenota il tuo viaggio</a>
 						<span class="no-extra">(nessun costo aggiuntivo)</span>
+					</div>
+				</ng-container>
+				<ng-container *ngIf="busy">
+					<div class="sidebar-group">
+						<div class="loader">Caricamento Offerta <span class="spinner">&nbsp;</span></div>
 					</div>
 				</ng-container>
 			</div>

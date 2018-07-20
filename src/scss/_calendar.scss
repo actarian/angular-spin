@@ -69,7 +69,6 @@ Calendar
 			opacity: .4;
 		}
 
-
 		.ui-state-active {
 			color: #fff;
 			font-weight: bold;
@@ -87,6 +86,50 @@ Calendar
 				transform: translate(-50%, -50%);
 			}
 		}
+
+	}
+
+
+	.hotel-datepicker & {
+
+		.ui-datepicker-calendar {
+
+			.ui-state-default {
+				color: $text-color;
+
+				&:before {
+					content: '';
+					position: absolute;
+					z-index: -1;
+					width: 32px;
+					height: 32px;
+					border-radius: 50%;
+					top: 50%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+					background: $day-available-color;
+				}
+			}
+
+			.ui-state-disabled,
+			.ui-datepicker-other-month {
+				opacity: .4;
+
+				&:before {
+					display: none;
+				}
+			}
+
+			.ui-state-active {
+				color: #fff;
+				font-weight: bold;
+
+				&:before {
+					background: $tertiary-color;
+				}
+			}
+		}
+
 	}
 
 	.ui-datepicker-header {
