@@ -67,7 +67,7 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 	}
 
 	getHotel(): void {
-		this.hotelService.get(`/api/hotel/${this.getId()}`).pipe(
+		this.hotelService.get(`/memory/hotel/${this.getId()}`).pipe(
 			takeUntil(this.unsubscribe)
 		).subscribe(hotel => this.hotel = hotel);
 	}
@@ -97,7 +97,11 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 			map((checkouts: any[]) => {
 				checkouts = checkouts.map(a => new BookingAvailability(a));
 				// console.log('HotelService.getCheckOut', checkouts);
-				this.calendar.checkouts = checkouts;
+				if (checkouts.length) {
+					this.calendar.checkouts = checkouts;
+					this.calendar.nights = checkouts.map(a => this.booking.getNights(checkIn, a.date));
+					this.booking.nights = this.calendar.nights[0];
+				}
 				return checkouts;
 			})
 		);
@@ -118,6 +122,7 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 			this.booking.checkOut = nextDay;
 			this.calendar.checkouts = checkouts;
 			this.busy = false;
+			this.setNearestCheckOut();
 		});
 	}
 
@@ -142,18 +147,26 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 				return (Math.abs(b.getDate().getTime() - startDate.getTime()) < Math.abs(a.getDate().getTime() - startDate.getTime()) ? b : a);
 			}).getDate();
 			this.getCheckOut(nearestCheckIn).subscribe((checkouts: BookingAvailability[]) => {
-				if (checkouts.length === 0) {
-					this.busy = false;
-					return;
-				}
-				const nearestCheckOut = checkouts.reduce((a: BookingAvailability, b: BookingAvailability) => {
-					return (Math.abs(b.getDate().getTime() - startDate.getTime()) < Math.abs(a.getDate().getTime() - startDate.getTime()) ? b : a);
-				}).getDate();
-				this.getBookingOptions(nearestCheckOut).subscribe((options: BookingOptions) => {
-					this.booking.options = options;
-					this.busy = false;
-				});
+				this.busy = false;
+				this.setNearestCheckOut();
 			});
+		});
+	}
+
+	setNearestCheckOut(): void {
+		this.busy = true;
+		const checkIn = this.booking.checkIn;
+		const checkouts = this.calendar.checkouts;
+		if (checkouts.length === 0) {
+			this.busy = false;
+			return;
+		}
+		const nearestCheckOut = checkouts.reduce((a: BookingAvailability, b: BookingAvailability) => {
+			return (Math.abs(b.getDate().getTime() - checkIn.getTime()) < Math.abs(a.getDate().getTime() - checkIn.getTime()) ? b : a);
+		}).getDate();
+		this.getBookingOptions(nearestCheckOut).subscribe((options: BookingOptions) => {
+			this.booking.options = options;
+			this.busy = false;
 		});
 	}
 
@@ -167,6 +180,14 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 		this.booking.childrenCount = this.search.model.childs;
 		this.booking.children = this.search.model.childrens;
 		this.setFirstInOut();
+	}
+
+	onNightsChanged(nights: string): void {
+		console.log('onNightsChanged', nights, this.booking.nights);
+		const checkOut = new Date(this.booking.checkIn.valueOf());
+		checkOut.setDate(checkOut.getDate() + 1 + +nights); // mantenere il più è una conversione a numeric
+		this.booking.checkOut = checkOut;
+		this.setCheckOut();
 	}
 
 	ngAfterViewInit() {

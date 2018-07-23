@@ -57,6 +57,7 @@ export class Booking {
 	treatment?: any = null;
 	principal?: any = null;
 	duration?: number = 0;
+	nights?: number = 0;
 
 	constructor(options?: any) {
 		if (options) {
@@ -80,9 +81,13 @@ export class Booking {
 		return date ? `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}` : null;
 	}
 
-	get daysTotal(): number {
+	getNights(a: Date, b: Date) {
 		const oneDay = 24 * 60 * 60 * 1000; // hours * minutes * seconds * milliseconds
-		return Math.max(0, Math.round(Math.abs((this.getDate(this.checkIn).getTime() - this.getDate(this.checkOut).getTime()) / (oneDay))) - 1);
+		return Math.max(0, Math.round(Math.abs((this.getDate(a).getTime() - this.getDate(b).getTime()) / (oneDay))) - 1);
+	}
+
+	get daysTotal(): number {
+		return this.getNights(this.checkIn, this.checkOut);
 	}
 
 	get paxTotal(): number {
@@ -137,6 +142,7 @@ export class BookingAvailability {
 }
 
 export class BookingCalendar {
-	checkins: BookingAvailability[] = [];
-	checkouts: BookingAvailability[] = [];
+	checkins: BookingAvailability[];
+	checkouts: BookingAvailability[];
+	nights?: number[];
 }

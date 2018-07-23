@@ -9,7 +9,7 @@ import { Identity } from '../core/models';
 export class TestService extends ApiService<Identity> {
 
 	get collection(): string {
-		return '/api/test';
+		return '/memory/test';
 	}
 
 	all(): Observable<Identity[]> {

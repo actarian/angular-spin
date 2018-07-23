@@ -26,7 +26,7 @@
 						<div class="child-age" *ngFor="let child of search.model.childrens; let index = $index">
 							<strong>Età bambino {{index}}</strong>
 							<div class="custom-select">
-								<select dir="rtl" name="age" [(ngModel)]="child.age" (onChange)="onChildsChanged()">
+								<select dir="rtl" name="age" [(ngModel)]="child.age" (change)="onChildsChanged()" [disabled]="busy">
 									<option *ngFor="let age of search.ages" [value]="age">{{age}}</option>
 								</select>
 							</div>
@@ -34,7 +34,7 @@
 					</div>
 				</div>
 				<div class="sidebar-group" *ngIf="calendar.checkins">
-					<div class="tit">Arrivo</div>
+					<div class="tit">Data di partenza</div>
 					<ng-container *ngIf="calendar.checkins.length === 0">
 						nessuna data disponibile
 					</ng-container>
@@ -42,6 +42,18 @@
 						<hotel-datepicker (doSelect)="setCheckIn()" [(ngModel)]="booking.checkIn" [availableDates]="calendar.checkins" [disabled]="busy"></hotel-datepicker>
 					</ng-container>
 				</div>
+				<div class="sidebar-group" *ngIf="calendar.checkouts">
+					<div class="tit">Numero di notti</div>
+					<ng-container *ngIf="calendar.checkouts.length === 0">
+						nessuna opzione disponibile
+					</ng-container>
+					<ng-container *ngIf="calendar.nights.length > 0">
+						<select name="nights" [(ngModel)]="booking.nights" (change)="onNightsChanged($event.target.value)" [disabled]="busy">
+							<option *ngFor="let value of calendar.nights" [value]="value">{{value}} {{value > 1 ? 'notti' : 'notte'}}</option>
+						</select>
+					</ng-container>
+				</div>
+				<!--
 				<div class="sidebar-group" *ngIf="calendar.checkouts">
 					<div class="tit">Partenza</div>
 					<ng-container *ngIf="calendar.checkouts.length === 0">
@@ -51,6 +63,7 @@
 						<hotel-datepicker (doSelect)="setCheckOut()" [(ngModel)]="booking.checkOut" [availableDates]="calendar.checkouts" [disabled]="busy"></hotel-datepicker>
 					</ng-container>
 				</div>
+				-->
 				<div *ngIf="booking.options">
 					<!--
 					<div class="sidebar-group">
@@ -62,22 +75,24 @@
 							<button class="edit-btn">modifica</button>
 						</div>
 					</div>
-                    -->
+					-->
+					<!--
 					<div class="sidebar-group">
 						<div class="tit">Periodo</div>
 						<div class="edit-row">
 							<div class="edit-name">
 								{{booking.daysTotal}} notti
 							</div>
-							<!-- <button class="edit-btn">modifica</button> -->
+							<button class="edit-btn">modifica</button>
 						</div>
 						<div class="edit-row">
 							<div class="edit-name">
 								{{booking.checkIn | date : 'shortDate'}} - {{booking.checkOut | date : 'shortDate'}}
 							</div>
-							<!-- <button class="edit-btn">modifica</button> -->
+							<button class="edit-btn">modifica</button>
 						</div>
 					</div>
+					-->
 					<div class="sidebar-group">
 						<div class="tit">
 							Tipologia di camera
@@ -131,7 +146,7 @@
 						</div>
 						<div class="edit-row edit-row--total">
 							<div>
-								Per {{booking.paxTotal}} persone
+								Per {{booking.paxTotal}} persone<br> dal {{booking.checkIn | date : 'shortDate'}} al {{booking.checkOut | date : 'shortDate'}}
 							</div>
 							<div class="total-price">
 								{{booking.priceTotal}}€

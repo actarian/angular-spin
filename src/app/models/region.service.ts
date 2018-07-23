@@ -8,7 +8,7 @@ import { Region } from './region';
 export class RegionService extends EntityService<Region> {
 
 	get collection(): string {
-		return '/api/region';
+		return '/memory/region';
 	}
 
 }

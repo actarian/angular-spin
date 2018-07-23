@@ -8,7 +8,7 @@ import { Category } from './category';
 export class CategoryService extends EntityService<Category> {
 
 	get collection(): string {
-		return '/api/category';
+		return '/memory/category';
 	}
 
 }

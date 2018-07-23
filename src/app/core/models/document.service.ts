@@ -8,7 +8,7 @@ import { EntityService } from './entity.service';
 export class DocumentService<T extends Document> extends EntityService<T> {
 
 	get collection(): string {
-		return '/api/document';
+		return '/memory/document';
 	}
 
 	getDetailBySlug(slug: string): Observable<T> {

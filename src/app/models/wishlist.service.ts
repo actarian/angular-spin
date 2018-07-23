@@ -10,7 +10,7 @@ import { SearchResult } from './search';
 export class WishlistService extends IdentityService<SearchResult> {
 
 	get collection(): string {
-		return '/api/wishlist';
+		return '/memory/wishlist';
 	}
 
 	storage: StorageService;
