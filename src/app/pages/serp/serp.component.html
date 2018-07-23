@@ -1,11 +1,22 @@
 <div class="serp-search">
 	<div class="container">
 		<div class="serp-filters">
+
 			<div class="item">
-				<svg class="ico ico-pin">
-					<use xlink:href="#ico-pin"></use>
-				</svg>
-				<span>Mappa </span>
+				<a class="switch-map" [routerLink]="['map']" routerLinkActive #rMap="routerLinkActive" [ngClass]="{ active: rList.isActive }">
+					<svg class="ico ico-pin">
+						<use xlink:href="#ico-pin"></use>
+					</svg>
+					<span>Mappa </span>
+				</a>
+
+				<a class="switch-map" [routerLink]="['list']" routerLinkActive #rList="routerLinkActive" [ngClass]="{ active: rMap.isActive }">
+					<svg class="ico ico-list">
+						<use xlink:href="#ico-list"></use>
+					</svg>
+					<span>Lista </span>
+				</a>
+
 			</div>
 			<div class="item" (click)="active = popupOrder" #popupOrder>
 				<svg class="ico ico-order">
@@ -114,4 +125,3 @@
 		-->
 	</div>
 </div>
-<!-- <json-formatter [json]="search.model"></json-formatter> -->

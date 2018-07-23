@@ -5,7 +5,7 @@ Hotel Page
 --------------------------------------------------*/
 
 .hotel-page {
-	padding-top: 40px;
+	padding-top: 20px;
 	border-top: 1px solid $border-color;
 
 	@include sm-down {
@@ -36,10 +36,8 @@ Hotel Sidebar
 		top: 3px;
 		width: calc(100% + 15px);
 		padding-right: 15px;
-		/*
-		max-height: calc(100vh - 6px);
+		max-height: calc(100vh - 90px);
 		overflow-y: auto;
-		*/
 		z-index: 10;
 
 		&::-webkit-scrollbar {
@@ -117,6 +115,16 @@ Hotel Sidebar
 			}
 		}
 
+	}
+
+	.sidebar-group--sticky {
+		position: sticky;
+		bottom: 0;
+		z-index: 10;
+		background: #fff;
+		box-shadow: 10px 0 0 #fff, 0 -3px 7px rgba(0, 0, 0, .1);
+		border-top: 1px solid #e0e0e0;
+		margin-top: -1px;
 	}
 
 	.sidebar-cta {
@@ -253,7 +261,7 @@ Hotel Main Content
 .hotel-main-content {
 	flex-grow: 1;
 	flex-basis: calc(100% - 310px);
-	width: calc(100% - 310px);
+	max-width: calc(100% - 310px);
 	padding: 0 15px;
 }
 
@@ -473,4 +481,13 @@ Hotel Desc
 		}
 	}
 
+}
+
+.hotel-page {
+	.hotel-head {
+		.add-to-fav {
+			right: 0;
+			padding-right: 0;
+		}
+	}
 }

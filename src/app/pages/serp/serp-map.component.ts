@@ -106,8 +106,8 @@ export class SerpMapComponent extends DisposableComponent implements AfterViewIn
 							'step',
 							['get', 'point_count'],
 							'#ffffff', 100,
-							'#f47c22', 750,
-							'#f47c22'
+							'#ffffff', 750,
+							'#ffffff'
 						],
 						'circle-radius': [
 							'step',
@@ -135,7 +135,7 @@ export class SerpMapComponent extends DisposableComponent implements AfterViewIn
 			}
 
 			if (!map.getLayer('unclustered-point')) {
-				map.loadImage('https://i.imgur.com/MK4NUzI.png', (error, image) => {
+				map.loadImage('assets/img/map-pin.png', (error, image) => {
 					if (error) {
 						return;
 					}

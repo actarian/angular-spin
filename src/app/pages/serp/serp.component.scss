@@ -132,6 +132,16 @@ Serp Filters
 				display: block;
 				margin-top: 3px;
 			}
+
+			.switch-map {
+				display: none;
+				color: #fff;
+				text-decoration: none;
+
+				&.active {
+					display: block;
+				}
+			}
 		}
 	}
 
@@ -252,6 +262,10 @@ Serp Content
 			justify-content: space-between;
 			margin-bottom: 60px;
 		}
+	}
+
+	@include sm-down {
+		padding: 0 15px;
 	}
 }
 

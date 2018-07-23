@@ -1,11 +1,3 @@
-<!--
-<section>
-	<div class="container">
-		<main-search (doSearch)="search.onSearch()">---</main-search>
-	</div>
-</section>
--->
-
 <section class="hotel-page" *ngIf="hotel">
 	<div class="container">
 		<!-- SIDEBAR -->
@@ -140,22 +132,24 @@
 						</label>
 						</div>
 					</div>
-					<div class="sidebar-group">
-						<div class="tit">
-							Totale complessivo
-						</div>
-						<div class="edit-row edit-row--total">
-							<div>
-								Per {{booking.paxTotal}} persone<br> dal {{booking.checkIn | date : 'shortDate'}} al {{booking.checkOut | date : 'shortDate'}}
+					<div class="sidebar-group--sticky">
+						<div class="sidebar-group">
+							<div class="tit">
+								Totale complessivo
 							</div>
-							<div class="total-price">
-								{{booking.priceTotal}}€
+							<div class="edit-row edit-row--total">
+								<div>
+									Per {{booking.paxTotal}} persone<br> dal {{booking.checkIn | date : 'shortDate'}} al {{booking.checkOut | date : 'shortDate'}}
+								</div>
+								<div class="total-price">
+									{{booking.priceTotal}}€
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="sidebar-cta">
-						<a href="#" class="btn">Prenota il tuo viaggio</a>
-						<span class="no-extra">(nessun costo aggiuntivo)</span>
+						<div class="sidebar-cta">
+							<a href="#" class="btn">Prenota il tuo viaggio</a>
+							<span class="no-extra">(nessun costo aggiuntivo)</span>
+						</div>
 					</div>
 				</div>
 				<ng-container *ngIf="busy">

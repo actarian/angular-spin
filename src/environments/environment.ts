@@ -30,8 +30,8 @@ export const environment = {
 			clientId: '635556948154-k7fm0pvn6va39tap1ge4iq23ntd4hu37.apps.googleusercontent.com',
 		},
 		mapbox: {
-			accessToken: 'pk.eyJ1IjoiYWN0YXJpYW4iLCJhIjoiY2lqNWU3MnBzMDAyZndnbTM1cjMyd2N2MiJ9.CbuEGSvOAfIYggQv854pRQ',
-			style: 'mapbox://styles/actarian/cjj9o6abv2ma42so5mt78oyoq',
+			accessToken: 'pk.eyJ1Ijoic3VwYWhmdW5rIiwiYSI6IjE4Zjg1MWMxYzQ3M2RlYTU4OGNlMTc4ODFmOTkyODczIn0.Nusb4DbKb1KnkWWDcZUy-w',
+			style: 'mapbox://styles/mapbox/streets-v9',
 		},
 	}
 };

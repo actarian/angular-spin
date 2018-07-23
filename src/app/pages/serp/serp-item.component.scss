@@ -11,6 +11,81 @@
 		background: white;
 		z-index: 10;
 		transform: translateY(-100%);
+		box-shadow: 0 -5px 5px rgba(0, 0, 0, .05);
+
+		&:before {
+			content: '';
+			position: absolute;
+			z-index: 10;
+			top: -2px;
+			left: 0;
+			height: 3px;
+			width: 100%;
+			background: url(assets/img/top.png) no-repeat center;
+			background-size: 100% 3px;
+		}
+
+		@include xs-down {
+			flex-direction: row;
+			flex-wrap: wrap;
+			min-height: 0;
+
+			.image {
+				flex: 0 0 80px;
+				width: 80px;
+
+				a,
+				a:hover {
+					display: block;
+					position: relative;
+					z-index: 1;
+					overflow: hidden;
+
+					.image-thumb {
+						position: absolute;
+						z-index: 1;
+						left: 50%;
+						top: 50%;
+						transform: translate(-50%, -50%);
+						max-height: 100%;
+						width: auto;
+					}
+				}
+
+			}
+
+			.content {
+				width: calc(100% - 80px);
+				flex: 1 0 calc(100% - 80px);
+
+				.list {
+					display: none;
+				}
+			}
+
+			.action {
+				width: 100%;
+				flex: 1 0 100%;
+				padding-top: 2px;
+
+				.summary {
+					.price {
+						.desc:first-child {
+							display: inline-block;
+							margin-right: 3px;
+						}
+
+						.value {
+							font-size: 22px;
+						}
+
+						.single-price {
+							display: inline-block;
+						}
+					}
+				}
+			}
+		}
 	}
 
 	@include xs-down {
@@ -125,33 +200,20 @@
 			padding-right: 30px;
 		}
 
-		.hotel-trust {
-			text-align: right;
-			margin-top: 3px;
-
-			@include xs-down {
-				text-align: left;
-
-				.text {
-					display: inline-block;
-					margin-left: 4px;
-				}
-			}
-		}
-
 		.add-to-fav {
 			display: none;
 
 			@include xs-down {
 				position: absolute;
 				top: 0;
-				right: -9px;
+				right: 0;
 				display: block;
 				background: none;
 				color: $primary-color;
 				border: none;
 				text-align: center;
 				cursor: pointer;
+				padding-right: 0;
 
 				svg {
 					width: 22px;
