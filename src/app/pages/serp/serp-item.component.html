@@ -74,10 +74,8 @@
 	<!-- /Hotel Content -->
 	<!-- Hotel Action -->
 	<div class="action">
-		<button type="button" class="add-to-fav">
-			<svg class="ico">
-				<use xlink:href="#ico-fav"></use>
-			</svg>
+		<button type="button" class="add-to-fav" (click)="wishlist.doToggle(item)" [ngClass]="{ active: wishlist.has(item) }">
+			<svg class="ico"><use xlink:href="#ico-fav"></use></svg>
 			Preferiti
 		</button>
 		<!--

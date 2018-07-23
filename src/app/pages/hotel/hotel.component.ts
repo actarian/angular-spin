@@ -6,6 +6,7 @@ import { RouteService } from '../../core';
 import { PageComponent } from '../../core/pages';
 import { Hotel, HotelService, SearchService } from '../../models';
 import { Booking, BookingAvailability, BookingCalendar, BookingOptions } from '../../models/booking';
+import { WishlistService } from '../../models/wishlist.service';
 
 @Component({
 	selector: 'page-hotel',
@@ -44,6 +45,7 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 		private zone: NgZone,
 		protected routeService: RouteService,
 		public search: SearchService,
+		public wishlist: WishlistService,
 		private hotelService: HotelService
 	) {
 		super(routeService);

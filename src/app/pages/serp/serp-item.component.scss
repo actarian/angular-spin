@@ -6,7 +6,7 @@
 	box-shadow: 0 3px 7px rgba(0, 0, 0, .15);
 	min-height: 197px;
 
-    &.inside {
+	&.inside {
 		position: relative;
 		background: white;
 		z-index: 10;
@@ -114,7 +114,7 @@
 	.head {
 		display: flex;
 		justify-content: space-between;
-	    padding: 0;
+		padding: 0;
 		margin-bottom: 10px;
 		position: relative;
 		z-index: 1;
@@ -159,6 +159,12 @@
 					stroke: $primary-color;
 					stroke-width: 2px;
 					fill: #fff;
+				}
+
+				&.active {
+					svg {
+						fill: $primary-color;
+					}
 				}
 			}
 		}
@@ -304,9 +310,14 @@
 				vertical-align: text-top;
 				transform: translateY(1px);
 			}
+
+			&.active {
+				svg {
+					fill: $primary-color;
+				}
+			}
+
 		}
-
-
 
 		.summary {
 			flex: 1 0 auto;

@@ -9,3 +9,4 @@ export * from './search-result';
 export * from './tag';
 export * from './test';
 export * from './user';
+export * from './wishlist';

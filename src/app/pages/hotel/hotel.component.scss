@@ -324,6 +324,12 @@ Hotel Head
 			stroke-width: 2px;
 			fill: #fff;
 		}
+
+		&.active {
+			svg {
+				fill: $primary-color;
+			}
+		}
 	}
 }
 

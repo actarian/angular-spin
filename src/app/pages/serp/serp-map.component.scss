@@ -5,6 +5,18 @@
 	width: calc(100% - 310px);
 	max-width: calc(100% - 310px);
 	padding-right: 15px;
+	/* --- */
+	/*
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100%;
+	padding: 0;
+	max-width: none;
+	overflow: hidden;
+	*/
 }
 
 .mapboxgl-map {

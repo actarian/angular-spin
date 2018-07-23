@@ -83,7 +83,8 @@ registerLocaleData(localeIt, 'it');
 		HotelComponent, HotelDatepickerComponent, HotelTagsPipe,
 		RegionsComponent, RegionDetailComponent, RegionSearchComponent,
 		HeaderComponent, DestinationHintComponent, FooterComponent, SerpFilterComponent, NotFoundComponent, SvgComponent, TrustPilotComponent, ValuePropositionComponent,
-		ClickOutsideDirective, ControlEditableComponent, DestinationTypePipe, FancyboxDirective, LazyImagesDirective, MainSearchComponent, PageDirective, LoggerComponent
+		ClickOutsideDirective, ControlEditableComponent, DestinationTypePipe, FancyboxDirective, LazyImagesDirective, MainSearchComponent, PageDirective, LoggerComponent,
+
 	],
 	providers: [
 		{ provide: LOCALE_ID, useValue: 'it' },

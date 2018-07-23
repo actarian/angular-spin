@@ -27,7 +27,7 @@
 						<hotel-datepicker (doSelect)="setCheckOut()" [(ngModel)]="booking.checkOut" [availableDates]="calendar.checkouts" [disabled]="busy"></hotel-datepicker>
 					</ng-container>
 				</div>
-				<ng-container *ngIf="booking.options">
+				<div *ngIf="booking.options">
 					<!--
 					<div class="sidebar-group">
 						<div class="tit">Ospiti</div>
@@ -118,7 +118,7 @@
 						<a href="#" class="btn">Prenota il tuo viaggio</a>
 						<span class="no-extra">(nessun costo aggiuntivo)</span>
 					</div>
-				</ng-container>
+				</div>
 				<ng-container *ngIf="busy">
 					<div class="sidebar-group">
 						<div class="loader">Caricamento Offerta <span class="spinner">&nbsp;</span></div>
@@ -142,7 +142,7 @@
 				<ng-container *ngIf="hotel.trustPilot">
 					<span [trustPilot]="hotel.trustPilot"></span>
 				</ng-container>
-				<button class="add-to-fav" type="button">
+				<button class="add-to-fav" type="button" (click)="wishlist.doToggle(hotel)" [ngClass]="{ active: wishlist.has(hotel) }">
 					<svg class="ico"><use xlink:href="#ico-fav"></use></svg>
 				</button>
 			</div>

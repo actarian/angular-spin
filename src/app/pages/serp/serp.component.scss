@@ -1,5 +1,18 @@
 @import "~scss/variables";
 
+/* --- */
+
+/*
+:host {
+	display: block;
+	position: relative;
+	padding: 0;
+	min-height: 60vh;
+	background: red;
+	padding: 0;
+}
+*/
+
 /*--------------------------------------------------
 Serp Search
 --------------------------------------------------*/
@@ -247,7 +260,12 @@ Serp Content
 	width: 310px;
 	display: block;
 	padding: 0 30px 0 15px;
-
+	/* --- */
+	/*
+	background: white;
+	position: relative;
+	z-index: 10;
+	*/
 	.sticky {
 		position: -webkit-sticky;
 		position: sticky;

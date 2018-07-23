@@ -37,9 +37,9 @@ import { TrustPipe } from './trust';
 		ControlComponent, JsonFormatterComponent,
 	],
 	declarations: [
-		PageHosterComponent, PageComponent, DisposableComponent, JsonFormatterComponent,
+		PageHosterComponent, PageComponent, DisposableComponent,
 		LabelPipe, AssetPipe, HighlightPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe, MatchValidator, TrustPipe,
-		ControlComponent,
+		ControlComponent, JsonFormatterComponent,
 	],
 	providers: [
 		{ provide: HTTP_INTERCEPTORS, useClass: HttpResponseInterceptor, multi: true },

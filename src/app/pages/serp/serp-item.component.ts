@@ -2,7 +2,7 @@
 // import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AfterViewInit, Component, Input } from '@angular/core';
 // import { ChangeDetectorRef } from '@angular/core';
-import { SearchResult } from '../../models';
+import { SearchResult, WishlistService } from '../../models';
 
 @Component({
 	selector: 'serp-item',
@@ -34,6 +34,7 @@ export class SerpItemComponent implements AfterViewInit {
 	item: SearchResult;
 
 	constructor(
+		public wishlist: WishlistService
 		// private changeDetector: ChangeDetectorRef
 	) { }
 

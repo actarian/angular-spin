@@ -102,25 +102,6 @@
 						Torna all'elenco
 					</a>
 				</div>
-				<!--
-				<div class="switch-map-list--item switch-map-list--item__map" [ngClass]="{ active: viewType == viewTypes.List }">
-					<img src="assets/img/map.png">
-					<button type="button" class="btn" (click)="viewType = viewTypes.Map">
-						<svg class="ico">
-							<use xlink:href="#ico-pin"></use>
-						</svg>
-						Visualizza nella mappa
-					</button>
-				</div>
-				<div class="switch-map-list--item switch-map-list--item__list" [ngClass]="{ active: viewType == viewTypes.Map }">
-					<button type="button" class="btn" (click)="viewType = viewTypes.List">
-						<svg class="ico">
-							<use xlink:href="#ico-list"></use>
-						</svg>
-						Torna all'elenco
-					</button>
-				</div>
-				-->
 			</div>
 			<div class="serp-filter--sticky">
 				<section-filter (selectFilter)="filterService.setGroups()"></section-filter>
@@ -133,5 +114,4 @@
 		-->
 	</div>
 </div>
-
-<json-formatter [json]="search.model"></json-formatter>
+<!-- <json-formatter [json]="search.model"></json-formatter> -->

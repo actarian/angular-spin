@@ -19,4 +19,5 @@ export * from './test.service';
 export * from './trustPilot';
 export * from './user';
 export * from './user.service';
+export * from './wishlist.service';
 

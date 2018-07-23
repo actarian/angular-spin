@@ -14,10 +14,10 @@ export class LazyImagesDirective implements OnInit, OnDestroy {
 	nativeElement: HTMLElement;
 
 	constructor(
+		@Inject(PLATFORM_ID) private platformId: string,
 		element: ElementRef,
 		public renderer: Renderer2,
 		public zone: NgZone,
-		@Inject(PLATFORM_ID) private platformId: any
 	) {
 		this.nativeElement = element.nativeElement;
 	}
