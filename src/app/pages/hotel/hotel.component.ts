@@ -157,6 +157,18 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 		});
 	}
 
+	onAdultsChanged(): void {
+		this.booking.adults = this.search.model.adults;
+		this.setFirstInOut();
+	}
+
+	onChildsChanged(): void {
+		this.search.onChildsChanged();
+		this.booking.childrenCount = this.search.model.childs;
+		this.booking.children = this.search.model.childrens;
+		this.setFirstInOut();
+	}
+
 	ngAfterViewInit() {
 		if (isPlatformBrowser(this.platformId)) {
 			this.zone.runOutsideAngular(() => {

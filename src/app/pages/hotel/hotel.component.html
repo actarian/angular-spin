@@ -1,14 +1,38 @@
+<!--
 <section>
 	<div class="container">
 		<main-search (doSearch)="search.onSearch()">---</main-search>
 	</div>
 </section>
+-->
 
 <section class="hotel-page" *ngIf="hotel">
 	<div class="container">
 		<!-- SIDEBAR -->
 		<div class="hotel-sidebar">
 			<div class="sticky">
+				<div class="sidebar-group">
+					<div class="spinner-input">
+						<strong for="">Adulti</strong>
+						<p-spinner size="10" readonly name="adults" [(ngModel)]="search.model.adults" [min]="1" [max]="10" (onChange)="onAdultsChanged()"></p-spinner>
+					</div>
+				</div>
+				<div class="sidebar-group">
+					<div class="spinner-input">
+						<strong>Bambini</strong>
+						<p-spinner size="10" readonly name="childs" [(ngModel)]="search.model.childs" [min]="0" [max]="4" (onChange)="onChildsChanged()"></p-spinner>
+					</div>
+					<div class="child-ages">
+						<div class="child-age" *ngFor="let child of search.model.childrens; let index = $index">
+							<strong>Età bambino {{index}}</strong>
+							<div class="custom-select">
+								<select dir="rtl" name="age" [(ngModel)]="child.age" (onChange)="onChildsChanged()">
+									<option *ngFor="let age of search.ages" [value]="age">{{age}}</option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="sidebar-group" *ngIf="calendar.checkins">
 					<div class="tit">Arrivo</div>
 					<ng-container *ngIf="calendar.checkins.length === 0">
