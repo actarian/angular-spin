@@ -29,7 +29,7 @@ import { ClickOutsideDirective, FancyboxDirective, LazyImagesDirective } from '.
 import { ControlEditableComponent } from './forms';
 import { AuthComponent, AuthForgottenComponent, AuthSignInComponent, AuthSignUpComponent, SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent } from './pages/auth';
 import { HomeCategoriesComponent, HomeComponent, HomePromotionsComponent, HomeSearchComponent } from './pages/home';
-import { HotelComponent, HotelDatepickerComponent, HotelTagsPipe } from './pages/hotel';
+import { HotelComponent, HotelDatepickerComponent, HotelFeaturePipe, HotelTaxonomyPipe } from './pages/hotel';
 import { ProfileComponent } from './pages/profile';
 import { RegionDetailComponent, RegionsComponent } from './pages/regions';
 import { SerpComponent, SerpFilterComponent, SerpItemComponent, SerpListComponent, SerpMapComponent } from './pages/serp';
@@ -82,7 +82,7 @@ registerLocaleData(localeIt, 'it');
 		SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent, ProfileComponent,
 		HomeComponent, HomeCategoriesComponent, HomePromotionsComponent, HomeSearchComponent,
 		SerpComponent, SerpItemComponent, SerpListComponent, SerpMapComponent,
-		HotelComponent, HotelDatepickerComponent, HotelTagsPipe,
+		HotelComponent, HotelDatepickerComponent, HotelTaxonomyPipe, HotelFeaturePipe,
 		RegionsComponent, RegionDetailComponent, RegionSearchComponent,
 		HeaderComponent, DestinationHintComponent, FooterComponent, SerpFilterComponent, NotFoundComponent, SvgComponent, TrustPilotComponent, ValuePropositionComponent,
 		ClickOutsideDirective, ControlEditableComponent, DestinationTypePipe, FancyboxDirective, LazyImagesDirective, MainSearchComponent, PageDirective, LoggerComponent,
@@ -94,7 +94,7 @@ registerLocaleData(localeIt, 'it');
 		// { provide: HTTP_INTERCEPTORS, useClass: HttpResponseInterceptor, multi: true },
 		AuthAttribute,
 		Logger, TranslateService, RouteService,
-		DestinationTypePipe, HotelTagsPipe,
+		DestinationTypePipe, HotelTaxonomyPipe, HotelFeaturePipe,
 		// { provide: RouteService, useClass: RouteService, deps: [TranslateService, Location, Router] },
 	],
 	entryComponents: [

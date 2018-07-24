@@ -1,13 +1,14 @@
 
 export enum ImageType {
-	Default = 0,
-	Gallery = 1,
-	Share = 2,
+	Default = 1,
+	Gallery = 2,
+	Share = 3,
 }
 
 export class Image {
 	id: number;
-	slug: string;
+	url: string;
 	title?: string;
+	fileName?: string;
 	type?: ImageType;
 }

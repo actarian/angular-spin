@@ -35,7 +35,7 @@ export class AuthSignUpComponent extends DisposableComponent implements OnInit {
 	ngOnInit() {
 		const data: any = this.modalData;
 		if (data) {
-			console.log('AuthSignUpComponent.params', data);
+			console.log('AuthSignUpComponent.data', data);
 			if (data.facebook) {
 				this.facebook = data.facebook as FacebookUser;
 				this.model.firstName = this.facebook.first_name;

@@ -8,7 +8,8 @@
 		<div><img [src]="google.picture" class="rounded-circle" /> <strong>Logged in with Google as {{google.name}}</strong></div>
 		<button type="button" class="btn btn--secondary" data-dismiss="alert" aria-label="Close" (click)="onGoogleLogout()">{{ 'signUp.logout' | translate }}</button>
 	</div>
-	<form name="signUp" class="form" role="form" novalidate autocomplete="off" (ngSubmit)="signUp.valid && onSubmit()" #signUp="ngForm" [ngFormOptions]="{ updateOn: 'submit' }">
+	<form class="form" name="signUp" role="form" novalidate autocomplete="off" (ngSubmit)="signUp.valid && onSubmit()" #signUp="ngForm">
+		<!-- [ngFormOptions]="{ updateOn: 'submit' }" -->
 		<div class="form-group">
 			<label for="firstName">{{ 'signUp.firstName' | translate }} <sup>*</sup></label>
 			<input type="text" class="form-control" required [(ngModel)]="model.firstName" name="firstName" placeholder="{{ 'signUp.firstName' | translate }}" #firstName="ngModel" autocomplete="firstName">
@@ -52,17 +53,17 @@
 		<div class="form-group">
 			<div class="checkbox">
 				<label class="form-check-label">
-						<input type="checkbox" class="form-check-input" [(ngModel)]="model.passwordReveal" name="passwordReveal" #passwordReveal="ngModel">
-						<span>{{ 'signUp.passwordReveal' | translate }}</span>
-					</label>
+					<input type="checkbox" class="form-check-input" [(ngModel)]="model.passwordReveal" name="passwordReveal" #passwordReveal="ngModel">
+					<span>{{ 'signUp.passwordReveal' | translate }}</span>
+				</label>
 			</div>
 		</div>
 		<div class="form-group">
 			<div class="checkbox">
 				<label>
-						<input type="checkbox" class="form-check-input" required [(ngModel)]="model.privacyAccepted" name="privacyAccepted" #privacyAccepted="ngModel">
-						<span>{{ 'signUp.privacy' | translate }}</span>
-					</label>
+					<input type="checkbox" class="form-check-input" required [(ngModel)]="model.privacyAccepted" name="privacyAccepted" #privacyAccepted="ngModel">
+					<span>{{ 'signUp.privacy' | translate }}</span>
+				</label>
 			</div>
 			<div *ngIf="privacyAccepted.invalid && (signUp.submitted || privacyAccepted.dirty || privacyAccepted.touched)" class="alert alert-danger">
 				<div *ngIf="privacyAccepted.errors.required">{{ 'errors.required' | translate }}</div>

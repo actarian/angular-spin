@@ -78,7 +78,7 @@ export class SearchService extends EntityService<SearchResult> {
 			});
 		}
 		*/
-		console.log('SearchService.model.startDate', this.model.startDate);
+		// console.log('SearchService.model.startDate', this.model.startDate);
 		this.beginObserveModel();
 		this.beginObserveResults();
 	}

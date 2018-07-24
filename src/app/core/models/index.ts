@@ -8,3 +8,4 @@ export * from './identity.service';
 export * from './image';
 export * from './option';
 export * from './server-params';
+export * from './taxonomy';

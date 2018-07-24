@@ -26,7 +26,7 @@
 				</li>
 			</ul>
 			<div class="navbar-actions">
-				<a class="btn btn--tertiary" [routerLink]="'accedi' | route" routerLinkActive="active">{{ 'header.signIn' | translate }}</a>
+				<button type="button" class="btn btn--tertiary" (click)="onSign()">{{ 'header.signIn' | translate }}</button>
 			</div>
 		</div>
 		<div class="mobile-navbar">
@@ -38,11 +38,18 @@
 				</a>
 			</div>
 			<div class="nav-item">
+				<button type="button" (click)="onSign()">
+					<svg class="ico">
+						<use xlink:href="#ico-user"></use>
+					</svg><span>{{ 'header.signIn' | label }}</span>
+				</button>
+				<!--
 				<a [routerLink]="'accedi' | route" routerLinkActive="active">
 					<svg class="ico">
 						<use xlink:href="#ico-user"></use>
 					</svg><span>{{ 'header.signIn' | label }}</span>
 				</a>
+				-->
 			</div>
 			<div class="nav-item">
 				<button class="nav-toggle">

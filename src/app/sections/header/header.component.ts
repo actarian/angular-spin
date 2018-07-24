@@ -3,6 +3,8 @@ import { takeUntil } from 'rxjs/operators';
 import { DisposableComponent } from '../../core/disposable';
 import { Label } from '../../core/labels';
 import { RouteService } from '../../core/routes';
+import { ModalCompleteEvent, ModalService } from '../../core/ui/modal';
+import { AuthComponent } from '../../pages/auth/auth.component';
 
 @Component({
 	selector: 'section-header',
@@ -17,7 +19,8 @@ export class HeaderComponent extends DisposableComponent implements OnInit {
 	public currentLanguage: any;
 
 	constructor(
-		public routeService: RouteService
+		public routeService: RouteService,
+		private modalService: ModalService,
 	) {
 		super();
 	}
@@ -46,6 +49,16 @@ export class HeaderComponent extends DisposableComponent implements OnInit {
 		console.log('HeaderComponent.setLanguage', language);
 		const silent: boolean = true;
 		this.routeService.setLanguage(language.lang, silent);
+	}
+
+	onSign(): void {
+		this.modalService.open({ component: AuthComponent }).pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(e => {
+			if (e instanceof ModalCompleteEvent) {
+				console.log('signed');
+			}
+		});
 	}
 
 }

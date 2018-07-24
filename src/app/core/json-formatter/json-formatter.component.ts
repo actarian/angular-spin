@@ -25,6 +25,7 @@ export class JsonFormatterComponent implements OnChanges {
 			if (!isObject(this.json) && !isArray(this.json)) {
 				return;
 			}
+			console.log('JsonFormatterComponent', this.json);
 			if (this.render) {
 				this.input.nativeElement.removeChild(this.render.nativeElement);
 			}

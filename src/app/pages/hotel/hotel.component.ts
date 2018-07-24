@@ -67,9 +67,14 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 	}
 
 	getHotel(): void {
+		this.hotelService.getTopServiceDetailsById(this.getId()).pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(hotel => this.hotel = hotel);
+		/*
 		this.hotelService.get(`/memory/hotel/${this.getId()}`).pipe(
 			takeUntil(this.unsubscribe)
 		).subscribe(hotel => this.hotel = hotel);
+		*/
 	}
 
 	getCheckIn(): Observable<BookingAvailability[]> {

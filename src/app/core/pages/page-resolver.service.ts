@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Logger } from '../logger';
 import { RouteService } from '../routes';
 import { PageResolver } from './page-resolver';
@@ -29,6 +29,18 @@ export class PageResolverService implements Resolve<PageResolver> {
 		const slug = this.routeService.toSlug(paths).join('/');
 		// console.log('PageResolverService.resolve', slug);
 		return this.pageService.getPageBySlug(slug).pipe(
+			map(page => {
+				if (page) {
+					// console.log('PageResolverService.page', pages[0]);
+					return new PageResolver(page, this.config);
+				} else {
+					// console.log('routeService', this.routeService);
+					this.router.navigate(this.routeService.toRoute(['not-found']));
+					return null;
+				}
+			}), );
+		/*
+		return this.pageService.getPageBySlug(slug).pipe(
 			take(1),
 			map(pages => {
 				if (pages && pages.length) {
@@ -40,6 +52,7 @@ export class PageResolverService implements Resolve<PageResolver> {
 					return null;
 				}
 			}), );
+		*/
 	}
 
 }

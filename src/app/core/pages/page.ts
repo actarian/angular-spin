@@ -1,4 +1,4 @@
-import { Document, Feature, Image } from '../models';
+import { Document, Feature, Image, Taxonomy } from '../models';
 
 export class PageMeta {
 	description?: string;
@@ -7,7 +7,6 @@ export class PageMeta {
 	author?: string;
 	locale?: string;
 	robots?: string;
-	url?: string;
 	appId?: string;
 }
 
@@ -17,8 +16,10 @@ export class Page implements Document {
 	title?: string;
 	description?: string;
 	slug?: string;
+	url?: string;
 	component?: string;
 	meta?: PageMeta;
 	images?: Image[];
 	features?: Feature[];
+	taxonomies?: Taxonomy[];
 }

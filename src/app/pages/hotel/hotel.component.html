@@ -183,8 +183,8 @@
 			<div class="hotel-gallery swiper-container" [swiper]>
 				<div class="swiper-wrapper" [fancybox]="fancyboxOptions">
 					<div class="swiper-slide" *ngFor="let image of page.images">
-						<a href="{{image.slug}}" data-fancybox="gallery">
-							<img src="{{image.slug}}" alt="{{image.name}}">
+						<a href="{{image.url}}" data-fancybox="gallery">
+							<img src="{{image.url}}" alt="{{image.name}}">
 						</a>
 					</div>
 				</div>
@@ -207,8 +207,8 @@
 						<span>{{hotel.accomodation}}</span>
 					</li>
 					<!-- TAGS -->
-					<ng-container *ngIf="hotel.tags">
-						<li class="hotel-list-item item-{{item.id}} category-{{item.category}}" *ngFor="let item of hotel.tags | hotelTags">
+					<ng-container *ngIf="page.taxonomies">
+						<li class="hotel-list-item item-{{item.id}} category-{{item.category}}" *ngFor="let item of page.taxonomies | hotelTaxonomy">
 							<svg class="ico">
 								<use xlink:href="#ico-fav"></use>
 							</svg>
@@ -219,7 +219,7 @@
 				<!-- FEATURES -->
 				<ng-container *ngIf="page.features">
 					<div class="inclusion hotel-desc-group">
-						<div class="readmore-accordion" *ngFor="let feature of page.features">
+						<div class="readmore-accordion" *ngFor="let feature of page.features | hotelFeature">
 							<h2>{{feature.title}}</h2>
 							<div class="readmore-accordion__wrapper">
 								<div class="readmore-accordion__sizer" [innerHTML]="feature.description"></div>
@@ -228,7 +228,6 @@
 						</div>
 					</div>
 				</ng-container>
-
 				<!--
 				<div class="inclusion hotel-desc-group">
 					<div class="readmore-accordion">
@@ -272,7 +271,6 @@
 					</div>
 				</div>
 				-->
-
 			</div>
 		</div>
 	</div>

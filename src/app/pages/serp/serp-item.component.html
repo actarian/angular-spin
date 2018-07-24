@@ -5,7 +5,7 @@
 		<div class="discount" *ngIf="item.overlayCoverImage">
 			<img alt="" _src="item.overlayCoverImage | asset" [attr.data-src]="item.overlayCoverImage | asset">
 		</div>
-		<a [routerLink]="['villaggio_elisena_5']| route">
+		<a [routerLink]="[item.slug] | route">
 			<img alt="" class="image-thumb" _src="item.photo | asset" [attr.data-src]="item.photo | asset">
 		</a>
 	</div>
@@ -15,7 +15,7 @@
 		<div class="head">
 			<div class="info">
 				<div class="name">
-					<a [routerLink]="['villaggio_elisena_5']| route">
+					<a [routerLink]="[item.slug] | route">
 						<span>{{item.name}}</span> <span class="stars"><em *ngFor="let star of item?.rating?.split('');" [ngClass]="{ superior: star === 'S' }">{{star}}</em></span>
 					</a>
 				</div>
@@ -95,7 +95,7 @@
 			</div>
 		</div>
 		<div class="cta">
-			<a class="btn" [routerLink]="['villaggio_elisena_5'] | route">Continua</a>
+			<a class="btn" [routerLink]="[item.slug] | route">Continua</a>
 		</div>
 	</div>
 	<!-- /Hotel Action -->
