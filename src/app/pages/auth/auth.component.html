@@ -1,0 +1,55 @@
+<div class="small-container">
+	<div class="sign-page">
+		<h2>Accedi al tuo account</h2>
+		<br>
+		<button type="button" class="btn btn btn-block btn-facebook" (click)="onFacebook()">
+			<svg class="ico">
+				<use xlink:href="#ico-facebook"></use>
+			</svg>
+			<span>{{ 'sign.facebook' | translate }}</span>
+		</button>
+		<button type="button" class="btn btn btn-block btn-google" (click)="onGoogle()">
+			<svg class="ico">
+				<use xlink:href="#ico-google"></use>
+			</svg>
+			<span>{{ 'sign.google' | translate }}</span>
+		</button>
+		<button type="button" class="btn btn btn-block btn-warning" (click)="onSignIn()">
+			<svg class="ico">
+				<use xlink:href="#ico-mail"></use>
+			</svg>
+			<span>{{ 'sign.account' | translate }}</span>
+		</button>
+		<h2 class="top-border">
+			Non hai un account? Registrati
+		</h2>
+		<p>Ecco come migliorerà la tua esperienza con il tuo account</p>
+		<ul class="flag-list">
+			<li>
+				<svg class="ico">
+					<use xlink:href="#ico-check"></use>
+				</svg>
+				Salva e visualizza le tue strutture preferite
+			</li>
+			<li>
+				<svg class="ico">
+					<use xlink:href="#ico-check"></use>
+				</svg>
+				Scarica tutti i docmenti di viaggio
+			</li>
+			<li>
+				<svg class="ico">
+					<use xlink:href="#ico-check"></use>
+				</svg>
+				Modifica i tuoi dati ogni volta che lo desideri
+			</li>
+			<li>
+				<svg class="ico">
+					<use xlink:href="#ico-check"></use>
+				</svg>
+				Nuove offerte e promozioni solo per te
+			</li>
+		</ul>
+		<button type="button" class="btn btn btn-block btn-primary" (click)="onSignUp()"><span>{{ 'sign.create' | translate }}</span></button>
+	</div>
+</div>

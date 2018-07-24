@@ -1,0 +1,7 @@
+<div class="modal" [ngClass]="{ active: component }">
+	<div class="modal-page">
+		<ng-container #modalContainer></ng-container>
+		<button class="btn btn-close" (click)="doPrev()" *ngIf="modalCount > 1">prev</button>
+		<button class="btn btn-close" (click)="doClose()">close</button>
+	</div>
+</div>

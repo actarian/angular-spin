@@ -1,7 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { AfterViewInit, Component, Inject, Input, NgZone, OnInit, PLATFORM_ID } from '@angular/core';
+import { Observable } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
-import { Observable } from '../../../../node_modules/rxjs';
 import { RouteService } from '../../core';
 import { PageComponent } from '../../core/pages';
 import { Hotel, HotelService, SearchService } from '../../models';

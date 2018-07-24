@@ -2,6 +2,8 @@ import { Inject, Injectable, Injector, PLATFORM_ID } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Identity, IdentityService } from '../core/models';
 import { LocalStorageService, StorageService } from '../core/storage';
+import { ModalCloseEvent, ModalCompleteEvent, ModalEvent, ModalService } from '../core/ui/modal';
+import { AuthComponent } from '../pages/auth/auth.component';
 import { SearchResult } from './search';
 
 @Injectable({
@@ -19,7 +21,8 @@ export class WishlistService extends IdentityService<SearchResult> {
 	constructor(
 		@Inject(PLATFORM_ID) private platformId: string,
 		protected injector: Injector,
-		private storageService: LocalStorageService
+		private storageService: LocalStorageService,
+		private modalService: ModalService,
 	) {
 		super(injector);
 		this.storage = this.storageService.tryGet();
@@ -48,6 +51,14 @@ export class WishlistService extends IdentityService<SearchResult> {
 	}
 
 	doAdd(identity: Identity) {
+		this.modalService.open({ component: AuthComponent }).subscribe((e: ModalEvent<ModalCompleteEvent | ModalCloseEvent>) => {
+			console.log(e);
+			if (e instanceof ModalCompleteEvent) {
+				console.log('ModalCompleteEvent', e);
+			} else if (e instanceof ModalCloseEvent) {
+				console.log('ModalCloseEvent', e);
+			}
+		});
 		this.post(identity).subscribe(result => {
 			const items = this.wishlist$.getValue();
 			items.push({ id: identity.id });
@@ -57,7 +68,7 @@ export class WishlistService extends IdentityService<SearchResult> {
 	}
 
 	doRemove(identity: Identity) {
-		this.delete(`/${identity.id}`).subscribe(result => {
+		this.delete(identity.id).subscribe(result => {
 			const items = this.wishlist$.getValue();
 			const instance = items.find(x => x.id === identity.id);
 			const index = items.indexOf(instance);

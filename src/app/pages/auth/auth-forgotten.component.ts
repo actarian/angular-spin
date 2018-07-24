@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { RouteService } from '../../core';
-import { PageComponent } from '../../core/pages';
+import { DisposableComponent } from '../../core';
+import { ModalService } from '../../core/ui/modal';
 import { User } from '../../models/user';
 import { UserService } from '../../models/user.service';
 
 @Component({
-	selector: 'page-sign-forgotten',
-	templateUrl: './sign-forgotten.component.html',
-	styleUrls: ['./sign-forgotten.component.scss']
+	selector: 'auth-forgotten-component',
+	templateUrl: './auth-forgotten.component.html',
+	styleUrls: ['./auth-forgotten.component.scss']
 })
 
-export class SignForgottenComponent extends PageComponent implements OnInit {
+export class AuthForgottenComponent extends DisposableComponent implements OnInit {
 
 	model: User = new User();
 	submitted: boolean = false;
@@ -19,10 +19,10 @@ export class SignForgottenComponent extends PageComponent implements OnInit {
 	error: any;
 
 	constructor(
-		protected routeService: RouteService,
+		private modalService: ModalService,
 		private userService: UserService
 	) {
-		super(routeService);
+		super();
 	}
 
 	ngOnInit() {

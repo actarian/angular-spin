@@ -13,6 +13,7 @@ import { SwiperConfigInterface, SwiperModule, SWIPER_CONFIG } from 'ngx-swiper-w
 // import { PrebootModule } from 'preboot';
 import { AccordionModule } from 'primeng/accordion';
 import { CalendarModule } from 'primeng/calendar';
+import { DialogModule } from 'primeng/dialog';
 import { GalleriaModule } from 'primeng/galleria';
 import { SpinnerModule } from 'primeng/spinner';
 import { AppComponent } from './app.component';
@@ -26,7 +27,7 @@ import { PageDirective } from './core/pages';
 import { RouteService } from './core/routes';
 import { ClickOutsideDirective, FancyboxDirective, LazyImagesDirective } from './core/ui';
 import { ControlEditableComponent } from './forms';
-import { SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent } from './pages/auth';
+import { AuthComponent, AuthForgottenComponent, AuthSignInComponent, AuthSignUpComponent, SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent } from './pages/auth';
 import { HomeCategoriesComponent, HomeComponent, HomePromotionsComponent, HomeSearchComponent } from './pages/home';
 import { HotelComponent, HotelDatepickerComponent, HotelTagsPipe } from './pages/hotel';
 import { ProfileComponent } from './pages/profile';
@@ -61,7 +62,7 @@ registerLocaleData(localeIt, 'it');
 		BrowserTransferStateModule,
 		// PrebootModule.withConfig({ appRoot: 'app-component' }),
 		FormsModule, ReactiveFormsModule,
-		CalendarModule, SpinnerModule, GalleriaModule, AccordionModule, SwiperModule,
+		CalendarModule, DialogModule, SpinnerModule, GalleriaModule, AccordionModule, SwiperModule,
 		// The HttpClientInMemoryWebApiModule module intercepts HTTP requests
 		// and returns simulated server responses.
 		// Remove it when a real server is ready to receive requests.
@@ -77,6 +78,7 @@ registerLocaleData(localeIt, 'it');
 	],
 	declarations: [
 		AppComponent,
+		AuthComponent, AuthForgottenComponent, AuthSignInComponent, AuthSignUpComponent,
 		SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent, ProfileComponent,
 		HomeComponent, HomeCategoriesComponent, HomePromotionsComponent, HomeSearchComponent,
 		SerpComponent, SerpItemComponent, SerpListComponent, SerpMapComponent,
@@ -95,7 +97,9 @@ registerLocaleData(localeIt, 'it');
 		DestinationTypePipe, HotelTagsPipe,
 		// { provide: RouteService, useClass: RouteService, deps: [TranslateService, Location, Router] },
 	],
-	entryComponents: [HomeComponent, HotelComponent, ProfileComponent, RegionDetailComponent, RegionsComponent, SerpComponent, SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent],
+	entryComponents: [
+		AuthComponent, AuthForgottenComponent, AuthSignInComponent, AuthSignUpComponent,
+		HomeComponent, HotelComponent, ProfileComponent, RegionDetailComponent, RegionsComponent, SerpComponent, SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent],
 	bootstrap: [AppComponent]
 })
 

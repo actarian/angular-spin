@@ -1,23 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
-// import { FacebookUser, GoogleUser } from '../../core';
-import { FacebookService, GoogleService } from '../../core';
 import { AuthService, AuthToken } from '../../core/auth';
+import { DisposableComponent } from '../../core/disposable';
 import { ControlBase, FormService } from '../../core/forms';
-import { PageComponent } from '../../core/pages';
-import { RouteService } from '../../core/routes';
+import { ModalCompleteEvent, ModalService } from '../../core/ui';
 import { UserAuth, UserSignIn } from '../../models/user';
 import { UserService } from '../../models/user.service';
+import { AuthForgottenComponent } from './auth-forgotten.component';
 
 @Component({
-	selector: 'page-sign-in',
-	templateUrl: './sign-in.component.html',
-	styleUrls: ['./sign-in.component.scss']
+	selector: 'auth-sign-in-component',
+	templateUrl: './auth-sign-in.component.html',
+	styleUrls: ['./auth-sign-in.component.scss']
 })
 
-export class SignInComponent extends PageComponent implements OnInit {
+export class AuthSignInComponent extends DisposableComponent implements OnInit {
 
 	controls: ControlBase<any>[];
 	group: FormGroup;
@@ -27,15 +25,12 @@ export class SignInComponent extends PageComponent implements OnInit {
 	submitted: boolean = false;
 
 	constructor(
-		protected routeService: RouteService,
-		private router: Router,
+		private modalService: ModalService,
 		private authService: AuthService,
-		private facebookService: FacebookService,
-		private googleService: GoogleService,
 		private userService: UserService,
 		private formService: FormService, // !!!
 	) {
-		super(routeService);
+		super();
 	}
 
 	ngOnInit() {
@@ -102,16 +97,20 @@ export class SignInComponent extends PageComponent implements OnInit {
 			});
 	}
 
-	onSubmit2(): void {
-		console.log('SignInComponent.form.value', this.group.value);
-		this.submitted = true;
-	}
-
 	onAuth(user: UserAuth) {
 		const authToken = new AuthToken(user.accessToken);
 		this.authService.setToken(authToken);
-		const segments = this.routeService.toRoute(['/profile']);
-		this.router.navigate(segments);
+		this.modalService.complete(null, user);
+	}
+
+	onForgotten(): void {
+		this.modalService.open({ component: AuthForgottenComponent }).pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(e => {
+			if (e instanceof ModalCompleteEvent) {
+				console.log('signed');
+			}
+		});
 	}
 
 }

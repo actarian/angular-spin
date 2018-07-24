@@ -18,6 +18,8 @@ import { FacebookService, GoogleService, MapboxService } from './plugins';
 import { AssetPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe } from './routes';
 import { CookieStorageService, LocalStorageService, SessionStorageService, StorageService } from './storage';
 import { TrustPipe } from './trust';
+import { ModalComponent, ModalService } from './ui/modal';
+import { DomService } from './ui/modal/dom.service';
 
 // import { AuthService, AuthTokenInterceptor } from './auth';
 
@@ -35,11 +37,13 @@ import { TrustPipe } from './trust';
 	exports: [
 		TranslatePipe, LabelPipe, AssetPipe, HighlightPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe, MatchValidator, TrustPipe,
 		ControlComponent, JsonFormatterComponent,
+		ModalComponent,
 	],
 	declarations: [
 		PageHosterComponent, PageComponent, DisposableComponent,
 		LabelPipe, AssetPipe, HighlightPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe, MatchValidator, TrustPipe,
 		ControlComponent, JsonFormatterComponent,
+		ModalComponent,
 	],
 	providers: [
 		{ provide: HTTP_INTERCEPTORS, useClass: HttpResponseInterceptor, multi: true },
@@ -65,6 +69,7 @@ import { TrustPipe } from './trust';
 		ControlService,
 		FormService,
 		TrustPipe,
+		ModalService, DomService,
 	],
 })
 

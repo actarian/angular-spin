@@ -1,30 +1,31 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
-import { PageComponent } from '../../core/pages';
+import { DisposableComponent } from '../../core/disposable';
 import { FacebookService, FacebookUser, GoogleService, GoogleUser } from '../../core/plugins';
-import { RouteService } from '../../core/routes';
-import { UserAuth, UserService } from '../../models';
+import { ModalCompleteEvent, ModalService } from '../../core/ui/modal';
+import { UserAuth } from '../../models/user';
+import { UserService } from '../../models/user.service';
+import { AuthSignInComponent } from './auth-sign-in.component';
+import { AuthSignUpComponent } from './auth-sign-up.component';
 
 @Component({
-	selector: 'page-sign',
-	templateUrl: './sign.component.html',
-	styleUrls: ['./sign.component.scss']
+	selector: 'auth-component',
+	templateUrl: './auth.component.html',
+	styleUrls: ['./auth.component.scss']
 })
 
-export class SignComponent extends PageComponent implements OnInit {
+export class AuthComponent extends DisposableComponent implements OnInit {
 
 	facebookMe: FacebookUser;
 	googleMe: GoogleUser;
 
 	constructor(
-		protected routeService: RouteService,
-		private router: Router,
+		private modalService: ModalService,
 		private facebookService: FacebookService,
 		private googleService: GoogleService,
 		private userService: UserService
 	) {
-		super(routeService);
+		super();
 	}
 
 	ngOnInit() {
@@ -65,14 +66,29 @@ export class SignComponent extends PageComponent implements OnInit {
 	}
 
 	onAuth(user: UserAuth) {
-		const segments = this.routeService.toRoute(['/profile']);
-		this.router.navigate(segments);
+		this.modalService.complete(null, user);
+	}
+
+	onSignIn(): void {
+		this.modalService.open({ component: AuthSignInComponent }).pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(e => {
+			if (e instanceof ModalCompleteEvent) {
+				console.log('signed');
+			}
+		});
 	}
 
 	onSignUp(data?: any) {
-		const segments = this.routeService.toRoute(['/registrati']);
-		segments.push(this.routeService.toParams(data));
-		this.router.navigate(segments);
+		this.modalService.open({
+			component: AuthSignUpComponent, data: data
+		}).pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(e => {
+			if (e instanceof ModalCompleteEvent) {
+				console.log('signed');
+			}
+		});
 	}
 
 }
