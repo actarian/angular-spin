@@ -1,166 +1,6 @@
 <section class="hotel-page" *ngIf="hotel">
 	<div class="container">
-		<!-- SIDEBAR -->
-		<div class="hotel-sidebar">
-			<div class="sticky">
-				<div class="sidebar-group">
-					<div class="spinner-input">
-						<strong for="">Adulti</strong>
-						<p-spinner size="10" readonly name="adults" [(ngModel)]="search.model.adults" [min]="1" [max]="10" (onChange)="onAdultsChanged()"></p-spinner>
-					</div>
-				</div>
-				<div class="sidebar-group">
-					<div class="spinner-input">
-						<strong>Bambini</strong>
-						<p-spinner size="10" readonly name="childs" [(ngModel)]="search.model.childs" [min]="0" [max]="4" (onChange)="onChildsChanged()"></p-spinner>
-					</div>
-					<div class="child-ages">
-						<div class="child-age" *ngFor="let child of search.model.childrens; let index = $index">
-							<strong>Età bambino {{index}}</strong>
-							<div class="custom-select">
-								<select dir="rtl" name="age" [(ngModel)]="child.age" (change)="onChildsChanged()" [disabled]="busy">
-									<option *ngFor="let age of search.ages" [value]="age">{{age}}</option>
-								</select>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="sidebar-group" *ngIf="calendar.checkins">
-					<div class="tit">Data di partenza</div>
-					<ng-container *ngIf="calendar.checkins.length === 0">
-						nessuna data disponibile
-					</ng-container>
-					<ng-container *ngIf="calendar.checkins.length > 0">
-						<hotel-datepicker (doSelect)="setCheckIn()" [(ngModel)]="booking.checkIn" [availableDates]="calendar.checkins" [disabled]="busy"></hotel-datepicker>
-					</ng-container>
-				</div>
-				<div class="sidebar-group select-nights" *ngIf="calendar.checkouts">
-					<div class="tit">Numero di notti</div>
-					<ng-container *ngIf="calendar.checkouts.length === 0">
-						nessuna opzione disponibile
-					</ng-container>
-					<ng-container *ngIf="calendar.nights.length > 0">
-						<div class="custom-select">
-							<select name="nights" [(ngModel)]="booking.nights" (change)="onNightsChanged($event.target.value)" [disabled]="busy">
-							<option *ngFor="let value of calendar.nights" [value]="value">{{value}} {{value > 1 ? 'notti' : 'notte'}}</option>
-						</select>
-						</div>
-					</ng-container>
-				</div>
-				<!--
-				<div class="sidebar-group" *ngIf="calendar.checkouts">
-					<div class="tit">Partenza</div>
-					<ng-container *ngIf="calendar.checkouts.length === 0">
-						nessuna data disponibile
-					</ng-container>
-					<ng-container *ngIf="calendar.checkouts.length > 0">
-						<hotel-datepicker (doSelect)="setCheckOut()" [(ngModel)]="booking.checkOut" [availableDates]="calendar.checkouts" [disabled]="busy"></hotel-datepicker>
-					</ng-container>
-				</div>
-				-->
-				<div *ngIf="booking.options">
-					<!--
-					<div class="sidebar-group">
-						<div class="tit">Ospiti</div>
-						<div class="edit-row">
-							<div class="edit-name">
-								2 persone
-							</div>
-							<button class="edit-btn">modifica</button>
-						</div>
-					</div>
-					-->
-					<!--
-					<div class="sidebar-group">
-						<div class="tit">Periodo</div>
-						<div class="edit-row">
-							<div class="edit-name">
-								{{booking.daysTotal}} notti
-							</div>
-							<button class="edit-btn">modifica</button>
-						</div>
-						<div class="edit-row">
-							<div class="edit-name">
-								{{booking.checkIn | date : 'shortDate'}} - {{booking.checkOut | date : 'shortDate'}}
-							</div>
-							<button class="edit-btn">modifica</button>
-						</div>
-					</div>
-					-->
-					<div class="sidebar-group">
-						<div class="tit">
-							Tipologia di camera
-						</div>
-						<div class="radio type-{{item.type}}" *ngFor="let item of booking.options.accomodations">
-							<label>
-								<input type="radio" name="tipologia-camera" value="{{item.code}}" [checked]="item.checked">
-								<span>{{item.name}} ({{item.price}}€)</span>
-							</label>
-						</div>
-					</div>
-					<div class="sidebar-group">
-						<div class="tit">
-							Assicurazione
-						</div>
-						<div class="radio type-{{item.type}}" *ngFor="let item of booking.options.extraQuotes">
-							<label>
-								<input type="radio" name="assicurazione" value="{{item.code}}" [checked]="item.checked">
-								<span>{{item.name}} ({{item.price}}€)</span>
-							</label>
-						</div>
-						<!--
-						<div class="radio">
-							<label>
-							<input type="radio" name="assicurazione" checked>
-							<span>ANNULLAMENTO (29.92€)</span>
-						</label>
-						</div>
-						<div class="radio">
-							<label>
-							<input type="radio" name="assicurazione">
-							<span>medico e bagaglio (8.40€ a persona)</span>
-						</label>
-						</div>
-						-->
-					</div>
-					<div class="sidebar-group">
-						<div class="tit">
-							Trattamento
-						</div>
-						<div class="radio">
-							<label>
-							<input type="radio" name="trattamento" checked>
-							<span>{{hotel.accomodation}}</span>
-						</label>
-						</div>
-					</div>
-					<div class="sidebar-group--sticky">
-						<div class="sidebar-group">
-							<div class="tit">
-								Totale complessivo
-							</div>
-							<div class="edit-row edit-row--total">
-								<div>
-									Per {{booking.paxTotal}} persone<br> dal {{booking.checkIn | date : 'shortDate'}} al {{booking.checkOut | date : 'shortDate'}}
-								</div>
-								<div class="total-price">
-									{{booking.priceTotal}}€
-								</div>
-							</div>
-						</div>
-						<div class="sidebar-cta">
-							<a href="#" class="btn">Prenota il tuo viaggio</a>
-							<span class="no-extra">(nessun costo aggiuntivo)</span>
-						</div>
-					</div>
-				</div>
-				<ng-container *ngIf="busy">
-					<div class="sidebar-group">
-						<div class="loader">Caricamento Offerta <span class="spinner">&nbsp;</span></div>
-					</div>
-				</ng-container>
-			</div>
-		</div>
+
 		<!-- MAIN -->
 		<div class="hotel-main-content">
 			<!-- HEAD -->
@@ -218,6 +58,168 @@
 						</li>
 					</ng-container>
 				</ul>
+
+				<!-- SIDEBAR -->
+				<div class="hotel-sidebar">
+					<div class="sticky">
+						<div class="sidebar-group">
+							<div class="spinner-input">
+								<strong for="">Adulti</strong>
+								<p-spinner size="10" readonly name="adults" [(ngModel)]="search.model.adults" [min]="1" [max]="10" (onChange)="onAdultsChanged()"></p-spinner>
+							</div>
+						</div>
+						<div class="sidebar-group">
+							<div class="spinner-input">
+								<strong>Bambini</strong>
+								<p-spinner size="10" readonly name="childs" [(ngModel)]="search.model.childs" [min]="0" [max]="4" (onChange)="onChildsChanged()"></p-spinner>
+							</div>
+							<div class="child-ages">
+								<div class="child-age" *ngFor="let child of search.model.childrens; let index = $index">
+									<strong>Età bambino {{index}}</strong>
+									<div class="custom-select">
+										<select dir="rtl" name="age" [(ngModel)]="child.age" (change)="onChildsChanged()" [disabled]="busy">
+											<option *ngFor="let age of search.ages" [value]="age">{{age}}</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="sidebar-group" *ngIf="calendar.checkins">
+							<div class="tit">Data di partenza</div>
+							<ng-container *ngIf="calendar.checkins.length === 0">
+								nessuna data disponibile
+							</ng-container>
+							<ng-container *ngIf="calendar.checkins.length > 0">
+								<hotel-datepicker (doSelect)="setCheckIn()" [(ngModel)]="booking.checkIn" [availableDates]="calendar.checkins" [disabled]="busy"></hotel-datepicker>
+							</ng-container>
+						</div>
+						<div class="sidebar-group select-nights" *ngIf="calendar.checkouts">
+							<div class="tit">Numero di notti</div>
+							<ng-container *ngIf="calendar.checkouts.length === 0">
+								nessuna opzione disponibile
+							</ng-container>
+							<ng-container *ngIf="calendar.nights.length > 0">
+								<div class="custom-select">
+									<select name="nights" [(ngModel)]="booking.nights" (change)="onNightsChanged($event.target.value)" [disabled]="busy">
+									<option *ngFor="let value of calendar.nights" [value]="value">{{value}} {{value > 1 ? 'notti' : 'notte'}}</option>
+								</select>
+								</div>
+							</ng-container>
+						</div>
+						<!--
+						<div class="sidebar-group" *ngIf="calendar.checkouts">
+							<div class="tit">Partenza</div>
+							<ng-container *ngIf="calendar.checkouts.length === 0">
+								nessuna data disponibile
+							</ng-container>
+							<ng-container *ngIf="calendar.checkouts.length > 0">
+								<hotel-datepicker (doSelect)="setCheckOut()" [(ngModel)]="booking.checkOut" [availableDates]="calendar.checkouts" [disabled]="busy"></hotel-datepicker>
+							</ng-container>
+						</div>
+						-->
+						<div *ngIf="booking.options">
+							<!--
+							<div class="sidebar-group">
+								<div class="tit">Ospiti</div>
+								<div class="edit-row">
+									<div class="edit-name">
+										2 persone
+									</div>
+									<button class="edit-btn">modifica</button>
+								</div>
+							</div>
+							-->
+							<!--
+							<div class="sidebar-group">
+								<div class="tit">Periodo</div>
+								<div class="edit-row">
+									<div class="edit-name">
+										{{booking.daysTotal}} notti
+									</div>
+									<button class="edit-btn">modifica</button>
+								</div>
+								<div class="edit-row">
+									<div class="edit-name">
+										{{booking.checkIn | date : 'shortDate'}} - {{booking.checkOut | date : 'shortDate'}}
+									</div>
+									<button class="edit-btn">modifica</button>
+								</div>
+							</div>
+							-->
+							<div class="sidebar-group">
+								<div class="tit">
+									Tipologia di camera
+								</div>
+								<div class="radio type-{{item.type}}" *ngFor="let item of booking.options.accomodations">
+									<label>
+										<input type="radio" name="tipologia-camera" value="{{item.code}}" [checked]="item.checked">
+										<span>{{item.name}} ({{item.price}}€)</span>
+									</label>
+								</div>
+							</div>
+							<div class="sidebar-group">
+								<div class="tit">
+									Assicurazione
+								</div>
+								<div class="radio type-{{item.type}}" *ngFor="let item of booking.options.extraQuotes">
+									<label>
+										<input type="radio" name="assicurazione" value="{{item.code}}" [checked]="item.checked">
+										<span>{{item.name}} ({{item.price}}€)</span>
+									</label>
+								</div>
+								<!--
+								<div class="radio">
+									<label>
+									<input type="radio" name="assicurazione" checked>
+									<span>ANNULLAMENTO (29.92€)</span>
+								</label>
+								</div>
+								<div class="radio">
+									<label>
+									<input type="radio" name="assicurazione">
+									<span>medico e bagaglio (8.40€ a persona)</span>
+								</label>
+								</div>
+								-->
+							</div>
+							<div class="sidebar-group">
+								<div class="tit">
+									Trattamento
+								</div>
+								<div class="radio">
+									<label>
+									<input type="radio" name="trattamento" checked>
+									<span>{{hotel.accomodation}}</span>
+								</label>
+								</div>
+							</div>
+							<div class="sidebar-group--sticky">
+								<div class="sidebar-group">
+									<div class="tit">
+										Totale complessivo
+									</div>
+									<div class="edit-row edit-row--total">
+										<div>
+											Per {{booking.paxTotal}} persone<br> dal {{booking.checkIn | date : 'shortDate'}} al {{booking.checkOut | date : 'shortDate'}}
+										</div>
+										<div class="total-price">
+											{{booking.priceTotal}}€
+										</div>
+									</div>
+								</div>
+								<div class="sidebar-cta">
+									<a href="#" class="btn">Prenota il tuo viaggio</a>
+									<span class="no-extra">(nessun costo aggiuntivo)</span>
+								</div>
+							</div>
+						</div>
+						<ng-container *ngIf="busy">
+							<div class="sidebar-group">
+								<div class="loader">Caricamento Offerta <span class="spinner">&nbsp;</span></div>
+							</div>
+						</ng-container>
+					</div>
+				</div>
 				<!-- FEATURES -->
 				<ng-container *ngIf="page.features">
 					<div class="inclusion hotel-desc-group">
@@ -273,6 +275,28 @@
 					</div>
 				</div>
 				-->
+
+				<!-- TOTAL PRICE MOBILE-->
+				<div class="total-price-mobile" *ngIf="booking.options">
+					<div class="travel-recap">
+						Per {{booking.paxTotal}} persone - dal {{booking.checkIn | date : 'shortDate'}} al {{booking.checkOut | date : 'shortDate'}} - {{hotel.accomodation}}
+					</div>
+					<div class="total-price-recap">
+						<div class="prices">
+							<div class="price-pp">
+								<span>Prezzo<br>per persona</span>
+								<strong>{{booking.priceTotal}}€</strong>
+							</div>
+							<div class="price-total">
+								<span>Prezzo<br>Totale</span>
+								<strong>{{booking.priceTotal}}€</strong>
+							</div>
+						</div>
+						<div class="recap-cta">
+							<a href="#" class="btn">Prenota subito</a>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
