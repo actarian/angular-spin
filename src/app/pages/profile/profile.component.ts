@@ -18,7 +18,7 @@ export class ProfileComponent extends PageComponent implements OnInit {
 		private userService: UserService
 	) {
 		super(routeService);
-		this.attrClass = 'profile';
+		// this.attrClass = 'profile';
 	}
 
 	ngOnInit() {

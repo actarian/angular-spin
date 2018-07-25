@@ -1,8 +1,9 @@
 // import { isPlatformBrowser } from '@angular/common';
-import { AfterViewInit, Component, ComponentFactory, ComponentFactoryResolver, Inject, PLATFORM_ID, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterContentInit, Component, ComponentFactory, ComponentFactoryResolver, Inject, PLATFORM_ID, ViewChild, ViewContainerRef } from '@angular/core';
 import { Meta, MetaDefinition, Title } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, ActivationEnd, Router } from '@angular/router';
 import { ORIGIN_URL } from '@nguniversal/aspnetcore-engine/tokens';
+import { distinctUntilChanged, filter, map } from '../../../../node_modules/rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { DisposableComponent } from '../disposable';
 import { Image, ImageType } from '../models';
@@ -15,7 +16,7 @@ import { PageDirective } from './page.directive';
 	template: `<ng-template #hostPage>Your View should load here..</ng-template>`,
 })
 
-export class PageHosterComponent extends DisposableComponent implements AfterViewInit {
+export class PageHosterComponent extends DisposableComponent implements AfterContentInit {
 	@ViewChild(PageDirective) hostPage: PageDirective;
 	@ViewChild('hostPage', { read: ViewContainerRef }) hostPageRef;
 
@@ -24,6 +25,7 @@ export class PageHosterComponent extends DisposableComponent implements AfterVie
 	constructor(
 		@Inject(PLATFORM_ID) private platformId: string,
 		@Inject(ORIGIN_URL) private originUrl: string,
+		private router: Router,
 		private route: ActivatedRoute,
 		private componentFactoryResolver: ComponentFactoryResolver,
 		private routeService: RouteService,
@@ -47,7 +49,22 @@ export class PageHosterComponent extends DisposableComponent implements AfterVie
 		*/
 	}
 
-	ngAfterViewInit() {
+	ngAfterContentInit() {
+		this.setSnapshot(this.route.snapshot);
+		this.router.events.pipe(
+			filter(event => event instanceof ActivationEnd),
+			map(() => this.route),
+			distinctUntilChanged(),
+			map(route => route)
+		).subscribe(route => {
+			console.log(route);
+			if (route) {
+				this.setSnapshot(route.snapshot);
+			}
+		});
+	}
+
+	setSnapshot(snapshot: ActivatedRouteSnapshot): void {
 		this.routeService.params = this.routeService.toData(this.route.snapshot.params);
 		this.routeService.queryParams = this.routeService.toData(this.route.snapshot.queryParams);
 		const data = this.route.snapshot.data;
@@ -67,8 +84,6 @@ export class PageHosterComponent extends DisposableComponent implements AfterVie
 	}
 
 	addOrUpdateMetaData(page: Page) {
-		// if (isPlatformBrowser(this.platformId)) {
-		// this code should run in ssr too
 		const fbAppId: string = environment['plugins'] && environment['plugins']['facebook'] ? environment.plugins.facebook.appId.toString() : '';
 		this.titleService.setTitle(page.title);
 		this.addOrUpdateMeta({ property: 'og:title', content: page.title });
@@ -87,7 +102,6 @@ export class PageHosterComponent extends DisposableComponent implements AfterVie
 			this.addOrUpdateMeta({ property: 'og:author', content: meta.author || 'Eurospin Viaggi' });
 		}
 		console.log('PageHosterComponent.addOrUpdateMetaData', page.id, page.title, page.url);
-		// }
 	}
 
 	getSocialImage(page: Page): Image {

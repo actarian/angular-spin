@@ -165,7 +165,7 @@
 			<div class="hotel-head">
 				<div class="hotel-info">
 					<div class="hotel-name">
-						<span>{{hotel.frontEndName}}</span> <span class="stars"><em *ngFor="let star of hotel.rating?.split('');" [ngClass]="{ superior: star === 'S' }">{{star}}</em></span>
+						<span>{{page.title}}</span> <span class="stars"><em *ngFor="let star of hotel.rating?.split('');" [ngClass]="{ superior: star === 'S' }">{{star}}</em></span>
 					</div>
 					<div class="hotel-location">
 						<span class="hotel-region">{{hotel.location?.avesDstCode}}</span>

@@ -1,6 +1,6 @@
 
 import { isPlatformBrowser } from '@angular/common';
-import { Component, HostBinding, Input, PLATFORM_ID } from '@angular/core';
+import { Component, Input, PLATFORM_ID } from '@angular/core';
 import { NavigationEnd, Params, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { DisposableComponent } from '../disposable';
@@ -18,7 +18,7 @@ export class PageComponent extends DisposableComponent {
 
 	@Input() page: Page;
 	@Input() params: Observable<Params>;
-	@HostBinding('attr.class') attrClass = 'page';
+	// @HostBinding('attr.class') attrClass = 'page';
 
 	constructor(
 		protected routeService: RouteService

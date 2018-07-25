@@ -27,7 +27,7 @@ export class HomeComponent extends PageComponent implements OnInit {
 			// console.log('HomeComponent.queryParams', params);
 			this.search.setParams(params);
 		});
-		this.attrClass = 'home';
+		// this.attrClass = 'home';
 	}
 
 	ngOnInit() {

@@ -174,7 +174,7 @@ export class RouteService {
 		);
 	}
 
-	public getPageComponentFactory(): Observable<ComponentFactory<PageComponent>> {
+	public _unused_getPageComponentFactory(): Observable<ComponentFactory<PageComponent>> {
 		return this.router.events.pipe(
 			filter(event => event instanceof ActivationEnd),
 			/*
