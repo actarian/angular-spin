@@ -62,6 +62,7 @@ export class ApiService<T extends Identity> {
 		const params: {} = (typeof first === 'object' ? first : second);
 		const url: string = this.getUrl(method);
 		const options = new ApiRequestOptions(params);
+		console.log('ApiService.get', url);
 		return this.http.get<T>(url, options).pipe(
 			tap(x => this.logger.log(url)),
 			catchError(e => {

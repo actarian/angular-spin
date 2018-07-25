@@ -19,8 +19,8 @@ export class MemoryService implements InMemoryDbService {
 	*/
 
 	parseRequestUrl(url: string, service): ParsedRequestUrl {
-		console.log('MemoryService.parseRequestUrl', url, service);
 		const parsed: ParsedRequestUrl = service.parseRequestUrl(url);
+		// console.log('MemoryService.parseRequestUrl', url, parsed);
 		/*
 		const wildcards: any[] = this.getWildcards(url);
 		if (wildcards.length) {

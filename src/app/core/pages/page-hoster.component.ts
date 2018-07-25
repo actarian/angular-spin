@@ -1,8 +1,8 @@
 // import { isPlatformBrowser } from '@angular/common';
-import { Component, ComponentFactory, Inject, PLATFORM_ID, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, ComponentFactory, ComponentFactoryResolver, Inject, PLATFORM_ID, ViewChild, ViewContainerRef } from '@angular/core';
 import { Meta, MetaDefinition, Title } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
 import { ORIGIN_URL } from '@nguniversal/aspnetcore-engine/tokens';
-import { takeUntil } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { DisposableComponent } from '../disposable';
 import { Image, ImageType } from '../models';
@@ -15,7 +15,7 @@ import { PageDirective } from './page.directive';
 	template: `<ng-template #hostPage>Your View should load here..</ng-template>`,
 })
 
-export class PageHosterComponent extends DisposableComponent {
+export class PageHosterComponent extends DisposableComponent implements AfterViewInit {
 	@ViewChild(PageDirective) hostPage: PageDirective;
 	@ViewChild('hostPage', { read: ViewContainerRef }) hostPageRef;
 
@@ -24,11 +24,14 @@ export class PageHosterComponent extends DisposableComponent {
 	constructor(
 		@Inject(PLATFORM_ID) private platformId: string,
 		@Inject(ORIGIN_URL) private originUrl: string,
+		private route: ActivatedRoute,
+		private componentFactoryResolver: ComponentFactoryResolver,
 		private routeService: RouteService,
 		private titleService: Title,
 		private metaService: Meta
 	) {
 		super();
+		/*
 		this.routeService.getPageComponentFactory().pipe(
 			takeUntil(this.unsubscribe)
 		).subscribe(factory => {
@@ -38,17 +41,40 @@ export class PageHosterComponent extends DisposableComponent {
 			const instance = componentRef.instance;
 			instance.page = this.routeService.page;
 			instance.params = this.routeService.params;
-			this.updatePageData(this.routeService.page);
+			this.addOrUpdateMetaData(this.routeService.page);
+			console.log('PageHosterComponent.getPageComponentFactory', this.routeService.page);
 		});
+		*/
 	}
 
-	updatePageData(page: Page) {
+	ngAfterViewInit() {
+		this.routeService.params = this.routeService.toData(this.route.snapshot.params);
+		this.routeService.queryParams = this.routeService.toData(this.route.snapshot.queryParams);
+		const data = this.route.snapshot.data;
+		if (data.pageResolver && data.pageResolver.page) {
+			this.routeService.page = data.pageResolver.page;
+			const factory: ComponentFactory<PageComponent> = this.componentFactoryResolver.resolveComponentFactory(data.pageResolver.component);
+			this.factory = factory;
+			this.hostPageRef.clear();
+			const componentRef = this.hostPageRef.createComponent(this.factory);
+			const instance = componentRef.instance;
+			instance.page = this.routeService.page;
+			instance.params = this.routeService.params;
+			this.addOrUpdateMetaData(this.routeService.page);
+		} else {
+			console.log('PageHosterComponent.data', data);
+		}
+	}
+
+	addOrUpdateMetaData(page: Page) {
 		// if (isPlatformBrowser(this.platformId)) {
 		// this code should run in ssr too
 		const fbAppId: string = environment['plugins'] && environment['plugins']['facebook'] ? environment.plugins.facebook.appId.toString() : '';
 		this.titleService.setTitle(page.title);
 		this.addOrUpdateMeta({ property: 'og:title', content: page.title });
 		this.addOrUpdateMeta({ property: 'og:image', content: this.getSocialImage(page).url });
+		this.addOrUpdateMeta({ property: 'og:image:width', content: '1200' });
+		this.addOrUpdateMeta({ property: 'og:image:height', content: '630' });
 		this.addOrUpdateMeta({ property: 'fb:app_id', content: fbAppId });
 		this.addOrUpdateMeta({ property: 'og:url', content: page.url || this.originUrl });
 		const meta = page.meta;
@@ -60,6 +86,7 @@ export class PageHosterComponent extends DisposableComponent {
 			this.addOrUpdateMeta({ property: 'og:type', content: meta.type || 'article' });
 			this.addOrUpdateMeta({ property: 'og:author', content: meta.author || 'Eurospin Viaggi' });
 		}
+		console.log('PageHosterComponent.addOrUpdateMetaData', page.id, page.title, page.url);
 		// }
 	}
 
