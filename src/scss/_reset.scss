@@ -283,6 +283,10 @@ button {
 	}
 }
 
+button:hover {
+	text-decoration: none;
+}
+
 a {
 	&:not([href]):not([tabindex]) {
 		color: inherit;

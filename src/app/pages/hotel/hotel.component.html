@@ -34,15 +34,17 @@
 						<hotel-datepicker (doSelect)="setCheckIn()" [(ngModel)]="booking.checkIn" [availableDates]="calendar.checkins" [disabled]="busy"></hotel-datepicker>
 					</ng-container>
 				</div>
-				<div class="sidebar-group" *ngIf="calendar.checkouts">
+				<div class="sidebar-group select-nights" *ngIf="calendar.checkouts">
 					<div class="tit">Numero di notti</div>
 					<ng-container *ngIf="calendar.checkouts.length === 0">
 						nessuna opzione disponibile
 					</ng-container>
 					<ng-container *ngIf="calendar.nights.length > 0">
-						<select name="nights" [(ngModel)]="booking.nights" (change)="onNightsChanged($event.target.value)" [disabled]="busy">
+						<div class="custom-select">
+							<select name="nights" [(ngModel)]="booking.nights" (change)="onNightsChanged($event.target.value)" [disabled]="busy">
 							<option *ngFor="let value of calendar.nights" [value]="value">{{value}} {{value > 1 ? 'notti' : 'notte'}}</option>
 						</select>
+						</div>
 					</ng-container>
 				</div>
 				<!--

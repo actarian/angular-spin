@@ -31,13 +31,9 @@ Hotel Sidebar
 	padding: 0 30px 0 15px;
 
 	.sticky {
-		position: -webkit-sticky;
-		position: sticky;
 		top: 3px;
 		width: calc(100% + 15px);
 		padding-right: 15px;
-		max-height: calc(100vh - 90px);
-		overflow-y: auto;
 		z-index: 10;
 
 		&::-webkit-scrollbar {
@@ -55,7 +51,7 @@ Hotel Sidebar
 	}
 
 
-	@include sm-down {
+	@include xs-down {
 		display: none;
 	}
 
@@ -76,13 +72,14 @@ Hotel Sidebar
 		.edit-row {
 			display: flex;
 			justify-content: space-between;
+			align-items: center;
 
 			&:not(:last-child) {
 				margin-bottom: 5px;
 			}
 
 			&--total {
-				align-items: baseline;
+				font-size: 11px;
 				text-transform: uppercase;
 			}
 
@@ -101,7 +98,6 @@ Hotel Sidebar
 				font-size: 23px;
 				line-height: .95;
 				font-weight: bold;
-				margin-top: -3px;
 			}
 		}
 
@@ -115,6 +111,60 @@ Hotel Sidebar
 			}
 		}
 
+		.spinner-input {
+			position: relative;
+			z-index: 1;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+
+			strong {
+				color: #062638;
+				font-weight: 600;
+				font-size: 15px;
+			}
+		}
+
+		.child-ages {
+
+			.child-age {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding-top: 10px;
+
+				strong {
+					font-weight: normal;
+					font-size: 13px;
+				}
+
+				select {
+					background-color: transparent;
+					appearance: none;
+					border: 1px solid #e0e0e0;
+					padding: 5px 25px 5px 6px;
+					box-shadow: none;
+					outline: none;
+				}
+			}
+		}
+	}
+
+	.select-nights {
+		.custom-select {
+			display: block;
+			width: 100%;
+
+			select {
+				width: 100%;
+				background-color: transparent;
+				appearance: none;
+				border: 1px solid #e0e0e0;
+				padding: 5px 25px 5px 6px;
+				box-shadow: none;
+				outline: none;
+			}
+		}
 	}
 
 	.sidebar-group--sticky {
@@ -122,7 +172,6 @@ Hotel Sidebar
 		bottom: 0;
 		z-index: 10;
 		background: #fff;
-		box-shadow: 10px 0 0 #fff, 0 -3px 7px rgba(0, 0, 0, .1);
 		border-top: 1px solid #e0e0e0;
 		margin-top: -1px;
 		background: #fffedd;

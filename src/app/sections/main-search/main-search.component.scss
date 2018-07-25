@@ -193,6 +193,10 @@ Main Search
 		padding-left: 20px;
 		appearance: none;
 
+		&[disabled] {
+			pointer-events: none;
+		}
+
 		&::placeholder {
 			color: $tit-color;
 			opacity: 1;
