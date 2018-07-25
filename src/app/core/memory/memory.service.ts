@@ -1,6 +1,6 @@
 import { InMemoryDbService, ParsedRequestUrl } from 'angular-in-memory-web-api';
 import * as Datas from '../../datas';
-import { Page } from '../pages';
+// import { Page } from '../pages';
 
 export class MemoryService implements InMemoryDbService {
 
@@ -19,32 +19,29 @@ export class MemoryService implements InMemoryDbService {
 	*/
 
 	parseRequestUrl(url: string, service): ParsedRequestUrl {
-		// console.log(url, service);
+		console.log('MemoryService.parseRequestUrl', url, service);
 		const parsed: ParsedRequestUrl = service.parseRequestUrl(url);
+		/*
 		const wildcards: any[] = this.getWildcards(url);
-		// console.log('wildcards', wildcards);
 		if (wildcards.length) {
-			// console.log('parsed', parsed, parsed.query);
 			if (parsed.collectionName === 'page') {
 				const query: Map<string, string[]> = parsed.query;
-				// const slug: string;
 				query.forEach((value: string[], name: string) => {
 					if (name === 'slug') {
 						wildcards.forEach(w => {
 							if (value[0].match(w.rx)) {
-								// console.log(w);
 								value[0] = w.slug;
 							}
 						});
 					}
 				});
-				// console.log(query);
-				// console.log(url, parsed);
 			}
 		}
+		*/
 		return parsed;
 	}
 
+	/*
 	getWildcards(url: string) {
 		const pages: Page[] = Datas.page;
 		const wildcards: any[] = pages.filter((page: Page) => {
@@ -60,4 +57,5 @@ export class MemoryService implements InMemoryDbService {
 		});
 		return wildcards;
 	}
+	*/
 }

@@ -13,8 +13,8 @@ export class IdentityService<T extends Identity> extends ApiService<T> {
 		super(injector);
 	}
 
-	get colletion(): string {
-		return '/memory/identity';
+	get collection(): string {
+		return '/api/identity';
 	}
 
 	getList(): Observable<T[]> {

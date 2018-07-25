@@ -8,7 +8,7 @@ import { Tag } from './tag';
 export class TagService extends EntityService<Tag> {
 
 	get collection(): string {
-		return '/memory/tag';
+		return '/api/tag';
 	}
 
 }

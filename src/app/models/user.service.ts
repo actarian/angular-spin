@@ -10,7 +10,7 @@ import { User, UserAuth, UserSignForgotten } from './user';
 export class UserService extends EntityService<User> {
 
 	get collection(): string {
-		return '/memory/user';
+		return '/api/user';
 	}
 
 	isLoggedIn(): Observable<User> {

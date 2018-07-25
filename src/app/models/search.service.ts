@@ -20,7 +20,7 @@ import { Duration, durations, MainSearch, SearchResult } from './search';
 export class SearchService extends EntityService<SearchResult> {
 
 	get collection(): string {
-		return '/memory/searchResult';
+		return '/api/searchResult';
 	}
 
 	calendar: CalendarOptions = new CalendarOptions();

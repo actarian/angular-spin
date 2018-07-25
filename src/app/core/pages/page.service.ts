@@ -8,7 +8,7 @@ import { Page } from './page';
 export class PageService extends EntityService<Page> {
 
 	get collection(): string {
-		return '//eurospin-viaggi2.wslabs.it/api/page'; // return '/memory/page';
+		return 'http://eurospin-viaggi2.wslabs.it/api/page'; // return '/page';
 	}
 
 	getPageBySlug(slug: string): Observable<Page> {
