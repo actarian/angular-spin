@@ -354,6 +354,7 @@
 			background: #fff;
 			transition: background .2s ease-in-out;
 			margin-bottom: 8px;
+			text-decoration: none !important;
 
 			@include xs-down {
 				display: none;

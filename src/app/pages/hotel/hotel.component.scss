@@ -61,7 +61,7 @@ Hotel Sidebar
 
 
 	.sidebar-group {
-		padding: 10px 0;
+		padding: 10px;
 		border-bottom: 1px solid $border-color;
 		font-size: 13px;
 		line-height: 1.2;
@@ -125,10 +125,25 @@ Hotel Sidebar
 		box-shadow: 10px 0 0 #fff, 0 -3px 7px rgba(0, 0, 0, .1);
 		border-top: 1px solid #e0e0e0;
 		margin-top: -1px;
+		background: #fffedd;
+
+		&:before {
+			content: '';
+			position: absolute;
+			z-index: 10;
+			top: 0;
+			left: 0;
+			height: 1px;
+			width: 100%;
+			background: url('/assets/img/top.png') no-repeat center;
+			background-size: 100% 3px;
+		}
 	}
 
 	.sidebar-cta {
 		margin-top: -1px;
+		margin-left: 10px;
+		margin-right: 10px;
 
 		.btn {
 			display: block;
@@ -141,7 +156,8 @@ Hotel Sidebar
 			opacity: .8;
 			display: inline-block;
 			margin-top: 3px;
-			font-size: 13px;
+			font-size: 11px;
+			margin-left: 10px;
 		}
 	}
 
@@ -320,6 +336,7 @@ Hotel Head
 		border: none;
 		text-align: center;
 		cursor: pointer;
+		text-decoration: none !important;
 
 		@include xs-down {
 			top: 0;
