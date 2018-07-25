@@ -71,7 +71,7 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 			takeUntil(this.unsubscribe)
 		).subscribe(hotel => this.hotel = hotel);
 		/*
-		this.hotelService.get(`/memory/hotel/${this.getId()}`).pipe(
+		this.hotelService.get(`/hotel/${this.getId()}`).pipe(
 			takeUntil(this.unsubscribe)
 		).subscribe(hotel => this.hotel = hotel);
 		*/

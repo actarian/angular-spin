@@ -9,7 +9,7 @@
 		"lint": "ng lint",
 		"e2e": "ng e2e",
 		"build": "ng build browser --output-hashing=media",
-		"build:browser": "ng build browser --output-hashing=media",
+		"build:browser": "ng build browser --output-hashing=all",
 		"build:server": "ng build server --prod --output-hashing=media",
 		"build:production": "ng build server --prod --output-hashing=media --verbose",
 		"build:docs": "ng build docs --configuration=docs --base-href /angular-spin/ --deploy-url /angular-spin/"

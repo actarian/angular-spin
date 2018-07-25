@@ -4,10 +4,9 @@ import { Pages } from './core/pages';
 import { HomeComponent, HotelComponent, ProfileComponent, RegionDetailComponent, RegionsComponent, SerpComponent, SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent } from './pages';
 
 const pages: Pages = {
-	// HomeComponent: HomeComponent,
-	1: HomeComponent,
+	'1': HomeComponent,
 	SerpComponent: SerpComponent,
-	9: HotelComponent,
+	'9': HotelComponent,
 	SignComponent: SignComponent,
 	SignUpComponent: SignUpComponent,
 	SignInComponent: SignInComponent,

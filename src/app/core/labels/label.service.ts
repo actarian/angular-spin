@@ -12,7 +12,7 @@ import { Label } from './label';
 export class LabelService<T extends Label> extends ApiService<T> implements TranslateLoader {
 
 	get collection(): string {
-		return '/memory/label';
+		return '/api/label';
 	}
 
 	private _language: any = new BehaviorSubject({});

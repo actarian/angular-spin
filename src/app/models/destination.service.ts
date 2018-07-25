@@ -10,7 +10,7 @@ import { Destination } from './destination';
 export class DestinationService extends EntityService<Destination> {
 
 	get collection(): string {
-		return '/memory/destination';
+		return '/api/destination';
 	}
 
 	getName(name: string): Observable<Destination[]> {

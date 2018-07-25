@@ -73,7 +73,7 @@ registerLocaleData(localeIt, 'it');
 			missingTranslationHandler: { provide: MissingTranslationHandler, useClass: CustomMissingTranslationHandler },
 		}),
 		HttpClientInMemoryWebApiModule.forRoot(MemoryService, {
-			apiBase: 'memory/', dataEncapsulation: false, delay: 0, passThruUnknownUrl: true
+			apiBase: 'api/', passThruUnknownUrl: true, dataEncapsulation: false, delay: 0
 		}),
 	],
 	declarations: [
