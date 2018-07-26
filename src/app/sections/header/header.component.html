@@ -1,5 +1,5 @@
 <div class="top-header"><img src="assets/img/top.png" alt=""></div>
-<header class="header">
+<header class="header" [ngClass]="{'nav-active': navToggle}">
 	<div class="container">
 		<a href="" [routerLink]="'' | route" class="logo">
 			<img src="assets/img/logo-eurospin-viaggi.png" alt="Logo Eurospin Viaggi">
@@ -52,7 +52,7 @@
 				-->
 			</div>
 			<div class="nav-item">
-				<button class="nav-toggle">
+				<button class="nav-toggle" (click)="navToggle = !navToggle">
 					<div class="nav-toggle--bars">
 						<span></span>
 						<span></span>

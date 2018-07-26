@@ -22,6 +22,40 @@ Header
 --------------------------------------------------*/
 
 .header {
+
+	@include sm-down {
+		overflow-x: hidden;
+	}
+
+	&.nav-active {
+		@include sm-down {
+			.desktop-navbar {
+				pointer-events: all;
+				transform: translate(0);
+			}
+
+			.mobile-navbar {
+				.nav-toggle {
+					.nav-toggle--bars {
+						span:first-child {
+							transform: translate(1px, 7px) rotate(45deg);
+							width: 22px;
+						}
+
+						span:nth-child(2) {
+							width: 0;
+						}
+
+						span:last-child {
+							transform: translate(1px, -5px) rotate(-45deg);
+							width: 22px;
+						}
+					}
+				}
+			}
+		}
+	}
+
 	.container {
 		display: flex;
 		justify-content: space-between;
@@ -56,7 +90,19 @@ Header
 		align-items: center;
 
 		@include sm-down {
-			display: none;
+			pointer-events: none;
+			transform: translate(-115%);
+			transition: all .2s ease-in-out;
+			display: block;
+			position: fixed;
+			left: 0;
+			top: 0;
+			width: calc(100% - 60px);
+			z-index: 20;
+			background: #fff;
+			height: 100vh;
+			box-shadow: 10px 0 20px rgba(0, 0, 0, .2);
+			overflow-y: auto;
 		}
 
 		.navbar-nav {
@@ -68,13 +114,43 @@ Header
 			list-style: none;
 			padding: 0 15px;
 
+			@include sm-down {
+				flex-direction: column;
+				justify-content: flex-start;
+				align-items: flex-start;
+				padding: 0;
+				width: 100%;
+			}
+
 			.nav-item {
 				font-size: 13px;
 				padding: 0 15px;
 
+				@include sm-down {
+					padding: 0;
+					border-bottom: 1px solid #e0e0e0;
+					width: 100%;
+				}
+
 				a {
 					color: $tit-color;
 					text-decoration: none;
+
+					@include sm-down {
+						padding: 18px 15px;
+						display: block;
+					}
+				}
+			}
+		}
+
+		.navbar-actions {
+			@include sm-down {
+				padding: 18px 15px;
+
+				.btn {
+					width: 100%;
+					padding: 12px;
 				}
 			}
 		}
@@ -100,14 +176,14 @@ Header
 				color: $tertiary-color;
 				text-align: center;
 				text-decoration: none;
+			}
 
-				span {
-					display: block;
-					text-transform: uppercase;
-					font-size: 9px;
-					margin-top: 5px;
-					line-height: 1;
-				}
+			span {
+				display: block;
+				text-transform: uppercase;
+				font-size: 9px;
+				margin-top: 5px;
+				line-height: 1;
 			}
 
 			.ico {
@@ -127,7 +203,6 @@ Header
 				display: flex;
 				flex-direction: column;
 				justify-content: space-between;
-				height: 100%;
 				cursor: pointer;
 				text-decoration: none;
 
@@ -147,6 +222,7 @@ Header
 						background-color: $tertiary-color;
 						margin-bottom: 4px;
 						margin-top: 0;
+						transition: all .2s ease-in-out;
 					}
 				}
 

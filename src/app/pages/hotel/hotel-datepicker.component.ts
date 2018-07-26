@@ -77,13 +77,20 @@ export class HotelDatepickerComponent implements ControlValueAccessor, OnChanges
 		const year: number = this.calendar.year;
 		const month: number = this.calendar.month - 1;
 		const monthdays: number = new Date(year, month, 0).getDate();
-		const availableDates: string[] = this.availableDates.map((a: BookingAvailability) => this.dateToKey(a.getDate())) || [];
+		const availableDates: string[] = this.availableDates.filter(a => a.cssClass !== 'not-available').map((a: BookingAvailability) => this.dateToKey(a.getDate())) || [];
 		let disabledDates: Date[] = new Array(monthdays + 60).fill(new Date()).map((d: Date, i: number) => {
 			return new Date(year, month, i - 30 + 1);
 		});
 		disabledDates = disabledDates.filter(d => availableDates.indexOf(this.dateToKey(d)) === -1);
 		// console.log('availableDates', availableDates, 'disabledDates', disabledDates.map(d => this.dateToKey(d)));
 		return disabledDates;
+	}
+
+	getDateClass(value): string {
+		const key = `${value.year}-${value.month + 1}-${value.day}`;
+		const day = this.availableDates.find(a => this.dateToKey(a.getDate()) === key);
+		const cssClass = day ? day.cssClass : null;
+		return cssClass;
 	}
 
 	onMonthChange(value: any) {

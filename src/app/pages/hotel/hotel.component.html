@@ -1,4 +1,4 @@
-<section class="hotel-page" *ngIf="hotel">
+<section class="hotel-page">
 	<div class="container">
 
 		<!-- MAIN -->
@@ -7,17 +7,17 @@
 			<div class="hotel-head">
 				<div class="hotel-info">
 					<div class="hotel-name">
-						<span>{{page.title}}</span> <span class="stars"><em *ngFor="let star of hotel.rating?.split('');" [ngClass]="{ superior: star === 'S' }">{{star}}</em></span>
+						<span>{{page.title}}</span> <span class="stars"><em *ngFor="let star of hotel?.rating?.split('');" [ngClass]="{ superior: star === 'S' }">{{star}}</em></span>
 					</div>
 					<div class="hotel-location">
-						<span class="hotel-region">{{hotel.location?.avesDstCode}}</span>
+						<span class="hotel-region">{{hotel?.location?.avesDstCode}}</span>
 						<!-- <span class="hotel-region">Italia Toscana</span>&nbsp;<span class="hotel-town">Radda in Chianti SI</span> -->
 					</div>
 				</div>
-				<ng-container *ngIf="hotel.trustPilot">
-					<span [trustPilot]="hotel.trustPilot"></span>
+				<ng-container *ngIf="hotel?.trustPilot">
+					<span [trustPilot]="hotel?.trustPilot"></span>
 				</ng-container>
-				<button class="add-to-fav" type="button" (click)="wishlist.doToggle(hotel)" [ngClass]="{ active: wishlist.has(hotel) }">
+				<button class="add-to-fav" type="button" (click)="wishlist.doToggle(hotel)" [ngClass]="{ active: wishlist.has(hotel) }" *ngIf="hotel">
 					<svg class="ico"><use xlink:href="#ico-fav"></use></svg>
 				</button>
 			</div>
@@ -40,13 +40,13 @@
 						<svg class="ico">
 							<use xlink:href="#ico-calendar"></use>
 						</svg>
-						<span>{{hotel.abstract}}</span>
+						<span>{{hotel?.abstract}}</span>
 					</li>
 					<li class="hotel-list-item">
 						<svg class="ico">
 							<use xlink:href="#ico-struttura"></use>
 						</svg>
-						<span>{{hotel.accomodation}}</span>
+						<span>{{hotel?.accomodation}}</span>
 					</li>
 					<!-- TAGS -->
 					<ng-container *ngIf="page.taxonomies">
@@ -101,7 +101,7 @@
 							<ng-container *ngIf="calendar.nights.length > 0">
 								<div class="custom-select">
 									<select name="nights" [(ngModel)]="booking.nights" (change)="onNightsChanged($event.target.value)" [disabled]="busy">
-									<option *ngFor="let value of calendar.nights" [value]="value">{{value}} {{value > 1 ? 'notti' : 'notte'}}</option>
+									<option *ngFor="let value of calendar.nights" [value]="value">{{value}} {{value != 1 ? 'notti' : 'notte'}}</option>
 								</select>
 								</div>
 							</ng-container>
@@ -189,7 +189,7 @@
 								<div class="radio">
 									<label>
 									<input type="radio" name="trattamento" checked>
-									<span>{{hotel.accomodation}}</span>
+									<span>{{hotel?.accomodation}}</span>
 								</label>
 								</div>
 							</div>
@@ -279,7 +279,7 @@
 				<!-- TOTAL PRICE MOBILE-->
 				<div class="total-price-mobile" *ngIf="booking.options">
 					<div class="travel-recap">
-						Per {{booking.paxTotal}} persone - dal {{booking.checkIn | date : 'shortDate'}} al {{booking.checkOut | date : 'shortDate'}} - {{hotel.accomodation}}
+						Per {{booking.paxTotal}} persone - dal {{booking.checkIn | date : 'shortDate'}} al {{booking.checkOut | date : 'shortDate'}} - {{hotel?.accomodation}}
 					</div>
 					<div class="total-price-recap">
 						<div class="prices">

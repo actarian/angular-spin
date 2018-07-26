@@ -36,6 +36,38 @@ Calendar
 			&:hover {
 				text-decoration: none;
 			}
+
+			span {
+				display: block;
+
+				&:before {
+					content: '';
+					position: absolute;
+					display: block;
+					z-index: -1;
+					width: 32px;
+					height: 32px;
+					border-radius: 50%;
+					top: 50%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+				}
+
+				&.available {
+					&:before {
+						border: 2px solid #94b439;
+						background: #f4f7eb;
+					}
+				}
+
+				&.hurry-up {
+					&:before {
+						border: 2px solid #f7d436;
+						background: #fefbee;
+					}
+				}
+
+			}
 		}
 
 		thead {
@@ -84,6 +116,13 @@ Calendar
 				top: 50%;
 				left: 50%;
 				transform: translate(-50%, -50%);
+			}
+
+			span {
+				&:before {
+					background: #1677c0 !important;
+					border-color: #1677c0 !important;
+				}
 			}
 		}
 

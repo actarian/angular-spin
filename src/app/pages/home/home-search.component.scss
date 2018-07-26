@@ -10,30 +10,32 @@ Home Search
 	background-position: center;
 	margin-bottom: 60px;
 	user-select: none;
+	max-height: calc(100vh - 68px);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	min-height: 360px;
 
 	@include md-down {
 		height: 520px;
 	}
 
+	@include sm-down {
+		max-height: none;
+	}
+
 	@include xs-down {
 		background-image: linear-gradient(to bottom, $tertiary-color, lighten($tertiary-color, 8%)) !important;
-		padding-bottom: 25px;
+		padding: 20px 0;
 		height: auto;
 		margin-bottom: 25px;
 	}
 
+	.container {}
+
 	&--head {
 		color: #fff;
 		text-align: center;
-		padding-top: 120px;
-
-		@include md-down {
-			padding-top: 60px;
-		}
-
-		@include xs-down {
-			padding-top: 22px;
-		}
 
 		.tit {
 			font-size: 50px;
@@ -49,6 +51,7 @@ Home Search
 			@include xs-down {
 				font-size: 22px;
 				margin-bottom: 20px;
+				padding: 0 10px;
 			}
 		}
 

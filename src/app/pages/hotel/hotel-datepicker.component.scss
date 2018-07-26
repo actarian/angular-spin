@@ -30,11 +30,44 @@
 }
 
 .popup-calendar {
-	height: 300px;
 	background: white;
 	box-shadow: 0 3px 7px rgba(0, 0, 0, 0.15);
 	margin-left: -5px;
 	margin-right: -5px;
 	width: auto;
 	border: 1px solid #d8d8d8;
+
+	&--legend {
+		border-top: 1px solid #d8d8d8;
+		margin-top: 10px;
+		padding-top: 5px;
+		font-size: 10px;
+		text-transform: uppercase;
+
+		div {
+			padding-TOP: 5px;
+		}
+
+		span.ico {
+			display: inline-block;
+			width: 15px;
+			height: 15px;
+			border-radius: 15px;
+			border: 2px solid #94b439;
+			background: #f4f7eb;
+			margin-right: 3px;
+			vertical-align: middle;
+			margin-top: -1px;
+
+			&.hurry-up {
+				border-color: #f7d436;
+				background-color: #fefbee;
+			}
+
+			&.not-available {
+				border-color: #f86c55;
+				background-color: #fff5f3;
+			}
+		}
+	}
 }

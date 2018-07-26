@@ -20,6 +20,7 @@ export class HeaderComponent extends DisposableComponent implements OnInit {
 	public dropdown: boolean;
 	public languages: any[];
 	public currentLanguage: any;
+	public navToggle: boolean;
 
 	constructor(
 		public routeService: RouteService,
