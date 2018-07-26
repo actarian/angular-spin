@@ -14,6 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
 			{ provide: ORIGIN_URL, useValue: '' }
 		]
 	})
-		.then(success => console.log(`Bootstrap success`))
-		.catch(err => console.log(err));
+	.then(success => console.log(`Bootstrap success`))
+	.catch(err => console.log(err));
 });

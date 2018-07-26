@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
 import { DisposableComponent } from '../../core/disposable';
 import { FacebookService, FacebookUser, GoogleService, GoogleUser } from '../../core/plugins';
@@ -11,7 +11,8 @@ import { AuthSignUpComponent } from './auth-sign-up.component';
 @Component({
 	selector: 'auth-component',
 	templateUrl: './auth.component.html',
-	styleUrls: ['./auth.component.scss']
+	styleUrls: ['./auth.component.scss'],
+	encapsulation: ViewEncapsulation.Emulated,
 })
 
 export class AuthComponent extends DisposableComponent implements OnInit {

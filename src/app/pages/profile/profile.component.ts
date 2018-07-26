@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { RouteService } from '../../core';
 import { PageComponent } from '../../core/pages';
@@ -7,7 +7,8 @@ import { User, UserService } from '../../models';
 @Component({
 	selector: 'page-profile',
 	templateUrl: './profile.component.html',
-	styleUrls: ['./profile.component.scss']
+	styleUrls: ['./profile.component.scss'],
+	encapsulation: ViewEncapsulation.Emulated,
 })
 
 export class ProfileComponent extends PageComponent implements OnInit {

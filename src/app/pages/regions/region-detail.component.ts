@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { RouteService } from '../../core';
 import { PageComponent } from '../../core/pages';
@@ -8,7 +8,8 @@ import { Region, RegionService } from '../../models';
 @Component({
 	selector: 'page-region-detail',
 	templateUrl: './region-detail.component.html',
-	styleUrls: ['./region-detail.component.scss']
+	styleUrls: ['./region-detail.component.scss'],
+	encapsulation: ViewEncapsulation.Emulated,
 })
 export class RegionDetailComponent extends PageComponent implements OnInit {
 

@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, ElementRef, Inject, Input, OnChanges, PLATFORM_ID, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, Input, OnChanges, PLATFORM_ID, ViewChild, ViewEncapsulation } from '@angular/core';
 // import JSONFormatter from 'json-formatter-js';
 import { isArray } from 'rxjs/util/isArray';
 import { isObject } from 'rxjs/util/isObject';
@@ -7,7 +7,8 @@ import { isObject } from 'rxjs/util/isObject';
 @Component({
 	selector: 'json-formatter',
 	template: `<div #jsonFormatter></div>`,
-	styleUrls: ['./json-formatter.component.scss']
+	styleUrls: ['./json-formatter.component.scss'],
+	encapsulation: ViewEncapsulation.Emulated,
 })
 export class JsonFormatterComponent implements OnChanges {
 	@ViewChild(`jsonFormatter`) input: ElementRef;

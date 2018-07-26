@@ -1,6 +1,6 @@
 // posts.component.ts
 
-import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, Renderer2, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
 // import { fromEvent } from 'rxjs';
 import { DisposableComponent } from '../../core/disposable/disposable.component';
 import { Destination } from '../../models/destination';
@@ -8,7 +8,8 @@ import { Destination } from '../../models/destination';
 @Component({
 	selector: 'destination-hint',
 	templateUrl: './destination-hint.component.html',
-	styleUrls: ['./destination-hint.component.scss']
+	styleUrls: ['./destination-hint.component.scss'],
+	encapsulation: ViewEncapsulation.Emulated,
 })
 export class DestinationHintComponent extends DisposableComponent implements OnInit, AfterViewInit, OnChanges {
 

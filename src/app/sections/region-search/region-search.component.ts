@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { RouteService } from '../../core/routes';
@@ -7,7 +7,8 @@ import { Region, RegionService } from '../../models';
 @Component({
 	selector: 'app-region-search',
 	templateUrl: './region-search.component.html',
-	styleUrls: ['./region-search.component.scss']
+	styleUrls: ['./region-search.component.scss'],
+	encapsulation: ViewEncapsulation.Emulated,
 })
 
 export class RegionSearchComponent implements OnInit {

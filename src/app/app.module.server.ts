@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ServerModule } from '@angular/platform-server';
+import { ServerModule, ServerTransferStateModule } from '@angular/platform-server';
 import { ModuleMapLoaderModule } from '@nguniversal/module-map-ngfactory-loader';
 import { PrebootModule } from 'preboot';
 import { AppComponent } from './app.component';
@@ -20,6 +20,7 @@ import { AppModule } from './app.module';
 		ServerModule,
 		PrebootModule.withConfig({ appRoot: 'app-component' }),
 
+		ServerTransferStateModule // <-- broken for the time-being with ASP.NET
 		// HttpTransferCacheModule still needs fixes for 5.0
 		//   Leave this commented out for now, as it breaks Server-renders
 		//   Looking into fixes for this! - @MarkPieszak

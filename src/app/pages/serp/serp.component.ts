@@ -1,4 +1,4 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component, ElementRef, ViewEncapsulation } from '@angular/core';
 import { first, takeUntil } from 'rxjs/operators';
 import { RouteService } from '../../core';
 import { PageComponent } from '../../core/pages';
@@ -7,7 +7,8 @@ import { FilterService, SearchService, SerpViewTypes } from '../../models';
 @Component({
 	selector: 'page-search',
 	templateUrl: './serp.component.html',
-	styleUrls: ['./serp.component.scss']
+	styleUrls: ['./serp.component.scss'],
+	encapsulation: ViewEncapsulation.Emulated,
 })
 
 export class SerpComponent extends PageComponent {

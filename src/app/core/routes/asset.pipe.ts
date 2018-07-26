@@ -15,7 +15,7 @@ export class AssetPipe implements PipeTransform {
 	) { }
 
 	transform(data: any[] | string): string {
-		if (typeof data === 'string' && data.indexOf('http') === 0) {
+		if (typeof data === 'string' && (data.indexOf('http') === 0 || data.indexOf('/media/') === 0)) {
 			return data;
 		} else {
 			const segments = this.segment.transform(data);

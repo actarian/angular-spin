@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { DisposableComponent } from '../../core/disposable';
 import { FacebookService, FacebookUser, GoogleService, GoogleUser } from '../../core/plugins';
@@ -10,7 +10,8 @@ import { AuthSignInComponent } from './auth-sign-in.component';
 @Component({
 	selector: 'auth-sign-up-component',
 	templateUrl: './auth-sign-up.component.html',
-	styleUrls: ['./auth-sign-up.component.scss']
+	styleUrls: ['./auth-sign-up.component.scss'],
+	encapsulation: ViewEncapsulation.Emulated,
 })
 
 export class AuthSignUpComponent extends DisposableComponent implements OnInit {

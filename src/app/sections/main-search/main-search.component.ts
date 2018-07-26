@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
 import { DisposableComponent } from '../../core/disposable';
@@ -8,7 +8,8 @@ import { SearchService } from '../../models';
 @Component({
 	selector: 'main-search',
 	templateUrl: './main-search.component.html',
-	styleUrls: ['./main-search.component.scss']
+	styleUrls: ['./main-search.component.scss'],
+	encapsulation: ViewEncapsulation.Emulated,
 })
 
 export class MainSearchComponent extends DisposableComponent implements AfterViewInit {

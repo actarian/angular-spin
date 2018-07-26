@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injector } from '@angular/core';
+import { TransferState } from '@angular/platform-browser';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Logger } from '../logger';
@@ -25,7 +26,7 @@ export class ApiService<T extends Identity> {
 	}
 
 	private _logger: Logger;
-	get logger() {
+	get logger(): Logger {
 		if (!this._logger) {
 			this._logger = this.injector.get(Logger);
 		}
@@ -33,11 +34,19 @@ export class ApiService<T extends Identity> {
 	}
 
 	private _http: HttpClient;
-	get http() {
+	get http(): HttpClient {
 		if (!this._http) {
 			this._http = this.injector.get(HttpClient);
 		}
 		return this._http;
+	}
+
+	private _state: TransferState;
+	get state(): TransferState {
+		if (!this._state) {
+			this._state = this.injector.get(TransferState);
+		}
+		return this._state;
 	}
 
 	get url(): string {
@@ -62,7 +71,7 @@ export class ApiService<T extends Identity> {
 		const params: {} = (typeof first === 'object' ? first : second);
 		const url: string = this.getUrl(method);
 		const options = new ApiRequestOptions(params);
-		console.log('ApiService.get', url);
+		// console.log('ApiService.get', url);
 		return this.http.get<T>(url, options).pipe(
 			tap(x => this.logger.log(url)),
 			catchError(e => {

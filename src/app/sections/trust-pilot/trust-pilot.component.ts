@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { TrustPilot } from '../../models';
 
 @Component({
 	selector: '[trustPilot]',
 	templateUrl: './trust-pilot.component.html',
-	styleUrls: ['./trust-pilot.component.scss']
+	styleUrls: ['./trust-pilot.component.scss'],
+	encapsulation: ViewEncapsulation.Emulated,
 })
 
 export class TrustPilotComponent {

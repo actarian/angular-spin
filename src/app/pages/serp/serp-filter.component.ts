@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DisposableComponent } from '../../core/disposable';
 import { FilterService, Group, GroupType } from '../../models';
@@ -6,7 +6,8 @@ import { FilterService, Group, GroupType } from '../../models';
 @Component({
 	selector: 'section-filter',
 	templateUrl: './serp-filter.component.html',
-	styleUrls: ['./serp-filter.component.scss']
+	styleUrls: ['./serp-filter.component.scss'],
+	encapsulation: ViewEncapsulation.Emulated,
 })
 
 export class SerpFilterComponent extends DisposableComponent implements OnInit {

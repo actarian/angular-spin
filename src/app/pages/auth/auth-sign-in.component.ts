@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { AuthService, AuthToken } from '../../core/auth';
@@ -12,7 +12,8 @@ import { AuthForgottenComponent } from './auth-forgotten.component';
 @Component({
 	selector: 'auth-sign-in-component',
 	templateUrl: './auth-sign-in.component.html',
-	styleUrls: ['./auth-sign-in.component.scss']
+	styleUrls: ['./auth-sign-in.component.scss'],
+	encapsulation: ViewEncapsulation.Emulated,
 })
 
 export class AuthSignInComponent extends DisposableComponent implements OnInit {

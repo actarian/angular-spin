@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { RouteService } from '../../core';
 import { PageComponent } from '../../core/pages';
@@ -8,7 +8,8 @@ import { UserService } from '../../models/user.service';
 @Component({
 	selector: 'page-sign-forgotten',
 	templateUrl: './sign-forgotten.component.html',
-	styleUrls: ['./sign-forgotten.component.scss']
+	styleUrls: ['./sign-forgotten.component.scss'],
+	encapsulation: ViewEncapsulation.Emulated,
 })
 
 export class SignForgottenComponent extends PageComponent implements OnInit {

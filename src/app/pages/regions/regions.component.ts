@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { PageComponent } from '../../core/pages';
 import { RouteService } from '../../core/routes';
@@ -7,7 +7,8 @@ import { Region, RegionService } from '../../models';
 @Component({
 	selector: 'page-regions',
 	templateUrl: './regions.component.html',
-	styleUrls: ['./regions.component.scss']
+	styleUrls: ['./regions.component.scss'],
+	encapsulation: ViewEncapsulation.Emulated,
 })
 
 export class RegionsComponent extends PageComponent implements OnInit {

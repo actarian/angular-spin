@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { DisposableComponent } from '../../core/disposable';
 import { Label } from '../../core/labels';
@@ -9,7 +9,10 @@ import { AuthComponent } from '../../pages/auth/auth.component';
 @Component({
 	selector: 'section-header',
 	templateUrl: './header.component.html',
-	styleUrls: ['./header.component.scss']
+	styleUrls: ['./header.component.scss'],
+	encapsulation: ViewEncapsulation.Emulated,
+	// encapsulation: ViewEncapsulation.Emulated
+	// encapsulation: ViewEncapsulation.Emulated is default
 })
 
 export class HeaderComponent extends DisposableComponent implements OnInit {

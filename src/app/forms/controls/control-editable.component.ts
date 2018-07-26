@@ -1,4 +1,4 @@
-import { Component, Renderer2, ViewChild, forwardRef } from '@angular/core';
+import { Component, forwardRef, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -9,7 +9,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 		multi: true,
 	}],
 	templateUrl: './control-editable.component.html',
-	styleUrls: ['./control-editable.component.scss']
+	styleUrls: ['./control-editable.component.scss'],
+	encapsulation: ViewEncapsulation.Emulated,
 })
 export class ControlEditableComponent implements ControlValueAccessor {
 

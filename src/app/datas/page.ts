@@ -47,32 +47,32 @@ export const page: Page[] = [
 		},
 		images: [{
 			id: 28819,
-			url: 'https://www.eurospin-viaggi.it/media/immagini/28819_z_Villaggio Elisena_Vieste_vieste_G.jpg',
+			url: '/media/immagini/28819_z_Villaggio Elisena_Vieste_vieste_G.jpg',
 			title: 'VILLAGGIO ELISENA a Vieste. Foto 1 di Eurospin Viaggi',
 			type: 1,
 		}, {
 			id: 28821,
-			url: 'https://www.eurospin-viaggi.it/media/immagini/28821_z_Villaggio Elisena_Vieste_appartamenti_G.jpg',
+			url: '/media/immagini/28821_z_Villaggio Elisena_Vieste_appartamenti_G.jpg',
 			title: 'VILLAGGIO ELISENA a Vieste. Foto 2 di Eurospin Viaggi',
 			type: 1,
 		}, {
 			id: 28822,
-			url: 'https://www.eurospin-viaggi.it/media/immagini/28822_z_Villaggio Elisena_Vieste_spiaggia_G.jpg',
+			url: '/media/immagini/28822_z_Villaggio Elisena_Vieste_spiaggia_G.jpg',
 			title: 'VILLAGGIO ELISENA a Vieste. Foto 3 di Eurospin Viaggi',
 			type: 1,
 		}, {
 			id: 28823,
-			url: 'https://www.eurospin-viaggi.it/media/immagini/28823_z_Villaggio Elisena_Vieste_camera_G.jpg',
+			url: '/media/immagini/28823_z_Villaggio Elisena_Vieste_camera_G.jpg',
 			title: 'VILLAGGIO ELISENA a Vieste. Foto 4 di Eurospin Viaggi',
 			type: 1,
 		}, {
 			id: 28825,
-			url: 'https://www.eurospin-viaggi.it/media/immagini/28825_z_Villaggio Elisena_Vieste_tennis_G.jpg',
+			url: '/media/immagini/28825_z_Villaggio Elisena_Vieste_tennis_G.jpg',
 			title: 'VILLAGGIO ELISENA a Vieste. Foto 5 di Eurospin Viaggi',
 			type: 1,
 		}, {
 			id: 28824,
-			url: 'https://www.eurospin-viaggi.it/media/immagini/28824_z_Villaggio Elisena_Vieste_piscina_G.jpg',
+			url: '/media/immagini/28824_z_Villaggio Elisena_Vieste_piscina_G.jpg',
 			title: 'VILLAGGIO ELISENA a Vieste. Foto 6 di Eurospin Viaggi',
 			type: 1,
 		}],

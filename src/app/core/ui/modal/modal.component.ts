@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, ComponentRef, Input, OnInit, Provider, ReflectiveInjector, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ComponentFactoryResolver, ComponentRef, Input, OnInit, Provider, ReflectiveInjector, ViewChild, ViewContainerRef, ViewEncapsulation } from '@angular/core';
 import { map, takeUntil } from 'rxjs/operators';
 // import { SignForgottenComponent, SignInComponent, SignUpComponent } from '../../../pages/auth';
 import { DisposableComponent } from '../../disposable';
@@ -9,6 +9,7 @@ import { ModalService } from './modal.service';
 	selector: 'modal-component',
 	templateUrl: './modal.component.html',
 	styleUrls: ['./modal.component.scss'],
+	encapsulation: ViewEncapsulation.Emulated,
 	// entryComponents: [SignForgottenComponent, SignInComponent, SignUpComponent], // Reference to the components must be here in order to dynamically create them
 })
 

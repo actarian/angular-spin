@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { first, takeUntil } from 'rxjs/operators';
 import { PageComponent } from '../../core/pages';
 import { RouteService } from '../../core/routes';
@@ -7,7 +7,8 @@ import { Region, RegionService, SearchService } from '../../models';
 @Component({
 	selector: 'page-home',
 	templateUrl: './home.component.html',
-	styleUrls: ['./home.component.scss']
+	styleUrls: ['./home.component.scss'],
+	encapsulation: ViewEncapsulation.Emulated,
 })
 
 export class HomeComponent extends PageComponent implements OnInit {

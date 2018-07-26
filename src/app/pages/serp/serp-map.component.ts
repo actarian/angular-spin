@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inject, NgZone, OnDestroy, PLATFORM_ID, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inject, NgZone, OnDestroy, PLATFORM_ID, ViewChild, ViewEncapsulation } from '@angular/core';
 // import * as mapboxgl from 'mapbox-gl';
 import { Observable } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
@@ -13,6 +13,7 @@ import { FilterService, SearchResult, SearchService } from '../../models';
 	selector: 'section-serp-map',
 	templateUrl: './serp-map.component.html',
 	styleUrls: ['./serp-map.component.scss'],
+	encapsulation: ViewEncapsulation.Emulated,
 	exportAs: 'results',
 	changeDetection: ChangeDetectionStrategy.OnPush
 })

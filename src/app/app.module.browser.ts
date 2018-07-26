@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ORIGIN_URL, REQUEST } from '@nguniversal/aspnetcore-engine/tokens';
-import { PrebootModule } from 'preboot';
+import { PrebootModule, PrebootOptions } from 'preboot';
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 
@@ -14,12 +14,14 @@ export function getRequest() {
 	return { cookie: document.cookie };
 }
 
+const preBootOptions: PrebootOptions = { appRoot: 'app-component' };
+
 @NgModule({
 	bootstrap: [AppComponent],
 	imports: [
+		PrebootModule.withConfig(preBootOptions),
 		BrowserAnimationsModule,
-		PrebootModule.withConfig({ appRoot: 'app-component' }),
-		AppModule
+		AppModule,
 	],
 	providers: [
 		// We need this for our Http calls since they'll be using an ORIGIN_URL provided in main.server

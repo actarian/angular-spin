@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
@@ -14,7 +14,8 @@ import { UserService } from '../../models/user.service';
 @Component({
 	selector: 'page-sign-in',
 	templateUrl: './sign-in.component.html',
-	styleUrls: ['./sign-in.component.scss']
+	styleUrls: ['./sign-in.component.scss'],
+	encapsulation: ViewEncapsulation.Emulated,
 })
 
 export class SignInComponent extends PageComponent implements OnInit {

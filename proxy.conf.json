@@ -7,5 +7,14 @@
 		},
 		"secure": true,
 		"target": "https://www.eurospin-viaggi.it"
+	},
+	"/media/immagini": {
+		"changeOrigin": true,
+		"logLevel": "debug",
+		"pathRewrite": {
+			"^/media/immagini": "/media/immagini"
+		},
+		"secure": true,
+		"target": "https://www.eurospin-viaggi.it"
 	}
 }

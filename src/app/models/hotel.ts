@@ -67,8 +67,8 @@ export class Hotel implements Document {
 	constructor(options?: Hotel) {
 		if (options) {
 			// this.url = options.url;
-			this.cover = 'https://www.eurospin-viaggi.it/media/immagini/' + options.cover;
-			this.photo = 'https://www.eurospin-viaggi.it/media/immagini/' + options.photo;
+			this.cover = '/media/immagini/' + options.cover;
+			this.photo = '/media/immagini/' + options.photo;
 			this.slug = options.slug;
 			this.id = options.id;
 			this.idOffer = options.idOffer;

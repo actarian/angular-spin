@@ -52,7 +52,7 @@ export class PageResolverService implements Resolve<PageResolver> {
 		});
 		const slug = this.routeService.toSlug(paths).join('/');
 		// console.log('PageResolverService.resolve', slug);
-		return this.pageService.getPageBySlug(slug).pipe(
+		return this.pageService.getStatePageBySlug(slug).pipe(
 			map(page => {
 				if (page) {
 					// console.log('PageResolverService.page', pages[0]);

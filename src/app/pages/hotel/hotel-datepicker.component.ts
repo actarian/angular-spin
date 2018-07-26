@@ -1,4 +1,4 @@
-import { Component, EventEmitter, forwardRef, Input, OnChanges, Output } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, OnChanges, Output, ViewEncapsulation } from '@angular/core';
 import { ControlValueAccessor, FormControl, NgModel, NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BookingAvailability } from '../../models/booking';
 import { CalendarOptions } from '../../models/calendar-options';
@@ -13,6 +13,7 @@ template: `
 	selector: 'hotel-datepicker',
 	templateUrl: './hotel-datepicker.component.html',
 	styleUrls: ['./hotel-datepicker.component.scss'],
+	encapsulation: ViewEncapsulation.Emulated,
 	providers: [
 		{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => HotelDatepickerComponent), multi: true },
 		{ provide: NG_VALIDATORS, useExisting: forwardRef(() => HotelDatepickerComponent), multi: true }

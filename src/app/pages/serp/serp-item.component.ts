@@ -1,6 +1,6 @@
 
 // import { animate, state, style, transition, trigger } from '@angular/animations';
-import { AfterViewInit, Component, Input } from '@angular/core';
+import { AfterViewInit, Component, Input, ViewEncapsulation } from '@angular/core';
 // import { ChangeDetectorRef } from '@angular/core';
 import { SearchResult, WishlistService } from '../../models';
 
@@ -8,6 +8,7 @@ import { SearchResult, WishlistService } from '../../models';
 	selector: 'serp-item',
 	templateUrl: './serp-item.component.html',
 	styleUrls: ['./serp-item.component.scss'],
+	encapsulation: ViewEncapsulation.Emulated,
 	exportAs: 'results',
 	/*
 	animations: [

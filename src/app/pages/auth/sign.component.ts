@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
 import { PageComponent } from '../../core/pages';
@@ -9,7 +9,8 @@ import { UserAuth, UserService } from '../../models';
 @Component({
 	selector: 'page-sign',
 	templateUrl: './sign.component.html',
-	styleUrls: ['./sign.component.scss']
+	styleUrls: ['./sign.component.scss'],
+	encapsulation: ViewEncapsulation.Emulated,
 })
 
 export class SignComponent extends PageComponent implements OnInit {

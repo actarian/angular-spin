@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { AfterViewInit, Component, Inject, Input, NgZone, OnInit, PLATFORM_ID } from '@angular/core';
+import { AfterViewInit, Component, Inject, Input, NgZone, OnInit, PLATFORM_ID, ViewEncapsulation } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { RouteService } from '../../core';
@@ -11,7 +11,8 @@ import { WishlistService } from '../../models/wishlist.service';
 @Component({
 	selector: 'page-hotel',
 	templateUrl: './hotel.component.html',
-	styleUrls: ['./hotel.component.scss']
+	styleUrls: ['./hotel.component.scss'],
+	encapsulation: ViewEncapsulation.Emulated,
 })
 
 export class HotelComponent extends PageComponent implements OnInit, AfterViewInit {
@@ -101,10 +102,10 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 		return this.hotelService.getBookingCheckOutById(this.getId(), this.booking.getPayload()).pipe(
 			map((checkouts: any[]) => {
 				checkouts = checkouts.map(a => new BookingAvailability(a));
+				this.calendar.checkouts = checkouts;
+				this.calendar.nights = checkouts.map(a => this.booking.getNights(checkIn, a.date));
 				// console.log('HotelService.getCheckOut', checkouts);
 				if (checkouts.length) {
-					this.calendar.checkouts = checkouts;
-					this.calendar.nights = checkouts.map(a => this.booking.getNights(checkIn, a.date));
 					this.booking.nights = this.calendar.nights[0];
 				}
 				return checkouts;
@@ -122,12 +123,13 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 		// console.log('HotelComponent.setCheckIn', this.booking.checkIn);
 		this.busy = true;
 		this.getCheckOut(this.booking.checkIn).subscribe((checkouts: BookingAvailability[]) => {
-			const nextDay = new Date(this.booking.checkIn);
-			nextDay.setDate(nextDay.getDate() + 1);
-			this.booking.checkOut = nextDay;
-			this.calendar.checkouts = checkouts;
 			this.busy = false;
-			this.setNearestCheckOut();
+			if (checkouts.length) {
+				const nextDay = new Date(this.booking.checkIn);
+				nextDay.setDate(nextDay.getDate() + 1);
+				this.booking.checkOut = nextDay;
+				this.setNearestCheckOut();
+			}
 		});
 	}
 
@@ -135,8 +137,8 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 		// console.log('HotelComponent.setCheckOut', this.booking.checkOut);
 		this.busy = true;
 		this.getBookingOptions(this.booking.checkOut).subscribe((options: BookingOptions) => {
-			this.booking.options = options;
 			this.busy = false;
+			this.booking.options = options;
 		});
 	}
 
@@ -162,7 +164,7 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 		this.busy = true;
 		const checkIn = this.booking.checkIn;
 		const checkouts = this.calendar.checkouts;
-		if (checkouts.length === 0) {
+		if (!checkouts || checkouts.length === 0) {
 			this.busy = false;
 			return;
 		}

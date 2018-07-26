@@ -182,7 +182,7 @@ export class SearchService extends EntityService<SearchResult> {
 				// const sliced = results.slice(0, Math.min(this.visibleItems, results.length));
 				this.filterService.onUpdateGroups(groups, results);
 				this.visibleItems = this.maxVisibleItems;
-				this.doSerialize(this.model, groups, sorting);
+				// this.doSerialize(this.model, groups, sorting);
 			});
 	}
 

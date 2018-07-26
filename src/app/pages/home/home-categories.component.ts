@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Category, CategoryService } from '../../models';
 
 @Component({
 	selector: 'section-categories',
 	templateUrl: './home-categories.component.html',
-	styleUrls: ['./home-categories.component.scss']
+	styleUrls: ['./home-categories.component.scss'],
+	encapsulation: ViewEncapsulation.Emulated,
 })
 
 export class HomeCategoriesComponent implements OnInit {
