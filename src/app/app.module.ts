@@ -29,6 +29,7 @@ import { AuthComponent, AuthForgottenComponent, AuthSignInComponent, AuthSignUpC
 import { HomeCategoriesComponent, HomeComponent, HomePromotionsComponent, HomeSearchComponent } from './pages/home';
 import { HotelComponent, HotelDatepickerComponent, HotelFeaturePipe, HotelGalleryPipe, HotelTaxonomyPipe } from './pages/hotel';
 import { ProfileComponent } from './pages/profile';
+import { PaymentComponent } from './pages/payment';
 import { RegionDetailComponent, RegionsComponent } from './pages/regions';
 import { SerpComponent, SerpFilterComponent, SerpItemComponent, SerpListComponent, SerpMapComponent } from './pages/serp';
 import { FooterComponent, HeaderComponent, NotFoundComponent, RegionSearchComponent, SvgComponent, TrustPilotComponent, ValuePropositionComponent } from './sections';
@@ -78,7 +79,7 @@ registerLocaleData(localeIt, 'it');
 		AppComponent,
 		HeaderComponent, FooterComponent, NotFoundComponent, SvgComponent,
 		AuthComponent, AuthForgottenComponent, AuthSignInComponent, AuthSignUpComponent,
-		SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent, ProfileComponent,
+		SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent, ProfileComponent, PaymentComponent,
 		HomeComponent, HomeCategoriesComponent, HomePromotionsComponent, HomeSearchComponent,
 		SerpComponent, SerpItemComponent, SerpListComponent, SerpMapComponent,
 		HotelComponent, HotelDatepickerComponent, HotelTaxonomyPipe, HotelGalleryPipe, HotelFeaturePipe,
@@ -97,7 +98,7 @@ registerLocaleData(localeIt, 'it');
 	entryComponents: [
 		AuthComponent, AuthForgottenComponent, AuthSignInComponent, AuthSignUpComponent,
 		SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent,
-		HomeComponent, HotelComponent, ProfileComponent, RegionDetailComponent, RegionsComponent, SerpComponent],
+		HomeComponent, HotelComponent, ProfileComponent, PaymentComponent, RegionDetailComponent, RegionsComponent, SerpComponent],
 	bootstrap: [AppComponent]
 })
 

@@ -44,6 +44,8 @@ Value Proposition
 		svg {
 			transform: scale(1.2);
 			margin-right: 15px;
+			width: inherit;
+			height: inherit;
 
 			@include xs-down {
 				margin: 0 0 8px;

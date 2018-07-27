@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CoreModule } from './core/core.module';
 import { Pages } from './core/pages';
-import { HomeComponent, HotelComponent, ProfileComponent, RegionDetailComponent, RegionsComponent, SerpComponent, SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent } from './pages';
+import { HomeComponent, HotelComponent, ProfileComponent, PaymentComponent, RegionDetailComponent, RegionsComponent, SerpComponent, SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent } from './pages';
 
 const pages: Pages = {
 	'1': HomeComponent,
@@ -12,6 +12,7 @@ const pages: Pages = {
 	SignInComponent: SignInComponent,
 	SignForgottenComponent: SignForgottenComponent,
 	ProfileComponent: ProfileComponent,
+	PaymentComponent: PaymentComponent,
 	RegionDetailComponent: RegionDetailComponent,
 	RegionsComponent: RegionsComponent
 };

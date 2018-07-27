@@ -2,8 +2,9 @@ import { Page } from '../core/pages';
 
 export const page: Page[] = [
 	{ id: 1001, name: 'Homepage', title: 'Homepage', slug: '/', component: 'HomeComponent' },
-	{ id: 2001, name: 'Search', title: 'Search', slug: '/search', component: 'SerpComponent' },
-	{ id: 2001, name: 'Profile', title: 'Profile', slug: '/profile', component: 'ProfileComponent' },
+	{ id: 2002, name: 'Search', title: 'Search', slug: '/search', component: 'SerpComponent' },
+	{ id: 2003, name: 'Profile', title: 'Profile', slug: '/profile', component: 'ProfileComponent' },
+	{ id: 2004, name: 'Payment', title: 'Payment', slug: '/payment', component: 'PaymentComponent' },
 	{ id: 2101, name: 'Sign', title: 'Sign', slug: '/accedi', component: 'SignComponent' },
 	{ id: 2201, name: 'Sign Up', title: 'Sign Up', slug: '/registrati', component: 'SignUpComponent' },
 	{ id: 2301, name: 'Sign In', title: 'Sign In', slug: '/login', component: 'SignInComponent' },

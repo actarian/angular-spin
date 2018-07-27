@@ -14,8 +14,20 @@ Hotel Main Gallery
 			width: 100%;
 		}
 
+		a {
+			display: block;
+			position: relative;
+			padding-bottom: 56.25%;
+			height: 0;
+			overflow: hidden;
+		}
+
 		img {
-			max-width: 100%;
+			position: absolute;
+			min-height: 100%;
+			min-width: 100%;
+			height: auto;
+			width: auto;
 		}
 	}
 
