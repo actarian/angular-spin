@@ -5,12 +5,16 @@ Sign
 --------------------------------------------------*/
 
 .sign-page {
+	text-align: center;
+
 	button {
 		text-transform: none;
 		display: block;
 		width: 100%;
 		max-width: 320px;
 		margin-bottom: 20px;
+		margin-left: auto;
+		margin-right: auto;
 
 		svg {
 			position: relative;
@@ -41,9 +45,11 @@ Sign
 	}
 
 	.flag-list {
-		margin: 20px 0;
 		padding: 0;
 		list-style: none;
+		margin: 20px auto;
+		max-width: 310px;
+		text-align: left;
 
 		li {
 			padding: 0 0 5px 22px;

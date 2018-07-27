@@ -7,7 +7,7 @@
 		<button class="edit-btn" (click)="active = !active" *ngIf="!disabled">modifica</button>
 	</div>
 	<div class="calendar popup-calendar" *ngIf="active && !disabled">
-		<p-calendar name="startDate" (onSelect)="onSelect($event); active = false;" (onMonthChange)="onMonthChange($event)" [(ngModel)]="ngModel" [disabledDates]="disabledDates" [inline]="true" [monthNavigator]="true" [yearNavigator]="true" [yearRange]="calendar.minYear + ':' + calendar.maxYear" [minDate]="minDate" [maxDate]="maxDate" [locale]="calendar.it" dateFormat="dd/mm/yy">
+		<p-calendar name="startDate" (onSelect)="onSelect($event); active = false;" (onMonthChange)="onMonthChange($event)" [(ngModel)]="ngModel" [disabledDates]="disabledDates" [inline]="true" [monthNavigator]="true" [yearNavigator]="true" [numberOfMonths]="1" [yearRange]="calendar.minYear + ':' + calendar.maxYear" [minDate]="minDate" [maxDate]="maxDate" [locale]="calendar.it" dateFormat="dd/mm/yy">
 			<ng-template pTemplate="date" let-date>
 				<span [ngClass]="getDateClass(date)">{{date.day}}</span>
 			</ng-template>

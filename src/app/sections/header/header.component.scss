@@ -92,7 +92,7 @@ Header
 		@include sm-down {
 			pointer-events: none;
 			transform: translate(-115%);
-			transition: all .2s ease-in-out;
+			transition: none;
 			display: block;
 			position: fixed;
 			left: 0;
@@ -103,6 +103,10 @@ Header
 			height: 100vh;
 			box-shadow: 10px 0 20px rgba(0, 0, 0, .2);
 			overflow-y: auto;
+		}
+
+		@media (max-width: 900px) {
+			transition: all .2s ease-in-out;
 		}
 
 		.navbar-nav {

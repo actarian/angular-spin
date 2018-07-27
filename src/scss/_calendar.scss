@@ -24,7 +24,8 @@ Calendar
 			user-select: none;
 		}
 
-		a {
+		a,
+		.ui-state-default {
 			position: relative;
 			z-index: 1;
 			color: $text-color;
