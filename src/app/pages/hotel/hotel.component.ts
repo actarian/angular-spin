@@ -202,9 +202,7 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 			this.zone.runOutsideAngular(() => {
 				$(() => {
 					const animationSpeed = 200;
-
 					$('.readmore-accordion').each(function (i, e) {
-
 						const $wrapper = $('.readmore-accordion__wrapper', e),
 							$sizer = $('.readmore-accordion__sizer', e),
 							$button = $('.readmore-accordion__toggler', e),

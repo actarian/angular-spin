@@ -24,10 +24,10 @@ import { CustomMissingTranslationHandler, LabelService } from './core/labels';
 import { Logger } from './core/logger';
 import { MemoryService } from './core/memory';
 import { RouteService } from './core/routes';
-import { CategoryService, FilterService, HotelService, PromotionService, RegionService, SearchService, TagService, WishlistService } from './models';
+import { CategoryService, DestinationService, FilterService, HotelService, PromotionService, RegionService, SearchService, TagService, WishlistService } from './models';
 import { AuthComponent, AuthForgottenComponent, AuthSignInComponent, AuthSignUpComponent, SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent } from './pages/auth';
 import { HomeCategoriesComponent, HomeComponent, HomePromotionsComponent, HomeSearchComponent } from './pages/home';
-import { HotelComponent, HotelDatepickerComponent, HotelFeaturePipe, HotelTaxonomyPipe } from './pages/hotel';
+import { HotelComponent, HotelDatepickerComponent, HotelFeaturePipe, HotelGalleryPipe, HotelTaxonomyPipe } from './pages/hotel';
 import { ProfileComponent } from './pages/profile';
 import { RegionDetailComponent, RegionsComponent } from './pages/regions';
 import { SerpComponent, SerpFilterComponent, SerpItemComponent, SerpListComponent, SerpMapComponent } from './pages/serp';
@@ -81,7 +81,7 @@ registerLocaleData(localeIt, 'it');
 		SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent, ProfileComponent,
 		HomeComponent, HomeCategoriesComponent, HomePromotionsComponent, HomeSearchComponent,
 		SerpComponent, SerpItemComponent, SerpListComponent, SerpMapComponent,
-		HotelComponent, HotelDatepickerComponent, HotelTaxonomyPipe, HotelFeaturePipe,
+		HotelComponent, HotelDatepickerComponent, HotelTaxonomyPipe, HotelGalleryPipe, HotelFeaturePipe,
 		RegionsComponent, RegionDetailComponent, RegionSearchComponent,
 		MainSearchComponent, DestinationTypePipe, DestinationHintComponent, SerpFilterComponent, TrustPilotComponent, ValuePropositionComponent,
 	],
@@ -91,7 +91,7 @@ registerLocaleData(localeIt, 'it');
 		// { provide: HTTP_INTERCEPTORS, useClass: HttpResponseInterceptor, multi: true },
 		AuthAttribute,
 		Logger, TranslateService, RouteService,
-		DestinationTypePipe, HotelTaxonomyPipe, HotelFeaturePipe, SearchService, RegionService, CategoryService, PromotionService, FilterService, WishlistService, TagService, HotelService,
+		DestinationTypePipe, HotelTaxonomyPipe, HotelGalleryPipe, HotelFeaturePipe, SearchService, RegionService, CategoryService, PromotionService, FilterService, WishlistService, DestinationService, TagService, HotelService,
 		// { provide: RouteService, useClass: RouteService, deps: [TranslateService, Location, Router] },
 	],
 	entryComponents: [

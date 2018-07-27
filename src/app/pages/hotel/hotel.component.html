@@ -1,6 +1,5 @@
 <section class="hotel-page">
 	<div class="container">
-
 		<!-- MAIN -->
 		<div class="hotel-main-content">
 			<!-- HEAD -->
@@ -24,7 +23,7 @@
 			<!-- SWIPER -->
 			<div class="hotel-gallery swiper-container" [swiper]>
 				<div class="swiper-wrapper" [fancybox]="fancyboxOptions">
-					<div class="swiper-slide" *ngFor="let image of page.images">
+					<div class="swiper-slide" *ngFor="let image of page.images | hotelGallery">
 						<a href="{{image.url}}" data-fancybox="gallery">
 							<img src="{{image.url}}" alt="{{image.name}}">
 						</a>
@@ -58,7 +57,6 @@
 						</li>
 					</ng-container>
 				</ul>
-
 				<!-- SIDEBAR -->
 				<div class="hotel-sidebar">
 					<div class="sticky">
@@ -106,46 +104,7 @@
 								</div>
 							</ng-container>
 						</div>
-						<!--
-						<div class="sidebar-group" *ngIf="calendar.checkouts">
-							<div class="tit">Partenza</div>
-							<ng-container *ngIf="calendar.checkouts.length === 0">
-								nessuna data disponibile
-							</ng-container>
-							<ng-container *ngIf="calendar.checkouts.length > 0">
-								<hotel-datepicker (doSelect)="setCheckOut()" [(ngModel)]="booking.checkOut" [availableDates]="calendar.checkouts" [disabled]="busy"></hotel-datepicker>
-							</ng-container>
-						</div>
-						-->
 						<div *ngIf="booking.options">
-							<!--
-							<div class="sidebar-group">
-								<div class="tit">Ospiti</div>
-								<div class="edit-row">
-									<div class="edit-name">
-										2 persone
-									</div>
-									<button class="edit-btn">modifica</button>
-								</div>
-							</div>
-							-->
-							<!--
-							<div class="sidebar-group">
-								<div class="tit">Periodo</div>
-								<div class="edit-row">
-									<div class="edit-name">
-										{{booking.daysTotal}} notti
-									</div>
-									<button class="edit-btn">modifica</button>
-								</div>
-								<div class="edit-row">
-									<div class="edit-name">
-										{{booking.checkIn | date : 'shortDate'}} - {{booking.checkOut | date : 'shortDate'}}
-									</div>
-									<button class="edit-btn">modifica</button>
-								</div>
-							</div>
-							-->
 							<div class="sidebar-group">
 								<div class="tit">
 									Tipologia di camera
@@ -167,20 +126,6 @@
 										<span>{{item.name}} ({{item.price}}€)</span>
 									</label>
 								</div>
-								<!--
-								<div class="radio">
-									<label>
-									<input type="radio" name="assicurazione" checked>
-									<span>ANNULLAMENTO (29.92€)</span>
-								</label>
-								</div>
-								<div class="radio">
-									<label>
-									<input type="radio" name="assicurazione">
-									<span>medico e bagaglio (8.40€ a persona)</span>
-								</label>
-								</div>
-								-->
 							</div>
 							<div class="sidebar-group">
 								<div class="tit">
@@ -232,50 +177,6 @@
 						</div>
 					</div>
 				</ng-container>
-				<!--
-				<div class="inclusion hotel-desc-group">
-					<div class="readmore-accordion">
-						<h2>La quota comprende</h2>
-						<div class="readmore-accordion__wrapper">
-							<div class="readmore-accordion__sizer">
-								<p><strong>Pensione completa</strong> con colazione, pranzo e cena a buffet, <strong>bevande ai pasti</strong> (acqua e vino della casa), <strong>utilizzo della piscine</strong> attrezzate con lettini e ombrelloni secondo disponibilità, <strong>animazione diurna e serale</strong>, <strong>mini club</strong> ad orari prestabiliti, navetta da/per la spiaggia (per soggiorni fino al 09/09), <strong>servizio spiaggia </strong>con 1 ombrellone e 2 lettini a camera (per soggiorni fino al 09/09), parcheggio secondo disponibilità, connessione Wi-Fi nelle aree comuni, culla per infant 0-3 anni su richiesta al momento della prenotazione secondo disponibilità.</p>
-							</div>
-						</div>
-						<a href="" class="readmore-accordion__toggler"><i class="fa fa-angle-down" aria-hidden="true"></i> <span>Leggi tutto</span> <span>Chiudi</span> </a>
-					</div>
-					<div class="readmore-accordion">
-						<h2>La quota non comprende</h2>
-						<div class="readmore-accordion__wrapper">
-							<div class="readmore-accordion__sizer">
-								<p>Eventuale tassa di soggiorno applicata in loco, quota per animali domestici di piccola taglia (10 euro al giorno da pagare in loco), extra in genere e tutto quanto non specificato nel paragrafo "La quota comprende".</p>
-							</div>
-						</div>
-						<a href="" class="readmore-accordion__toggler"> <i class="fa fa-angle-down" aria-hidden="true"></i> <span>Leggi tutto</span> <span>Chiudi</span> </a>
-					</div>
-					<div class="readmore-accordion">
-						<h2>Riduzioni</h2>
-						<div class="readmore-accordion__wrapper">
-							<div class="readmore-accordion__sizer">
-								<p><strong>Riduzioni 3° / 4° letto</strong>&nbsp;(valide con almeno 2 persone paganti quota intera)&nbsp; per prenotazioni fino al 05/08 e dal 26/08 in poi:<br> • 3&nbsp;- 13&nbsp;anni non compiuti&nbsp;<strong>GRATIS</strong>&nbsp;in 3° letto; 50% in 4° letto<br> • da 13&nbsp;anni in poi 25%</p>
-								<p>Infant 0-3 anni non compiuti GRATIS nel letto con i genitori o in culla dell'hotel secondo disponibilità, su richiesta al momento della prenotazione.&nbsp;</p>
-								<p><strong>Riduzioni 3° / 4° lett</strong>o&nbsp;(valide con almeno 2 persone paganti quota intera) &nbsp;per prenotazioni&nbsp;dal&nbsp;05/08 al 26/08:<br> • 3&nbsp;- 13&nbsp;anni non compiuti 50%<br> • da 13&nbsp;anni in poi 25%</p>
-								<p>Infant 0-3 anni non compiuti GRATIS nel letto con i genitori o in culla dell'hotel secondo disponibilità, su richiesta al momento della prenotazione.&nbsp;</p>
-							</div>
-						</div>
-						<a href="" class="readmore-accordion__toggler"> <i class="fa fa-angle-down" aria-hidden="true"></i> <span>Leggi tutto</span> <span>Chiudi</span> </a>
-					</div>
-					<div class="readmore-accordion">
-						<h2>Orario check-in/out</h2>
-						<div class="readmore-accordion__wrapper">
-							<div class="readmore-accordion__sizer">
-								<p>Check-in dalle ore 17:00<br> Check-out entro ore 10:00</p>
-							</div>
-						</div>
-						<a href="" class="readmore-accordion__toggler"><i class="fa fa-angle-down" aria-hidden="true"></i> <span>Leggi tutto</span> <span>Chiudi</span> </a>
-					</div>
-				</div>
-				-->
-
 				<!-- TOTAL PRICE MOBILE-->
 				<div class="total-price-mobile" *ngIf="booking.options">
 					<div class="travel-recap">
