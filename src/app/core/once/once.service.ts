@@ -2,7 +2,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { fromEvent, Observable, of } from 'rxjs';
 import { fromPromise } from 'rxjs/observable/fromPromise';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 // export class OnceEvent extends Event { }
 
@@ -42,12 +42,13 @@ export class OnceService {
 					);
 				} else {
 					element.async = true;
+					/*
 					element.onload = function () {
 						console.log('onload fired');
 						// remote script has loaded
 					};
+					*/
 					callback$ = fromEvent(element, 'load').pipe(
-						tap(x => console.log('loaded', x)),
 						map(x => x as Event)
 					);
 				}

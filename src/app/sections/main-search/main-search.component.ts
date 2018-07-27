@@ -1,8 +1,8 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
 import { DisposableComponent } from '../../core/disposable';
-import { MainSearch, SearchService } from '../../models';
+import { Destination, MainSearch, SearchService } from '../../models';
 
 
 @Component({
@@ -10,15 +10,13 @@ import { MainSearch, SearchService } from '../../models';
 	templateUrl: './main-search.component.html',
 	styleUrls: ['./main-search.component.scss'],
 	encapsulation: ViewEncapsulation.Emulated,
-	changeDetection: ChangeDetectionStrategy.OnPush
+	// changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class MainSearchComponent extends DisposableComponent implements AfterViewInit {
 
 	model: MainSearch;
-
 	active: ElementRef;
-	destinationDirty: boolean = false;
 
 	@ViewChild('query') query;
 	query$;
@@ -38,7 +36,6 @@ export class MainSearchComponent extends DisposableComponent implements AfterVie
 	}
 
 	ngAfterViewInit() {
-		// input query keyup listener
 		this.query$ = fromEvent(this.query.nativeElement, 'keyup').pipe(
 			debounceTime(250),
 			map((event: any) => {
@@ -52,18 +49,14 @@ export class MainSearchComponent extends DisposableComponent implements AfterVie
 			if (!query || query.trim() === '') {
 				return;
 			}
-			this.destinationDirty = true;
 			this.search.onDestinationQuery(query);
 			this.changeDetector.markForCheck();
 		});
 	}
 
-	onDestinationSet(item: any) {
-		console.log('onDestinationSet');
+	onDestinationSet(item: Destination) {
 		this.model.destination = item;
-		// this.search.onDestinationSet(item);
-		// this.changeDetector.markForCheck();
-		// this.changeDetector.detectChanges();
+		this.model.query = item.name;
 	}
 
 	onSubmit() {

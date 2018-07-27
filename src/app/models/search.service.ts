@@ -1,6 +1,6 @@
-import { isPlatformBrowser, Location } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, Injector, PLATFORM_ID } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Params, Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { debounceTime, map, tap } from 'rxjs/operators';
@@ -43,9 +43,7 @@ export class SearchService extends EntityService<SearchResult> {
 		protected injector: Injector,
 		private routeService: RouteService,
 		private storageService: LocalStorageService,
-		private location: Location,
 		private router: Router,
-		private route: ActivatedRoute,
 		private destinationService: DestinationService,
 		private filterService: FilterService,
 	) {
@@ -58,8 +56,6 @@ export class SearchService extends EntityService<SearchResult> {
 		}
 		const lastDestinations = this.storage.get('lastDestinations');
 		this.lastDestinations = lastDestinations || [];
-		// this.beginObserveModel();
-		// this.connect().subscribe(results => console.log('results', results));
 	}
 	// RESULTS
 	public connect(): Observable<SearchResult[]> {
@@ -108,21 +104,12 @@ export class SearchService extends EntityService<SearchResult> {
 						break;
 				}
 				this.resultsFiltered$.next(results);
-				// const sliced = results.slice(0, Math.min(this.visibleItems, results.length));
 				this.filterService.onUpdateGroups(groups, results);
 				this.visibleItems = this.maxVisibleItems;
 				// this.doSerialize(this.model, groups, sorting);
 				return results;
 			})
 		);
-	}
-
-	public setParams(params: Params) {
-		if (params.search) {
-			this.model = new MainSearch(params.search as MainSearch);
-			this.model$.next(this.model);
-		}
-		this.filterService.setParams(params);
 	}
 
 	private doSerialize(model: MainSearch, groups: Group[], sorting: Sorting) {
@@ -164,6 +151,14 @@ export class SearchService extends EntityService<SearchResult> {
 			this.router.navigate(['/login'], navigationExtras);
 			*/
 		}
+	}
+
+	public setParams(params: Params) {
+		if (params.search) {
+			this.model = new MainSearch(params.search as MainSearch);
+			this.model$.next(this.model);
+		}
+		this.filterService.setParams(params);
 	}
 
 	// DESTINATION

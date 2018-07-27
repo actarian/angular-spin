@@ -3,9 +3,8 @@
 	<div class="main-search__col main-search__location" [ngClass]="{'active':active==searchLocation}" (clickOutside)="active == searchLocation ? active=null : null">
 		<div (click)="active = searchLocation" #searchLocation>
 			<label for="main-search--location">Destinazione</label>
-			<input type="text" class="with-reset" id="main-search--location" placeholder="Cerca località, regione, tipologia o nome hotel" [value]="model.destination.name" (focus)="search.onDestinationReset()" *ngIf="model.destination">
-			<input type="text" class="with-reset" id="main-search--location" placeholder="Cerca località, regione, tipologia o nome hotel" name="query" [(ngModel)]="model.query" [hidden]="model.destination" #query>
-			<span class="reset" (click)="search.onDestinationReset(); query.focus()" [hidden]="search.isDestinationEmpty()">
+			<input type="text" class="with-reset" id="main-search--location" placeholder="Cerca località, regione, tipologia o nome hotel" name="query" [(ngModel)]="model.query" (focus)="model.destination = null; model.query = null" #query>
+			<span class="reset" (click)="search.onDestinationReset(); query.focus()" [hidden]="!model.query && !model.destination">
 				<svg>
 					<use xlink:href="#ico-reset"></use>
 				</svg>
@@ -17,7 +16,7 @@
 			</span>
 		</div>
 		<!-- LAST DESTINATIONS -->
-		<div class="popup-hint popup-hint--last-search popup-hint__destination" #lastSearch *ngIf="!destinationDirty && search.lastDestinations?.length">
+		<div class="popup-hint popup-hint--last-search popup-hint__destination" #lastSearch *ngIf="!model.query && !model.destination && search.lastDestinations?.length">
 			<div class="head">
 				<h3>Le tue ultime ricerche</h3>
 				<div class="close" (click)="active=null">
@@ -29,7 +28,7 @@
 			<destination-hint [destinations]="search.lastDestinations" [height]="46" (selectDestination)="onDestinationSet($event)"></destination-hint>
 		</div>
 		<!-- AUTOCOMPLETE DESTINATIONS -->
-		<div class="popup-hint popup-hint__autocomplete popup-hint__destination" #autocomplete *ngIf="(destinationDirty || !search.lastDestinations?.length) && !model.destination">
+		<div class="popup-hint popup-hint__autocomplete popup-hint__destination" #autocomplete *ngIf="model.query && !model.destination && search.destinations">
 			<destination-hint [destinations]="search.destinations" [query]="model.query" [height]="46" (selectDestination)="onDestinationSet($event)"></destination-hint>
 		</div>
 	</div>
