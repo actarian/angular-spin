@@ -9,7 +9,9 @@ export class AuthToken {
 	) { }
 }
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class AuthService {
 
 	private cachedRequests: Array<HttpRequest<any>> = [];

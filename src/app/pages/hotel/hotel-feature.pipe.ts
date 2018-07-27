@@ -5,7 +5,9 @@ import { Feature, FeatureType } from '../../core/models/feature';
 	name: 'hotelFeature'
 })
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class HotelFeaturePipe implements PipeTransform {
 	transform(items: Feature[]): Feature[] {
 		return items.filter((x: Feature) => (

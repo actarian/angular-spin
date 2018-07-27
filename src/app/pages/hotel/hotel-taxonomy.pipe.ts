@@ -5,7 +5,9 @@ import { Taxonomy, TaxonomyType } from '../../core/models/taxonomy';
 	name: 'hotelTaxonomy'
 })
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class HotelTaxonomyPipe implements PipeTransform {
 	transform(items: Taxonomy[]): Taxonomy[] {
 		return items.filter((x: Taxonomy) => (

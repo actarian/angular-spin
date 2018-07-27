@@ -3,7 +3,9 @@ import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms'
 import { ControlBase } from './control-base';
 import { matchValidator } from './match.validator';
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class ControlService {
 
 	getValidators(control: ControlBase<any>, group: FormGroup): ValidatorFn[] {

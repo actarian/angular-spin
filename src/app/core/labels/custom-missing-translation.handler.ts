@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { MissingTranslationHandler, MissingTranslationHandlerParams } from '@ngx-translate/core';
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class CustomMissingTranslationHandler implements MissingTranslationHandler {
 	handle(params: MissingTranslationHandlerParams) {
 		// console.log('CustomMissingTranslationHandler', params);

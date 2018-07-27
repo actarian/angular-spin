@@ -45,7 +45,9 @@ export class GoogleUser {
 	googleToken?: string;
 }
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class GoogleService {
 
 	public authResponse: GoogleAuthResponse;

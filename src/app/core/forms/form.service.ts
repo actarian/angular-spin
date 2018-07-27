@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ControlBase, ControlBaseOptions, ControlCheckbox, ControlEmail, ControlNumber, ControlPassword, ControlRadio, ControlSelect, ControlService, ControlText } from './controls';
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class FormService {
 
 	constructor(

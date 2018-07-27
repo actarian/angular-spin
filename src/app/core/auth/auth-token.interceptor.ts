@@ -8,7 +8,9 @@ import { RouteService } from '../routes';
 import { AuthService } from './auth.service';
 
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class AuthTokenInterceptor implements HttpInterceptor {
 
 	constructor(

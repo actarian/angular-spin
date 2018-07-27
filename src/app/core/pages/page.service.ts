@@ -6,7 +6,9 @@ import { tap } from 'rxjs/operators';
 import { EntityService } from '../models';
 import { Page } from './page';
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class PageService extends EntityService<Page> {
 
 	get collection(): string {

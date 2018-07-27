@@ -11,7 +11,6 @@ import { Image, ImageType } from '../models';
 import { RouteService } from '../routes';
 import { Page } from './page';
 import { PageComponent } from './page.component';
-// import { PageDirective } from './page.directive';
 
 @Component({
 	selector: 'page-hoster-component',
@@ -19,7 +18,6 @@ import { PageComponent } from './page.component';
 })
 
 export class PageHosterComponent extends DisposableComponent implements AfterContentInit {
-	// @ViewChild(PageDirective) hostPage: PageDirective;
 	@ViewChild('hostPage', { read: ViewContainerRef }) hostPageRef;
 
 	private factory: ComponentFactory<PageComponent>;

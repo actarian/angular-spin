@@ -1,9 +1,9 @@
 import { isPlatformBrowser, Location } from '@angular/common';
 import { Inject, Injectable, Injector, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
-import { debounceTime, tap } from 'rxjs/operators';
+import { debounceTime, map, tap } from 'rxjs/operators';
 import { EntityService, Option } from '../core/models';
 import { RouteService } from '../core/routes';
 import { LocalStorageService, StorageService } from '../core/storage';
@@ -32,7 +32,7 @@ export class SearchService extends EntityService<SearchResult> {
 	maxVisibleItems: number = 20;
 	visibleItems: number = this.maxVisibleItems;
 	model: MainSearch = new MainSearch();
-	private model$ = new BehaviorSubject<MainSearch>(this.model);
+	public model$ = new BehaviorSubject<MainSearch>(this.model);
 	private results$ = new BehaviorSubject<SearchResult[]>([]);
 	results = this.results$.asObservable();
 	resultsFiltered$ = new BehaviorSubject<SearchResult[]>([]);
@@ -58,29 +58,63 @@ export class SearchService extends EntityService<SearchResult> {
 		}
 		const lastDestinations = this.storage.get('lastDestinations');
 		this.lastDestinations = lastDestinations || [];
-		/*
-		this.routeService.pageParams$.subscribe(params => {
-			console.log('SearchService.routeService.pageParams$', params);
-			if (params.search) {
-				this.model = new MainSearch(params.search as MainSearch);
-				this.model$.next(this.model);
-				this.onSearchIn();
-			}
-		});
-		*/
-		/*
-		if (this.routeService.queryParams) {
-			this.routeService.queryParams.subscribe(model => {
-				console.log('this.routeService.queryParams', model);
-				this.model = new MainSearch(model as MainSearch);
-				this.model$.next(this.model);
-				this.onSearchIn();
-			});
-		}
-		*/
-		// console.log('SearchService.model.startDate', this.model.startDate);
-		this.beginObserveModel();
-		this.beginObserveResults();
+		// this.beginObserveModel();
+		// this.connect().subscribe(results => console.log('results', results));
+	}
+	// RESULTS
+	public connect(): Observable<SearchResult[]> {
+		return combineLatest(this.filterService.groups$, this.filterService.sortings$, this.results).pipe(
+			map((data: any[]): SearchResult[] => {
+				const groups: Group[] = data[0];
+				const sorting: Sorting = data[1];
+				let results: SearchResult[] = data[2];
+				groups.forEach(group => {
+					// group.clear();
+					group.matches = {};
+					group.selected = group.items.find(option => option.selected) !== undefined;
+					group.items.forEach(option => option.count = 0);
+				});
+				results.forEach(result => {
+					result.visible = true;
+					groups.forEach(group => {
+						if (group.selected) {
+							// group.filter(result);
+							let visible = true;
+							group.matches[result.id] = false;
+							group.items.forEach(option => {
+								if (option.selected) {
+									let match = group.match(result, option);
+									if (group.selectionType === GroupSelectionType.Multiple) {
+										match = match || group.matches[result.id];
+									}
+									group.matches[result.id] = match;
+									visible = visible && match;
+								}
+							});
+							result.visible = result.visible && visible;
+						}
+					});
+				});
+				results = results.filter(result => result.visible);
+				switch (sorting.id) {
+					case 1:
+						results.sort((a, b) => a.advice - b.advice);
+						break;
+					case 2:
+						results.sort((a, b) => a.price - b.price);
+						break;
+					case 3:
+						results.sort((a, b) => b.price - a.price);
+						break;
+				}
+				this.resultsFiltered$.next(results);
+				// const sliced = results.slice(0, Math.min(this.visibleItems, results.length));
+				this.filterService.onUpdateGroups(groups, results);
+				this.visibleItems = this.maxVisibleItems;
+				// this.doSerialize(this.model, groups, sorting);
+				return results;
+			})
+		);
 	}
 
 	public setParams(params: Params) {
@@ -132,60 +166,119 @@ export class SearchService extends EntityService<SearchResult> {
 		}
 	}
 
-	// RESULTS
-	private beginObserveResults() {
-		combineLatest(this.filterService.groups$, this.filterService.sortings$, this.results)
-			.subscribe((data: any[]): void => {
-				const groups: Group[] = data[0];
-				const sorting: Sorting = data[1];
-				let results: SearchResult[] = data[2];
-				groups.forEach(group => {
-					// group.clear();
-					group.matches = {};
-					group.selected = group.items.find(option => option.selected) !== undefined;
-					group.items.forEach(option => option.count = 0);
-				});
-				results.forEach(result => {
-					result.visible = true;
-					groups.forEach(group => {
-						if (group.selected) {
-							// group.filter(result);
-							let visible = true;
-							group.matches[result.id] = false;
-							group.items.forEach(option => {
-								if (option.selected) {
-									let match = group.match(result, option);
-									if (group.selectionType === GroupSelectionType.Multiple) {
-										match = match || group.matches[result.id];
-									}
-									group.matches[result.id] = match;
-									visible = visible && match;
-								}
-							});
-							result.visible = result.visible && visible;
-						}
-					});
-				});
-				results = results.filter(result => result.visible);
-				switch (sorting.id) {
-					case 1:
-						results.sort((a, b) => a.advice - b.advice);
-						break;
-					case 2:
-						results.sort((a, b) => a.price - b.price);
-						break;
-					case 3:
-						results.sort((a, b) => b.price - a.price);
-						break;
-				}
-				this.resultsFiltered$.next(results);
-				// const sliced = results.slice(0, Math.min(this.visibleItems, results.length));
-				this.filterService.onUpdateGroups(groups, results);
-				this.visibleItems = this.maxVisibleItems;
-				// this.doSerialize(this.model, groups, sorting);
-			});
+	// DESTINATION
+	onDestinationQuery(query: string) {
+		this.model.query = query;
+		this.destinationService.autocomplete(query).pipe(
+			// takeUntil(this.unsubscribe)
+			debounceTime(200)
+		).subscribe(x => {
+			this.destinations = x;
+		});
 	}
 
+	onDestinationSet(destination: Destination) {
+		if (destination) {
+			const previous: Destination = this.lastDestinations.find(x => x.name === destination.name);
+			if (previous) {
+				const index = this.lastDestinations.indexOf(previous);
+				this.lastDestinations.splice(index, 1);
+			}
+			this.lastDestinations.unshift(destination);
+			this.storage.set('lastDestinations', this.lastDestinations);
+		}
+	}
+
+	onDestinationReset() {
+		this.model.query = null;
+		this.model.destination = null;
+	}
+
+	isDestinationEmpty() {
+		return !this.model.query && !this.model.destination;
+	}
+
+	// START DATE
+	onStartDateReset() {
+		this.model.startDate = null;
+	}
+
+	isStartDateEmpty() {
+		return !this.model.startDate;
+	}
+
+	// CHILDRENS
+	onChildsChanged() {
+		while (this.model.childrens.length < this.model.childs) {
+			this.model.childrens.push({ age: 0 });
+		}
+		this.model.childrens.length = Math.min(this.model.childs, this.model.childrens.length);
+	}
+
+	// CERCA
+	onSearch(model) {
+		this.onDestinationSet(model.destination);
+		Object.assign(this.model, model);
+		this.model.startDate = this.model.startDate || new Date();
+		this.queryParams = this.queryParams || {};
+		this.queryParams.search = JSON.stringify(this.model);
+		this.model$.next(this.model);
+		if (this.model.destination && this.model.destination.type === DestinationTypes.Facility) {
+			console.log('SearchService.onSearch DestinationTypes.Facility ->', this.model.destination.slug);
+			const segments = this.routeService.toRoute([this.model.destination.slug]);
+			this.router.navigate(segments);
+		} else {
+			this.router.navigate(['/search'], {
+				queryParams: this.queryParams
+			});
+		}
+	}
+
+	onSearchIn(model) {
+		this.onDestinationSet(model.destination);
+		Object.assign(this.model, model);
+		this.model.startDate = this.model.startDate || new Date();
+		this.queryParams = this.queryParams || {};
+		this.queryParams.search = JSON.stringify(this.model);
+		this.setParams(this.routeService.parseParams(this.queryParams));
+		this.filterService.onReset();
+		this.model$.next(this.model);
+		this.doSearch();
+	}
+
+	doSearch() {
+		let params = '';
+		if (this.model.destination) {
+			switch (this.model.destination.type) {
+				case DestinationTypes.Facility:
+					params = `?name=${this.model.destination.name}`;
+					break;
+				case DestinationTypes.Country:
+					params = `?destinationNation=${this.model.destination.name}`;
+					break;
+				case DestinationTypes.Region:
+					params = `?destinationRegion=${this.model.destination.name}`;
+					break;
+				case DestinationTypes.Destination:
+					params = `?destinationDescription=${this.model.destination.name}`;
+					break;
+				case DestinationTypes.Category:
+					params = '';
+					// params = `?destinationNation=${this.model.destination.name}`;
+					break;
+				case DestinationTypes.Promotion:
+					params = '';
+					// params = `?destinationNation=${this.model.destination.name}`;
+					// this.filterService.onSet(this.model.destination.id, GroupType.Service);
+					break;
+			}
+		}
+		this.get(params).subscribe(x => {
+			this.results$.next(x);
+		});
+	}
+
+	// rimovibile
 	private beginObserveModel() {
 		// todo check deep comparison // .distinctUntilChanged((a, b) => a.destination === b.destination).
 		this.model$.subscribe(model => {
@@ -228,83 +321,6 @@ export class SearchService extends EntityService<SearchResult> {
 			// import {Location} from '@angular/common';
 			// this.location.replaceState("/some/newstate/");
 		});
-	}
-
-	// DESTINATION
-	onDestinationQuery(query: string) {
-		this.model.query = query;
-		this.destinationService.autocomplete(query).pipe(
-			// takeUntil(this.unsubscribe)
-			debounceTime(200)
-		).subscribe(x => {
-			this.destinations = x;
-		});
-	}
-
-	onDestinationSet(destination: Destination) {
-		this.model.destination = destination;
-		if (destination) {
-			const previous: Destination = this.lastDestinations.find(x => x.name === destination.name);
-			if (previous) {
-				const index = this.lastDestinations.indexOf(previous);
-				this.lastDestinations.splice(index, 1);
-			}
-			this.lastDestinations.unshift(destination);
-			this.storage.set('lastDestinations', this.lastDestinations);
-		}
-	}
-
-	onDestinationReset() {
-		this.model.query = null;
-		this.model.destination = null;
-	}
-
-	isDestinationEmpty() {
-		return !this.model.query && !this.model.destination;
-	}
-
-	// START DATE
-	onStartDateReset() {
-		this.model.startDate = null;
-	}
-
-	isStartDateEmpty() {
-		return !this.model.startDate;
-	}
-
-	// CHILDRENS
-	onChildsChanged() {
-		while (this.model.childrens.length < this.model.childs) {
-			this.model.childrens.push({ age: 0 });
-		}
-		this.model.childrens.length = Math.min(this.model.childs, this.model.childrens.length);
-	}
-
-	// CERCA
-	onSearch() {
-		// console.log(this.model);
-		/*
-		const segments = this.routeService.toRoute(['/search']);
-		segments.push(this.routeService.toParams(this.model));
-		*/
-		this.model.startDate = this.model.startDate || new Date();
-		this.queryParams = this.queryParams || {};
-		this.queryParams.search = JSON.stringify(this.model);
-		// console.log('SearchService.onSearch', this.queryParams, this.model);
-		if (this.model.destination && this.model.destination.type === DestinationTypes.Facility) {
-			console.log('SearchService.onSearch DestinationTypes.Facility ->', this.model.destination.slug);
-		}
-		this.router.navigate(['/search'], {
-			queryParams: this.queryParams
-		});
-	}
-
-	onSearchIn() {
-		this.queryParams = this.queryParams || {};
-		this.model.startDate = this.model.startDate || new Date();
-		this.queryParams.search = JSON.stringify(this.model);
-		this.setParams(this.routeService.parseParams(this.queryParams));
-		this.model$.next(this.model);
 	}
 
 }

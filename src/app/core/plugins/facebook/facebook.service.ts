@@ -48,7 +48,9 @@ export class FacebookUser {
 	facebookToken?: string;
 }
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class FacebookService {
 
 	public authResponse: FacebookAuthResponse;

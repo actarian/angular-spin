@@ -6,7 +6,9 @@ import { Injectable, Pipe, PipeTransform } from '@angular/core';
 	name: 'segment',
 })
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class SegmentPipe implements PipeTransform {
 
 	constructor(

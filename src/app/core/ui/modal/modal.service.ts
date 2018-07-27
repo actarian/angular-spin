@@ -1,17 +1,14 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-// import { DomService } from './dom.service';
 import { Modal, ModalCloseEvent, ModalCompleteEvent } from './modal';
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class ModalService {
 
 	modals$ = new BehaviorSubject<Modal[]>([]);
-
-	// private modalElementId = 'modal-container';
-	// private overlayElementId = 'overlay';
-	// constructor(private domService: DomService) { }
 
 	getInfos(): Observable<Modal> {
 		return this.modals$.pipe(

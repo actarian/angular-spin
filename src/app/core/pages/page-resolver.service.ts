@@ -9,7 +9,9 @@ import { PageResolver } from './page-resolver';
 import { PageService } from './page.service';
 import { Pages } from './pages';
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class PageResolverService implements Resolve<PageResolver> {
 
 	constructor(

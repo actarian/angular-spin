@@ -24,12 +24,18 @@ export class SerpComponent extends PageComponent {
 		public filterService: FilterService,
 	) {
 		super(routeService);
+		this.search.connect().pipe(
+			takeUntil(this.unsubscribe),
+		).subscribe(results => {
+			// console.log('SerpComponent.results', results);
+		});
 		this.routeService.getPageParams().pipe(
 			takeUntil(this.unsubscribe),
 			first()
 		).subscribe(params => {
 			// console.log('SerpComponent.queryParams', params);
 			this.search.setParams(params);
+			this.search.doSearch();
 		});
 	}
 

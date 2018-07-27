@@ -103,7 +103,7 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 			map((checkouts: any[]) => {
 				checkouts = checkouts.map(a => new BookingAvailability(a));
 				this.calendar.checkouts = checkouts;
-				this.calendar.nights = checkouts.map(a => this.booking.getNights(checkIn, a.date));
+				this.calendar.nights = checkouts.filter(a => a.date > checkIn).map(a => this.booking.getNights(checkIn, a.date));
 				// console.log('HotelService.getCheckOut', checkouts);
 				if (checkouts.length) {
 					this.booking.nights = this.calendar.nights[0];
@@ -192,7 +192,7 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 	onNightsChanged(nights: string): void {
 		console.log('onNightsChanged', nights, this.booking.nights);
 		const checkOut = new Date(this.booking.checkIn.valueOf());
-		checkOut.setDate(checkOut.getDate() + 1 + +nights); // mantenere il più è una conversione a numeric
+		checkOut.setDate(checkOut.getDate() + +nights); // mantenere il più è una conversione a numeric
 		this.booking.checkOut = checkOut;
 		this.setCheckOut();
 	}

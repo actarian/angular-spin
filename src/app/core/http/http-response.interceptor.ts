@@ -8,7 +8,9 @@ import { catchError, tap } from 'rxjs/operators';
 import { Logger } from '../logger';
 import { RouteService } from '../routes';
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class HttpResponseInterceptor implements HttpInterceptor {
 
 	private _logger: Logger;

@@ -7,7 +7,9 @@ import { SegmentPipe } from './segment.pipe';
 	// pure: false
 })
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class AssetPipe implements PipeTransform {
 
 	constructor(

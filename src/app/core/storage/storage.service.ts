@@ -14,7 +14,9 @@ export class SessionStorageEvent extends StorageEvent { }
 export class LocalStorageEvent extends StorageEvent { }
 */
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class StorageService {
 	public delete(name: string): void { }
 	public exist(name: string): boolean { return false; }
@@ -27,7 +29,9 @@ export class StorageService {
 	}
 }
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class CookieStorageService implements StorageService {
 
 	constructor(
@@ -137,7 +141,9 @@ export class CookieStorageService implements StorageService {
 
 }
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class SessionStorageService implements StorageService {
 
 	constructor(
@@ -246,7 +252,9 @@ export class SessionStorageService implements StorageService {
 
 }
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class LocalStorageService implements StorageService {
 
 	constructor(

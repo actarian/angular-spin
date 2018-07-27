@@ -5,7 +5,9 @@ import { Injectable, Pipe, PipeTransform } from '@angular/core';
 	// pure: false
 })
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class HighlightPipe implements PipeTransform {
 
 	transform(text: string, query: string): string {

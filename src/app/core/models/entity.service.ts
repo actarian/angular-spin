@@ -4,7 +4,9 @@ import { tap } from 'rxjs/operators';
 import { Entity } from './entity';
 import { IdentityService } from './identity.service';
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class EntityService<T extends Entity> extends IdentityService<T> {
 
 	get collection(): string {

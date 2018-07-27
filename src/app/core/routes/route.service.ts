@@ -1,7 +1,7 @@
 
 
 import { isPlatformBrowser, isPlatformServer, Location } from '@angular/common';
-import { ComponentFactory, ComponentFactoryResolver, Inject, Injector, PLATFORM_ID } from '@angular/core';
+import { ComponentFactory, ComponentFactoryResolver, Inject, Injectable, Injector, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, ActivationEnd, NavigationStart, Params, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
@@ -12,6 +12,9 @@ import { environment } from '../../../environments/environment';
 import { Page, PageComponent } from '../pages';
 import { SegmentPipe } from './segment.pipe';
 
+@Injectable({
+	providedIn: 'root'
+})
 export class RouteService {
 
 	static injector: Injector;

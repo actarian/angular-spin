@@ -85,7 +85,7 @@
 					</svg>
 				</a>
 			</div>
-			<main-search (doSearch)="active = null; filterService.onReset(); search.onSearchIn()">---</main-search>
+			<main-search (doSearch)="active = null; search.onSearchIn($event)">---</main-search>
 		</div>
 		<!-- Main Search Popup -->
 	</div>

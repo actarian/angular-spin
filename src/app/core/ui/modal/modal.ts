@@ -44,5 +44,7 @@ export class Modal {
 	}
 }
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class ModalData extends Object { }

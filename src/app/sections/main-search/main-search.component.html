@@ -3,8 +3,8 @@
 	<div class="main-search__col main-search__location" [ngClass]="{'active':active==searchLocation}" (clickOutside)="active == searchLocation ? active=null : null">
 		<div (click)="active = searchLocation" #searchLocation>
 			<label for="main-search--location">Destinazione</label>
-			<input type="text" class="with-reset" id="main-search--location" placeholder="Cerca località, regione, tipologia o nome hotel" [value]="search.model.destination.name" (focus)="search.onDestinationReset()" *ngIf="search.model.destination">
-			<input type="text" class="with-reset" id="main-search--location" placeholder="Cerca località, regione, tipologia o nome hotel" name="query" [(ngModel)]="search.model.query" [hidden]="search.model.destination" #query>
+			<input type="text" class="with-reset" id="main-search--location" placeholder="Cerca località, regione, tipologia o nome hotel" [value]="model.destination.name" (focus)="search.onDestinationReset()" *ngIf="model.destination">
+			<input type="text" class="with-reset" id="main-search--location" placeholder="Cerca località, regione, tipologia o nome hotel" name="query" [(ngModel)]="model.query" [hidden]="model.destination" #query>
 			<span class="reset" (click)="search.onDestinationReset(); query.focus()" [hidden]="search.isDestinationEmpty()">
 				<svg>
 					<use xlink:href="#ico-reset"></use>
@@ -29,15 +29,15 @@
 			<destination-hint [destinations]="search.lastDestinations" [height]="46" (selectDestination)="onDestinationSet($event)"></destination-hint>
 		</div>
 		<!-- AUTOCOMPLETE DESTINATIONS -->
-		<div class="popup-hint popup-hint__autocomplete popup-hint__destination" #autocomplete *ngIf="(destinationDirty || !search.lastDestinations?.length) && !search.model.destination">
-			<destination-hint [destinations]="search.destinations" [query]="search.model.query" [height]="46" (selectDestination)="onDestinationSet($event)"></destination-hint>
+		<div class="popup-hint popup-hint__autocomplete popup-hint__destination" #autocomplete *ngIf="(destinationDirty || !search.lastDestinations?.length) && !model.destination">
+			<destination-hint [destinations]="search.destinations" [query]="model.query" [height]="46" (selectDestination)="onDestinationSet($event)"></destination-hint>
 		</div>
 	</div>
 	<!-- DATE -->
 	<div class="main-search__col main-search__date" [ngClass]="{'active':active==searchDate}" (clickOutside)="active == searchDate ? active=null : null">
 		<div class="main-search--trigger" (click)="active = searchDate" #searchDate>
 			<label for="main-search--date">Data di partenza</label>
-			<input class="with-reset" disabled type="text" id="main-search--date" placeholder="Seleziona una data" [value]="search.model.startDate | date:'dd MMMM yyyy'">
+			<input class="with-reset" disabled type="text" id="main-search--date" placeholder="Seleziona una data" [value]="model.startDate | date:'dd MMMM yyyy'">
 			<span class="reset" (click)="search.onStartDateReset(); query.focus()" [hidden]="search.isStartDateEmpty()">
 				<svg>
 					<use xlink:href="#ico-reset"></use>
@@ -62,13 +62,13 @@
 				<div class="flexible-date">
 					<div class="checkbox">
 						<label>
-							<input checked type="checkbox" name="flexibleDates" [(ngModel)]="search.model.flexibleDates" />
+							<input checked type="checkbox" name="flexibleDates" [(ngModel)]="model.flexibleDates" />
 							<span>Date flessibili +/- 3 giorni?</span>
 						</label>
 					</div>
 				</div>
 				<div class="calendar popup-calendar">
-					<p-calendar name="startDate" [(ngModel)]="search.model.startDate" [inline]="true" [monthNavigator]="true" [yearNavigator]="true" [yearRange]="search.calendar.minYear + ':' + search.calendar.maxYear" [minDate]="search.calendar.minDate" [maxDate]="search.calendar.maxDate" [locale]="search.calendar.it" dateFormat="dd/mm/yy"></p-calendar>
+					<p-calendar name="startDate" [(ngModel)]="model.startDate" [inline]="true" [monthNavigator]="true" [yearNavigator]="true" [yearRange]="search.calendar.minYear + ':' + search.calendar.maxYear" [minDate]="search.calendar.minDate" [maxDate]="search.calendar.maxDate" [locale]="search.calendar.it" dateFormat="dd/mm/yy"></p-calendar>
 				</div>
 			</div>
 		</div>
@@ -77,7 +77,7 @@
 	<div class="main-search__col main-search__duration" [ngClass]="{'active':active==searchDuration}" (clickOutside)="active == searchDuration ? active=null : null">
 		<div class="main-search--trigger" (click)="active = searchDuration" #searchDuration>
 			<label for="main-search--duration">Durata viaggio</label>
-			<input disabled id="main-search--duration" type="text" class="main-search--duration-input" [value]="search.model.duration.name">
+			<input disabled id="main-search--duration" type="text" class="main-search--duration-input" [value]="model.duration.name">
 			<span class="ico">
 				<svg>
 					<use xlink:href="#ico-clock"></use>
@@ -98,7 +98,7 @@
 					<li class="check" *ngFor="let duration of search.durations">
 						<div class="radio">
 							<label>
-								<input name="main-search--duration" type="radio" name="duration" [value]="duration" [(ngModel)]="search.model.duration"/>
+								<input name="main-search--duration" type="radio" name="duration" [value]="duration" [(ngModel)]="model.duration"/>
 								<span>{{duration.name}}</span>
 							</label>
 						</div>
@@ -111,7 +111,7 @@
 	<div class="main-search__col main-search__adults" [ngClass]="{'active':active==searchAdults}" (clickOutside)="active == searchAdults ? active=null : null">
 		<div class="main-search--trigger" (click)="active=searchAdults" #searchAdults>
 			<label for="main-search--adults">Adulti</label>
-			<input disabled id="main-search--adults" type="text" [value]="search.model.adults" #adults>
+			<input disabled id="main-search--adults" type="text" [value]="model.adults" #adults>
 			<span class="ico">
 				<svg>
 					<use xlink:href="#ico-adult"></use>
@@ -130,7 +130,7 @@
 			<div class="body">
 				<div class="spinner-input">
 					<strong for="">Adulti</strong>
-					<p-spinner size="10" readonly name="adults" [(ngModel)]="search.model.adults" [min]="1" [max]="10"></p-spinner>
+					<p-spinner size="10" readonly name="adults" [(ngModel)]="model.adults" [min]="1" [max]="10"></p-spinner>
 				</div>
 			</div>
 		</div>
@@ -139,7 +139,7 @@
 	<div class="main-search__col main-search__childs" [ngClass]="{'active':active==searchChilds}" (clickOutside)="active == searchChilds ? active=null : null">
 		<div class="main-search--trigger" (click)="active=searchChilds" #searchChilds>
 			<label for="main-search--childs">Bambini</label>
-			<input disabled id="main-search--childs" type="text" [value]="search.model.childs" #childs>
+			<input disabled id="main-search--childs" type="text" [value]="model.childs" #childs>
 			<span class="ico">
 				<svg>
 					<use xlink:href="#ico-child"></use>
@@ -158,10 +158,10 @@
 			<div class="body">
 				<div class="spinner-input">
 					<strong>Bambini</strong>
-					<p-spinner size="10" readonly name="childs" [(ngModel)]="search.model.childs" [min]="0" [max]="4" (onChange)="search.onChildsChanged()"></p-spinner>
+					<p-spinner size="10" readonly name="childs" [(ngModel)]="model.childs" [min]="0" [max]="4" (onChange)="search.onChildsChanged()"></p-spinner>
 				</div>
 				<div class="child-ages">
-					<div class="child-age" *ngFor="let child of search.model.childrens; let index = $index">
+					<div class="child-age" *ngFor="let child of model.childrens; let index = $index">
 						<strong>Età bambino {{index}}</strong>
 						<div class="custom-select">
 							<select dir="rtl" name="age" [(ngModel)]="child.age">

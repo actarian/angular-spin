@@ -4,7 +4,9 @@ import { switchMap, tap } from 'rxjs/operators';
 import { Document } from './document';
 import { EntityService } from './entity.service';
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class DocumentService<T extends Document> extends EntityService<T> {
 
 	get collection(): string {

@@ -4,7 +4,9 @@ import { map, tap } from 'rxjs/operators';
 import { ApiService } from '../api';
 import { Identity } from './identity';
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class IdentityService<T extends Identity> extends ApiService<T> {
 
 	constructor(

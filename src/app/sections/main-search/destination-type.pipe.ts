@@ -7,7 +7,7 @@ import { Destination, DestinationTypes } from '../../models/destination';
 })
 
 @Injectable({
-	providedIn: 'root',
+	providedIn: 'root'
 })
 export class DestinationTypePipe implements PipeTransform {
 

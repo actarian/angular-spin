@@ -2,11 +2,13 @@ import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { fromEvent, Observable, of } from 'rxjs';
 import { fromPromise } from 'rxjs/observable/fromPromise';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 // export class OnceEvent extends Event { }
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class OnceService {
 
 	private uid: number = 0;
@@ -27,15 +29,11 @@ export class OnceService {
 				} else {
 					callbackName = callback as string;
 				}
-				const html: string = `<script type="text/javascript" src="${url}"></script>`;
-				const fragment = document.createRange().createContextualFragment(html);
-				const scripts = document.getElementsByTagName('script');
-				if (scripts.length) {
-					const script = scripts[scripts.length - 1];
-					script.parentNode.insertBefore(fragment, script.nextSibling);
-				}
+				let callback$: Observable<any>;
+				const element = document.createElement('script');
+				element.type = 'text/javascript';
 				if (callback) {
-					return fromPromise(
+					callback$ = fromPromise(
 						new Promise((resolve, reject) => {
 							window[callbackName] = function (data) {
 								resolve(data);
@@ -43,10 +41,27 @@ export class OnceService {
 						})
 					);
 				} else {
-					return fromEvent(fragment, 'load').pipe(
+					element.async = true;
+					element.onload = function () {
+						console.log('onload fired');
+						// remote script has loaded
+					};
+					callback$ = fromEvent(element, 'load').pipe(
+						tap(x => console.log('loaded', x)),
 						map(x => x as Event)
 					);
 				}
+				/*
+				const html: string = `<script type="text/javascript" src="${url}"></script>`;
+				const fragment = document.createRange().createContextualFragment(html);
+				*/
+				const scripts = document.getElementsByTagName('script');
+				if (scripts.length) {
+					const script = scripts[scripts.length - 1];
+					script.parentNode.insertBefore(element, script.nextSibling);
+				}
+				element.src = url;
+				return callback$;
 			} else {
 				return of(new Event('loaded!'));
 			}

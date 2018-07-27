@@ -6,7 +6,9 @@ import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { Logger } from '../logger/logger';
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class TitleService {
 
 	constructor(

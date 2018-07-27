@@ -3,6 +3,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Injector, ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { ControlEditableComponent } from '../forms';
 import { AuthService } from './auth';
 import { CoreRouting } from './core.routing';
 import { DisposableComponent } from './disposable';
@@ -11,15 +12,16 @@ import { HighlightPipe } from './highlight';
 import { HttpResponseInterceptor } from './http';
 import { JsonFormatterComponent } from './json-formatter';
 import { CustomMissingTranslationHandler, LabelPipe, LabelService } from './labels';
-import { Logger } from './logger';
+import { Logger, LoggerComponent } from './logger';
 import { OnceService } from './once';
 import { PageComponent, PageHosterComponent, Pages, PageService } from './pages';
 import { FacebookService, GoogleService, MapboxService } from './plugins';
+import { GoogleTagManagerComponent } from './plugins/google/google-tag-manager.component';
 import { AssetPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe } from './routes';
 import { CookieStorageService, LocalStorageService, SessionStorageService, StorageService } from './storage';
-import { TrustPipe } from './trust';
+import { SafeUrlPipe, TrustPipe } from './trust';
+import { ClickOutsideDirective, FancyboxDirective, LazyImagesDirective } from './ui';
 import { ModalComponent, ModalService } from './ui/modal';
-import { DomService } from './ui/modal/dom.service';
 
 // import { AuthService, AuthTokenInterceptor } from './auth';
 
@@ -34,16 +36,16 @@ import { DomService } from './ui/modal/dom.service';
 		}),
 		CoreRouting,
 	],
-	exports: [
-		TranslatePipe, LabelPipe, AssetPipe, HighlightPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe, MatchValidator, TrustPipe,
-		ControlComponent, JsonFormatterComponent,
-		ModalComponent,
-	],
 	declarations: [
 		PageHosterComponent, PageComponent, DisposableComponent,
-		LabelPipe, AssetPipe, HighlightPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe, MatchValidator, TrustPipe,
+		LabelPipe, AssetPipe, HighlightPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe, MatchValidator, TrustPipe, SafeUrlPipe,
 		ControlComponent, JsonFormatterComponent,
-		ModalComponent,
+		ModalComponent, LoggerComponent, FancyboxDirective, ClickOutsideDirective, LazyImagesDirective, ControlEditableComponent, GoogleTagManagerComponent
+	],
+	exports: [
+		TranslatePipe, LabelPipe, AssetPipe, HighlightPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe, MatchValidator, TrustPipe, SafeUrlPipe,
+		ControlComponent, JsonFormatterComponent,
+		ModalComponent, LoggerComponent, FancyboxDirective, ClickOutsideDirective, LazyImagesDirective, ControlEditableComponent, GoogleTagManagerComponent
 	],
 	providers: [
 		{ provide: HTTP_INTERCEPTORS, useClass: HttpResponseInterceptor, multi: true },
@@ -69,7 +71,7 @@ import { DomService } from './ui/modal/dom.service';
 		ControlService,
 		FormService,
 		TrustPipe,
-		ModalService, DomService,
+		ModalService,
 	],
 })
 

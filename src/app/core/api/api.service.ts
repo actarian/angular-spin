@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injector } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
@@ -17,6 +17,9 @@ export class ApiRequestOptions {
 	}
 }
 
+@Injectable({
+	providedIn: 'root'
+})
 export class ApiService<T extends Identity> {
 
 	public static domain: string = '';

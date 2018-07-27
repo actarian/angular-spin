@@ -83,7 +83,9 @@ export class Booking {
 
 	getNights(a: Date, b: Date) {
 		const oneDay = 24 * 60 * 60 * 1000; // hours * minutes * seconds * milliseconds
-		return Math.max(0, Math.round(Math.abs((this.getDate(a).getTime() - this.getDate(b).getTime()) / (oneDay))) - 1);
+		const diff = this.getDate(a).getTime() - this.getDate(b).getTime();
+		const nights = Math.round(Math.abs(diff / oneDay));
+		return nights;
 	}
 
 	get daysTotal(): number {

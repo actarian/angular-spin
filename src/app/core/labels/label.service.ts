@@ -8,7 +8,9 @@ import { environment } from '../../../environments/environment';
 import { ApiService } from '../api';
 import { Label } from './label';
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class LabelService<T extends Label> extends ApiService<T> implements TranslateLoader {
 
 	get collection(): string {

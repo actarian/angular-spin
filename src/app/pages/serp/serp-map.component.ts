@@ -30,7 +30,7 @@ export class SerpMapComponent extends DisposableComponent implements AfterViewIn
 	constructor(
 		@Inject(PLATFORM_ID) private platformId: string,
 		private zone: NgZone,
-		private changeDetection: ChangeDetectorRef,
+		private changeDetector: ChangeDetectorRef,
 		public search: SearchService,
 		public filterService: FilterService,
 		public mapboxService: MapboxService,
@@ -53,7 +53,7 @@ export class SerpMapComponent extends DisposableComponent implements AfterViewIn
 					this.zone.run(() => {
 						this.map = map;
 						this.ready = true;
-						this.changeDetection.markForCheck();
+						this.changeDetector.markForCheck();
 					});
 				});
 			});
@@ -80,7 +80,7 @@ export class SerpMapComponent extends DisposableComponent implements AfterViewIn
 					if (!e.features) {
 						this.zone.run(() => {
 							this.hotel = null;
-							this.changeDetection.markForCheck();
+							this.changeDetector.markForCheck();
 							// console.log('SerpMapComponent.onClick', this.hotel);
 						});
 					}
@@ -90,7 +90,7 @@ export class SerpMapComponent extends DisposableComponent implements AfterViewIn
 					const hotel = e.features[0].properties;
 					this.zone.run(() => {
 						this.hotel = hotel;
-						this.changeDetection.markForCheck();
+						this.changeDetector.markForCheck();
 						// console.log('SerpMapComponent.onClick', this.hotel);
 					});
 				});
@@ -166,15 +166,17 @@ export class SerpMapComponent extends DisposableComponent implements AfterViewIn
 	}
 
 	onBoundresults(map: mapboxgl.Map, results: SearchResult[]) {
-		const coordinates: mapboxgl.LngLat[] = results.map(result => {
+		const coordinates: mapboxgl.LngLat[] = results.filter(result => result.longitude && result.latitude).map(result => {
 			return new mapboxgl.LngLat(result.longitude, result.latitude);
 		});
-		const bounds = coordinates.reduce((bounds, coord) => {
-			return bounds.extend(coord);
-		}, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
-		if (bounds) {
-			// map.fitBounds(bounds, { linear: true, duration: 0, padding: 50, maxZoom: 13 });
-			map.fitBounds(bounds, { linear: false, speed: 5, curve: 1, padding: 30, maxZoom: 16, });
+		if (coordinates.length) {
+			const bounds = coordinates.reduce((bounds, coord) => {
+				return bounds.extend(coord);
+			}, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
+			if (bounds) {
+				// map.fitBounds(bounds, { linear: true, duration: 0, padding: 50, maxZoom: 13 });
+				map.fitBounds(bounds, { linear: false, speed: 5, curve: 1, padding: 30, maxZoom: 16, });
+			}
 		}
 	}
 

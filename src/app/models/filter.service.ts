@@ -56,7 +56,6 @@ export class FilterService {
 					break;
 			}
 		}
-		console.log(params);
 		this.getGroups().pipe(
 			first(),
 		).subscribe(groups => {

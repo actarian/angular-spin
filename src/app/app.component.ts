@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DisposableComponent } from './core/disposable';
 import { Logger } from './core/logger';
 
 @Component({
@@ -7,10 +8,12 @@ import { Logger } from './core/logger';
 	styleUrls: ['./app.component.scss']
 })
 
-export class AppComponent {
+export class AppComponent extends DisposableComponent {
 
 	constructor(
-		private logger: Logger
-	) { }
+		private logger: Logger,
+	) {
+		super();
+	}
 
 }

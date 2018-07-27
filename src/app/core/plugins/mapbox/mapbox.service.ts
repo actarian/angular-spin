@@ -19,7 +19,9 @@ export class MapboxMapOptions {
 	public style?: string;
 }
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class MapboxService {
 
 	private options: MapboxConfig;

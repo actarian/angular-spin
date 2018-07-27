@@ -6,7 +6,9 @@ import { RouteService } from './route.service';
 	pure: false
 })
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class SlugPipe implements PipeTransform {
 
 	constructor(
