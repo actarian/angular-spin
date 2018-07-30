@@ -31,11 +31,15 @@ export class ModalCloseEvent {
 
 export type ModalEvent<T> = ModalCompleteEvent | ModalCloseEvent;
 
+@Injectable({
+	providedIn: 'root'
+})
 export class Modal {
 	component: any;
 	providers?: Provider = [];
 	data?: any;
 	emitter?: EventEmitter<ModalCompleteEvent | ModalCloseEvent> = new EventEmitter();
+	className?: string;
 
 	constructor(options?: Modal) {
 		if (options) {

@@ -4,28 +4,29 @@ import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, E
 import { Observable } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { takeUntil } from 'rxjs/operators';
+import { Modal, ModalService } from '../../core';
 import { DisposableComponent } from '../../core/disposable';
 import { MapboxService } from '../../core/plugins';
-import { FilterService, SearchResult, SearchService } from '../../models';
+import { FilterService, Hotel, SearchResult, SearchService } from '../../models';
 
 
 @Component({
-	selector: 'section-serp-map',
-	templateUrl: './serp-map.component.html',
-	styleUrls: ['./serp-map.component.scss'],
+	selector: 'hotel-map-component',
+	templateUrl: './hotel-map.component.html',
+	styleUrls: ['./hotel-map.component.scss'],
 	encapsulation: ViewEncapsulation.Emulated,
-	exportAs: 'results',
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class SerpMapComponent extends DisposableComponent implements AfterViewInit, OnDestroy {
+export class HotelMapComponent extends DisposableComponent implements AfterViewInit, OnDestroy {
 
 	@ViewChild('map') element: ElementRef;
 	map: any;
 	map$: Observable<mapboxgl.Map>;
 	markers: mapboxgl.Marker[];
 	ready: boolean = false;
-	hotel: SearchResult;
+
+	hotel: Hotel;
 
 	constructor(
 		@Inject(PLATFORM_ID) private platformId: string,
@@ -34,8 +35,11 @@ export class SerpMapComponent extends DisposableComponent implements AfterViewIn
 		public search: SearchService,
 		public filterService: FilterService,
 		public mapboxService: MapboxService,
+		private modalService: ModalService,
+		private modal: Modal,
 	) {
 		super();
+		this.hotel = this.modal.data as Hotel;
 	}
 
 	ngAfterViewInit() {
@@ -43,7 +47,7 @@ export class SerpMapComponent extends DisposableComponent implements AfterViewIn
 			element: this.element
 		});
 		if (isPlatformBrowser(this.platformId)) {
-			combineLatest(this.map$, this.search.resultsFiltered$).pipe(
+			combineLatest(this.map$, this.search.get()).pipe(
 				takeUntil(this.unsubscribe)
 			).subscribe((data: any[]): void => {
 				this.zone.runOutsideAngular(() => {
@@ -75,17 +79,14 @@ export class SerpMapComponent extends DisposableComponent implements AfterViewIn
 					clusterMaxZoom: 14, // Max zoom to cluster points on
 					clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
 				});
-
 				map.on('click', (e) => {
 					if (!e.features) {
 						this.setResult(map, null);
 					}
 				});
-
 				map.on('click', 'unclustered-point', (e) => {
 					this.setResult(map, e.features[0].properties);
 				});
-
 			}
 
 			if (!map.getLayer('clusters')) {
@@ -167,24 +168,36 @@ export class SerpMapComponent extends DisposableComponent implements AfterViewIn
 				});
 			}
 
-			this.onBoundResults(map, results);
+			this.onBoundHotel(map);
+			// this.onBoundResults(map, results);
 		}
 	}
 
 	setResult(map: mapboxgl.Map, hotel: SearchResult) {
-		if (this.hotel) {
-			this.hotel.selected = false;
-			// map.setFeatureState({ source: 'results', id: this.hotel.id }, { selected: false });
-		}
-		if (hotel) {
-			hotel.selected = true;
-			// map.setFeatureState({ source: 'results', id: hotel.id }, { selected: true });
-		}
+		console.log('HotelMapComponent.onClick', hotel);
 		this.zone.run(() => {
-			this.hotel = hotel;
-			this.changeDetector.markForCheck();
-			// console.log('SerpMapComponent.onClick', this.hotel);
+			this.modalService.complete(this.modal, hotel);
 		});
+		/*
+		const segments = this.routeService.toRoute([hotel.slug]);
+		this.router.navigate(segments);
+		*/
+		/*
+		this.zone.run(() => {
+			this.changeDetector.markForCheck();
+		});
+		*/
+	}
+
+	onBoundHotel(map: mapboxgl.Map) {
+		console.log('onBoundHotel', this.hotel);
+		if (this.hotel) {
+			const location: mapboxgl.LngLat = new mapboxgl.LngLat(this.hotel.location.longitude, this.hotel.location.latitude);
+			const bounds = new mapboxgl.LngLatBounds(location, location);
+			if (bounds) {
+				map.fitBounds(bounds, { linear: true, speed: 0, curve: 0, padding: 30, maxZoom: 16, });
+			}
+		}
 	}
 
 	onBoundResults(map: mapboxgl.Map, results: SearchResult[]) {

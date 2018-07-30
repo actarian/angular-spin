@@ -1,12 +1,14 @@
 import { isPlatformBrowser } from '@angular/common';
 import { AfterViewInit, Component, Inject, Input, NgZone, OnInit, PLATFORM_ID, ViewEncapsulation } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
-import { RouteService } from '../../core';
+import { ModalCloseEvent, ModalCompleteEvent, ModalEvent, ModalService, RouteService } from '../../core';
 import { PageComponent } from '../../core/pages';
 import { Hotel, HotelService, MainSearch, SearchService } from '../../models';
 import { Booking, BookingAvailability, BookingCalendar, BookingOptions } from '../../models/booking';
 import { WishlistService } from '../../models/wishlist.service';
+import { HotelMapComponent } from './hotel-map.component';
 
 @Component({
 	selector: 'page-hotel',
@@ -46,9 +48,11 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 		@Inject(PLATFORM_ID) private platformId: string,
 		private zone: NgZone,
 		protected routeService: RouteService,
+		private router: Router,
 		public search: SearchService,
 		public wishlist: WishlistService,
-		private hotelService: HotelService
+		private hotelService: HotelService,
+		private modalService: ModalService,
 	) {
 		super(routeService);
 		this.search.model$.subscribe(model => {
@@ -202,6 +206,25 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 		checkOut.setDate(checkOut.getDate() + +nights); // mantenere il più è una conversione a numeric
 		this.booking.checkOut = checkOut;
 		this.setCheckOut();
+	}
+
+	onShowMap(): void {
+		this.modalService.open({ component: HotelMapComponent, data: this.hotel, className: 'hotel-map' }).pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe((e: ModalEvent<ModalCompleteEvent | ModalCloseEvent>) => {
+			if (e.data) {
+				const hotel = e.data as Hotel;
+				const segments = this.routeService.toRoute([hotel.slug]);
+				this.router.navigate(segments);
+			}
+			/*
+			if (e instanceof ModalCompleteEvent) {
+				console.log('ModalCompleteEvent', e);
+			} else if (e instanceof ModalCloseEvent) {
+				console.log('ModalCloseEvent', e);
+			}
+			*/
+		});
 	}
 
 	ngAfterViewInit() {

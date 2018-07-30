@@ -27,9 +27,9 @@ import { RouteService } from './core/routes';
 import { CategoryService, DestinationService, FilterService, HotelService, PromotionService, RegionService, SearchService, TagService, WishlistService } from './models';
 import { AuthComponent, AuthForgottenComponent, AuthSignInComponent, AuthSignUpComponent, SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent } from './pages/auth';
 import { HomeCategoriesComponent, HomeComponent, HomePromotionsComponent, HomeSearchComponent } from './pages/home';
-import { HotelComponent, HotelDatepickerComponent, HotelFeaturePipe, HotelGalleryPipe, HotelTaxonomyPipe } from './pages/hotel';
-import { ProfileComponent } from './pages/profile';
+import { HotelComponent, HotelDatepickerComponent, HotelFeaturePipe, HotelGalleryPipe, HotelMapComponent, HotelTaxonomyPipe } from './pages/hotel';
 import { PaymentComponent } from './pages/payment';
+import { ProfileComponent } from './pages/profile';
 import { RegionDetailComponent, RegionsComponent } from './pages/regions';
 import { SerpComponent, SerpFilterComponent, SerpItemComponent, SerpListComponent, SerpMapComponent } from './pages/serp';
 import { FooterComponent, HeaderComponent, NotFoundComponent, RegionSearchComponent, SvgComponent, TrustPilotComponent, ValuePropositionComponent } from './sections';
@@ -82,7 +82,7 @@ registerLocaleData(localeIt, 'it');
 		SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent, ProfileComponent, PaymentComponent,
 		HomeComponent, HomeCategoriesComponent, HomePromotionsComponent, HomeSearchComponent,
 		SerpComponent, SerpItemComponent, SerpListComponent, SerpMapComponent,
-		HotelComponent, HotelDatepickerComponent, HotelTaxonomyPipe, HotelGalleryPipe, HotelFeaturePipe,
+		HotelComponent, HotelMapComponent, HotelDatepickerComponent, HotelTaxonomyPipe, HotelGalleryPipe, HotelFeaturePipe,
 		RegionsComponent, RegionDetailComponent, RegionSearchComponent,
 		MainSearchComponent, DestinationTypePipe, DestinationHintComponent, SerpFilterComponent, TrustPilotComponent, ValuePropositionComponent,
 	],
@@ -98,7 +98,7 @@ registerLocaleData(localeIt, 'it');
 	entryComponents: [
 		AuthComponent, AuthForgottenComponent, AuthSignInComponent, AuthSignUpComponent,
 		SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent,
-		HomeComponent, HotelComponent, ProfileComponent, PaymentComponent, RegionDetailComponent, RegionsComponent, SerpComponent],
+		HomeComponent, HotelComponent, HotelMapComponent, ProfileComponent, PaymentComponent, RegionDetailComponent, RegionsComponent, SerpComponent],
 	bootstrap: [AppComponent]
 })
 

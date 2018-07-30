@@ -73,6 +73,7 @@ export class SearchResult implements Document {
 	type: string;
 	slug: string;
 	visible?: boolean = true;
+	selected?: boolean = false;
 	constructor(options?: SearchResult) {
 		if (options) {
 			this.abstract = options.abstract;

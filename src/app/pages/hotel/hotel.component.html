@@ -32,6 +32,10 @@
 				<div class="swiper-button swiper-button-prev"></div>
 				<div class="swiper-button swiper-button-next"></div>
 			</div>
+			<!-- MAP -->
+			<div *ngIf="hotel">
+				<button (click)="onShowMap()">show map</button>
+			</div>
 			<!-- DESCRIPTION -->
 			<div class="hotel-desc">
 				<ul class="hotel-list">

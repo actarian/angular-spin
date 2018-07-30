@@ -1,0 +1,39 @@
+@import "~scss/variables";
+
+:host {
+	flex: 1 0 calc(100% - 310px);
+	width: calc(100% - 310px);
+	max-width: calc(100% - 310px);
+	padding-right: 15px;
+
+	@include xs-down {
+		padding-right: 0;
+	}
+}
+
+.mapboxgl-map {
+	width: 100%;
+	height: calc(100vh - 200px);
+
+	@include sm-down {
+		height: calc(100vh - 150px);
+	}
+
+	@include xs-down {
+		height: calc(100vh - 140px);
+	}
+
+	pointer-events: none;
+	opacity: 0;
+	transition: opacity ease-in-out 350ms;
+
+	&.active {
+		opacity: 1;
+		pointer-events: all;
+	}
+
+	a.mapboxgl-ctrl-logo,
+	.mapboxgl-ctrl.mapboxgl-ctrl-attrib {
+		display: none;
+	}
+}

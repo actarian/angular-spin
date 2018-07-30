@@ -17,6 +17,7 @@ export class ModalComponent extends DisposableComponent implements OnInit {
 
 	modalCount: number = 0;
 	component: ComponentRef<any>;
+	className?: string;
 
 	@ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
@@ -35,7 +36,8 @@ export class ModalComponent extends DisposableComponent implements OnInit {
 			return { provide: key, useValue: modal.providers[key] };
 		});
 		providers.push(
-			{ provide: ModalData, useValue: modal.data }
+			{ provide: ModalData, useValue: modal.data },
+			{ provide: Modal, useValue: modal },
 		);
 		const resolvedInputs = ReflectiveInjector.resolve(providers);
 		// We create an injector out of the data we want to pass down and this components injector
@@ -48,6 +50,7 @@ export class ModalComponent extends DisposableComponent implements OnInit {
 		this.modalContainer.insert(component.hostView);
 		// We can destroy the old component is we like by calling destroy
 		this.component = component;
+		this.className = modal.className;
 	}
 
 	constructor(

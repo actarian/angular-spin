@@ -1,6 +1,6 @@
 <div class="modal" [ngClass]="{ active: component }">
 	<div class="modal-bg" (click)="doClose()"></div>
-	<div class="modal-page">
+	<div class="modal-page" [ngClass]="className">
 		<div class="modal-header">
 			<button class="modal-prev" (click)="doPrev()" *ngIf="modalCount > 1">
 				<svg class="ico">

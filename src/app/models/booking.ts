@@ -107,8 +107,12 @@ export class Booking {
 		let total = 0;
 		if (this.options) {
 			this.options.accomodations.forEach(a => total += (a.checked ? a.price : 0));
-			this.options.extraQuotes.forEach(e => total += (e.checked ? e.price : 0));
-			this.options.principals.forEach(e => total += (e.checked ? e.price : 0));
+			if (this.options.extraQuotes) {
+				this.options.extraQuotes.forEach(e => total += (e.checked ? e.price : 0));
+			}
+			if (this.options.principals) {
+				this.options.principals.forEach(e => total += (e.checked ? e.price : 0));
+			}
 		}
 		return total;
 	}
