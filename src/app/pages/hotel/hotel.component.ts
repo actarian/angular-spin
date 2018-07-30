@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { RouteService } from '../../core';
 import { PageComponent } from '../../core/pages';
-import { Hotel, HotelService, SearchService } from '../../models';
+import { Hotel, HotelService, MainSearch, SearchService } from '../../models';
 import { Booking, BookingAvailability, BookingCalendar, BookingOptions } from '../../models/booking';
 import { WishlistService } from '../../models/wishlist.service';
 
@@ -37,6 +37,7 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 
 	@Input() hotel: Hotel;
 
+	model: MainSearch;
 	booking: Booking = new Booking();
 	calendar: BookingCalendar = new BookingCalendar();
 	busy: boolean = false;
@@ -50,13 +51,15 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 		private hotelService: HotelService
 	) {
 		super(routeService);
-		const mainSearch = this.search.model;
-		this.booking = new Booking({
-			adults: mainSearch.adults,
-			childrenCount: mainSearch.childs,
-			children: mainSearch.childrens,
-			flexibleDate: mainSearch.flexibleDates,
-			startDate: mainSearch.startDate || new Date(),
+		this.search.model$.subscribe(model => {
+			this.model = new MainSearch(model);
+			this.booking = new Booking({
+				adults: model.adults,
+				childrenCount: model.childs,
+				children: model.childrens,
+				flexibleDate: model.flexibleDates,
+				startDate: model.startDate || new Date(),
+			});
 		});
 	}
 
@@ -71,17 +74,12 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 		this.hotelService.getTopServiceDetailsById(this.getId()).pipe(
 			takeUntil(this.unsubscribe)
 		).subscribe(hotel => this.hotel = hotel);
-		/*
-		this.hotelService.get(`/hotel/${this.getId()}`).pipe(
-			takeUntil(this.unsubscribe)
-		).subscribe(hotel => this.hotel = hotel);
-		*/
 	}
 
 	getCheckIn(): Observable<BookingAvailability[]> {
 		this.calendar.checkins = null;
-		this.booking.checkIn = null;
 		this.calendar.checkouts = null;
+		this.booking.checkIn = null;
 		this.booking.checkOut = null;
 		this.booking.options = null;
 		return this.hotelService.getBookingCheckInById(this.getId(), this.booking.getPayload()).pipe(
@@ -94,9 +92,15 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 		);
 	}
 
+	doStoreSearch(startDate: Date): void {
+		this.model.startDate = startDate;
+		this.search.model$.next(this.model);
+	}
+
 	getCheckOut(checkIn: Date): Observable<BookingAvailability[]> {
-		this.booking.checkIn = checkIn;
+		this.doStoreSearch(checkIn);
 		this.calendar.checkouts = null;
+		this.booking.checkIn = checkIn;
 		this.booking.checkOut = null;
 		this.booking.options = null;
 		return this.hotelService.getBookingCheckOutById(this.getId(), this.booking.getPayload()).pipe(
@@ -178,14 +182,17 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 	}
 
 	onAdultsChanged(): void {
-		this.booking.adults = this.search.model.adults;
+		this.booking.adults = this.model.adults;
 		this.setFirstInOut();
 	}
 
 	onChildsChanged(): void {
-		this.search.onChildsChanged();
-		this.booking.childrenCount = this.search.model.childs;
-		this.booking.children = this.search.model.childrens;
+		while (this.model.childrens.length < this.model.childs) {
+			this.model.childrens.push({ age: 0 });
+		}
+		this.model.childrens.length = Math.min(this.model.childs, this.model.childrens.length);
+		this.booking.childrenCount = this.model.childs;
+		this.booking.children = this.model.childrens;
 		this.setFirstInOut();
 	}
 

@@ -63,16 +63,16 @@
 						<div class="sidebar-group">
 							<div class="spinner-input">
 								<strong for="">Adulti</strong>
-								<p-spinner size="10" readonly name="adults" [(ngModel)]="search.model.adults" [min]="1" [max]="10" (onChange)="onAdultsChanged()"></p-spinner>
+								<p-spinner size="10" readonly name="adults" [(ngModel)]="model.adults" [min]="1" [max]="10" (onChange)="onAdultsChanged()"></p-spinner>
 							</div>
 						</div>
 						<div class="sidebar-group">
 							<div class="spinner-input">
 								<strong>Bambini</strong>
-								<p-spinner size="10" readonly name="childs" [(ngModel)]="search.model.childs" [min]="0" [max]="4" (onChange)="onChildsChanged()"></p-spinner>
+								<p-spinner size="10" readonly name="childs" [(ngModel)]="model.childs" [min]="0" [max]="4" (onChange)="onChildsChanged()"></p-spinner>
 							</div>
 							<div class="child-ages">
-								<div class="child-age" *ngFor="let child of search.model.childrens; let index = $index">
+								<div class="child-age" *ngFor="let child of model.childrens; let index = $index">
 									<strong>Età bambino {{index}}</strong>
 									<div class="custom-select">
 										<select dir="rtl" name="age" [(ngModel)]="child.age" (change)="onChildsChanged()" [disabled]="busy">
@@ -105,13 +105,24 @@
 							</ng-container>
 						</div>
 						<div *ngIf="booking.options">
+							<div class="sidebar-group" *ngIf="booking.options.principals?.length">
+								<div class="tit">
+									Partenza
+								</div>
+								<div class="radio type-{{item.type}}" *ngFor="let item of booking.options.principals">
+									<label>
+										<input type="radio" name="departure" value="{{item.code}}" [checked]="item.checked">
+										<span>{{item.name}} ({{item.price}}€)</span>
+									</label>
+								</div>
+							</div>
 							<div class="sidebar-group">
 								<div class="tit">
 									Tipologia di camera
 								</div>
 								<div class="radio type-{{item.type}}" *ngFor="let item of booking.options.accomodations">
 									<label>
-										<input type="radio" name="tipologia-camera" value="{{item.code}}" [checked]="item.checked">
+										<input type="radio" name="roomType" value="{{item.code}}" [checked]="item.checked">
 										<span>{{item.name}} ({{item.price}}€)</span>
 									</label>
 								</div>
@@ -122,7 +133,7 @@
 								</div>
 								<div class="radio type-{{item.type}}" *ngFor="let item of booking.options.extraQuotes">
 									<label>
-										<input type="radio" name="assicurazione" value="{{item.code}}" [checked]="item.checked">
+										<input type="radio" name="insurance" value="{{item.code}}" [checked]="item.checked">
 										<span>{{item.name}} ({{item.price}}€)</span>
 									</label>
 								</div>
@@ -133,7 +144,7 @@
 								</div>
 								<div class="radio">
 									<label>
-									<input type="radio" name="trattamento" checked>
+									<input type="radio" name="accomodation" checked>
 									<span>{{hotel?.accomodation}}</span>
 								</label>
 								</div>

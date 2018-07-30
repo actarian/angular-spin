@@ -1,10 +1,10 @@
 
 
 export class BookingAccomodation {
-	price?: 770.00;
-	type?: 1;
-	code?: 'D01';
-	name?: 'MONOLOCALE 2 PERSONE';
+	price?: number;
+	type?: number;
+	code?: string;
+	name?: string;
 	checked?: boolean = false;
 }
 
@@ -23,20 +23,27 @@ export class BookingExtraQuote extends BookingAccomodation {
 	detail?: BookingAccomodationDetail;
 }
 
+export class BookingPrincipal extends BookingAccomodation { }
+
 export class BookingOptions {
 	accomodations: BookingAccomodation[];
 	extraQuotes: BookingExtraQuote[];
+	principals: BookingPrincipal[];
 
 	constructor(options: any) {
 		if (options) {
 			this.accomodations = options.accomodations || options.accomodation;
 			this.extraQuotes = options.extraQuotes;
+			this.principals = options.principals || options.principal;
 		}
 		if (this.accomodations && this.accomodations.length) {
 			this.accomodations[0].checked = true;
 		}
 		if (this.extraQuotes && this.extraQuotes.length) {
 			this.extraQuotes[0].checked = true;
+		}
+		if (this.principals && this.principals.length) {
+			this.principals[0].checked = true;
 		}
 	}
 }
@@ -50,12 +57,12 @@ export class Booking {
 	checkOut?: Date;
 	flexibleDate?: boolean = true;
 	options?: BookingOptions;
-	accomodation?: any = null;
+	accomodations?: any[] = [];
 	extraQuotes?: any[] = [];
+	principals?: any[] = [];
 	supplements?: any[] = [];
 	privacy?: boolean = false;
 	treatment?: any = null;
-	principal?: any = null;
 	duration?: number = 0;
 	nights?: number = 0;
 
@@ -101,6 +108,7 @@ export class Booking {
 		if (this.options) {
 			this.options.accomodations.forEach(a => total += (a.checked ? a.price : 0));
 			this.options.extraQuotes.forEach(e => total += (e.checked ? e.price : 0));
+			this.options.principals.forEach(e => total += (e.checked ? e.price : 0));
 		}
 		return total;
 	}

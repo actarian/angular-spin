@@ -152,7 +152,7 @@ export class FilterService {
 						option.count++;
 					}
 				});
-				option.visible = option.count > 0 || group.selectionType === GroupSelectionType.Multiple;
+				option.visible = option.count > 0; // || group.selectionType === GroupSelectionType.Multiple;
 				group.visible = group.visible || option.visible;
 			});
 		});

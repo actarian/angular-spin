@@ -64,4 +64,11 @@ export class MainSearchComponent extends DisposableComponent implements AfterVie
 		this.doSearch.emit(this.model);
 	}
 
+	onChildsChanged() {
+		while (this.model.childrens.length < this.model.childs) {
+			this.model.childrens.push({ age: 0 });
+		}
+		this.model.childrens.length = Math.min(this.model.childs, this.model.childrens.length);
+	}
+
 }

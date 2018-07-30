@@ -10,7 +10,7 @@ import { LocalStorageService, StorageService } from '../core/storage';
 import { CalendarOptions } from './calendar-options';
 import { Destination, DestinationTypes } from './destination';
 import { DestinationService } from './destination.service';
-import { Group, GroupSelectionType, Sorting } from './filter';
+import { Group, GroupSelectionType, GroupType, Sorting } from './filter';
 import { FilterService } from './filter.service';
 import { Duration, durations, MainSearch, SearchResult } from './search';
 
@@ -106,10 +106,105 @@ export class SearchService extends EntityService<SearchResult> {
 				this.resultsFiltered$.next(results);
 				this.filterService.onUpdateGroups(groups, results);
 				this.visibleItems = this.maxVisibleItems;
-				// this.doSerialize(this.model, groups, sorting);
+				this.doSerialize(this.model, groups, sorting);
 				return results;
 			})
 		);
+	}
+
+	public setParams(params: Params) {
+		if (params.search) {
+			this.model = new MainSearch(params.search as MainSearch);
+			this.model$.next(this.model);
+		}
+		this.filterService.setParams(params);
+	}
+
+	// DESTINATION
+	onDestinationQuery(query: string) {
+		this.model.query = query;
+		this.destinationService.autocomplete(query).pipe(
+			// takeUntil(this.unsubscribe)
+			debounceTime(200)
+		).subscribe(x => {
+			this.destinations = x;
+		});
+	}
+
+	doStoreDestination(destination: Destination) {
+		if (destination) {
+			const previous: Destination = this.lastDestinations.find(x => x.name === destination.name);
+			if (previous) {
+				const index = this.lastDestinations.indexOf(previous);
+				this.lastDestinations.splice(index, 1);
+			}
+			this.lastDestinations.unshift(destination);
+			this.storage.set('lastDestinations', this.lastDestinations);
+		}
+	}
+
+	// CERCA
+	onSearch(model) {
+		this.doStoreDestination(model.destination);
+		Object.assign(this.model, model);
+		this.model.startDate = this.model.startDate || new Date();
+		this.queryParams = this.queryParams || {};
+		this.queryParams.search = JSON.stringify(this.model);
+		this.model$.next(this.model);
+		if (this.model.destination && this.model.destination.type === DestinationTypes.Facility) {
+			console.log('SearchService.onSearch DestinationTypes.Facility ->', this.model.destination.slug);
+			const segments = this.routeService.toRoute([this.model.destination.slug]);
+			this.router.navigate(segments);
+		} else {
+			this.router.navigate(['/search'], {
+				queryParams: this.queryParams
+			});
+		}
+	}
+
+	onSearchIn(model) {
+		this.doStoreDestination(model.destination);
+		Object.assign(this.model, model);
+		this.model.startDate = this.model.startDate || new Date();
+		this.queryParams = this.queryParams || {};
+		this.queryParams.search = JSON.stringify(this.model);
+		this.setParams(this.routeService.parseParams(this.queryParams));
+		this.filterService.onReset();
+		this.model$.next(this.model);
+		this.doSearch();
+	}
+
+	doSearch() {
+		let params = '';
+		if (this.model.destination) {
+			switch (this.model.destination.type) {
+				case DestinationTypes.Facility:
+					params = `?name=${this.model.destination.name}`;
+					break;
+				case DestinationTypes.Country:
+					params = `?destinationNation=${this.model.destination.name}`;
+					break;
+				case DestinationTypes.Region:
+					params = `?destinationRegion=${this.model.destination.name}`;
+					break;
+				case DestinationTypes.Destination:
+					params = `?destinationDescription=${this.model.destination.name}`;
+					break;
+				case DestinationTypes.Category:
+					params = '';
+					// params = `?destinationNation=${this.model.destination.name}`;
+					break;
+				case DestinationTypes.Promotion:
+					params = '';
+					// params = `?destinationNation=${this.model.destination.name}`;
+					this.filterService.onSet(this.model.destination.id, GroupType.Service);
+					break;
+			}
+		}
+		// ApiService get
+		this.get(params).subscribe(x => {
+			this.results$.next(x);
+		});
 	}
 
 	private doSerialize(model: MainSearch, groups: Group[], sorting: Sorting) {
@@ -151,126 +246,6 @@ export class SearchService extends EntityService<SearchResult> {
 			this.router.navigate(['/login'], navigationExtras);
 			*/
 		}
-	}
-
-	public setParams(params: Params) {
-		if (params.search) {
-			this.model = new MainSearch(params.search as MainSearch);
-			this.model$.next(this.model);
-		}
-		this.filterService.setParams(params);
-	}
-
-	// DESTINATION
-	onDestinationQuery(query: string) {
-		this.model.query = query;
-		this.destinationService.autocomplete(query).pipe(
-			// takeUntil(this.unsubscribe)
-			debounceTime(200)
-		).subscribe(x => {
-			this.destinations = x;
-		});
-	}
-
-	onDestinationSet(destination: Destination) {
-		if (destination) {
-			const previous: Destination = this.lastDestinations.find(x => x.name === destination.name);
-			if (previous) {
-				const index = this.lastDestinations.indexOf(previous);
-				this.lastDestinations.splice(index, 1);
-			}
-			this.lastDestinations.unshift(destination);
-			this.storage.set('lastDestinations', this.lastDestinations);
-		}
-	}
-
-	onDestinationReset() {
-		this.model.query = null;
-		this.model.destination = null;
-	}
-
-	isDestinationEmpty() {
-		return !this.model.query && !this.model.destination;
-	}
-
-	// START DATE
-	onStartDateReset() {
-		this.model.startDate = null;
-	}
-
-	isStartDateEmpty() {
-		return !this.model.startDate;
-	}
-
-	// CHILDRENS
-	onChildsChanged() {
-		while (this.model.childrens.length < this.model.childs) {
-			this.model.childrens.push({ age: 0 });
-		}
-		this.model.childrens.length = Math.min(this.model.childs, this.model.childrens.length);
-	}
-
-	// CERCA
-	onSearch(model) {
-		this.onDestinationSet(model.destination);
-		Object.assign(this.model, model);
-		this.model.startDate = this.model.startDate || new Date();
-		this.queryParams = this.queryParams || {};
-		this.queryParams.search = JSON.stringify(this.model);
-		this.model$.next(this.model);
-		if (this.model.destination && this.model.destination.type === DestinationTypes.Facility) {
-			console.log('SearchService.onSearch DestinationTypes.Facility ->', this.model.destination.slug);
-			const segments = this.routeService.toRoute([this.model.destination.slug]);
-			this.router.navigate(segments);
-		} else {
-			this.router.navigate(['/search'], {
-				queryParams: this.queryParams
-			});
-		}
-	}
-
-	onSearchIn(model) {
-		this.onDestinationSet(model.destination);
-		Object.assign(this.model, model);
-		this.model.startDate = this.model.startDate || new Date();
-		this.queryParams = this.queryParams || {};
-		this.queryParams.search = JSON.stringify(this.model);
-		this.setParams(this.routeService.parseParams(this.queryParams));
-		this.filterService.onReset();
-		this.model$.next(this.model);
-		this.doSearch();
-	}
-
-	doSearch() {
-		let params = '';
-		if (this.model.destination) {
-			switch (this.model.destination.type) {
-				case DestinationTypes.Facility:
-					params = `?name=${this.model.destination.name}`;
-					break;
-				case DestinationTypes.Country:
-					params = `?destinationNation=${this.model.destination.name}`;
-					break;
-				case DestinationTypes.Region:
-					params = `?destinationRegion=${this.model.destination.name}`;
-					break;
-				case DestinationTypes.Destination:
-					params = `?destinationDescription=${this.model.destination.name}`;
-					break;
-				case DestinationTypes.Category:
-					params = '';
-					// params = `?destinationNation=${this.model.destination.name}`;
-					break;
-				case DestinationTypes.Promotion:
-					params = '';
-					// params = `?destinationNation=${this.model.destination.name}`;
-					// this.filterService.onSet(this.model.destination.id, GroupType.Service);
-					break;
-			}
-		}
-		this.get(params).subscribe(x => {
-			this.results$.next(x);
-		});
 	}
 
 	// rimovibile

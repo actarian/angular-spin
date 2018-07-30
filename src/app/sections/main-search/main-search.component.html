@@ -4,7 +4,7 @@
 		<div (click)="active = searchLocation" #searchLocation>
 			<label for="main-search--location">Destinazione</label>
 			<input type="text" class="with-reset" id="main-search--location" placeholder="Cerca località, regione, tipologia o nome hotel" name="query" [(ngModel)]="model.query" (focus)="model.destination = null; model.query = null" #query>
-			<span class="reset" (click)="search.onDestinationReset(); query.focus()" [hidden]="!model.query && !model.destination">
+			<span class="reset" (click)="model.destination = null; model.query = null; query.focus()" [hidden]="!model.query && !model.destination">
 				<svg>
 					<use xlink:href="#ico-reset"></use>
 				</svg>
@@ -37,7 +37,7 @@
 		<div class="main-search--trigger" (click)="active = searchDate" #searchDate>
 			<label for="main-search--date">Data di partenza</label>
 			<input class="with-reset" disabled type="text" id="main-search--date" placeholder="Seleziona una data" [value]="model.startDate | date:'dd MMMM yyyy'">
-			<span class="reset" (click)="search.onStartDateReset(); query.focus()" [hidden]="search.isStartDateEmpty()">
+			<span class="reset" (click)="this.model.startDate = null; query.focus()" [hidden]="!this.model.startDate">
 				<svg>
 					<use xlink:href="#ico-reset"></use>
 				</svg>
@@ -157,7 +157,7 @@
 			<div class="body">
 				<div class="spinner-input">
 					<strong>Bambini</strong>
-					<p-spinner size="10" readonly name="childs" [(ngModel)]="model.childs" [min]="0" [max]="4" (onChange)="search.onChildsChanged()"></p-spinner>
+					<p-spinner size="10" readonly name="childs" [(ngModel)]="model.childs" [min]="0" [max]="4" (onChange)="onChildsChanged()"></p-spinner>
 				</div>
 				<div class="child-ages">
 					<div class="child-age" *ngFor="let child of model.childrens; let index = $index">
