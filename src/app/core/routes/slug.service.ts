@@ -48,7 +48,9 @@ export class SlugService extends EntityService<DocumentIndex> {
 		return this.emitter.pipe(
 			// throttleTime(500),
 			tap((e) => {
-				this.collectKeys().subscribe((results) => console.log('SlugService.collected', results));
+				this.collectKeys().subscribe((results) => {
+					// console.log('SlugService.collected', results);
+				});
 			})
 		);
 	}

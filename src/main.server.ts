@@ -19,6 +19,8 @@ if (environment.production) {
 
 export default createServerRenderer((params: BootFuncParams) => {
 
+	console.log('main.server.ts createServerRenderer.params', params);
+
 	const providers = [
 		{ provide: INITIAL_CONFIG, useValue: { document: params.data.originalHtml, url: params.url } },
 		{ provide: APP_BASE_HREF, useValue: params.baseUrl },

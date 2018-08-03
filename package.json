@@ -14,7 +14,7 @@
 		"build:production": "ng build server --prod --output-hashing=media --verbose",
 		"build:docs": "ng build docs --configuration=docs --base-href /angular-spin/ --deploy-url /angular-spin/",
 		"dependency:fix": "node -e \"require('./npm/replace.js')('./dist/server/main.js', new RegExp('angular-in.memory-web-api(.[^\\\"]*)', 'gm'), 'angular-in-memory-web-api')\"",
-		"debug:server": "node -e \"console.log('response', require('./dist/server/main.js').default((e, result) => console.log('error', e, 'result', result !== null), '/', {}, 'http://localhost:40000/', '/', { originalHtml: '<app-component></app-component>' }))\""
+		"debug:server": "node -e \"console.log('response', require('./dist/server/main.js').default((e, result) => console.log('error', e, 'result', result !== null), '/it/', {}, 'http://eurospin-viaggi2.wslabs.it/', '/it/', { originalHtml: '<app-component></app-component>' }))\""
 	},
 	"private": true,
 	"dependencies": {

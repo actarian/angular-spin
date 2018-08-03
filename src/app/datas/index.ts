@@ -1,6 +1,6 @@
 export * from './category';
 export * from './destination';
-export * from './hotel';
+// export * from './hotel';
 export * from './label';
 export * from './landing';
 // export * from './page';

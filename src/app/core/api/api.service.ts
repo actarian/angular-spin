@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
+import { ORIGIN_URL } from '@nguniversal/aspnetcore-engine/tokens';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Logger } from '../logger';
@@ -21,8 +22,6 @@ export class ApiRequestOptions {
 	providedIn: 'root'
 })
 export class ApiService<T extends Identity> {
-
-	public static domain: string = '';
 
 	get collection(): string {
 		return '/api';
@@ -52,8 +51,16 @@ export class ApiService<T extends Identity> {
 		return this._state;
 	}
 
+	private _origin: string;
+	get origin(): string {
+		if (!this._origin) {
+			this._origin = this.injector.get(ORIGIN_URL);
+		}
+		return this._origin;
+	}
+
 	get url(): string {
-		let base: string = ApiService.domain;
+		let base: string = this.origin;
 		const collection = this.collection.toLowerCase();
 		if (collection.indexOf('http') === 0) {
 			base = '';
@@ -74,7 +81,7 @@ export class ApiService<T extends Identity> {
 		const params: {} = (typeof first === 'object' ? first : second);
 		const url: string = this.getUrl(method);
 		const options = new ApiRequestOptions(params);
-		// console.log('ApiService.get', url);
+		// console.log('ApiService.origin', this.origin, url);
 		return this.http.get<T>(url, options).pipe(
 			tap(x => this.logger.log(url)),
 			catchError(e => {
