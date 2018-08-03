@@ -16,13 +16,17 @@ Hotel Page
 		position: relative;
 		z-index: 1;
 		margin-bottom: 60px;
-		padding-left: 310px;
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
 
 		@include xs-down {
 			margin-bottom: 0;
 			padding-left: 0;
+			display: block;
 		}
 	}
+
 }
 
 
@@ -31,18 +35,33 @@ Hotel Sidebar
 --------------------------------------------------*/
 
 .hotel-sidebar {
-	width: 310px;
+	width: 320px;
+	flex: 0 0 320px;
 	display: block;
 	padding: 0 30px 0 15px;
-	position: absolute;
 	z-index: 10;
-	top: 3px;
-	left: 0;
+
+	@include xs-down {
+		float: 0 0 100%;
+		width: 100%;
+		position: relative;
+		top: auto;
+		left: auto;
+		padding: 0;
+		width: 100%;
+		background: #fafafa;
+		margin: 10px 0 30px;
+		width: auto;
+		border-top: 1px solid #ccc;
+		border-bottom: 1px solid #ccc;
+	}
 
 	.sticky {
 		width: calc(100% + 15px);
-		padding-right: 15px;
+		padding-right: 10px;
 		z-index: 10;
+		background: #fafafa;
+		box-shadow: -10px 0 0 #fafafa;
 
 		@include xs-down {
 			padding-right: 0;
@@ -66,41 +85,33 @@ Hotel Sidebar
 		}
 	}
 
-	@include xs-down {
-		position: relative;
-		top: auto;
-		left: auto;
-		padding: 0;
-		width: 100%;
-		background: #fafafa;
-		margin: 10px -15px 30px;
-		width: auto;
-		border-top: 1px solid #ccc;
-		border-bottom: 1px solid #ccc;
-	}
-
 	.sidebar-group {
-		padding: 10px 0;
-		border-top: 1px solid $border-color;
+		padding: 10px 12px;
+		border-top: 1px solid #e8e8e8;
 		font-size: 13px;
 		line-height: 1.2;
-
+		margin-left: -10px;
+		margin-right: -10px;
 
 		@include xs-down {
 			padding: 15px;
+			margin-left: 0;
+			margin-right: 0;
+		}
 
-			.custom-select {
-				margin-bottom: 0;
+		.custom-select {
+			margin-bottom: 0;
 
-				&:before {
-					top: 16px !important;
-					right: 13px !important;
-				}
+			&:before {
+				top: 16px !important;
+				right: 13px !important;
+			}
 
-				select {
-					padding: 10px 25px 10px 12px !important;
-					background: #fff !important;
-				}
+			select {
+				background: #fff;
+				appearance: none;
+				padding: 10px 25px 10px 12px !important;
+				background: #fff !important;
 			}
 		}
 
@@ -145,6 +156,7 @@ Hotel Sidebar
 
 		.radio {
 			text-transform: uppercase;
+			padding-bottom: 2px;
 
 			&:last-child {
 				label {
@@ -219,12 +231,12 @@ Hotel Sidebar
 		z-index: 10;
 		background: #fff;
 		border-top: 1px solid #e0e0e0;
-		margin-top: 20px;
+		margin-top: 2px;
 		background: #fffedd;
 		margin-left: -10px;
 		margin-right: -10px;
-		padding-left: 10px;
-		padding-right: 10px;
+		padding-left: 12px;
+		padding-right: 12px;
 		padding-bottom: 10px;
 
 		@include xs-down {
@@ -301,8 +313,6 @@ Hotel Sidebar
 	margin-top: -1px;
 	background: #fffedd;
 	padding: 10px 15px 8px;
-	margin-left: -15px;
-	margin-right: -15px;
 	font-size: 11px;
 	line-height: 1.2;
 
@@ -384,6 +394,13 @@ Hotel Main Content
 
 .hotel-main-content {
 	padding: 0 15px;
+	flex: 0 1 calc(100% - 350px);
+	max-width: calc(100% - 350px);
+
+	@include xs-down {
+		float: 0 0 100%;
+		max-width: 100%;
+	}
 }
 
 
@@ -482,6 +499,27 @@ Hotel Gallery
 /*--------------------------------------------------
 Hotel Desc
 --------------------------------------------------*/
+
+.desktop-description {
+	display: block;
+
+	@include xs-down {
+		display: none;
+	}
+}
+
+.mobile-description {
+	display: none;
+	padding: 0 15px 30px;
+
+	@include xs-down {
+		display: block;
+	}
+
+	.readmore-wrap {
+		padding-top: 20px;
+	}
+}
 
 .hotel-desc {
 	font-size: 14px;
@@ -614,8 +652,130 @@ Hotel Desc
 	}
 }
 
+.readmore-wrap {
+	display: none;
 
+	&.active {
+		display: block;
+	}
+}
 
+.hotel-mapbox {
+	border-top: 1px solid $border-color;
+	padding: 20px 0 0 0;
+	margin: 30px 0;
+	display: flex;
+	flex-wrap: wrap;
+
+	@include xs-down {
+		margin-bottom: 0;
+	}
+
+	&--map {
+		flex: 0 0 36%;
+		max-width: 36%;
+
+		@include sm-down {
+			flex: 0 0 50%;
+			max-width: 50%;
+		}
+
+		@include xxs-down {
+			flex: 0 0 100%;
+			max-width: none;
+			margin-bottom: 10px;
+		}
+
+		button {
+			display: block;
+			overflow: hidden;
+			height: 0;
+			padding-bottom: 42%;
+			position: relative;
+			z-index: 1;
+
+			img {
+				max-width: 100%;
+			}
+
+			.ico {
+				width: 36px;
+				height: auto;
+				position: absolute;
+				z-index: 1;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				fill: $primary-color;
+				stroke: #fff;
+				stroke-width: 2px;
+			}
+		}
+	}
+
+	&--desc {
+		flex: 1 0 64%;
+		max-width: 64%;
+		padding: 0 10px 0 20px;
+		align-items: flex-start;
+
+		@include sm-down {
+			flex: 0 0 50%;
+			max-width: 50%;
+		}
+
+		@include xxs-down {
+			flex: 0 0 100%;
+			max-width: none;
+			padding: 10px 10px 10px 0;
+		}
+
+		.h3 {
+			font-size: 21px;
+			line-height: 1.2;
+			color: $tit-color;
+			margin-bottom: 14px;
+			font-weight: 100;
+			padding-top: 2px;
+
+			@include sm-down {
+				font-size: 18px;
+				margin-bottom: 12px;
+				padding-top: 0;
+			}
+		}
+
+		ul {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+
+			li {
+				position: relative;
+				z-index: 1;
+				padding-left: 20px;
+				font-size: 13px;
+				padding-bottom: 2px;
+
+				.ico {
+					position: absolute;
+					z-index: 1;
+					top: 3px;
+					left: 0;
+					width: 14px;
+					height: auto;
+					fill: $text-color;
+				}
+
+				.ico-pin {
+					fill: none;
+					stroke: $text-color;
+					stroke-width: 3px;
+				}
+			}
+		}
+	}
+}
 
 @-webkit-keyframes loading {
 	0% {
@@ -644,7 +804,6 @@ Hotel Desc
 $spinner-size: 2.5em;
 
 .spinner {
-
 	font-size: 2px;
 	display: inline-block;
 	position: relative;

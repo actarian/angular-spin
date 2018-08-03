@@ -7,6 +7,7 @@ export * from './filter';
 export * from './filter.service';
 export * from './hotel';
 export * from './hotel.service';
+export * from './landing.service';
 export * from './promotion';
 export * from './promotion.service';
 export * from './region';

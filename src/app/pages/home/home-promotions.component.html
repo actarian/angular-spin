@@ -1,4 +1,4 @@
-<!-- Promotions -->
+<!--
 <section class="promotions">
 	<div class="container">
 		<div class="head">
@@ -13,6 +13,28 @@
 					</figure>
 					<div class="body">
 						<h3 class="title">{{promotion.name}}</h3>
+					</div>
+				</a>
+			</div>
+		</div>
+	</div>
+</section>
+-->
+<!-- Promotions -->
+<section class="promotions" lazy-images>
+	<div class="container">
+		<div class="head">
+			<h2>Le mete migliori per gli amanti dell'arte</h2>
+			<a href="#" class="btn btn--ghost">Visualizza tutte</a>
+		</div>
+		<div class="card-row">
+			<div class="card-col" *ngFor="let item of items$ | async | slice :0 :3">
+				<a class="card" [routerLink]="[item.slug] | route">
+					<figure class="figure">
+						<img class="img" [attr.data-src]="item.images | image" alt="{{item.title}}">
+					</figure>
+					<div class="body">
+						<h3 class="title">{{item.title}}</h3>
 					</div>
 				</a>
 			</div>

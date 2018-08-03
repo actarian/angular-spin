@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { makeStateKey } from '@angular/platform-browser';
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
-// import { tap } from 'rxjs/operators';
 import { EntityService } from '../models';
 import { Page } from './page';
 
@@ -12,12 +11,16 @@ import { Page } from './page';
 export class PageService extends EntityService<Page> {
 
 	get collection(): string {
-		return 'http://eurospin-viaggi2.wslabs.it/api/page'; // return '/page';
+		return '/api/page'; // return '/page';
 	}
 
 	getStatePageBySlug(slug: string): Observable<Page> {
-		slug = slug.split(';')[0];
-		const key = `PAGE${slug.replace('/', '_')}`;
+		// slug = slug.split(';')[0];
+		slug = slug.split('?')[0];
+		if (slug.indexOf('/') === 0) {
+			slug = slug.substr(1);
+		}
+		const key = `PAGE_${slug.replace('/', '_')}`;
 		const STATE_KEY = makeStateKey<Page>(key);
 		const state = this.state.hasKey(STATE_KEY);
 		if (state) {
@@ -31,6 +34,10 @@ export class PageService extends EntityService<Page> {
 		}
 	}
 
+	getPageById(id: number): Observable<Page> {
+		return this.get(`/${id}`);
+	}
+
 	getPageBySlug(slug: string): Observable<Page> {
 		slug = slug.split(';')[0];
 		// console.log('PageService.getPageBySlug', slug);
@@ -39,16 +46,5 @@ export class PageService extends EntityService<Page> {
 			// tap(x => console.log('PageService.getPageBySlug', x, slug))
 		)*/;
 	}
-
-	/*
-	getPageBySlug(slug: string): Observable<Page[]> {
-		slug = slug.split(';')[0];
-		console.log('PageService.getPageBySlug', slug);
-		return this.get(`/slug/${slug}`).pipe(
-			// tap(x => this.logger.log(`found pages matching "${slug}"`))
-			tap(x => console.log('PageService.getPageBySlug', x, slug))
-		);
-	}
-	*/
 
 }

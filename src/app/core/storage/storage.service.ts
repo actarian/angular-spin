@@ -105,7 +105,6 @@ export class CookieStorageService implements StorageService {
 		// todo
 		const interval: number = 1000, timeout: number = TIMEOUT;
 		let i, elapsed: number = 0;
-
 		function checkCookie() {
 			if (elapsed > timeout) {
 				// promise.reject('timeout');

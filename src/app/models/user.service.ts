@@ -13,11 +13,15 @@ export class UserService extends EntityService<User> {
 		return '/api/user';
 	}
 
-	isLoggedIn(): Observable<User> {
+	public currentUser(): Observable<User> {
+		return of(null);
+	}
+
+	public isLoggedIn(): Observable<User> {
 		return this.getDetailById(1) as Observable<User>;
 	}
 
-	tryLogin(user: UserAuth): Observable<UserAuth[]> {
+	public tryLogin(user: UserAuth): Observable<UserAuth[]> {
 		if (!user.password.trim()) {
 			return of([]);
 		}
@@ -27,7 +31,7 @@ export class UserService extends EntityService<User> {
 		);*/
 	}
 
-	signForgotten(userSignForgotten: UserSignForgotten): Observable<any> {
+	public signForgotten(userSignForgotten: UserSignForgotten): Observable<any> {
 		if (!userSignForgotten.email.trim()) {
 			return of([]);
 		}
@@ -37,7 +41,7 @@ export class UserService extends EntityService<User> {
 		);*/
 	}
 
-	tryFacebook(user: FacebookUser): Observable<UserAuth[]> {
+	public tryFacebook(user: FacebookUser): Observable<UserAuth[]> {
 		if (!user.facebookToken.trim()) {
 			return of([]);
 		}
@@ -47,7 +51,7 @@ export class UserService extends EntityService<User> {
 		);*/
 	}
 
-	tryGoogle(user: GoogleUser): Observable<UserAuth[]> {
+	public tryGoogle(user: GoogleUser): Observable<UserAuth[]> {
 		if (!user.googleToken.trim()) {
 			return of([]);
 		}

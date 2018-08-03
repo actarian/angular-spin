@@ -11,6 +11,7 @@ export class ModalCompleteEvent {
 	type?: ModalEventType.Complete = ModalEventType.Complete;
 
 	constructor(options?: ModalCompleteEvent) {
+		console.log('ModalCompleteEvent', options);
 		if (options) {
 			Object.assign(this, options);
 		}

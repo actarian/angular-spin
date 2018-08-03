@@ -14,10 +14,10 @@ import { JsonFormatterComponent } from './json-formatter';
 import { CustomMissingTranslationHandler, LabelPipe, LabelService } from './labels';
 import { Logger, LoggerComponent } from './logger';
 import { OnceService } from './once';
-import { PageComponent, PageHosterComponent, Pages, PageService } from './pages';
+import { PageComponent, PageOutletComponent, Pages, PageService } from './pages';
 import { FacebookService, GoogleService, MapboxService } from './plugins';
 import { GoogleTagManagerComponent } from './plugins/google/google-tag-manager.component';
-import { AssetPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe } from './routes';
+import { AssetPipe, CustomAsyncPipe, ImagePipe, PublicPipe, RoutePipe, SegmentPipe, SlugAsyncPipe, SlugPipe } from './routes';
 import { CookieStorageService, LocalStorageService, SessionStorageService, StorageService } from './storage';
 import { SafeUrlPipe, TrustPipe } from './trust';
 import { ClickOutsideDirective, FancyboxDirective, LazyImagesDirective } from './ui';
@@ -37,24 +37,20 @@ import { ModalComponent, ModalService } from './ui/modal';
 		CoreRouting,
 	],
 	declarations: [
-		PageHosterComponent, PageComponent, DisposableComponent,
-		LabelPipe, AssetPipe, HighlightPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe, MatchValidator, TrustPipe, SafeUrlPipe,
+		PageOutletComponent, PageComponent, DisposableComponent,
+		LabelPipe, AssetPipe, CustomAsyncPipe, ImagePipe, HighlightPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe, SlugAsyncPipe, MatchValidator, TrustPipe, SafeUrlPipe,
 		ControlComponent, JsonFormatterComponent,
 		ModalComponent, LoggerComponent, FancyboxDirective, ClickOutsideDirective, LazyImagesDirective, ControlEditableComponent, GoogleTagManagerComponent
 	],
 	exports: [
-		TranslatePipe, LabelPipe, AssetPipe, HighlightPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe, MatchValidator, TrustPipe, SafeUrlPipe,
+		TranslatePipe, LabelPipe, AssetPipe, CustomAsyncPipe, ImagePipe, HighlightPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe, SlugAsyncPipe, MatchValidator, TrustPipe, SafeUrlPipe,
 		ControlComponent, JsonFormatterComponent,
 		ModalComponent, LoggerComponent, FancyboxDirective, ClickOutsideDirective, LazyImagesDirective, ControlEditableComponent, GoogleTagManagerComponent
 	],
 	providers: [
 		{ provide: HTTP_INTERCEPTORS, useClass: HttpResponseInterceptor, multi: true },
-		TranslatePipe,
-		LabelPipe,
 		LabelService,
-		AssetPipe,
 		AuthService,
-		HighlightPipe,
 		CookieStorageService,
 		LocalStorageService,
 		SessionStorageService,
@@ -65,28 +61,29 @@ import { ModalComponent, ModalService } from './ui/modal';
 		Logger,
 		OnceService,
 		PageService,
-		PublicPipe,
-		RoutePipe,
-		SegmentPipe,
 		ControlService,
 		FormService,
-		TrustPipe,
 		ModalService,
+		// pipes
+		TranslatePipe, LabelPipe, AssetPipe, CustomAsyncPipe, ImagePipe, HighlightPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe, SlugAsyncPipe, MatchValidator, TrustPipe, SafeUrlPipe,
 	],
 })
 
 export class CoreModule {
-	constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
+
+	constructor(
+		@Optional() @SkipSelf() parentModule: CoreModule
+	) {
 		if (parentModule) {
 			throw new Error('CoreModule is already loaded. Import it in the AppModule only');
 		}
 	}
 
-	public static forRoot(config: any): ModuleWithProviders {
+	public static forRoot(pages: any): ModuleWithProviders {
 		return {
 			ngModule: CoreModule,
 			providers: [
-				{ provide: Pages, useValue: config ? config : {} }
+				{ provide: Pages, useValue: pages ? pages : {} }
 			]
 		};
 	}

@@ -142,13 +142,10 @@
 				height: auto;
 				min-width: 100%;
 				min-height: 100%;
+
+				opacity: 0; // lazy-image
 				transition: .3s ease-in-out;
 				transition-property: transform, opacity;
-
-				&:not([src]) {
-					opacity: 0;
-				}
-
 				&[src] {
 					opacity: 1;
 				}
@@ -194,6 +191,7 @@
 		position: relative;
 		z-index: 1;
 		flex-wrap: nowrap;
+		align-items: flex-start;
 
 		@include xs-down {
 			display: block;
@@ -343,35 +341,31 @@
 		}
 
 		.add-to-fav {
-			background: none;
 			color: $primary-color;
-			border: 1px solid $primary-color;
-			text-align: center;
+			text-align: left;
 			cursor: pointer;
 			text-transform: uppercase;
-			padding: 5px 5px;
-			font-size: 12px;
-			background: #fff;
+			font-size: 11px;
+			background: transparent;
 			transition: background .2s ease-in-out;
 			margin-bottom: 8px;
 			text-decoration: none !important;
+			padding: 0;
+			margin-top: 2px;
 
 			@include xs-down {
 				display: none;
 			}
 
-			&:hover {
-				background-color: lighten($primary-color, 43%);
-			}
-
 			svg {
-				width: 14px;
-				height: 14px;
+				width: 18px;
+				height: 18px;
 				stroke: $primary-color;
 				stroke-width: 1px;
 				fill: #fff;
 				vertical-align: text-top;
-				transform: translateY(1px);
+				transform: translateY(-1px);
+				margin-right: 3px;
 			}
 
 			&.active {

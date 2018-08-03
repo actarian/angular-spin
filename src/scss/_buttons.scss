@@ -31,22 +31,6 @@ Buttons
 		box-shadow: none;
 	}
 
-	&--ghost {
-		background: transparent;
-		border: 1px solid $tit-color;
-		color: $tit-color;
-
-		&:hover {
-			background: transparent;
-			color: $tit-color;
-		}
-
-		&:focus,
-		&:active,
-		&:active:focus {
-			background: transparent;
-		}
-	}
 }
 
 .btn--secondary {
@@ -76,4 +60,19 @@ Buttons
 	&:active:focus {
 		background: darken($tertiary-color, 8%);
 	}
+}
+
+.btn--ghost {
+	padding: 0;
+	margin: 0;
+	min-width: 0;
+	max-width: none;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	outline: none !important;
+	box-shadow: none !important;
+	text-transform: none;
+	font-size: inherit;
+	font-weight: normal;
 }

@@ -1,7 +1,7 @@
 import { Document } from '../core/models';
 
 export class User implements Document {
-	id: number;
+	id: number | string;
 	name: string;
 	firstName: string;
 	lastName: string;

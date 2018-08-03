@@ -1,4 +1,4 @@
 
 export class Identity {
-	id: number;
+	id: number | string;
 }

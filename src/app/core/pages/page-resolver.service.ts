@@ -47,25 +47,41 @@ export class PageResolverService implements Resolve<PageResolver> {
 	*/
 
 	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<PageResolver> {
-		const paths = route.url.filter(x => {
-			return x.path;
-		}).map(x => {
-			return x.path;
-		});
-		const slug = this.routeService.toSlug(paths).join('/');
-		// console.log('PageResolverService.resolve', slug);
-		return this.pageService.getStatePageBySlug(slug).pipe(
-			map(page => {
-				if (page) {
-					// console.log('PageResolverService.page', pages[0]);
-					return new PageResolver(page, this.config);
-				} else {
-					// console.log('routeService', this.routeService);
-					this.router.navigate(this.routeService.toRoute(['not-found']));
-					return null;
-				}
-			})
-		);
+		console.log('route', route);
+		if (route.params && route.params.id) {
+			return this.pageService.getPageById(route.params.id).pipe(
+				map(page => {
+					if (page) {
+						// console.log('PageResolverService.page', pages[0]);
+						return new PageResolver(page, this.config);
+					} else {
+						// console.log('routeService', this.routeService);
+						this.router.navigate(this.routeService.toRoute(['not-found']));
+						return null;
+					}
+				})
+			);
+		} else {
+			const paths = route.url.filter(x => {
+				return x.path;
+			}).map(x => {
+				return x.path;
+			});
+			const slug = this.routeService.toSlug(paths).join('/');
+			// console.log('PageResolverService.resolve', slug);
+			return this.pageService.getStatePageBySlug(slug).pipe(
+				map(page => {
+					if (page) {
+						// console.log('PageResolverService.page', pages[0]);
+						return new PageResolver(page, this.config);
+					} else {
+						// console.log('routeService', this.routeService);
+						this.router.navigate(this.routeService.toRoute(['not-found']));
+						return null;
+					}
+				})
+			);
+		}
 		/*
 		return this.pageService.getPageBySlug(slug).pipe(
 			take(1),

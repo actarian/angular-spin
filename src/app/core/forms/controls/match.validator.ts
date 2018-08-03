@@ -6,7 +6,7 @@ export function __matchValidator(key: string, otherKey: string, group: FormGroup
 		// const control = group.controls[key];
 		const otherControl = group.controls[otherKey];
 
-		console.log(control.touched, otherControl.touched);
+		// console.log(control.touched, otherControl.touched);
 
 		if (control.touched && otherControl.touched) {
 			const match = control.value === otherControl.value;

@@ -25,7 +25,7 @@ export class IdentityService<T extends Identity> extends ApiService<T> {
 		);
 	}
 
-	getDetailByIdNo404<Data>(id: number): Observable<T> {
+	getDetailByIdNo404<Data>(id: number | string): Observable<T> {
 		return this.get(`?id=${id}`).pipe(
 			map((identities: T[]) => identities[0]), // returns a {0|1} element array
 			tap(x => {
@@ -34,7 +34,7 @@ export class IdentityService<T extends Identity> extends ApiService<T> {
 		);
 	}
 
-	getDetailById(id: number): Observable<T> {
+	getDetailById(id: number | string): Observable<T> {
 		return this.get(`/${id}`).pipe(
 			tap(x => this.logger.log(`getDetailById ${id}`))
 		);

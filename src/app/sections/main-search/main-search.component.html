@@ -36,8 +36,8 @@
 	<div class="main-search__col main-search__date" [ngClass]="{'active':active==searchDate}" (clickOutside)="active == searchDate ? active=null : null">
 		<div class="main-search--trigger" (click)="active = searchDate" #searchDate>
 			<label for="main-search--date">Data di partenza</label>
-			<input class="with-reset" disabled type="text" id="main-search--date" placeholder="Seleziona una data" [value]="model.startDate | date:'dd MMMM yyyy'">
-			<span class="reset" (click)="this.model.startDate = null; query.focus()" [hidden]="!this.model.startDate">
+			<input class="with-reset" disabled type="text" id="main-search--date" placeholder="Seleziona una data" [value]="model.startDate | date : 'dd MMMM yyyy'">
+			<span class="reset" (click)="model.startDate = null; query.focus()" [hidden]="!model.startDate">
 				<svg>
 					<use xlink:href="#ico-reset"></use>
 				</svg>

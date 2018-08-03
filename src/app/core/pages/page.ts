@@ -11,15 +11,29 @@ export class PageMeta {
 }
 
 export class Page implements Document {
-	id: number;
-	name: string;
+	id: number | string;
+	name?: string;
 	title?: string;
+	abstract?: string;
 	description?: string;
 	slug?: string;
 	url?: string;
-	component?: string;
+	type?: number | string;
+	component?: number | string;
 	meta?: PageMeta;
 	images?: Image[];
 	features?: Feature[];
 	taxonomies?: Taxonomy[];
+	active?: boolean;
+}
+
+export class PageIndex implements Document {
+	id: number | string;
+	name?: string;
+	title?: string;
+	abstract?: string;
+	slug?: string;
+	url?: string;
+	type?: number | string;
+	images?: Image[];
 }

@@ -1,22 +1,33 @@
 <div class="serp-search">
 	<div class="container">
 		<div class="serp-filters">
-
 			<div class="item">
+				<button type="button" class="switch-map" [ngClass]="{ active: viewType === viewTypes.List }" (click)="viewType = viewTypes.Map">
+					<svg class="ico ico-pin">
+						<use xlink:href="#ico-pin"></use>
+					</svg>
+					<span>Mappa </span>
+				</button>
+				<button type="button" class="switch-map" [ngClass]="{ active: viewType === viewTypes.Map }" (click)="viewType = viewTypes.List">
+					<svg class="ico ico-list">
+						<use xlink:href="#ico-list"></use>
+					</svg>
+					<span>Lista </span>
+				</button>
+				<!--
 				<a class="switch-map" [routerLink]="['map']" routerLinkActive #rMap="routerLinkActive" [ngClass]="{ active: rList.isActive }">
 					<svg class="ico ico-pin">
 						<use xlink:href="#ico-pin"></use>
 					</svg>
 					<span>Mappa </span>
 				</a>
-
 				<a class="switch-map" [routerLink]="['list']" routerLinkActive #rList="routerLinkActive" [ngClass]="{ active: rMap.isActive }">
 					<svg class="ico ico-list">
 						<use xlink:href="#ico-list"></use>
 					</svg>
 					<span>Lista </span>
 				</a>
-
+				-->
 			</div>
 			<div class="item" (click)="active = popupOrder" #popupOrder>
 				<svg class="ico ico-order">
@@ -90,15 +101,32 @@
 		<!-- Main Search Popup -->
 	</div>
 </div>
-
 <div class="serp-content">
 	<div class="container" lazy-images>
 		<div class="serp-filter">
 			<div class="switch-map-list">
+				<div class="switch-map-list--item switch-map-list--item__map" [ngClass]="{ active: viewType === viewTypes.List }">
+					<img src="assets/img/map.png">
+					<button type="button" class="btn" (click)="viewType = viewTypes.Map">
+						<svg class="ico">
+							<use xlink:href="#ico-pin"></use>
+						</svg>
+						Visualizza nella mappa
+					</button>
+				</div>
+				<div class="switch-map-list--item switch-map-list--item__list" [ngClass]="{ active: viewType === viewTypes.Map }">
+					<button type="button" class="btn" (click)="viewType = viewTypes.List">
+						<svg class="ico">
+							<use xlink:href="#ico-list"></use>
+						</svg>
+						Torna all'elenco
+					</button>
+				</div>
+				<!--
 				<div class="switch-map-list--item switch-map-list--item__map" [ngClass]="{ active: rList.isActive }">
 					<img src="assets/img/map.png">
 					<a class="btn" [routerLink]="['map']" routerLinkActive #rMap="routerLinkActive">
-						<!-- [queryParams]="search.queryParams" queryParamsHandling="merge" -->
+						[queryParams]="search.queryParams" queryParamsHandling="merge"
 						<svg class="ico">
 							<use xlink:href="#ico-pin"></use>
 						</svg>
@@ -113,15 +141,14 @@
 						Torna all'elenco
 					</a>
 				</div>
+				-->
 			</div>
 			<div class="serp-filter--sticky">
 				<section-filter (selectFilter)="filterService.setGroups()"></section-filter>
 			</div>
 		</div>
-		<router-outlet></router-outlet>
-		<!--
-		<section-serp-list class="serp-results" *ngIf="viewType == viewTypes.List"></section-serp-list>
-		<section-serp-map class="serp-results" *ngIf="viewType == viewTypes.Map"></section-serp-map>
-		-->
+		<!-- <router-outlet></router-outlet> -->
+		<serp-list-component *ngIf="viewType == viewTypes.List"></serp-list-component>
+		<serp-map-component *ngIf="viewType == viewTypes.Map"></serp-map-component>
 	</div>
 </div>

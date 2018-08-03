@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { environment } from '../environments/environment';
-import { HomeComponent, HotelComponent, RegionDetailComponent, SerpComponent, SerpListComponent, SerpMapComponent, PaymentComponent } from './pages';
+import { HomeComponent, HotelComponent, PaymentComponent, RegionDetailComponent, SearchComponent } from './pages';
 import { NotFoundComponent } from './sections';
 
 export function getRoutes(routes: Routes): Routes {
@@ -20,6 +20,9 @@ export function getRoutes(routes: Routes): Routes {
 
 const routes: Routes = [
 	{ path: '', component: HomeComponent, pathMatch: 'full' },
+	{ path: 'search', component: SearchComponent },
+	{ path: ':lang/search', component: SearchComponent },
+	/*
 	{
 		path: 'search', component: SerpComponent, children: [
 			{ path: '', redirectTo: 'list', pathMatch: 'full' },
@@ -34,6 +37,7 @@ const routes: Routes = [
 			{ path: 'map', component: SerpMapComponent },
 		]
 	},
+	*/
 	{ path: 'hotel/:id/:slug', component: HotelComponent },
 	{ path: ':lang/hotel/:id/:slug', component: HotelComponent },
 	{ path: 'region/:id', component: RegionDetailComponent },

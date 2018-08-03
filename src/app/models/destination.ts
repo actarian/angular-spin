@@ -10,10 +10,10 @@ export enum DestinationTypes {
 }
 
 export class Destination implements Document {
+	id: number | string;
 	abstract?: string;
 	code?: string;
 	icon?: string;
-	id: number;
 	name: string;
 	slug?: string;
 	texts: string[];

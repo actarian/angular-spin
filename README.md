@@ -18,7 +18,8 @@
 -----------------
 
 ## Demo
-[https://actarian.github.io/angular-spin/](https://actarian.github.io/angular-spin/)
+[http://eurospin-viaggi2.wslabs.it/](http://eurospin-viaggi2.wslabs.it/)
+<!-- [https://actarian.github.io/angular-spin/](https://actarian.github.io/angular-spin/) -->
 
 -----------------
 

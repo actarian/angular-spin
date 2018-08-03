@@ -1,0 +1,13 @@
+<div class="landing-search" [style.background-image]="'url(' + (page.images | image) + ')'">
+	<div class="landing-search--head">
+		<div class="container">
+			<div class="tit" [innerHTML]="page.abstract">-</div>
+		</div>
+	</div>
+	<div class="landing-search--desc">
+		<div class="container">
+			<div class="desc" [innerHTML]="page.description"></div>
+		</div>
+	</div>
+</div>
+<serp-component></serp-component>

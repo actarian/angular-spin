@@ -47,7 +47,7 @@ export class HotelMapComponent extends DisposableComponent implements AfterViewI
 			element: this.element
 		});
 		if (isPlatformBrowser(this.platformId)) {
-			combineLatest(this.map$, this.search.get()).pipe(
+			combineLatest(this.map$, this.search.getResults()).pipe(
 				takeUntil(this.unsubscribe)
 			).subscribe((data: any[]): void => {
 				this.zone.runOutsideAngular(() => {
@@ -174,10 +174,12 @@ export class HotelMapComponent extends DisposableComponent implements AfterViewI
 	}
 
 	setResult(map: mapboxgl.Map, hotel: SearchResult) {
-		console.log('HotelMapComponent.onClick', hotel);
-		this.zone.run(() => {
-			this.modalService.complete(this.modal, hotel);
-		});
+		if (hotel) {
+			console.log('HotelMapComponent.onClick', hotel);
+			this.zone.run(() => {
+				this.modalService.complete(this.modal, hotel);
+			});
+		}
 		/*
 		const segments = this.routeService.toRoute([hotel.slug]);
 		this.router.navigate(segments);

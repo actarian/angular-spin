@@ -36,16 +36,16 @@
 	position: relative;
 	z-index: 1;
 	background: white;
-	min-width: 50vw;
-	min-height: 50vh;
 	max-height: 90vh;
 	max-width: 90vw;
 	box-shadow: 0 10px 40px -5px rgba(0, 0, 0, 0.5);
 	overflow-y: auto;
 
 	@media (max-width: 500px) {
-		max-height: calc(100vh - 65px);
-		margin-top: 10vh;
+		max-height: calc(100% - 80px);
+		margin-top: 40px;
+		width: 90%;
+		max-width: none;
 	}
 
 	.modal-header {
@@ -55,12 +55,14 @@
 			z-index: 1;
 			color: #5f5d63;
 			display: flex;
-			font-size: 12px;
+			font-size: 11px;
 			align-items: center;
+			text-transform: uppercase;
+			margin-left: 4px;
 
 			.ico {
-				width: 18px;
-				height: 18px;
+				width: 12px;
+				height: 12px;
 				fill: #5f5d63;
 				margin-right: 4px;
 			}

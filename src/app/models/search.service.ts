@@ -1,4 +1,4 @@
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, Location } from '@angular/common';
 import { Inject, Injectable, Injector, PLATFORM_ID } from '@angular/core';
 import { Params, Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -20,7 +20,7 @@ import { Duration, durations, MainSearch, SearchResult } from './search';
 export class SearchService extends EntityService<SearchResult> {
 
 	get collection(): string {
-		return '/api/searchResult';
+		return ''; // '/api/searchResult';
 	}
 
 	calendar: CalendarOptions = new CalendarOptions();
@@ -44,16 +44,19 @@ export class SearchService extends EntityService<SearchResult> {
 		private routeService: RouteService,
 		private storageService: LocalStorageService,
 		private router: Router,
+		private location: Location,
 		private destinationService: DestinationService,
 		private filterService: FilterService,
 	) {
 		super(injector);
 		this.storage = this.storageService.tryGet();
+		/*
 		const search = this.storage.get('search');
 		if (search) {
 			this.model = new MainSearch(search as MainSearch);
 			this.model$.next(this.model);
 		}
+		*/
 		const lastDestinations = this.storage.get('lastDestinations');
 		this.lastDestinations = lastDestinations || [];
 	}
@@ -143,7 +146,6 @@ export class SearchService extends EntityService<SearchResult> {
 		}
 	}
 
-	// CERCA
 	onSearch(model) {
 		this.doStoreDestination(model.destination);
 		Object.assign(this.model, model);
@@ -156,9 +158,8 @@ export class SearchService extends EntityService<SearchResult> {
 			const segments = this.routeService.toRoute([this.model.destination.slug]);
 			this.router.navigate(segments);
 		} else {
-			this.router.navigate(['/search'], {
-				queryParams: this.queryParams
-			});
+			const segments = this.routeService.toRoute(['/search']);
+			this.router.navigate(segments, { queryParams: this.queryParams });
 		}
 	}
 
@@ -174,10 +175,11 @@ export class SearchService extends EntityService<SearchResult> {
 		this.doSearch();
 	}
 
-	doSearch() {
+	getResults(): Observable<SearchResult[]> {
 		let params = '';
 		if (this.model.destination) {
 			switch (this.model.destination.type) {
+				/*
 				case DestinationTypes.Facility:
 					params = `?name=${this.model.destination.name}`;
 					break;
@@ -194,6 +196,7 @@ export class SearchService extends EntityService<SearchResult> {
 					params = '';
 					// params = `?destinationNation=${this.model.destination.name}`;
 					break;
+					*/
 				case DestinationTypes.Promotion:
 					params = '';
 					// params = `?destinationNation=${this.model.destination.name}`;
@@ -202,7 +205,39 @@ export class SearchService extends EntityService<SearchResult> {
 			}
 		}
 		// ApiService get
-		this.get(params).subscribe(x => {
+		// return this.get(params);
+		return this.post('/proxy/api/booking/search/in', this.model).pipe(
+			map((x: any) => this.toCamelCase(x)),
+			map((x: any) => x.map(o => SearchResult.newCompatibleSearchResult(o)).filter((x: SearchResult) => {
+				if (!this.model.destination) {
+					return true;
+				}
+				let has: boolean = false;
+				switch (this.model.destination.type) {
+					case DestinationTypes.Facility:
+						has = x.name === this.model.destination.name;
+						break;
+					case DestinationTypes.Country:
+						has = x.destinationNation === this.model.destination.name;
+						break;
+					case DestinationTypes.Region:
+						has = x.destinationRegion === this.model.destination.name;
+						break;
+					case DestinationTypes.Destination:
+						has = x.destinationDescription === this.model.destination.name;
+						break;
+					case DestinationTypes.Category:
+					case DestinationTypes.Promotion:
+						has = true;
+						break;
+				}
+				return has;
+			})),
+		);
+	}
+
+	doSearch() {
+		this.getResults().subscribe(x => {
 			this.results$.next(x);
 		});
 	}
@@ -211,30 +246,29 @@ export class SearchService extends EntityService<SearchResult> {
 		if (isPlatformBrowser(this.platformId)) {
 			// console.log(this.model);
 			const url = this.router.url.split('?')[0];
-			const filters = groups.filter(group => group.selected)
-				.map((group) => {
-					return {
-						type: group.type,
-						items: group.items.filter(item => item.selected).map(item => {
-							return { id: item.id } as Option;
-						})
-					} as Group;
-				});
+			const filters = groups.filter(group => group.selected).map((group) => {
+				return {
+					type: group.type,
+					items: group.items.filter(item => item.selected).map(item => {
+						return { id: item.id } as Option;
+					})
+				} as Group;
+			});
 			this.queryParams = {
 				search: JSON.stringify(model),
 				filters: JSON.stringify(filters),
 				order: sorting ? sorting.id : null,
 			};
-			this.router.navigate([url], {
-				queryParams: this.queryParams
-			});
-			// this.routeService.toRoute
 			/*
-			const segments = this.routeService.toRoute(['/search']);
-			segments.push(this.routeService.toParams(this.model));
-			const path = this.router.serializeUrl(this.router.createUrlTree(segments));
-			this.location.replaceState(path);
+			this.router.navigate([url], {
+				queryParams: this.queryParams, replaceUrl: true
+			});
 			*/
+			const replaceUrl: string = this.router.serializeUrl(this.router.createUrlTree([url], {
+				queryParams: this.queryParams, replaceUrl: true
+			}));
+			this.location.replaceState(replaceUrl);
+			// this.routeService.toRoute
 			/*
 			// Set our navigation extras object
 			// that contains our global query params and fragment

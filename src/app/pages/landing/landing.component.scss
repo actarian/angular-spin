@@ -1,0 +1,130 @@
+@import "~scss/variables";
+
+/*--------------------------------------------------
+Landing Search
+--------------------------------------------------*/
+
+.landing-search {
+	height: 650px;
+	background-size: cover;
+	background-position: center;
+	user-select: none;
+	max-height: calc(100vh - 68px);
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	min-height: 360px;
+	position: relative;
+
+	&:before {
+		content: '';
+		position: absolute;
+		background: rgba(0, 0, 0, 0.25);
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: -1;
+
+		@include xxs-down {
+			display: none;
+		}
+	}
+
+	@include md-down {
+		height: 520px;
+	}
+
+	@include sm-down {
+		max-height: none;
+	}
+
+	@include xs-down {
+		height: auto;
+	}
+
+	@include xxs-down {
+		background-size: 100%;
+		background-repeat: no-repeat;
+		background-position: center 0;
+		display: block;
+		min-height: 0;
+		padding-top: calc(23.75% + 10px);
+		height: auto;
+	}
+
+
+	&--head {
+		flex: 1 1 auto;
+		color: #fff;
+		text-align: center;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		@include xxs-down {
+			display: block;
+		}
+
+		.tit {
+			font-size: 50px;
+			line-height: 1.2;
+			font-weight: 600;
+			margin: 0 0 40px;
+			transform: translateY(100%);
+
+			@include md-down {
+				font-size: 40px;
+				margin-bottom: 30px;
+			}
+
+			@include xs-down {
+				font-size: 22px;
+				margin-bottom: 20px;
+				padding: 0 10px;
+			}
+
+			@include xxs-down {
+				color: $tit-color;
+				text-align: left;
+				padding: 0 15px;
+				font-size: 18px;
+				margin-bottom: 15px;
+				transform: translate(0);
+			}
+		}
+	}
+
+	&--desc {
+		flex: 0 0 auto;
+		padding: 50px 0 10px;
+		background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+		color: #fff;
+
+		@include xxs-down {
+			padding: 0 0 10px;
+			background: transparent;
+		}
+
+		.desc {
+			padding: 0 15px;
+			font-size: 18px;
+			text-align: center;
+			max-width: 700px;
+			margin: 0 auto;
+
+			@include xs-down {
+				font-size: 14px;
+			}
+
+			@include xxs-down {
+				color: $text-color;
+				text-align: left;
+			}
+
+			p:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
+}

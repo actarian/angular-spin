@@ -43,6 +43,7 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 	booking: Booking = new Booking();
 	calendar: BookingCalendar = new BookingCalendar();
 	busy: boolean = false;
+	readmore: boolean = false;
 
 	constructor(
 		@Inject(PLATFORM_ID) private platformId: string,
@@ -135,8 +136,7 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 			if (checkouts.length) {
 				const nextDay = new Date(this.booking.checkIn);
 				nextDay.setDate(nextDay.getDate() + 1);
-				this.booking.checkOut = nextDay;
-				this.setNearestCheckOut();
+				this.setNearestCheckOut(nextDay);
 			}
 		});
 	}
@@ -163,12 +163,14 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 			}).getDate();
 			this.getCheckOut(nearestCheckIn).subscribe((checkouts: BookingAvailability[]) => {
 				this.busy = false;
-				this.setNearestCheckOut();
+				const nextDay = new Date(nearestCheckIn);
+				nextDay.setDate(nextDay.getDate() + 1);
+				this.setNearestCheckOut(nextDay);
 			});
 		});
 	}
 
-	setNearestCheckOut(): void {
+	setNearestCheckOut(nextDay: Date): void {
 		this.busy = true;
 		const checkIn = this.booking.checkIn;
 		const checkouts = this.calendar.checkouts;
@@ -177,7 +179,7 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 			return;
 		}
 		const nearestCheckOut = checkouts.reduce((a: BookingAvailability, b: BookingAvailability) => {
-			return (Math.abs(b.getDate().getTime() - checkIn.getTime()) < Math.abs(a.getDate().getTime() - checkIn.getTime()) ? b : a);
+			return (Math.abs(b.getDate().getTime() - nextDay.getTime()) < Math.abs(a.getDate().getTime() - nextDay.getTime()) ? b : a);
 		}).getDate();
 		this.getBookingOptions(nearestCheckOut).subscribe((options: BookingOptions) => {
 			this.booking.options = options;
@@ -212,6 +214,7 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 		this.modalService.open({ component: HotelMapComponent, data: this.hotel, className: 'hotel-map' }).pipe(
 			takeUntil(this.unsubscribe)
 		).subscribe((e: ModalEvent<ModalCompleteEvent | ModalCloseEvent>) => {
+			console.log('onShowMap.complete', e);
 			if (e.data) {
 				const hotel = e.data as Hotel;
 				const segments = this.routeService.toRoute([hotel.slug]);

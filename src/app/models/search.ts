@@ -19,7 +19,7 @@ export const durations: Duration[] = [
 export class MainSearch {
 	query?: string;
 	destination?: Destination;
-	startDate?: Date;
+	startDate?: Date = new Date();
 	flexibleDates: boolean = false;
 	duration: Duration = durations[0];
 	adults: number = 2;
@@ -38,10 +38,10 @@ export class MainSearch {
 			this.childrens = options.childrens || [];
 		}
 	}
-
 }
 
 export class SearchResult implements Document {
+	id: number | string;
 	abstract: string;
 	accomodation: string;
 	advice: number;
@@ -51,62 +51,48 @@ export class SearchResult implements Document {
 	destinationNation?: string;
 	destinationProvince?: string;
 	destinationRegion?: string;
-	earlyBookingText?: string;
 	earlyBooking?: string; // '28/05'
+	earlyBookingText?: string;
 	exactPrice: boolean;
 	from: string; // "27/05",
-	name: string;
-	id: number;
-	structureId: number;
 	latitude?: number; // "40.551733",
 	longitude?: number; // "14.905204",
+	name: string;
 	overlayCoverImage: string;
 	overlayCoverText: string;
 	photo: string;
 	price: number;
 	rating?: string; // "****",
+	selected?: boolean = false;
+	slug: string;
+	structureId?: number;
 	tags: number[];
 	to: string; // "15/06"
 	topDestinationDescription?: string;
 	totalPrice: number;
 	trustPilot?: TrustPilot;
 	type: string;
-	slug: string;
 	visible?: boolean = true;
-	selected?: boolean = false;
+	// compatibility
+	frontEndName?: string;
+	structureID?: number;
+	trustPilot_averageStars?: number;
+	trustPilot_nReviews?: number;
+	url?: string;
+
 	constructor(options?: SearchResult) {
 		if (options) {
-			this.abstract = options.abstract;
-			this.accomodation = options.accomodation;
-			this.advice = options.advice;
-			this.category = options.category;
-			this.created = options.created;
-			this.destinationDescription = options.destinationDescription;
-			this.destinationNation = options.destinationNation;
-			this.destinationProvince = options.destinationProvince;
-			this.destinationRegion = options.destinationRegion;
-			this.earlyBooking = options.earlyBooking;
-			this.earlyBookingText = options.earlyBookingText;
-			this.exactPrice = options.exactPrice;
-			this.from = options.from;
-			this.name = options.name;
-			this.id = options.id;
-			this.latitude = options.latitude;
-			this.longitude = options.longitude;
-			this.overlayCoverImage = options.overlayCoverImage;
-			this.overlayCoverText = options.overlayCoverText;
-			this.photo = options.photo;
-			this.price = options.price;
-			this.rating = options.rating || '';
-			this.structureId = options.structureId;
-			this.tags = options.tags;
-			this.to = options.to;
-			this.topDestinationDescription = options.topDestinationDescription;
-			this.totalPrice = options.totalPrice;
-			this.trustPilot = options.trustPilot;
-			this.type = options.type;
-			this.slug = options.slug;
+			Object.assign(this, options);
 		}
+	}
+
+	public static newCompatibleSearchResult(options: SearchResult): SearchResult {
+		const searchResult: SearchResult = new SearchResult(options);
+		searchResult.name = options.frontEndName;
+		searchResult.photo = options.photo ? '/media/immagini/' + options.photo : null;
+		searchResult.structureId = options.structureID;
+		searchResult.trustPilot = new TrustPilot({ averageStars: options.trustPilot_averageStars, totalReviews: options.trustPilot_nReviews });
+		return searchResult;
 	}
 
 }

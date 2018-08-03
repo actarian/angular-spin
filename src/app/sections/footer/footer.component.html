@@ -35,22 +35,22 @@
 			<h3>Condizioni</h3>
 			<ul class="footer-links">
 				<li>
-					<a href="#">Privacy Policy</a>
+					<a [routerLink]="'privacy' | slugAsync">Privacy Policy</a>
 				</li>
 				<li>
-					<a href="#">Gestione Cookies</a>
+					<a [routerLink]="'cookie-policy' | slugAsync">Gestione Cookies</a>
 				</li>
 				<li>
-					<a href="#">Come funziona</a>
+					<a [routerLink]="'how-it-works' | slugAsync">Come funziona</a>
 				</li>
 				<li>
-					<a href="#">Termini e condizioni vendita</a>
+					<a [routerLink]="'terms' | slugAsync">Termini e condizioni vendita</a>
 				</li>
 				<li>
-					<a href="#">Informazioni utili</a>
+					<a [routerLink]="'faq' | slugAsync">Informazioni utili</a>
 				</li>
 				<li>
-					<a href="#">Carta regalo</a>
+					<a [routerLink]="'gift-card' | slugAsync">Carta regalo</a>
 				</li>
 			</ul>
 		</div>
@@ -58,7 +58,7 @@
 			<h3>Servizi</h3>
 			<ul class="footer-links">
 				<li>
-					<a href="#">Contatti</a>
+					<a [routerLink]="'contacts' | slugAsync">Contatti</a>
 				</li>
 				<li>
 					<a href="#">Sfoglia volantini</a>

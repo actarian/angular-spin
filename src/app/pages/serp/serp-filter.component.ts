@@ -30,7 +30,7 @@ export class SerpFilterComponent extends DisposableComponent implements OnInit {
 
 	}
 
-	onToggle(id: number, groupType: GroupType) {
+	onToggle(id: number | string, groupType: GroupType) {
 		this.filterService.onToggle(id, groupType);
 		this.selectFilter.emit(this.filterService.valueSelected);
 	}

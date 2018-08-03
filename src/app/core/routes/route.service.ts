@@ -52,6 +52,8 @@ export class RouteService {
 	public params: Observable<Params>;
 	public queryParams: Observable<Params>;
 
+	private busy: boolean;
+
 	public get currentLang(): string {
 		return this._lang;
 	}
@@ -195,7 +197,7 @@ export class RouteService {
 					})
 				);
 				this.queryParams = route.queryParams.pipe(
-					tap(x => console.log(x)),
+					tap(x => console.log('queryParams', x)),
 					concatMap(x => {
 						return of(this.toData(x));
 					})

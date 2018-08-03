@@ -131,7 +131,7 @@ export class FilterService {
 						type: GroupType.Rating,
 						selectionType: GroupSelectionType.Multiple,
 						name: 'Categoria',
-						items: ratings.sort((a, b) => b.id - a.id),
+						items: ratings.sort((a, b) => Number(b.id) - Number(a.id)),
 						match: function (result, option) {
 							return result.rating === option.name;
 						}
@@ -174,7 +174,7 @@ export class FilterService {
 		this.sortings$.next(this.sorting);
 	}
 
-	onToggle(id: number, groupType: GroupType) {
+	onToggle(id: number | string, groupType: GroupType) {
 		const groups = this.groups$.getValue();
 		const group = groups.find(group => group.type === groupType);
 		if (group) {
@@ -194,7 +194,7 @@ export class FilterService {
 		}
 	}
 
-	onSet(id: number, groupType: GroupType) {
+	onSet(id: number | string, groupType: GroupType) {
 		const groups = this.groups$.getValue();
 		const group = groups.find(group => group.type === groupType);
 		if (group) {

@@ -53,6 +53,7 @@ Switch Map List
 			white-space: nowrap;
 			font-size: 12px;
 			text-transform: none;
+			letter-spacing: 0;
 
 			svg {
 				fill: #fff;
@@ -74,6 +75,8 @@ Switch Map List
 			img {
 				position: relative;
 				z-index: -1;
+				width: 100%;
+				max-width: none;
 			}
 
 			.btn {
@@ -270,8 +273,8 @@ Serp Content
 }
 
 .serp-filter {
-	flex: 0 0 310px;
-	width: 310px;
+	flex: 0 0 320px;
+	width: 320px;
 	display: block;
 	padding: 0 30px 0 15px;
 	/* --- */

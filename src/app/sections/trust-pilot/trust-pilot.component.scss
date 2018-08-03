@@ -8,8 +8,8 @@ Hotel Trust
 
 	font-size: 10px;
 	text-transform: uppercase;
-	text-align: right;
 	margin-top: 3px;
+	display: block;
 
 	@include xs-down {
 		text-align: left;
@@ -93,7 +93,7 @@ Hotel Trust
 	}
 
 	.hotel-head & {
-		margin-top: 10px;
+		margin-top: 2px;
 
 		.text {
 			display: inline-block;

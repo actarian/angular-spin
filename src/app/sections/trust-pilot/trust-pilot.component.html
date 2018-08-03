@@ -5,7 +5,7 @@
 	poor: 		trustPilot.averageStars >= 2 && trustPilot.averageStars < 4,
 	bad: 		trustPilot.averageStars >= 8 && trustPilot.averageStars < 2
 }">
-<span class="number">{{trustPilot.averageStars}}</span>
+	<span class="number">{{trustPilot.averageStars}}</span>
 <span class="text" *ngIf="trustPilot.averageStars >= 8 && trustPilot.averageStars < 10">Eccellente</span>
 <span class="text" *ngIf="trustPilot.averageStars >= 6 && trustPilot.averageStars < 8">Buono</span>
 <span class="text" *ngIf="trustPilot.averageStars >= 4 && trustPilot.averageStars < 6">Medio</span>

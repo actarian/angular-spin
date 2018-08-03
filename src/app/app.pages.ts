@@ -1,12 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CoreModule } from './core/core.module';
 import { Pages } from './core/pages';
-import { HomeComponent, HotelComponent, ProfileComponent, PaymentComponent, RegionDetailComponent, RegionsComponent, SerpComponent, SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent } from './pages';
+import { GenericComponent, GiftCardComponent, HomeComponent, HotelComponent, LandingComponent, PaymentComponent, ProfileComponent, RegionDetailComponent, RegionsComponent, SearchComponent, SerpComponent, SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent } from './pages';
 
 const pages: Pages = {
+	'38': GenericComponent,
 	'1': HomeComponent,
-	SerpComponent: SerpComponent,
 	'9': HotelComponent,
+	'30': LandingComponent,
+	'44': GiftCardComponent,
+	'21': PaymentComponent,
+	SearchComponent: SearchComponent,
+	SerpComponent: SerpComponent,
 	SignComponent: SignComponent,
 	SignUpComponent: SignUpComponent,
 	SignInComponent: SignInComponent,

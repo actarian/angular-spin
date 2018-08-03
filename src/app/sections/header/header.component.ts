@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ElementRef } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { DisposableComponent } from '../../core/disposable';
 import { Label } from '../../core/labels';
@@ -21,6 +21,7 @@ export class HeaderComponent extends DisposableComponent implements OnInit {
 	public languages: any[];
 	public currentLanguage: any;
 	public navToggle: boolean;
+	public subnavActive: string;
 
 	constructor(
 		public routeService: RouteService,

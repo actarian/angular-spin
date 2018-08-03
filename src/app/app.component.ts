@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, DoCheck } from '@angular/core';
+import { takeUntil } from '../../node_modules/rxjs/operators';
+import { SlugService } from './core';
 import { DisposableComponent } from './core/disposable';
-import { Logger } from './core/logger';
 
 @Component({
 	selector: 'app-component',
@@ -8,12 +9,22 @@ import { Logger } from './core/logger';
 	styleUrls: ['./app.component.scss']
 })
 
-export class AppComponent extends DisposableComponent {
+export class AppComponent extends DisposableComponent implements DoCheck {
+
+	private date = new Date();
 
 	constructor(
-		private logger: Logger,
+		private slugService: SlugService,
 	) {
 		super();
+		this.slugService.register().pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe();
+	}
+
+	ngDoCheck() {
+		// called whenever Angular runs change detection
+		this.slugService.collect();
 	}
 
 }

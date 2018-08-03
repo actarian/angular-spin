@@ -6,9 +6,10 @@ export enum ImageType {
 }
 
 export class Image {
-	id: number;
+	id: number | string;
 	url: string;
 	title?: string;
+	description?: string;
 	fileName?: string;
 	type?: ImageType;
 }

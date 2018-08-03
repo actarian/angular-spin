@@ -193,7 +193,7 @@ export class FacebookService {
 		return this.facebook().pipe(
 			concatMap(f => {
 				return fromPromise(new Promise((resolve, reject) => {
-					console.log('f', f);
+					// console.log('f', f);
 					f.logout(r => {
 						resolve(r);
 						this.storage.delete('facebook');

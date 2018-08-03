@@ -52,11 +52,11 @@ export class WishlistService extends IdentityService<SearchResult> {
 
 	doAdd(identity: Identity) {
 		this.modalService.open({ component: AuthComponent }).subscribe((e: ModalEvent<ModalCompleteEvent | ModalCloseEvent>) => {
-			console.log(e);
+			console.log('WishlistService.doAdd', e);
 			if (e instanceof ModalCompleteEvent) {
-				console.log('ModalCompleteEvent', e);
+				console.log('WishlistService.ModalCompleteEvent', e);
 			} else if (e instanceof ModalCloseEvent) {
-				console.log('ModalCloseEvent', e);
+				console.log('WishlistService.ModalCloseEvent', e);
 			}
 		});
 		this.post(identity).subscribe(result => {

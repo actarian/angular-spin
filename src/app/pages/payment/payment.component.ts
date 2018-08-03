@@ -2,7 +2,7 @@ import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { RouteService } from '../../core';
 import { PageComponent } from '../../core/pages';
-import { User, UserService } from '../../models';
+import { User, UserService, UserSignUp } from '../../models';
 
 @Component({
 	selector: 'page-payment',
@@ -13,6 +13,9 @@ import { User, UserService } from '../../models';
 
 export class PaymentComponent extends PageComponent implements OnInit {
 	@Input() user: User;
+	@Input() step: Number = 1;
+
+	model: UserSignUp = new UserSignUp();
 
 	constructor(
 		protected routeService: RouteService,
@@ -27,7 +30,7 @@ export class PaymentComponent extends PageComponent implements OnInit {
 	}
 
 	getUser(): void {
-		this.userService.getDetailById(this.getId()).pipe(
+		this.userService.currentUser().pipe(
 			takeUntil(this.unsubscribe)
 		).subscribe(user => this.user = user);
 	}

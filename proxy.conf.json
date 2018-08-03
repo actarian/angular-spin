@@ -6,7 +6,7 @@
 			"^/proxy": ""
 		},
 		"secure": true,
-		"target": "https://www.eurospin-viaggi.it"
+		"target": "http://eurospin-viaggi.wslabs.it"
 	},
 	"/media/immagini": {
 		"changeOrigin": true,
@@ -15,6 +15,15 @@
 			"^/media/immagini": "/media/immagini"
 		},
 		"secure": true,
-		"target": "https://www.eurospin-viaggi.it"
+		"target": "http://eurospin-viaggi.wslabs.it"
+	},
+	"/api/page": {
+		"changeOrigin": true,
+		"logLevel": "debug",
+		"pathRewrite": {
+			"^/api/page": "/api/page"
+		},
+		"secure": true,
+		"target": "http://eurospin-viaggi2.wslabs.it"
 	}
 }

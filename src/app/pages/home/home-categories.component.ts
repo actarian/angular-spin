@@ -1,5 +1,8 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { Category, CategoryService } from '../../models';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { PageIndex } from '../../core';
+import { Category, CategoryService, LandingService } from '../../models';
 
 @Component({
 	selector: 'section-categories',
@@ -10,14 +13,23 @@ import { Category, CategoryService } from '../../models';
 
 export class HomeCategoriesComponent implements OnInit {
 
+	@Input() type: number;
+	items$: Observable<PageIndex[]>; // type, destination, time
+
 	categories: Category[] = [];
 
 	constructor(
+		private landingService: LandingService,
 		private categoryService: CategoryService,
-	) { }
+	) {
+
+	}
 
 	ngOnInit() {
-		this.getCategories();
+		this.items$ = this.landingService.get().pipe(
+			map(x => x.filter((p: PageIndex) => p.type === this.type))
+		);
+		// this.getCategories();
 	}
 
 	getCategories(): void {

@@ -31,7 +31,6 @@
 				<div *ngIf="email.errors.required">{{ 'errors.required' | translate }}</div>
 				<div *ngIf="email.errors.pattern">{{ 'errors.email' | translate }}</div>
 			</div>
-			<small class="form-text text-muted">We'll never share your email with anyone else.</small>
 		</div>
 		<div class="form-group">
 			<label for="emailConfirm">{{ 'signUp.emailConfirm' | translate }} <sup>*</sup></label>
@@ -44,25 +43,28 @@
 		</div>
 		<div class="form-group">
 			<label for="password">{{ 'signUp.password' | translate }} <sup>*</sup> <small class="text-muted">({{ 'signUp.passwordHint' | translate }})</small></label>
-			<input [type]="passwordReveal.value ? 'text' : 'password'" class="form-control" required minlength="6" [(ngModel)]="model.password" name="password" placeholder="{{ 'signUp.password' | translate }}" #password="ngModel" autocomplete="password">
+			<div class="form-password-reveal">
+				<input [type]="passwordReveal.value ? 'text' : 'password'" class="form-control" required minlength="6" [(ngModel)]="model.password" name="password" placeholder="{{ 'signUp.password' | translate }}" #password="ngModel" autocomplete="password">
+				<div class="checkbox">
+					<label class="form-check-label">
+						<input type="checkbox" class="form-check-input" [(ngModel)]="model.passwordReveal" name="passwordReveal" #passwordReveal="ngModel">
+						<span>{{ 'signUp.passwordReveal' | translate }}</span>
+					</label>
+				</div>
+			</div>
 			<div *ngIf="password.invalid && (signUp.submitted || password.dirty || password.touched)" class="alert alert-danger">
 				<div *ngIf="password.errors.required">{{ 'errors.required' | translate }}</div>
 				<div *ngIf="password.errors.minlength">{{ 'errors.minlength' | label : { value: password.errors.minlength.requiredLength } }}</div>
 			</div>
 		</div>
 		<div class="form-group">
-			<div class="checkbox">
-				<label class="form-check-label">
-					<input type="checkbox" class="form-check-input" [(ngModel)]="model.passwordReveal" name="passwordReveal" #passwordReveal="ngModel">
-					<span>{{ 'signUp.passwordReveal' | translate }}</span>
-				</label>
-			</div>
+
 		</div>
 		<div class="form-group">
 			<div class="checkbox">
 				<label>
 					<input type="checkbox" class="form-check-input" required [(ngModel)]="model.privacyAccepted" name="privacyAccepted" #privacyAccepted="ngModel">
-					<span>{{ 'signUp.privacy' | translate }}</span>
+					<span>Preso atto dell’<a href="http://eurospin-viaggi.wslabs.it/media/userfiles/files/20180522-Informativa_Newsletter.pdf" target="_blank">informativa</a>, accetto al trattamento dei miei dati personali ai fini dell’invio di proposte comerciali da parte di Eurospin</span>
 				</label>
 			</div>
 			<div *ngIf="privacyAccepted.invalid && (signUp.submitted || privacyAccepted.dirty || privacyAccepted.touched)" class="alert alert-danger">

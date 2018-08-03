@@ -15,6 +15,32 @@ Promotions
 		margin: 20px 0 40px;
 	}
 
+
+	.btn--ghost {
+		background: transparent;
+		border: 1px solid $tit-color;
+		color: $tit-color;
+		max-width: none;
+		padding: 9px 15px;
+
+		@include xs-down {
+			text-decoration: none;
+			padding: 6px 12px;
+			border-color: rgba($tit-color, .7);
+		}
+
+		&:hover {
+			background: transparent;
+			color: $tit-color;
+		}
+
+		&:focus,
+		&:active,
+		&:active:focus {
+			background: transparent;
+		}
+	}
+
 	.card {
 		display: block;
 		width: 100%;
@@ -47,8 +73,15 @@ Promotions
 				top: 50%;
 				left: 50%;
 				transform: translate(-50%, -50%);
-				width: 100%;
+				height: 100%;
 				max-width: none;
+
+				opacity: 0; // lazy-image
+				transition: .3s ease-in-out;
+				transition-property: transform, opacity;
+				&[src] {
+					opacity: 1;
+				}
 			}
 		}
 

@@ -1,5 +1,8 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { Promotion, PromotionService } from '../../models';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { PageIndex } from '../../core';
+import { LandingService, Promotion, PromotionService } from '../../models';
 
 @Component({
 	selector: 'section-promotions',
@@ -10,14 +13,21 @@ import { Promotion, PromotionService } from '../../models';
 
 export class HomePromotionsComponent implements OnInit {
 
+	@Input() type: number;
+	items$: Observable<PageIndex[]>; // type, destination, time
+
 	promotions: Promotion[] = [];
 
 	constructor(
+		private landingService: LandingService,
 		private promotionService: PromotionService,
 	) { }
 
 	ngOnInit() {
-		this.getPromotions();
+		this.items$ = this.landingService.get().pipe(
+			map(x => x.filter((p: PageIndex) => p.type === this.type))
+		);
+		// this.getPromotions();
 	}
 
 	getPromotions(): void {

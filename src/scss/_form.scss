@@ -87,7 +87,7 @@ Checkbox
 					z-index: 1;
 					width: 14px;
 					height: 14px;
-					border: 1px solid #b7b7b7;
+					border: 1px solid darken($border-color, 30%);
 					background: #fff;
 					border-radius: 2px;
 				}
@@ -176,7 +176,7 @@ Ui Spinner
 	.ui-spinner-button {
 		flex: 0 0 24px;
 		width: 24px;
-		background-color: transparent;
+		background-color: #fff;
 		margin: 0;
 		padding: 0;
 		border: none;
@@ -239,11 +239,20 @@ Form
 		}
 	}
 
+
 	label {
-		font-size: 12px;
+		font-size: 13px;
 		font-weight: normal;
 		color: $text-color;
 		margin-bottom: 3px;
+
+		@include xs-down {
+			font-size: 12px;
+		}
+
+		sup {
+			color: rgba($alert-color, 1);
+		}
 	}
 
 	small {
@@ -259,14 +268,26 @@ Form
 	.form-control,
 	textarea,
 	input[type="text"],
-	input[type="email"] {
-		border: 1px solid $border-color;
+	input[type="email"],
+	input[type="password"],
+	input[type="tel"],
+	input[type="number"],
+	input[type="date"] {
+		border: 1px solid darken($border-color, 8%);
 		background: #fff;
-		border-radius: 0;
 		box-shadow: none;
+		border-radius: 1px;
 
 		&.ng-invalid:not(.ng-untouched) {
 			border-color: rgba($alert-color, .5);
+		}
+
+		&:focus {
+			border-color: rgba($tertiary-color, .5);
+		}
+
+		&::placeholder {
+			color: rgba($text-color, .6);
 		}
 	}
 
@@ -291,4 +312,38 @@ Form
 		margin: 9px 0;
 	}
 
+}
+
+
+
+/*--------------------------------------------------
+Form Password Reveal
+--------------------------------------------------*/
+
+.form-password-reveal {
+	display: flex;
+	align-items: flex-end;
+
+	@include xs-down {
+		flex-wrap: wrap;
+	}
+
+	.form-control {
+		flex: 0 1 auto;
+		margin-right: 10px;
+
+		@include xs-down {
+			flex: 1 1 100%;
+		}
+	}
+
+	&>div {
+		flex: 0 0 auto;
+		padding-bottom: 6px;
+		white-space: nowrap;
+
+		@include xs-down {
+			padding-top: 6px;
+		}
+	}
 }

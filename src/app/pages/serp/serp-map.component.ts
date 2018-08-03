@@ -10,7 +10,7 @@ import { FilterService, SearchResult, SearchService } from '../../models';
 
 
 @Component({
-	selector: 'section-serp-map',
+	selector: 'serp-map-component',
 	templateUrl: './serp-map.component.html',
 	styleUrls: ['./serp-map.component.scss'],
 	encapsulation: ViewEncapsulation.Emulated,
@@ -127,9 +127,11 @@ export class SerpMapComponent extends DisposableComponent implements AfterViewIn
 						source: 'results',
 						// filter: ['!=', ['id'], 1],
 						filter: ['!has', 'point_count'],
+						/*
 						paint: {
 							'icon-opacity': ['case', ['feature-state', 'selected'], ['number', 0], ['number', 1]],
 						},
+						*/
 						/*
 						paint: {
 							'circle-color': '#1676c1',
@@ -149,6 +151,7 @@ export class SerpMapComponent extends DisposableComponent implements AfterViewIn
 				});
 			}
 
+			/*
 			if (!map.getLayer('selected-point')) {
 				map.loadImage('assets/img/map-selected-pin.png', (error, image) => {
 					if (error) {
@@ -166,6 +169,7 @@ export class SerpMapComponent extends DisposableComponent implements AfterViewIn
 					});
 				});
 			}
+			*/
 
 			this.onBoundResults(map, results);
 		}

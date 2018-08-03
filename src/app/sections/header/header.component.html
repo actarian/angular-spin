@@ -1,28 +1,28 @@
 <div class="top-header"><img src="assets/img/top.png" alt=""></div>
 <header class="header" [ngClass]="{'nav-active': navToggle}">
 	<div class="container">
-		<a href="" [routerLink]="'' | route" class="logo">
+		<a href="" [routerLink]="'homepage' | slugAsync" class="logo">
 			<img src="assets/img/logo-eurospin-viaggi.png" alt="Logo Eurospin Viaggi">
 		</a>
 		<div class="desktop-navbar">
 			<ul class="navbar-nav">
 				<li class="nav-item">
-					<a class="nav-link" [routerLink]="'' | route" routerLinkActive="active">{{ 'header.homepage' | translate }}</a>
+					<a class="nav-link" [routerLink]="'homepage' | slugAsync" routerLinkActive="active">{{ 'header.homepage' | translate }}</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" [routerLink]="'regions' | route" routerLinkActive="active">{{ 'header.destinations' | translate }}</a>
+					<button type="button" class="btn--link nav-link" [ngClass]="{'active': subnavActive == 'destinazioni'}" (click)="subnavActive = subnavActive == 'destinazioni' ? null : 'destinazioni'">{{ 'header.destinations' | translate }}</button>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" [routerLink]="'categories' | route" routerLinkActive="active">{{ 'header.categories' | translate }}</a>
+					<button type="button" class="btn--link nav-link" [ngClass]="{'active': subnavActive == 'categorie'}" (click)="subnavActive = subnavActive == 'categorie' ? null : 'categorie'">{{ 'header.categories' | translate }}</button>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" [routerLink]="'informations' | route" routerLinkActive="active">{{ 'header.informations' | translate }}</a>
+					<button type="button" class="btn--link nav-link" [ngClass]="{'active': subnavActive == 'informazioni'}" (click)="subnavActive = subnavActive == 'informazioni' ? null : 'informazioni'">{{ 'header.informations' | translate }}</button>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" [routerLink]="'gift-card' | route" routerLinkActive="active">{{ 'header.giftCard' | translate }}</a>
+					<a class="nav-link" [routerLink]="'gift-card' | slugAsync" routerLinkActive="active">{{ 'header.giftCard' | translate }}</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" [routerLink]="'contacts' | route" routerLinkActive="active">{{ 'header.contacts' | translate }}</a>
+					<a class="nav-link" [routerLink]="'contacts' | slugAsync" routerLinkActive="active">{{ 'header.contacts' | translate }}</a>
 				</li>
 			</ul>
 			<div class="navbar-actions">
@@ -60,6 +60,136 @@
 					</div>
 					<span>Menu</span>
 				</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="subnav subnav-destinazioni" *ngIf="subnavActive == 'destinazioni'">
+		<button class="subnav-close" (click)="subnavActive = null">
+			<svg class="ico"><use xlink:href="#ico-prev"></use></svg>
+			indietro
+		</button>
+		<div class="container">
+			<div class="subnav-col">
+				<h3>Italia</h3>
+				<ul>
+					<li><a href="/it/viaggi_in_abruzzo">Abruzzo</a></li>
+					<li><a href="/it/viaggi_in_basilicata">Basilicata</a></li>
+					<li><a href="/it/viaggi_in_calabria">Calabria</a></li>
+					<li><a href="/it/viaggi_in_campania">Campania</a></li>
+					<li><a href="/it/viaggi_emilia_romagna">Emilia Romagna</a></li>
+					<li><a href="/it/viaggi_friuli_venezia_giulia">Friuli Venezia Giulia</a></li>
+					<li><a href="/it/viaggi_in_lazio">Lazio</a></li>
+					<li><a href="/it/viaggi_in_liguria">Liguria</a></li>
+					<li><a href="/it/viaggi_in_lombardia">Lombardia</a></li>
+					<li><a href="/it/viaggi_marche">Marche</a></li>
+					<li><a href="/it/viaggi_in_molise">Molise</a></li>
+					<li><a href="/it/viaggi_in_piemonte">Piemonte</a></li>
+					<li><a href="/it/viaggi_in_puglia">Puglia</a></li>
+					<li><a href="/it/viaggi_in_sardegna">Sardegna</a></li>
+					<li><a href="/it/viaggi_in_sicilia">Sicilia</a></li>
+					<li><a href="/it/viaggi_in_toscana">Toscana</a></li>
+					<li><a href="/it/viaggi_trentino_alto_adige">Trentino Alto Adige</a></li>
+					<li><a href="/it/viaggi_in_umbria">Umbria</a></li>
+					<li><a href="/it/viaggi_valle_aosta">Valle d'Aosta</a></li>
+					<li><a href="/it/viaggi_in_veneto">Veneto</a></li>
+				</ul>
+			</div>
+			<div class="subnav-col">
+				<h3>Estero</h3>
+				<ul>
+					<li><a href="/it/viaggi_in_austria">Austria</a></li>
+					<li><a href="/it/">Caraibi</a></li>
+					<li><a href="/it/">Corsica</a></li>
+					<li><a href="/it/viaggi_in_croazia">Croazia</a></li>
+					<li><a href="/it/viaggi_a_cuba">Cuba</a></li>
+					<li><a href="/it/viaggi_in_egitto">Egitto</a></li>
+					<li><a href="/it/viaggi_in_francia">Francia</a></li>
+					<li><a href="/it/viaggi_in_germania">Germania</a></li>
+					<li><a href="/it/viaggi_in_grecia">Grecia</a></li>
+					<li><a href="/it/viaggi_in_kenya">Kenya</a></li>
+					<li><a href="/it/viaggi_mediterraneo_occidentale">Mediterraneo Occidentale</a></li>
+					<li><a href="/it/viaggi_mediterraneo_orientale">Mediterraneo Orientale</a></li>
+					<li><a href="/it/viaggi_in_messico">Messico</a></li>
+					<li><a href="/it/viaggi_in_slovenia">Slovenia</a></li>
+					<li><a href="/it/viaggi_in_spagna">Spagna</a></li>
+					<li><a href="/it/viaggi_zanzibar">Tanzania</a></li>
+					<li><a href="/it/viaggi_in_ungheria">Ungheria</a></li>
+				</ul>
+			</div>
+			<div class="subnav-col">
+				<h3>Aree turistiche</h3>
+				<ul>
+					<li><a href="/it/viaggi_altopiano_paganella">Altipiano della Paganella</a></li>
+					<li><a href="/it/viaggi_cilento">Cilento</a></li>
+					<li><a href="/it/viaggi_costa_degli_dei">Costa degli Dei</a></li>
+					<li><a href="/it/viaggi_altopiano_folgaria_lavarone">Folgaria e Lavarone</a></li>
+					<li><a href="/it/viaggi_gargano">Gargano</a></li>
+					<li><a href="/it/viaggi_sulle_isole">Isole</a></li>
+					<li><a href="/it/viaggi_sul_lago_di_garda">Lago di Garda</a></li>
+					<li><a href="/it/viaggi_nelle_langhe">Langhe</a></li>
+					<li><a href="/it/viaggi_nella_maremma">Maremma</a></li>
+					<li><a href="/it/viaggi_primiero">Primiero</a></li>
+					<li><a href="/it/viaggi_riviera_ligure_ponente">Riviera Ligure di Ponente</a></li>
+					<li><a href="/it/viaggi_in_salento">Salento</a></li>
+					<li><a href="/it/viaggi_riviera_veneto_friulana">Spiagge Veneto-Friuli</a></li>
+					<li><a href="/it/viaggi_colli_euganei">Terme Veneto</a></li>
+					<li><a href="/it/viaggi_val_di_cembra">Val di Cembra</a></li>
+					<li><a href="/it/viaggi_val_di_fassa">Val di Fassa</a></li>
+					<li><a href="/it/viaggi_val_di_fiemme">Val di Fiemme</a></li>
+					<li><a href="/it/viaggi_val_di_non">Val di Non</a></li>
+					<li><a href="/it/viaggi_val_di_sole">Val di Sole</a></li>
+					<li><a href="/it/viaggi_val_gardena">Val Gardena</a></li>
+					<li><a href="/it/viaggi_val_pusteria">Val Pusteria</a></li>
+					<li><a href="/it/viaggi_val_rendena">Val Rendena</a></li>
+					<li><a href="/it/viaggi_val_senales">Val Senales</a></li>
+					<li><a href="/it/viaggi_val_venosta">Val Venosta</a></li>
+					<li><a href="/it/viaggi_valle_isarco">Valle Isarco</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="subnav subnav-categorie" *ngIf="subnavActive == 'categorie'">
+		<button class="subnav-close" (click)="subnavActive = null">
+				<svg class="ico"><use xlink:href="#ico-prev"></use></svg>
+				indietro
+			</button>
+		<div class="container">
+			<div class="subnav-col">
+				<ul>
+					<li><a href="/it/viaggi_mare_italia"> Mare Italia </a></li>
+					<li><a href="/it/viaggi_sardegna_traghetto"> Sardegna + traghetto </a></li>
+					<li><a href="/it/viaggi_in_montagna"> Montagna </a></li>
+					<li><a href="/it/viaggi_in_crociera"> Crociere </a></li>
+					<li><a href="/it/viaggi_terme_benessere"> Terme &amp; benessere </a></li>
+					<li><a href="/it/viaggi_lago"> Lago </a></li>
+					<li><a href="/it/viaggi_campagna"> Campagna </a></li>
+					<li><a href="/it/vacanze_a_tema"> Vacanze a tema </a></li>
+					<li><a href="/it/viaggi_mare_estero"> Mare estero </a></li>
+					<li><a href="/it/viaggi_in_città"> Città </a></li>
+					<li><a href="/it/vacanze_residence_appartamenti"> Residence &amp; Appartamenti </a></li>
+					<li><a href="/it/viaggi_tour_organizzati"> Tour </a></li>
+					<li><a href="/it/viaggi_last_second"> Last Second </a></li>
+					<li><a href="/it/le_nostre_stelle"> <span class="lenostrestelle">Le nostre stelle</span> </a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="subnav subnav-informazioni" *ngIf="subnavActive == 'informazioni'">
+		<button class="subnav-close" (click)="subnavActive = null">
+			<svg class="ico"><use xlink:href="#ico-prev"></use></svg>
+			indietro
+		</button>
+		<div class="container">
+			<div class="subnav-col">
+				<ul>
+					<li><a href="/it/le_nostre_garanzie">Le nostre garanzie</a></li>
+					<li><a href="/it/come_funziona">Come funziona</a></li>
+					<li><a href="/it/condizioni_di_vendita">Modulo informativo per contratti di pacchetto turistico e condizioni di vendita</a></li>
+					<li><a href="/it/faq">Informazioni utili</a></li>
+				</ul>
 			</div>
 		</div>
 	</div>

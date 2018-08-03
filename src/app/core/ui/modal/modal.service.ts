@@ -31,21 +31,21 @@ export class ModalService {
 		// console.log('ModalService.complete', modal, data);
 		modal = modal ? this.remove(modal) : this.pop();
 		if (modal) {
-			modal.emitter.emit(new ModalCompleteEvent({ modal, data }));
+			modal.emitter.emit(new ModalCompleteEvent({ modal: modal, data: data }));
 		}
 	}
 
 	close(modal?: Modal, data?: any): void {
 		modal = this.removeAll();
 		if (modal) {
-			modal.emitter.emit(new ModalCloseEvent({ modal, data }));
+			modal.emitter.emit(new ModalCloseEvent({ modal: modal, data: data }));
 		}
 	}
 
 	prev(modal?: Modal, data?: any): void {
 		modal = modal ? this.remove(modal) : this.pop();
 		if (modal) {
-			modal.emitter.emit(new ModalCloseEvent({ modal, data }));
+			modal.emitter.emit(new ModalCloseEvent({ modal: modal, data: data }));
 		}
 	}
 

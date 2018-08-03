@@ -10,7 +10,7 @@ export enum TaxonomyType {
 }
 
 export class Taxonomy {
-	id: number;
+	id: number | string;
 	name?: string;
 	type?: TaxonomyType;
 }

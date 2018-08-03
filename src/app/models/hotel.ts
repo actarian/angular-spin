@@ -25,8 +25,8 @@ export class BaseTag {
 
 export class Hotel implements Document {
 	// url: string;
+	id: number | string;
 	slug: string;
-	id: number;
 	idOffer: number;
 	name: string;
 	active: boolean;
@@ -64,6 +64,7 @@ export class Hotel implements Document {
 	tags: Tag[];
 	statisticCodes: any;
 	//
+
 	constructor(options?: Hotel) {
 		if (options) {
 			// this.url = options.url;
@@ -80,7 +81,7 @@ export class Hotel implements Document {
 			this.overlayCoverImage = options.overlayCoverImage;
 			this.overlayCoverText = options.overlayCoverText;
 			this.frontEndName = options.frontEndName;
-			this.trustPilot = options.trustPilot;
+			this.trustPilot = options.trustPilot || { averageStars: 8.0, totalReviews: 52 };
 			this.accomodation = options.accomodation;
 			this.rating = options.rating;
 			this.abstract = options.abstract;

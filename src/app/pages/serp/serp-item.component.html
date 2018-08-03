@@ -3,10 +3,10 @@
 	<!-- Hotel Image -->
 	<div class="image">
 		<div class="discount" *ngIf="item.overlayCoverImage">
-			<img alt="" _src="item.overlayCoverImage | asset" [attr.data-src]="item.overlayCoverImage | asset">
+			<img [attr.data-src]="item.overlayCoverImage | asset" alt="{{item.overlayCoverText}}">
 		</div>
 		<a [routerLink]="[item.slug] | route">
-			<img alt="" class="image-thumb" _src="item.photo | asset" [attr.data-src]="item.photo | asset">
+			<img class="image-thumb" [attr.data-src]="item.photo | asset" alt="{{item.name}}">
 		</a>
 	</div>
 	<!-- /Hotel Image -->
@@ -74,7 +74,7 @@
 	<div class="action">
 		<button type="button" class="add-to-fav" (click)="wishlist.doToggle(item)" [ngClass]="{ active: wishlist.has(item) }">
 			<svg class="ico"><use xlink:href="#ico-fav"></use></svg>
-			Preferiti
+			Salva
 		</button>
 		<!--
 		<div class="special-msg">

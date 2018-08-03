@@ -30,7 +30,7 @@ export class BookingOptions {
 	extraQuotes: BookingExtraQuote[];
 	principals: BookingPrincipal[];
 
-	constructor(options: any) {
+	constructor(options?: any) {
 		if (options) {
 			this.accomodations = options.accomodations || options.accomodation;
 			this.extraQuotes = options.extraQuotes;
@@ -131,11 +131,11 @@ export class BookingAvailability {
 	cssClass: string;
 	availability: boolean;
 
-	constructor(options: BookingAvailability) {
+	constructor(options?: BookingAvailability) {
 		if (options) {
 			Object.assign(this, options);
-			this.date = this.getDate();
 		}
+		this.date = this.getDate();
 	}
 
 	getDate(): Date {

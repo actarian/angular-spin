@@ -22,6 +22,8 @@ Header
 --------------------------------------------------*/
 
 .header {
+	position: relative;
+	z-index: 100;
 
 	@include sm-down {
 		overflow-x: hidden;
@@ -136,13 +138,25 @@ Header
 					width: 100%;
 				}
 
-				a {
+				.nav-link {
 					color: $tit-color;
 					text-decoration: none;
+					border: none !important;
+					background: transparent;
+
+					&.active {
+						@include sm-up {
+							background: #fff;
+							box-shadow: 0 6px 0 #fff, 0 8px 0 $tertiary-color;
+							color: $tertiary-color;
+						}
+					}
 
 					@include sm-down {
 						padding: 18px 15px;
 						display: block;
+						width: 100%;
+						text-align: left;
 					}
 				}
 			}
@@ -176,7 +190,7 @@ Header
 		.nav-item {
 			padding: 0 8px;
 
-			a {
+			.nav-link {
 				color: $tertiary-color;
 				text-align: center;
 				text-decoration: none;
@@ -235,6 +249,193 @@ Header
 					text-transform: uppercase;
 					font-size: 9px;
 					line-height: 1;
+				}
+			}
+		}
+	}
+
+}
+
+
+/*--------------------------------------------------
+Subnav
+--------------------------------------------------*/
+
+.subnav {
+	z-index: 100;
+	width: 100%;
+	background: #fafafa;
+	border-top: 1px solid $border-color;
+	border-bottom: 1px solid $border-color;
+
+	@include sm-down {
+		display: none;
+		position: fixed;
+		z-index: 100;
+		left: 0;
+		top: 0;
+		height: 100vh;
+		overflow-y: scroll;
+		width: calc(100% - 60px);
+
+		.nav-active & {
+			display: block;
+		}
+	}
+
+	.container {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: stretch;
+		padding: 0;
+	}
+
+
+	.subnav-close {
+		display: none;
+
+		@include sm-down {
+			position: sticky;
+			top: 0;
+			display: block;
+			width: 100%;
+			text-align: left;
+			padding: 18px 15px;
+			border-bottom: 1px solid $border-color;
+			text-decoration: none !important;
+			margin: 0;
+			text-transform: uppercase;
+			font-size: 12px;
+			background: $tertiary-color;
+			color: $tit-color;
+			background: #fafafa;
+			z-index: 10;
+			box-shadow: 0 3px 6px rgba(0, 0, 0, .15);
+
+			svg {
+				width: 12px;
+				height: 12px;
+				margin: 1px 3px 0 0;
+				fill: $tit-color;
+			}
+		}
+	}
+
+	.subnav-col {
+		flex: 0 0 33.333%;
+		padding: 20px 20px;
+		border-right: 1px solid $border-color;
+
+		&:last-child {
+			border-right: 0;
+		}
+
+		@include sm-down {
+			flex: 0 0 50%;
+			border: none;
+			padding: 0;
+		}
+
+		@include xs-down {
+			flex: 0 0 100%;
+		}
+
+
+		h3 {
+			@include sm-down {
+				display: block;
+				padding: 18px 15px;
+				border-bottom: 1px solid $border-color;
+				text-decoration: none !important;
+				margin: 0;
+				text-transform: uppercase;
+				font-size: 14px;
+				background: $tertiary-color;
+				color: #fff;
+			}
+		}
+
+		ul {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+			display: flex;
+			flex-wrap: wrap;
+
+			@include md-down {
+				display: block;
+			}
+
+			li {
+				font-size: 13px;
+				flex: 0 0 50%;
+				line-height: 1.2;
+
+				a {
+					position: relative;
+					z-index: 1;
+					display: inline-block;
+					padding: 4px 15px 4px 12px;
+
+					@include sm-down {
+						display: block;
+						padding: 14px 15px;
+						border-bottom: 1px solid $border-color;
+						background: #fff;
+						text-decoration: none !important;
+					}
+
+					&:before {
+						content: '';
+						position: absolute;
+						z-index: 1;
+						top: 10px;
+						left: 0;
+						border-radius: 50%;
+						width: 3px;
+						height: 3px;
+						opacity: .5;
+						background: $tertiary-color;
+
+						@include sm-down {
+							display: none;
+						}
+					}
+				}
+
+			}
+		}
+	}
+}
+
+
+.subnav-categorie {
+	@include sm-up {
+		.container {
+			justify-content: center;
+
+			.subnav-col {
+				flex: 0 0 40%;
+
+				ul {
+					display: flex;
+				}
+			}
+		}
+	}
+}
+
+
+.subnav-informazioni {
+	@include sm-up {
+		.container {
+			justify-content: flex-end;
+
+			.subnav-col {
+				flex: 0 0 60%;
+
+				ul {
+					display: block;
 				}
 			}
 		}

@@ -1,17 +1,38 @@
-<!-- Categories -->
+<!--
 <section class="categories">
 	<div class="container">
 		<div class="head">
 			<h2>Organizza il tuo tipo di vacanza ideale</h2>
 		</div>
 		<div class="card-row">
-			<div class="card-col " *ngFor="let category of categories" [routerLink]="['category', category.id] | route">
-				<a class="category-card" href="#">
+			<div class="card-col" *ngFor="let category of categories">
+				<a class="category-card" [routerLink]="['category', category.id] | route">
 					<figure class="figure">
 						<img class="img" [src]="category.image | asset" alt="{{category.name}}">
 					</figure>
 					<div class="body">
 						<h3 class="title">{{category.name}}</h3>
+					</div>
+				</a>
+			</div>
+		</div>
+	</div>
+</section>
+-->
+<!-- Categories -->
+<section class="categories" lazy-images>
+	<div class="container">
+		<div class="head">
+			<h2>Organizza il tuo tipo di vacanza ideale</h2>
+		</div>
+		<div class="card-row">
+			<div class="card-col" *ngFor="let item of items$ | async | slice :0 :6">
+				<a class="category-card" [routerLink]="[item.slug] | route">
+					<figure class="figure">
+						<img class="img" [attr.data-src]="item.images | image" alt="{{item.title}}">
+					</figure>
+					<div class="body">
+						<h3 class="title">{{item.title}}</h3>
 					</div>
 				</a>
 			</div>

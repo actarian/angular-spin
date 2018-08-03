@@ -1,0 +1,89 @@
+@import "~scss/variables";
+
+/*--------------------------------------------------
+Landing Search
+--------------------------------------------------*/
+
+.landing-search {
+	height: 650px;
+	background-size: cover;
+	background-position: center;
+	margin-bottom: 60px;
+	user-select: none;
+	max-height: calc(100vh - 68px);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	min-height: 360px;
+
+	position: relative;
+
+	&:before {
+		content: '';
+		position: absolute;
+		background: rgba(0, 0, 0, 0.15);
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	@include md-down {
+		height: 520px;
+	}
+
+	@include sm-down {
+		max-height: none;
+	}
+
+	@include xs-down {
+		background-image: linear-gradient(to bottom, $tertiary-color, lighten($tertiary-color, 8%)) !important;
+		padding: 20px 0;
+		height: auto;
+		margin-bottom: 25px;
+	}
+
+	.container {
+		position: relative;
+	}
+
+	&--head {
+		color: #fff;
+		text-align: center;
+
+		.tit {
+			font-size: 50px;
+			line-height: 1.2;
+			font-weight: 600;
+			margin: 0 0 40px;
+
+			@include md-down {
+				font-size: 40px;
+				margin-bottom: 30px;
+			}
+
+			@include xs-down {
+				font-size: 22px;
+				margin-bottom: 20px;
+				padding: 0 10px;
+			}
+		}
+
+		.subtit {
+			font-size: 18px;
+			text-transform: uppercase;
+			font-weight: 600;
+			margin-bottom: 50px;
+
+			@include md-down {
+				margin-bottom: 30px;
+			}
+
+			@include xs-down {
+				font-size: 13px;
+				margin-bottom: 12px;
+				font-weight: 400;
+			}
+		}
+	}
+}

@@ -32,6 +32,11 @@
 
 	h3 {
 		text-transform: uppercase;
+		color: #fff;
+		font-weight: 400;
+		font-size: 14px;
+		margin-bottom: 7px;
+		line-height: 1;
 
 		@include xs-down {
 			font-size: 14px;
@@ -72,6 +77,8 @@
 			display: flex;
 			flex-wrap: nowrap;
 			max-width: 470px;
+			margin: 0;
+			padding: 0;
 		}
 
 		input {

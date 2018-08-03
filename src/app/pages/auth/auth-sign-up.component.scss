@@ -1,3 +1,17 @@
+@import "~scss/variables";
+
+:host {
+	width: 640px;
+	max-width: 100vw;
+	max-height: 100vh;
+	background: white;
+	display: block;
+
+	@include xxs-down {
+		width: 100%;
+	}
+}
+
 .alert-dismissible {
 	display: flex;
 	justify-content: space-between;

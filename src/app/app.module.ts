@@ -23,14 +23,18 @@ import { AuthAttribute } from './core/guards';
 import { CustomMissingTranslationHandler, LabelService } from './core/labels';
 import { Logger } from './core/logger';
 import { MemoryService } from './core/memory';
-import { RouteService } from './core/routes';
-import { CategoryService, DestinationService, FilterService, HotelService, PromotionService, RegionService, SearchService, TagService, WishlistService } from './models';
+import { RouteService, SlugService } from './core/routes';
+import { CategoryService, DestinationService, FilterService, HotelService, LandingService, PromotionService, RegionService, SearchService, TagService, UserService, WishlistService } from './models';
 import { AuthComponent, AuthForgottenComponent, AuthSignInComponent, AuthSignUpComponent, SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent } from './pages/auth';
+import { GenericComponent } from './pages/generic';
+import { GiftCardComponent } from './pages/gift-card';
 import { HomeCategoriesComponent, HomeComponent, HomePromotionsComponent, HomeSearchComponent } from './pages/home';
 import { HotelComponent, HotelDatepickerComponent, HotelFeaturePipe, HotelGalleryPipe, HotelMapComponent, HotelTaxonomyPipe } from './pages/hotel';
+import { LandingComponent } from './pages/landing';
 import { PaymentComponent } from './pages/payment';
 import { ProfileComponent } from './pages/profile';
 import { RegionDetailComponent, RegionsComponent } from './pages/regions';
+import { SearchComponent } from './pages/search';
 import { SerpComponent, SerpFilterComponent, SerpItemComponent, SerpListComponent, SerpMapComponent } from './pages/serp';
 import { FooterComponent, HeaderComponent, NotFoundComponent, RegionSearchComponent, SvgComponent, TrustPilotComponent, ValuePropositionComponent } from './sections';
 import { DestinationHintComponent, DestinationTypePipe, MainSearchComponent } from './sections/main-search';
@@ -80,7 +84,9 @@ registerLocaleData(localeIt, 'it');
 		HeaderComponent, FooterComponent, NotFoundComponent, SvgComponent,
 		AuthComponent, AuthForgottenComponent, AuthSignInComponent, AuthSignUpComponent,
 		SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent, ProfileComponent, PaymentComponent,
+		GenericComponent, GiftCardComponent,
 		HomeComponent, HomeCategoriesComponent, HomePromotionsComponent, HomeSearchComponent,
+		SearchComponent, LandingComponent,
 		SerpComponent, SerpItemComponent, SerpListComponent, SerpMapComponent,
 		HotelComponent, HotelMapComponent, HotelDatepickerComponent, HotelTaxonomyPipe, HotelGalleryPipe, HotelFeaturePipe,
 		RegionsComponent, RegionDetailComponent, RegionSearchComponent,
@@ -91,14 +97,17 @@ registerLocaleData(localeIt, 'it');
 		{ provide: SWIPER_CONFIG, useValue: DEFAULT_SWIPER_CONFIG },
 		// { provide: HTTP_INTERCEPTORS, useClass: HttpResponseInterceptor, multi: true },
 		AuthAttribute,
-		Logger, TranslateService, RouteService,
-		DestinationTypePipe, HotelTaxonomyPipe, HotelGalleryPipe, HotelFeaturePipe, SearchService, RegionService, CategoryService, PromotionService, FilterService, WishlistService, DestinationService, TagService, HotelService,
+		Logger, TranslateService, RouteService, SlugService, UserService,
+		DestinationTypePipe, HotelTaxonomyPipe, HotelGalleryPipe, HotelFeaturePipe, LandingService, SearchService, RegionService, CategoryService, PromotionService, FilterService, WishlistService, DestinationService, TagService, HotelService,
 		// { provide: RouteService, useClass: RouteService, deps: [TranslateService, Location, Router] },
 	],
 	entryComponents: [
 		AuthComponent, AuthForgottenComponent, AuthSignInComponent, AuthSignUpComponent,
 		SignComponent, SignForgottenComponent, SignInComponent, SignUpComponent,
-		HomeComponent, HotelComponent, HotelMapComponent, ProfileComponent, PaymentComponent, RegionDetailComponent, RegionsComponent, SerpComponent],
+		GenericComponent, GiftCardComponent,
+		HomeComponent, HotelComponent,
+		SearchComponent, LandingComponent,
+		HotelMapComponent, ProfileComponent, PaymentComponent, RegionDetailComponent, RegionsComponent, SerpComponent],
 	bootstrap: [AppComponent]
 })
 

@@ -20,13 +20,25 @@ h2 {
 	}
 }
 
-h3 {
+h4 {
 	line-height: 1.2;
 	margin-top: 0;
-	margin-bottom: 15px;
+	margin-bottom: 10px;
 	padding: 0;
+	color: $tit-color;
+	font-size: 16px;
 	font-weight: 400;
+
+	@include sm-down {
+		font-size: 16px;
+		font-weight: 600;
+	}
+
+	@include xs-down {
+		font-size: 16px;
+	}
 }
+
 
 .head {
 	display: flex;

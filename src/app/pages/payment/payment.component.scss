@@ -1,1 +1,482 @@
-/* ProfileComponent's private CSS styles */
+@import "~scss/variables";
+
+
+/*--------------------------------------------------
+Payment page
+--------------------------------------------------*/
+
+.payment-page {
+	margin-bottom: 30px;
+
+	&>.container {
+		position: relative;
+		z-index: 1;
+		margin-bottom: 60px;
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		align-items: flex-start;
+
+		@include xs-down {
+			margin-bottom: 0;
+			padding-left: 0;
+			display: block;
+		}
+	}
+
+	h3 {
+		line-height: 1.2;
+		margin-top: 0;
+		margin-bottom: 15px;
+		padding: 0;
+		color: $tit-color;
+		font-size: 22px;
+		font-weight: 300;
+
+		@include sm-down {
+			font-size: 18px;
+			font-weight: 600;
+		}
+
+		@include xs-down {
+			font-size: 16px;
+		}
+	}
+
+	.form {
+		max-width: 700px;
+
+		.form-row {
+			justify-content: space-between;
+
+			@include xs-down {
+				display: block;
+			}
+
+			.form-row {
+				padding: 0 5px 0 0;
+
+				@include xs-down {
+					padding: 0 5px;
+				}
+
+				&>div:first-child {
+					padding-left: 0;
+				}
+			}
+
+			&>div {
+				padding: 0 5px;
+				flex: 0 0 50%;
+
+				@include xs-down {
+					padding: 0;
+				}
+			}
+		}
+
+		.btn {
+			min-width: 150px;
+		}
+	}
+
+
+	.secret-code {
+		display: flex;
+		justify-content: space-between;
+
+		.form-group {
+			flex: 1 1 auto;
+		}
+
+		.btn {
+			margin-left: 10px;
+			flex: 1 1 auto;
+			min-width: 0;
+			max-width: 120px;
+			width: auto;
+			align-self: flex-start;
+			margin-top: 24px;
+			height: 33px;
+			padding: 4px 10px;
+		}
+	}
+
+	.codice-fiscale {
+		display: flex;
+		justify-content: space-between;
+
+		.form-group {
+			flex: 1 1 auto;
+		}
+
+		.btn {
+			margin-left: 10px;
+			flex: 0 1 auto;
+			min-width: 60px;
+			width: auto;
+			align-self: flex-start;
+			margin-top: 24px;
+			height: 33px;
+			padding: 4px 0;
+			font-weight: normal;
+			font-size: 13px;
+			color: $tertiary-color;
+			background: transparent !important;
+		}
+	}
+
+	.card-security {
+		margin: 8px;
+		max-width: 160px;
+	}
+
+	.form-payment {
+		padding-top: 10px;
+
+		span {
+			display: block;
+			padding-bottom: 5px;
+
+			img {
+				float: right;
+
+				@include xs-down {
+					height: 20px;
+					width: auto;
+				}
+			}
+		}
+	}
+
+	.form-password-reveal {
+		display: flex;
+		align-items: flex-end;
+
+		.form-control {
+			flex: 0 1 50%;
+			margin-right: 10px;
+
+			@include xs-down {
+				flex: 1 1 100%;
+			}
+		}
+
+		&>div {
+			flex: 0 0 auto;
+			padding-bottom: 6px;
+			white-space: nowrap;
+		}
+	}
+}
+
+
+/*--------------------------------------------------
+Payment Steps
+--------------------------------------------------*/
+
+.payment-steps {
+	background: $tertiary-color;
+	padding: 7px 0;
+	color: #fff;
+	margin-bottom: 30px;
+	overflow: hidden;
+
+	@include xxs-down {
+		margin-bottom: 0;
+		position: sticky;
+		top: 0;
+		z-index: 10;
+		height: 38px;
+	}
+
+	.container {
+		display: flex;
+		justify-content: space-around;
+		margin-bottom: 0;
+		padding: 0 15px;
+		max-width: 400px;
+		position: relative;
+		z-index: 1;
+
+		@include xxs-down {
+			max-width: 400px;
+			padding: 0;
+			width: auto;
+			transform-origin: center top;
+			transform: scale(.8);
+		}
+	}
+
+	.step {
+		text-align: center;
+		opacity: .5;
+		position: relative;
+		z-index: 1;
+		flex: 1 1 auto;
+
+		&:first-child {
+			&:before {
+				display: none;
+			}
+		}
+
+		&:before {
+			content: '';
+			position: absolute;
+			display: block;
+			z-index: -1;
+			background: #fff;
+			top: 50%;
+			right: 50%;
+			width: 83%;
+			margin: 0 auto;
+			height: 2px;
+			transform: translateY(-50%);
+
+			@include xxs-down {}
+		}
+
+		span {
+			display: block;
+			text-align: center;
+			width: 30px;
+			height: 30px;
+			border-radius: 50%;
+			border: 2px solid #fff;
+			background: $tertiary-color;
+			font-size: 12px;
+			line-height: 28px;
+			margin: 0 auto;
+		}
+
+		&.done {
+			opacity: 1;
+		}
+
+		&.active {
+			opacity: 1;
+
+			span {
+				background: #fff;
+				color: $tertiary-color;
+				font-weight: bold;
+			}
+		}
+	}
+}
+
+
+/*--------------------------------------------------
+Payment hotel resume
+--------------------------------------------------*/
+
+.payment-hotel-resume {
+	width: 300px;
+	flex: 0 0 300px;
+	display: block;
+	padding: 0;
+	z-index: 10;
+	margin-right: 15px;
+	background: #fafafa;
+	order: 2;
+	position: sticky;
+	top: 0;
+
+	@include xs-down {
+		width: 100%;
+		flex: 0 0 100%;
+		position: relative;
+		padding: 0;
+		margin-right: 0;
+		box-shadow: 0 2px 7px rgba(0, 0, 0, 0.15);
+		margin-bottom: 20px;
+
+		&:before {
+			content: '';
+			position: absolute;
+			z-index: 10;
+			bottom: -1px;
+			left: 0;
+			right: 0;
+			height: 1px;
+			width: auto;
+			display: block;
+			background: url('/assets/img/top.png') no-repeat center;
+			background-size: 100% 3px;
+		}
+
+	}
+
+	.hotel-info {
+		display: flex;
+		padding: 10px 12px;
+		border-bottom: 1px solid #e8e8e8;
+		align-items: center;
+
+		@include xs-down {
+			padding: 10px 15px;
+		}
+
+		.hotel-image {
+			flex: 0 0 40px;
+			width: 40px;
+			height: 40px;
+			overflow: hidden;
+			position: relative;
+			z-index: 1;
+			margin-right: 12px;
+
+			img {
+				position: absolute;
+				z-index: 1;
+				top: 0;
+				left: 50%;
+				max-width: none;
+				height: 40px;
+				width: auto;
+				transform: translateX(-50%);
+			}
+
+			@include xs-down {
+				flex: 0 0 30px;
+				width: 30px;
+				height: 30px;
+				margin-right: 10px;
+
+				img {
+					height: 30px;
+				}
+			}
+		}
+
+		.hotel-head {
+			flex: 1 0 auto;
+			color: $tit-color;
+			line-height: 1.2;
+
+			.hotel-name {
+				font-weight: 600;
+				font-size: 15px;
+
+				&>span:first-child {
+					margin-right: 3px;
+				}
+
+				.stars {
+					transform: translateY(3px);
+				}
+
+				@include xs-down {
+					font-size: 12px;
+
+					.stars {
+						transform: scale(0.9) translateY(1px);
+					}
+				}
+			}
+
+			.hotel-location {
+				font-size: 11px;
+				text-transform: uppercase;
+
+				@include xs-down {
+					font-size: 10px;
+				}
+			}
+		}
+	}
+
+	.travel-info,
+	.total-price {
+		padding: 4px 0 6px;
+		border-bottom: 1px solid #e8e8e8;
+
+		&>div {
+			display: flex;
+			padding: 4px 12px;
+			font-size: 14px;
+			line-height: 1.2;
+
+			@include xs-down {
+				font-size: 11px;
+				padding: 1px 15px;
+			}
+
+			span,
+			strong {
+				width: 50%;
+				flex: 0 0 50%;
+			}
+
+			strong {
+				text-transform: uppercase;
+				font-weight: normal;
+				color: $tit-color;
+				font-size: 12px;
+				transform: translateY(2px);
+
+				@include xs-down {
+					font-size: 10px;
+				}
+			}
+		}
+	}
+
+	.total-price {
+		color: $primary-color;
+		border-bottom: none;
+		background: #fffedd;
+		position: relative;
+		z-index: 1;
+
+		&:before {
+			content: '';
+			position: absolute;
+			z-index: 10;
+			top: -1px;
+			left: 0;
+			right: 0;
+			height: 1px;
+			width: auto;
+			display: block;
+			background: url('/assets/img/top.png') no-repeat center;
+			background-size: 100% 3px;
+		}
+
+		&>div {
+			align-items: flex-end;
+
+			span {
+				transform: translateY(-2px);
+
+				@include xs-down {
+					transform: translateY(-1px);
+				}
+			}
+
+			strong {
+				font-size: 30px;
+				font-weight: bold;
+				color: $primary-color;
+				line-height: 1;
+				transform: none;
+
+				@include xs-down {
+					font-size: 22px;
+				}
+			}
+		}
+	}
+}
+
+.payment-container {
+	padding: 0 15px;
+	flex: 0 1 calc(100% - 350px);
+	max-width: calc(100% - 350px);
+
+	@include xs-down {
+		float: 0 0 100%;
+		max-width: 100%;
+	}
+}
