@@ -48,7 +48,7 @@ Fancybox
 	.fancybox-button {
 		width: 38px;
 		height: 36px;
-		background: url(assets/img/gallery-arrow.png) no-repeat center;
+		background: url('/assets/img/gallery-arrow.png') no-repeat center;
 
 		&--arrow_right {
 			right: 0 !important;
@@ -65,16 +65,40 @@ Fancybox
 	}
 }
 
+.fancybox-infobar {
+	text-transform: uppercase;
+	font-size: 11px;
+	display: inline-block;
+	letter-spacing: 1px;
+	padding-top: 11px;
+	line-height: 1.5;
+}
+
 .fancybox-button--close {
 	background: none;
 	padding: 5px;
 	width: auto;
 	height: auto;
+	padding-right: 40px;
+	position: relative;
+	z-index: 1;
+
+	span {
+		text-transform: uppercase;
+		font-size: 11px;
+		display: inline-block;
+		letter-spacing: 1px;
+		padding-top: 6px;
+	}
 
 	svg {
+		position: absolute;
+		z-index: 1;
+		top: 8px;
+		right: 8px;
 		fill: #fff;
-		width: 32px;
-		height: 32px;
+		width: 22px;
+		height: 22px;
 
 		@include xxs-down {
 			width: 24px;

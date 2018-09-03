@@ -28,7 +28,6 @@ export class ModalService {
 	}
 
 	complete(modal?: Modal, data?: any): void {
-		// console.log('ModalService.complete', modal, data);
 		modal = modal ? this.remove(modal) : this.pop();
 		if (modal) {
 			modal.emitter.emit(new ModalCompleteEvent({ modal: modal, data: data }));

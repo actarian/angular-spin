@@ -1,0 +1,63 @@
+@import "~scss/variables";
+
+/*--------------------------------------------------
+Form
+--------------------------------------------------*/
+.h1 {
+	color: $tit-color;
+	line-height: 1.2;
+	margin-bottom: 20px;
+	font-weight: 300;
+
+	@include xs-down {
+		font-size: 28px;
+		font-weight: normal;
+	}
+}
+
+.form {
+	.fieldset {
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+		flex-wrap: wrap;
+
+		.form-group {
+			flex: 0 0 50%;
+			max-width: 50%;
+			padding-right: 30px;
+
+			@include sm-down {
+				flex: 0 0 100%;
+				padding-right: 0;
+				max-width: none;
+			}
+
+			@include xs-down {
+				flex: 0 0 50%;
+				max-width: 50%;
+				padding-right: 30px;
+			}
+
+			@include xxs-down {
+				flex: 0 0 100%;
+				padding-right: 0;
+				max-width: none;
+			}
+		}
+	}
+
+
+	.birth-date {
+		display: flex;
+		justify-content: space-between;
+
+		select:not(:last-child) {
+			margin-right: 10px;
+
+			@include xxs-down {
+				margin-right: 5px;
+			}
+		}
+	}
+}

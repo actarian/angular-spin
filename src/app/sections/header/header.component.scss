@@ -8,6 +8,10 @@ Top Header
 	line-height: 1;
 	height: 3px;
 
+	@media print {
+		display: none !important;
+	}
+
 	img {
 		line-height: 1;
 		vertical-align: text-top;
@@ -24,6 +28,14 @@ Header
 .header {
 	position: relative;
 	z-index: 100;
+
+	@media print {
+
+		.desktop-navbar,
+		.mobile-navbar {
+			display: none !important;
+		}
+	}
 
 	@include sm-down {
 		overflow-x: hidden;
@@ -143,6 +155,7 @@ Header
 					text-decoration: none;
 					border: none !important;
 					background: transparent;
+					padding: 0;
 
 					&.active {
 						@include sm-up {
@@ -171,6 +184,47 @@ Header
 					padding: 12px;
 				}
 			}
+
+			.navbar-ico {
+				display: inline-block;
+				width: 40px;
+				height: 32px;
+				vertical-align: middle;
+				text-align: center;
+				position: relative;
+				z-index: 1;
+
+				.ico-fav {
+					stroke: $tertiary-color;
+					fill: none;
+					stroke-width: 3;
+					stroke-miterlimit: 10;
+					width: 27px;
+					height: 27px;
+				}
+
+				.fav-num {
+					background: $primary-color;
+					color: #fff;
+					border-radius: 50%;
+					display: inline-block;
+					font-size: 8px;
+					padding: 1px 3px;
+					text-align: center;
+					min-width: 15px;
+					position: absolute;
+					right: -1px;
+					top: 0;
+					z-index: 1;
+				}
+
+				.ico-user {
+					fill: $tertiary-color;
+					width: 25px;
+					height: 25px;
+					margin-top: 2px;
+				}
+			}
 		}
 
 		.btn {
@@ -185,14 +239,24 @@ Header
 		@include sm-down {
 			display: flex;
 			justify-content: flex-end;
+			transform: translateY(2px);
 		}
 
 		.nav-item {
 			padding: 0 8px;
+			position: relative;
+			z-index: 1;
+
+			a {
+				text-decoration: none !important;
+			}
+
+			button {
+				padding: 0;
+			}
 
 			.nav-link {
 				color: $tertiary-color;
-				text-align: center;
 				text-decoration: none;
 			}
 
@@ -210,6 +274,29 @@ Header
 				width: 20px;
 				height: 20px;
 				fill: $tertiary-color;
+			}
+
+			.ico-fav {
+				fill: none;
+				stroke: $tertiary-color;
+				stroke-width: 3px;
+			}
+
+			.fav-num {
+				background: $primary-color;
+				color: #fff;
+				border-radius: 50%;
+				display: inline-block;
+				font-size: 8px;
+				padding: 1px 3px;
+				text-align: center;
+				min-width: 15px;
+				position: absolute;
+				right: 7px;
+				top: 0;
+				z-index: 1;
+				margin-top: 0;
+				line-height: inherit;
 			}
 
 			.nav-toggle {
@@ -375,7 +462,7 @@ Subnav
 					position: relative;
 					z-index: 1;
 					display: inline-block;
-					padding: 4px 15px 4px 12px;
+					padding: 4px 20px 5px 0;
 
 					@include sm-down {
 						display: block;
@@ -386,7 +473,7 @@ Subnav
 					}
 
 					&:before {
-						content: '';
+						// content: '';
 						position: absolute;
 						z-index: 1;
 						top: 10px;
@@ -409,13 +496,13 @@ Subnav
 }
 
 
-.subnav-categorie {
+.subnav-2 {
 	@include sm-up {
 		.container {
 			justify-content: center;
 
 			.subnav-col {
-				flex: 0 0 40%;
+				flex: 0 0 46%;
 
 				ul {
 					display: flex;
@@ -426,13 +513,13 @@ Subnav
 }
 
 
-.subnav-informazioni {
+.subnav-3 {
 	@include sm-up {
 		.container {
 			justify-content: flex-end;
 
 			.subnav-col {
-				flex: 0 0 60%;
+				flex: 0 0 65.5%;
 
 				ul {
 					display: block;

@@ -14,38 +14,30 @@
 					</svg>
 					<span>Lista </span>
 				</button>
-				<!--
-				<a class="switch-map" [routerLink]="['map']" routerLinkActive #rMap="routerLinkActive" [ngClass]="{ active: rList.isActive }">
-					<svg class="ico ico-pin">
-						<use xlink:href="#ico-pin"></use>
-					</svg>
-					<span>Mappa </span>
-				</a>
-				<a class="switch-map" [routerLink]="['list']" routerLinkActive #rList="routerLinkActive" [ngClass]="{ active: rMap.isActive }">
-					<svg class="ico ico-list">
-						<use xlink:href="#ico-list"></use>
-					</svg>
-					<span>Lista </span>
-				</a>
-				-->
 			</div>
 			<div class="item" (click)="active = popupOrder" #popupOrder>
-				<svg class="ico ico-order">
-					<use xlink:href="#ico-order"></use>
-				</svg>
-				<span>Ordina </span>
+				<button>
+					<svg class="ico ico-order">
+						<use xlink:href="#ico-order"></use>
+					</svg>
+					<span>Ordina </span>
+				</button>
 			</div>
 			<div class="item" (click)="active = popupFilter" #popupFilter>
-				<svg class="ico ico-filter">
-					<use xlink:href="#ico-filter"></use>
-				</svg>
-				<span>Filtra </span>
+				<button>
+					<svg class="ico ico-filter">
+						<use xlink:href="#ico-filter"></use>
+					</svg>
+					<span>Filtra </span>
+				</button>
 			</div>
 			<div class="item" (click)="active = popupMainSearch" #popupMainSearch>
-				<svg class="ico ico-search">
-					<use xlink:href="#ico-search"></use>
-				</svg>
-				<span>Modifica </span>
+				<button>
+					<svg class="ico ico-search">
+						<use xlink:href="#ico-search"></use>
+					</svg>
+					<span>Modifica </span>
+				</button>
 			</div>
 		</div>
 		<!-- Order Popup -->

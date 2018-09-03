@@ -41,6 +41,10 @@ Hotel Sidebar
 	padding: 0 30px 0 15px;
 	z-index: 10;
 
+	@media print {
+		display: none !important;
+	}
+
 	@include xs-down {
 		float: 0 0 100%;
 		width: 100%;
@@ -316,6 +320,17 @@ Hotel Sidebar
 	font-size: 11px;
 	line-height: 1.2;
 
+	@media print {
+		display: block !important;
+		position: static !important;
+		width: 100%;
+
+		&:before,
+		&:after {
+			display: none !important;
+		}
+	}
+
 	@include xs-up {
 		display: none;
 	}
@@ -398,7 +413,12 @@ Hotel Main Content
 	max-width: calc(100% - 350px);
 
 	@include xs-down {
-		float: 0 0 100%;
+		flex: 0 0 100%;
+		max-width: 100%;
+	}
+
+	@media print {
+		flex: 0 0 100%;
 		max-width: 100%;
 	}
 }
@@ -459,6 +479,10 @@ Hotel Head
 		text-align: center;
 		cursor: pointer;
 		text-decoration: none !important;
+
+		@media print {
+			display: none !important;
+		}
 
 		@include xs-down {
 			top: 0;
@@ -589,6 +613,12 @@ Hotel Desc
 			margin-bottom: 0;
 		}
 	}
+
+	.readmore-button {
+		@media print {
+			display: none !important;
+		}
+	}
 }
 
 
@@ -657,6 +687,10 @@ Hotel Desc
 
 	&.active {
 		display: block;
+	}
+
+	@media print {
+		display: block !important;
 	}
 }
 
@@ -781,9 +815,11 @@ Hotel Desc
 	0% {
 		background-position: 0% 50%
 	}
+
 	50% {
 		background-position: 100% 51%
 	}
+
 	100% {
 		background-position: 0% 50%
 	}
@@ -793,9 +829,11 @@ Hotel Desc
 	0% {
 		background-position: 0% 50%
 	}
+
 	50% {
 		background-position: 100% 51%
 	}
+
 	100% {
 		background-position: 0% 50%
 	}
@@ -828,32 +866,38 @@ $spinner-size: 2.5em;
 		content: '';
 		position: absolute;
 	}
+
 	&:before {
 		left: $spinner-size * -1.5;
 		animation-delay: -0.32s;
 	}
+
 	&:after {
 		left: $spinner-size * 1.5;
 	}
 }
 
 @-webkit-keyframes spinner {
+
 	0%,
 	80%,
 	100% {
 		box-shadow: 0 $spinner-size 0 $spinner-size * -0.5;
 	}
+
 	40% {
 		box-shadow: 0 $spinner-size 0 0;
 	}
 }
 
 @keyframes spinner {
+
 	0%,
 	80%,
 	100% {
 		box-shadow: 0 $spinner-size 0 $spinner-size * -0.5;
 	}
+
 	40% {
 		box-shadow: 0 $spinner-size 0 0;
 	}

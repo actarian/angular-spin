@@ -1,4 +1,4 @@
-
+import { Hotel } from './hotel';
 
 export class BookingAccomodation {
 	price?: number;
@@ -36,15 +36,17 @@ export class BookingOptions {
 			this.extraQuotes = options.extraQuotes;
 			this.principals = options.principals || options.principal;
 		}
-		if (this.accomodations && this.accomodations.length) {
-			this.accomodations[0].checked = true;
-		}
-		if (this.extraQuotes && this.extraQuotes.length) {
-			this.extraQuotes[0].checked = true;
-		}
 		if (this.principals && this.principals.length) {
 			this.principals[0].checked = true;
 		}
+		if (this.accomodations && this.accomodations.length) {
+			this.accomodations[0].checked = true;
+		}
+		/*
+		if (this.extraQuotes && this.extraQuotes.length) {
+			this.extraQuotes[0].checked = true;
+		}
+		*/
 	}
 }
 
@@ -65,6 +67,7 @@ export class Booking {
 	treatment?: any = null;
 	duration?: number = 0;
 	nights?: number = 0;
+	hotel?: Hotel = null;
 
 	constructor(options?: any) {
 		if (options) {

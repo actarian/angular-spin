@@ -48,8 +48,13 @@ export class AuthComponent extends DisposableComponent implements OnInit {
 			tap(me => this.facebookMe = me),
 			switchMap(me => this.userService.tryFacebook(me)),
 		).subscribe(user => {
-			this.onAuth(user[0]);
+			if (user) {
+				this.onAuth(user[0]);
+			} else {
+				this.onSignUp({ facebook: this.facebookMe });
+			}
 		}, error => {
+			console.log('onFacebook.error', error);
 			this.onSignUp({ facebook: this.facebookMe });
 		});
 	}
@@ -60,7 +65,11 @@ export class AuthComponent extends DisposableComponent implements OnInit {
 			tap(me => this.googleMe = me),
 			switchMap(me => this.userService.tryGoogle(me)),
 		).subscribe(user => {
-			this.onAuth(user[0]);
+			if (user) {
+				this.onAuth(user[0]);
+			} else {
+				this.onSignUp({ google: this.googleMe });
+			}
 		}, error => {
 			this.onSignUp({ google: this.googleMe });
 		});
@@ -75,7 +84,8 @@ export class AuthComponent extends DisposableComponent implements OnInit {
 			takeUntil(this.unsubscribe)
 		).subscribe(e => {
 			if (e instanceof ModalCompleteEvent) {
-				console.log('signed');
+				this.onAuth(e.data);
+				console.log('AuthComponent.onSignIn', e);
 			}
 		});
 	}

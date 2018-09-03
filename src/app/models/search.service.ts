@@ -37,6 +37,7 @@ export class SearchService extends EntityService<SearchResult> {
 	results = this.results$.asObservable();
 	resultsFiltered$ = new BehaviorSubject<SearchResult[]>([]);
 	queryParams: any;
+	busy: boolean = false;
 
 	constructor(
 		@Inject(PLATFORM_ID) private platformId: string,
@@ -204,9 +205,9 @@ export class SearchService extends EntityService<SearchResult> {
 					break;
 			}
 		}
-		// ApiService get
-		// return this.get(params);
-		return this.post('/proxy/api/booking/search/in', this.model).pipe(
+		// !!!
+		this.model.duration = null;
+		return this.post('/api/booking/search/in', this.model).pipe(
 			map((x: any) => this.toCamelCase(x)),
 			map((x: any) => x.map(o => SearchResult.newCompatibleSearchResult(o)).filter((x: SearchResult) => {
 				if (!this.model.destination) {
@@ -237,8 +238,10 @@ export class SearchService extends EntityService<SearchResult> {
 	}
 
 	doSearch() {
+		this.busy = true;
 		this.getResults().subscribe(x => {
 			this.results$.next(x);
+			this.busy = false;
 		});
 	}
 

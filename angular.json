@@ -18,11 +18,12 @@
 						"polyfills": "src/polyfills.ts",
 						"assets": [
 							"src/assets",
-							"src/favicon.ico"
+							"src/favicon.ico",
+							"src/manifest.json"
 						],
 						"extractCss": true,
 						"styles": [
-              				"src/styles.scss"
+							"src/styles.scss"
 						],
 						"scripts": [
 							{ "input": "./node_modules/jquery/dist/jquery.js", "lazy": false },
@@ -45,7 +46,7 @@
 							"fileReplacements": [{
 								"replace": "src/environments/environment.ts",
 								"with": "src/environments/environment.server.ts"
-                			}]
+							}]
 						},
 						"production": {
 							"optimization": true,
@@ -60,7 +61,8 @@
 							"fileReplacements": [{
 								"replace": "src/environments/environment.ts",
 								"with": "src/environments/environment.prod.ts"
-                			}]
+							}],
+							"serviceWorker": true
 						}
 					}
 				},
@@ -92,12 +94,13 @@
 						"tsConfig": "src/tsconfig.spec.json",
 						"scripts": [],
 						"styles": [
-              				"src/styles.scss"
-            			],
+							"src/styles.scss"
+						],
 						"assets": [
 							"src/assets",
-							"src/favicon.ico"
-            			]
+							"src/favicon.ico",
+							"src/manifest.json"
+						]
 					}
 				},
 				"lint": {
@@ -108,8 +111,8 @@
 							"src/tsconfig.spec.json"
 						],
 						"exclude": [
-             				 "**/node_modules/**"
-            			]
+							"**/node_modules/**"
+						]
 					}
 				}
 			}
@@ -138,7 +141,7 @@
 							"fileReplacements": [{
 								"replace": "src/environments/environment.ts",
 								"with": "src/environments/environment.prod.ts"
-                			}]
+							}]
 						}
 					}
 				},
@@ -150,8 +153,8 @@
 							"src/tsconfig.spec.json"
 						],
 						"exclude": [
-             				 "**/node_modules/**"
-            			]
+							"**/node_modules/**"
+						]
 					}
 				}
 			}
@@ -175,8 +178,8 @@
 						],
 						"extractCss": true,
 						"styles": [
-              				"src/styles.scss"
-            			],
+							"src/styles.scss"
+						],
 						"scripts": [
 							{ "input": "./node_modules/jquery/dist/jquery.js", "lazy": false },
 							{ "input": "./node_modules/@fancyapps/fancybox/dist/jquery.fancybox.js", "lazy": false },
@@ -198,7 +201,7 @@
 							"fileReplacements": [{
 								"replace": "src/environments/environment.ts",
 								"with": "src/environments/environment.docs.ts"
-                			}]
+							}]
 						}
 					}
 				},
@@ -229,12 +232,12 @@
 						"tsConfig": "src/tsconfig.spec.json",
 						"scripts": [],
 						"styles": [
-              				"src/styles.scss"
-            			],
+							"src/styles.scss"
+						],
 						"assets": [
 							"src/assets",
 							"src/favicon.ico"
-            			]
+						]
 					}
 				},
 				"lint": {
@@ -245,8 +248,8 @@
 							"src/tsconfig.spec.json"
 						],
 						"exclude": [
-             				 "**/node_modules/**"
-            			]
+							"**/node_modules/**"
+						]
 					}
 				}
 			}
@@ -267,11 +270,11 @@
 					"builder": "@angular-devkit/build-angular:tslint",
 					"options": {
 						"tsConfig": [
-              				"e2e/tsconfig.e2e.json"
-            			],
+							"e2e/tsconfig.e2e.json"
+						],
 						"exclude": [
-              				"**/node_modules/**"
-            			]
+							"**/node_modules/**"
+						]
 					}
 				}
 			}

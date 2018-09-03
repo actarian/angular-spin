@@ -3,6 +3,7 @@ export * from './destination';
 // export * from './hotel';
 export * from './label';
 export * from './landing';
+export * from './menu';
 // export * from './page';
 export * from './promotion';
 export * from './region';

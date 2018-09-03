@@ -351,9 +351,10 @@ Payment hotel resume
 		}
 
 		.hotel-head {
-			flex: 1 0 auto;
 			color: $tit-color;
+			flex: 1 0 calc(100% - 40px);
 			line-height: 1.2;
+			padding-right: 6px;
 
 			.hotel-name {
 				font-weight: 600;

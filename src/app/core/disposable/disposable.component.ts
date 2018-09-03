@@ -12,5 +12,6 @@ export class DisposableComponent implements OnDestroy {
 	ngOnDestroy() {
 		this.unsubscribe.next();
 		this.unsubscribe.complete();
+		// console.log('DisposableComponent.ngOnDestroy', this);
 	}
 }

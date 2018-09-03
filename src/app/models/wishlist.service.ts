@@ -1,18 +1,20 @@
 import { Inject, Injectable, Injector, PLATFORM_ID } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Identity, IdentityService } from '../core/models';
 import { LocalStorageService, StorageService } from '../core/storage';
 import { ModalCloseEvent, ModalCompleteEvent, ModalEvent, ModalService } from '../core/ui/modal';
 import { AuthComponent } from '../pages/auth/auth.component';
 import { SearchResult } from './search';
+import { UserService } from './user.service';
 
 @Injectable({
 	providedIn: 'root',
 })
-export class WishlistService extends IdentityService<SearchResult> {
+export class WishlistService extends IdentityService<Identity> {
 
 	get collection(): string {
-		return '/api/wishlist';
+		return ''; // /api/wishlist
 	}
 
 	storage: StorageService;
@@ -23,6 +25,7 @@ export class WishlistService extends IdentityService<SearchResult> {
 		protected injector: Injector,
 		private storageService: LocalStorageService,
 		private modalService: ModalService,
+		private userService: UserService,
 	) {
 		super(injector);
 		this.storage = this.storageService.tryGet();
@@ -30,7 +33,7 @@ export class WishlistService extends IdentityService<SearchResult> {
 		if (storedItems) {
 			this.wishlist$.next(storedItems);
 		}
-		this.get().subscribe((items: Identity[]) => {
+		this.get(`/api/wishlist`).subscribe((items: Identity[]) => {
 			if (items.length) {
 				this.wishlist$.next(items);
 			} else if (storedItems && storedItems.length) {
@@ -39,27 +42,38 @@ export class WishlistService extends IdentityService<SearchResult> {
 		});
 	}
 
+	get count(): number {
+		return this.wishlist$.getValue().length;
+	}
+
+	items(): Observable<SearchResult[]> {
+		// !!!
+		const payload: any = {
+			startDate: new Date(),
+			flexibleDates: true,
+			adults: 2,
+			childs: 0,
+			childrens: [],
+		};
+		return this.post(`/api/booking/search/in`, payload).pipe(
+			map((x: any) => this.toCamelCase(x)),
+			map((x: any) => x.map(o => SearchResult.newCompatibleSearchResult(o)))
+		);
+	}
+
 	has(identity: Identity) {
 		return this.wishlist$.getValue().find(x => x.id === identity.id);
 	}
 
 	doAddMany(identities: Identity[]) {
-		this.post('/many', identities).subscribe((items: Identity[]) => {
+		this.post(`/api/wishlist/many`, identities).subscribe((items: Identity[]) => {
 			this.storage.set('wishlist', items);
 			this.wishlist$.next(items);
 		});
 	}
 
 	doAdd(identity: Identity) {
-		this.modalService.open({ component: AuthComponent }).subscribe((e: ModalEvent<ModalCompleteEvent | ModalCloseEvent>) => {
-			console.log('WishlistService.doAdd', e);
-			if (e instanceof ModalCompleteEvent) {
-				console.log('WishlistService.ModalCompleteEvent', e);
-			} else if (e instanceof ModalCloseEvent) {
-				console.log('WishlistService.ModalCloseEvent', e);
-			}
-		});
-		this.post(identity).subscribe(result => {
+		this.post(`/api/wishlist`, identity).subscribe(result => {
 			const items = this.wishlist$.getValue();
 			items.push({ id: identity.id });
 			this.storage.set('wishlist', items);
@@ -68,7 +82,7 @@ export class WishlistService extends IdentityService<SearchResult> {
 	}
 
 	doRemove(identity: Identity) {
-		this.delete(identity.id).subscribe(result => {
+		this.delete(`/api/wishlist`, identity.id).subscribe(result => {
 			const items = this.wishlist$.getValue();
 			const instance = items.find(x => x.id === identity.id);
 			const index = items.indexOf(instance);
@@ -79,6 +93,22 @@ export class WishlistService extends IdentityService<SearchResult> {
 	}
 
 	doToggle(identity: Identity) {
+		if (this.userService.isLoggedIn()) {
+			this.toggle(identity);
+		} else {
+			this.modalService.open({ component: AuthComponent }).subscribe((e: ModalEvent<ModalCompleteEvent | ModalCloseEvent>) => {
+				console.log('WishlistService.doAdd', e);
+				if (e instanceof ModalCompleteEvent) {
+					console.log('WishlistService.ModalCompleteEvent', e);
+					this.toggle(identity);
+				} else if (e instanceof ModalCloseEvent) {
+					console.log('WishlistService.ModalCloseEvent', e);
+				}
+			});
+		}
+	}
+
+	toggle(identity: Identity) {
 		if (this.has(identity)) {
 			this.doRemove(identity);
 		} else {

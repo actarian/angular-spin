@@ -12,9 +12,13 @@ export class ClickOutsideDirective {
 	@Output()
 	public clickOutside = new EventEmitter();
 
-	@HostListener('document:click', ['$event.target'])
-	public onClick(targetElement) {
-		const clickedInside = this.element.nativeElement.contains(targetElement);
+	@HostListener('document:click', ['$event'])
+	public onClick(e: Event) {
+		const targetElement: Element = e.target as Element;
+		// console.log('ClickOutsideDirective.onClick', this.element.nativeElement, targetElement, this.element.nativeElement.contains(targetElement));
+		// const documentContained: boolean = Boolean(document.compareDocumentPosition(targetElement) & Node.DOCUMENT_POSITION_CONTAINED_BY);
+		// console.log(targetElement, documentContained);
+		const clickedInside = this.element.nativeElement.contains(targetElement) || !document.contains(targetElement);
 		if (!clickedInside) {
 			this.clickOutside.emit(null);
 		}

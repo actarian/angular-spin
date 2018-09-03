@@ -1,0 +1,104 @@
+@import "~scss/variables";
+
+/*--------------------------------------------------
+Reserved Area
+--------------------------------------------------*/
+
+.reserved-area {
+	border-top: 1px solid $border-color;
+	padding: 20px 0 35px;
+
+	.container {
+		padding: 0;
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+	}
+
+	.sidebar-links {
+		flex: 0 0 320px;
+		width: 320px;
+		display: block;
+		padding: 0 30px 0 15px;
+
+		@include xs-down {
+			flex: 0 0 100%;
+			max-width: none;
+		}
+
+		ul {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+
+			li {
+				button {
+					display: block;
+					background-color: rgba(0, 0, 0, .05);
+					color: $tit-color;
+					font-family: "Open Sans";
+					font-size: 15px;
+					font-weight: 600;
+					border-bottom: 1px solid rgba(0, 0, 0, .1);
+					padding: 10px 40px 10px 15px;
+					position: relative;
+					text-decoration: none;
+					cursor: pointer;
+					width: 100%;
+					text-align: left;
+
+					&:before {
+						content: '';
+						z-index: 1;
+						position: absolute;
+						border-left: 4px solid rgba(0, 0, 0, .7);
+						border-top: 3px solid transparent;
+						border-bottom: 3px solid transparent;
+						top: 19px;
+						right: 15px;
+					}
+
+					&:hover {
+						background-color: rgba(0, 0, 0, .1);
+					}
+
+					&.active {
+						background-color: rgba($tertiary-color, 1);
+						color: #fff;
+
+						&:before {
+							border-left-color: #fff;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.content {
+		flex: 1 0 calc(100% - 330px);
+		width: calc(100% - 330px);
+		max-width: calc(100% - 330px);
+		padding-right: 15px;
+
+		@include xs-down {
+			flex: 0 0 100%;
+			max-width: none;
+			padding: 30px 15px;
+		}
+
+	}
+
+	.h1 {
+		display: none;
+		color: $tit-color;
+		line-height: 1.2;
+		margin-bottom: 20px;
+
+		@include xs-down {
+			display: block;
+			font-size: 28px;
+			font-weight: normal;
+		}
+	}
+}

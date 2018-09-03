@@ -12,6 +12,9 @@ export class HotelGalleryPipe implements PipeTransform {
 	transform(items: Image[]): Image[] {
 		return items.filter((x: Image) => (
 			x.type === ImageType.Gallery
-		)).sort((a: Image, b: Image) => a.type - b.type);
+		)).map(x => {
+			x.url = x.url.replace(/\s/g, '%20');
+			return x;
+		}).sort((a: Image, b: Image) => a.type - b.type);
 	}
 }

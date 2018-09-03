@@ -14,14 +14,14 @@
 			<label for="firstName">{{ 'signUp.firstName' | translate }} <sup>*</sup></label>
 			<input type="text" class="form-control" required [(ngModel)]="model.firstName" name="firstName" placeholder="{{ 'signUp.firstName' | translate }}" #firstName="ngModel" autocomplete="firstName">
 			<div *ngIf="firstName.invalid && (signUp.submitted || firstName.dirty || firstName.touched)" class="alert alert-danger">
-				<div *ngIf="email.errors.required">{{ 'errors.required' | translate }}</div>
+				<div *ngIf="firstName.errors.required">{{ 'errors.required' | translate }}</div>
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="lastName">{{ 'signUp.lastName' | translate }} <sup>*</sup></label>
 			<input type="text" class="form-control" required [(ngModel)]="model.lastName" name="lastName" placeholder="{{ 'signUp.lastName' | translate }}" #lastName="ngModel" autocomplete="lastName">
 			<div *ngIf="lastName.invalid && (signUp.submitted || lastName.dirty || lastName.touched)" class="alert alert-danger">
-				<div *ngIf="email.errors.required">{{ 'errors.required' | translate }}</div>
+				<div *ngIf="lastName.errors.required">{{ 'errors.required' | translate }}</div>
 			</div>
 		</div>
 		<div class="form-group">
@@ -64,7 +64,7 @@
 			<div class="checkbox">
 				<label>
 					<input type="checkbox" class="form-check-input" required [(ngModel)]="model.privacyAccepted" name="privacyAccepted" #privacyAccepted="ngModel">
-					<span>Preso atto dell’<a href="http://eurospin-viaggi.wslabs.it/media/userfiles/files/20180522-Informativa_Newsletter.pdf" target="_blank">informativa</a>, accetto al trattamento dei miei dati personali ai fini dell’invio di proposte comerciali da parte di Eurospin</span>
+					<span>Preso atto dell’<a href="/media/userfiles/files/20180522-Informativa_Newsletter.pdf" target="_blank">informativa</a>, accetto al trattamento dei miei dati personali ai fini dell’invio di proposte comerciali da parte di Eurospin</span>
 				</label>
 			</div>
 			<div *ngIf="privacyAccepted.invalid && (signUp.submitted || privacyAccepted.dirty || privacyAccepted.touched)" class="alert alert-danger">
@@ -83,4 +83,13 @@
 	<p>{{ 'signUp.registrationSent' | translate }}</p>
 	<br>
 	<button type="button" class="btn btn btn-block btn-warning" (click)="onSignIn()"><span>{{ 'sign.account' | translate }}</span></button><br>
+
+
+
+
+
+
+
+
+
 </div>

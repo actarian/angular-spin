@@ -1,17 +1,5 @@
 export const environment = {
-	assets: '/assets',
-	enableTracing: false,
 	production: true,
-	public: '/',
-	useHash: false,
-	useLang: true,
-	useMarket: false,
-	urlStrategy: '/:lang/', // '/:lang/:market/',
-	defaultLanguage: 'it',
-	defaultMarket: 'it',
-	languages: [
-		{ id: 1, name: 'Italiano', lang: 'it' }
-	],
 	plugins: {
 		facebook: {
 			appId: 11111111,
@@ -32,5 +20,4 @@ export const environment = {
 			style: 'mapbox://styles/supahfunk/cjjy5l19r3c7m2rmy15gg3059',
 		},
 	}
-
 };

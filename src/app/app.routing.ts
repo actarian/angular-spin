@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { environment } from '../environments/environment';
-import { HomeComponent, HotelComponent, PaymentComponent, RegionDetailComponent, SearchComponent } from './pages';
+import { UserGuard } from './models/user.guard';
+import { UserResolve } from './models/user.resolve';
+import { HomeComponent, HotelComponent, OrderHistoryComponent, OrderDetailComponent, PaymentComponent, ProfileComponent, RegionDetailComponent, ReservedAreaComponent, SearchComponent, WishlistComponent } from './pages';
 import { NotFoundComponent } from './sections';
 
 export function getRoutes(routes: Routes): Routes {
@@ -20,16 +22,22 @@ export function getRoutes(routes: Routes): Routes {
 
 const routes: Routes = [
 	{ path: '', component: HomeComponent, pathMatch: 'full' },
+	{
+		path: 'area_riservata', component: ReservedAreaComponent, children: [
+			{ path: '', redirectTo: 'i_tuoi_dati', pathMatch: 'full' },
+			{
+				path: 'i_tuoi_dati', component: ProfileComponent, resolve: {
+					user: UserResolve
+				}
+			},
+			{ path: 'riepilogo_ordini', component: OrderHistoryComponent },
+			{ path: 'dettaglio_ordine', component: OrderDetailComponent },
+			{ path: 'preferiti', component: WishlistComponent }
+		], canActivate: [UserGuard]
+	},
 	{ path: 'search', component: SearchComponent },
 	{ path: ':lang/search', component: SearchComponent },
 	/*
-	{
-		path: 'search', component: SerpComponent, children: [
-			{ path: '', redirectTo: 'list', pathMatch: 'full' },
-			{ path: 'list', component: SerpListComponent },
-			{ path: 'map', component: SerpMapComponent },
-		]
-	},
 	{
 		path: ':lang/search', component: SerpComponent, children: [
 			{ path: '', redirectTo: 'list', pathMatch: 'full' },

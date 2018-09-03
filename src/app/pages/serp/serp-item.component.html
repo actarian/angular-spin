@@ -4,9 +4,15 @@
 	<div class="image">
 		<div class="discount" *ngIf="item.overlayCoverImage">
 			<img [attr.data-src]="item.overlayCoverImage | asset" alt="{{item.overlayCoverText}}">
+
+
+
+
+
+
 		</div>
 		<a [routerLink]="[item.slug] | route">
-			<img class="image-thumb" [attr.data-src]="item.photo | asset" alt="{{item.name}}">
+			<img class="image-thumb" [attr.data-src]="item.photo + '?width=350&height=197&rmode=crop'" alt="{{item.name}}">
 		</a>
 	</div>
 	<!-- /Hotel Image -->
@@ -74,7 +80,8 @@
 	<div class="action">
 		<button type="button" class="add-to-fav" (click)="wishlist.doToggle(item)" [ngClass]="{ active: wishlist.has(item) }">
 			<svg class="ico"><use xlink:href="#ico-fav"></use></svg>
-			Salva
+			<span *ngIf="!wishlist.has(item)">Salva</span>
+			<span *ngIf="wishlist.has(item)">Rimuovi</span>
 		</button>
 		<!--
 		<div class="special-msg">

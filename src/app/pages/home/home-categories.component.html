@@ -29,7 +29,7 @@
 			<div class="card-col" *ngFor="let item of items$ | async | slice :0 :6">
 				<a class="category-card" [routerLink]="[item.slug] | route">
 					<figure class="figure">
-						<img class="img" [attr.data-src]="item.images | image" alt="{{item.title}}">
+						<img class="img" [attr.data-src]="item.images | image  :'Default' :'width=361&height=203&rmode=crop'" alt="{{item.title}}">
 					</figure>
 					<div class="body">
 						<h3 class="title">{{item.title}}</h3>

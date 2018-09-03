@@ -92,6 +92,11 @@ export class SearchResult implements Document {
 		searchResult.photo = options.photo ? '/media/immagini/' + options.photo : null;
 		searchResult.structureId = options.structureID;
 		searchResult.trustPilot = new TrustPilot({ averageStars: options.trustPilot_averageStars, totalReviews: options.trustPilot_nReviews });
+		// !!!
+		if (searchResult.slug) {
+			searchResult.slug = searchResult.slug.replace('http://eurospin-viaggi2.wslabs.it/', '/');
+			searchResult.slug = searchResult.slug.replace('https://eurospin-viaggi2.wslabs.it/', '/');
+		}
 		return searchResult;
 	}
 

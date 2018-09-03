@@ -21,7 +21,7 @@ Serp Search
 	background: $tertiary-color;
 	margin-bottom: 30px;
 	position: relative;
-	z-index: 100;
+	z-index: 90;
 	user-select: none;
 
 	@include sm-down {
@@ -106,16 +106,20 @@ Serp Filters
 
 		.item {
 			flex: 0 0 25%;
-			display: flex;
-			flex-direction: column;
-			justify-content: space-between;
-			align-items: center;
-			text-align: center;
-			color: #fff;
-			font-size: 10px;
-			text-transform: uppercase;
-			cursor: pointer;
-			padding: 8px 10px 5px;
+
+			button {
+				width: 100%;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				align-items: center;
+				text-align: center;
+				color: #fff;
+				font-size: 10px;
+				text-transform: uppercase;
+				cursor: pointer;
+				padding: 8px 10px 5px;
+			}
 
 			svg {
 				width: 20px;
@@ -129,11 +133,13 @@ Serp Filters
 				stroke: #fff;
 				width: 18px;
 				height: 18px;
+				margin-bottom: 2px;
 			}
 
 			span {
 				display: block;
 				margin-top: 3px;
+				text-transform: uppercase;
 			}
 
 			.switch-map {
@@ -142,7 +148,7 @@ Serp Filters
 				text-decoration: none;
 
 				&.active {
-					display: block;
+					display: flex;
 				}
 			}
 		}
@@ -277,6 +283,7 @@ Serp Content
 	width: 320px;
 	display: block;
 	padding: 0 30px 0 15px;
+
 	/* --- */
 	/*
 	background: white;

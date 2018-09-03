@@ -1,0 +1,21 @@
+<div class="reserved-area">
+	<div class="container">
+		<div class="sidebar-links">
+			<h1 class="h1">Area riservata</h1>
+			<ul>
+				<li>
+					<button routerLinkActive="active" [routerLink]="'i_tuoi_dati'">I tuoi dati</button>
+				</li>
+				<li>
+					<button routerLinkActive="active" [routerLink]="'riepilogo_ordini'">Riepilogo Ordini</button>
+				</li>
+				<li>
+					<button routerLinkActive="active" [routerLink]="'preferiti'">Preferiti</button>
+				</li>
+			</ul>
+		</div>
+		<div class="content">
+			<router-outlet></router-outlet>
+		</div>
+	</div>
+</div>

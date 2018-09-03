@@ -1,0 +1,153 @@
+@import "~scss/variables";
+
+/*--------------------------------------------------
+Order Detail
+--------------------------------------------------*/
+.h1 {
+	color: $tit-color;
+	line-height: 1.2;
+	margin-bottom: 20px;
+	font-weight: 300;
+
+	@include xs-down {
+		font-size: 28px;
+		font-weight: normal;
+	}
+}
+
+.order-detail {
+	&__head {
+		display: flex;
+
+		.content {
+			flex: 1 1 calc(100% - 100px);
+			padding: 5px 12px;
+
+			.head {
+				display: flex;
+				justify-content: space-between;
+				padding: 0;
+				margin-bottom: 10px;
+				position: relative;
+				z-index: 1;
+				flex-wrap: nowrap;
+				align-items: flex-start;
+
+				@include xs-down {
+					display: block;
+					padding-right: 30px;
+				}
+
+				.add-to-fav {
+					display: none;
+
+					@include xs-down {
+						position: absolute;
+						top: 0;
+						right: 0;
+						display: block;
+						background: none;
+						color: $primary-color;
+						border: none;
+						text-align: center;
+						cursor: pointer;
+						padding-right: 0;
+
+						svg {
+							width: 22px;
+							height: 22px;
+							stroke: $primary-color;
+							stroke-width: 2px;
+							fill: #fff;
+						}
+
+						&.active {
+							svg {
+								fill: $primary-color;
+							}
+						}
+					}
+				}
+			}
+
+
+			.info {
+				padding-right: 6px;
+
+				.name {
+					font-weight: 600;
+					color: $tit-color;
+					font-size: 22px;
+					line-height: 1.1;
+					margin-bottom: 2px;
+
+					@include xs-down {
+						font-display: 18px;
+					}
+
+					@include xs-down {
+						font-size: 13px;
+					}
+
+					a {
+						color: $tit-color;
+						margin-right: 3px;
+						display: inline-block;
+						text-decoration: none;
+
+						span {
+							margin-right: 4px;
+						}
+
+						&:hover {
+							text-decoration: none;
+						}
+					}
+
+					.stars {
+						transform: translateY(8px);
+
+						@include xxs-down {
+							transform: translateY(3px);
+						}
+					}
+				}
+
+				.location {
+					font-size: 12px;
+					line-height: 1.1;
+					text-transform: uppercase;
+
+					@include xxs-down {
+						font-size: 11px;
+					}
+				}
+			}
+
+		}
+	}
+
+	&__main {
+		.table {
+			margin: 20px 0 40px;
+
+			.row:not(:last-child) {
+				border-bottom: 1px solid $border-color;
+				padding-bottom: 5px;
+				margin-bottom: 5px;
+			}
+
+			.text-right {
+				@include xs-down {
+					text-align: left !important;
+				}
+			}
+
+			.head-row {
+				color: $primary-color;
+				font-weight: bold;
+
+			}
+		}
+	}
+}

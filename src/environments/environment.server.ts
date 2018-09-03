@@ -1,17 +1,5 @@
 export const environment = {
-	assets: '/assets',
-	enableTracing: false,
 	production: true,
-	public: '/',
-	useHash: false,
-	useLang: true,
-	useMarket: false,
-	urlStrategy: '/:lang/', // '/:lang/:market/',
-	defaultLanguage: 'it',
-	defaultMarket: 'it',
-	languages: [
-		{ id: 1, name: 'Italiano', lang: 'it' }
-	],
 	plugins: {
 		facebook: {
 			appId: 2034439646874649,

@@ -10,13 +10,14 @@ import { Image, ImageType } from '../models/image';
 	providedIn: 'root'
 })
 export class ImagePipe implements PipeTransform {
-	transform(images: Image[], type?: string): string {
+	transform(images: Image[], type?: string, queryString?: string): string {
 		type = type || 'Default';
+		queryString = queryString ? `?${queryString}` : '';
 		const imageType: ImageType = ImageType[type] || ImageType.Default;
 		let image: Image = null;
 		if (images && images.length) {
 			image = images.find(i => i.type === imageType);
 		}
-		return image ? image.url : null;
+		return image ? image.url + queryString : null;
 	}
 }

@@ -6,6 +6,7 @@ Form
 
 button,
 a {
+
 	&:active,
 	&:focus,
 	&:active:focus {
@@ -312,6 +313,10 @@ Form
 		margin: 9px 0;
 	}
 
+	select.form-control {
+		padding-left: 7px;
+	}
+
 }
 
 
@@ -333,7 +338,7 @@ Form Password Reveal
 		margin-right: 10px;
 
 		@include xs-down {
-			flex: 1 1 100%;
+			flex: 1 1 calc(100% - 40px);
 		}
 	}
 

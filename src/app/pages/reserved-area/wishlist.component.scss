@@ -1,0 +1,481 @@
+@import "~scss/variables";
+
+/*--------------------------------------------------
+Fav
+--------------------------------------------------*/
+.h1 {
+	color: $tit-color;
+	line-height: 1.2;
+	margin-bottom: 20px;
+	font-weight: 300;
+
+	@include xs-down {
+		font-size: 28px;
+		font-weight: normal;
+	}
+}
+
+.favourites {
+
+	.hotel-item {
+		display: flex;
+		margin-bottom: 40px;
+		box-shadow: 0 3px 7px rgba(0, 0, 0, .15);
+		min-height: 197px;
+
+		&.inside {
+			position: relative;
+			background: white;
+			z-index: 10;
+			transform: translateY(-100%);
+			box-shadow: 0 -5px 5px rgba(0, 0, 0, .05);
+
+			&:before {
+				content: '';
+				position: absolute;
+				z-index: 10;
+				top: -2px;
+				left: 0;
+				height: 3px;
+				width: 100%;
+				background: url('/assets/img/top.png') no-repeat center;
+				background-size: 100% 3px;
+			}
+
+			@include xs-down {
+				flex-direction: row;
+				flex-wrap: wrap;
+				min-height: 0;
+
+				.image {
+					flex: 0 0 80px;
+					width: 80px;
+
+					a,
+					a:hover {
+						display: block;
+						position: relative;
+						z-index: 1;
+						overflow: hidden;
+
+						.image-thumb {
+							position: absolute;
+							z-index: 1;
+							left: 50%;
+							top: 50%;
+							transform: translate(-50%, -50%);
+							max-height: 100%;
+							width: auto;
+						}
+					}
+
+				}
+
+				.content {
+					width: calc(100% - 80px);
+					flex: 1 0 calc(100% - 80px);
+
+					.list {
+						display: none;
+					}
+				}
+
+				.action {
+					width: 100%;
+					flex: 1 0 100%;
+					padding-top: 2px;
+
+					.summary {
+						.price {
+							.desc:first-child {
+								display: inline-block;
+								margin-right: 3px;
+							}
+
+							.value {
+								font-size: 22px;
+							}
+
+							.single-price {
+								display: inline-block;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		@include xs-down {
+			flex-direction: column;
+		}
+
+		.image {
+			position: relative;
+			z-index: 1;
+			width: 300px;
+			flex: 0 0 300px;
+
+			@media (width: 768px) {
+				width: 200px;
+				flex: 0 0 200px;
+			}
+
+			@include md-down {
+				flex: 0 0 240px;
+				width: 240px;
+			}
+
+			@include xs-down {
+				width: auto;
+				flex: 0 0 auto;
+			}
+
+			.discount {
+				position: absolute;
+				z-index: 2;
+				top: 0;
+				left: 0;
+				pointer-events: none;
+			}
+
+			a {
+				position: absolute;
+				z-index: -1;
+				width: 100%;
+				height: 100%;
+				overflow: hidden;
+
+				@include xs-down {
+					position: static;
+				}
+
+				img {
+					position: absolute;
+					top: 50%;
+					left: 50%;
+					transform: translate3d(-50%, -50%, 0);
+					width: auto;
+					max-width: none;
+					height: auto;
+					min-width: 100%;
+					min-height: 100%;
+					opacity: 0; // lazy-image
+					transition: all .3s ease-in-out !important;
+					transition-property: transform, opacity;
+
+					&.ready {
+						opacity: 1;
+					}
+
+					@include xs-down {
+						position: static;
+						transform: none;
+						width: 100%;
+						height: auto;
+						min-height: 0;
+						max-width: none;
+						transition: none;
+					}
+				}
+
+				&:hover {
+					img {
+						transform: translate3d(-50%, -50%, 0) scale(1.05);
+
+						@include xs-down {
+							transform: none;
+						}
+					}
+				}
+			}
+		}
+
+		.content {
+			flex: 1 1 auto;
+			padding: 8px 12px 12px;
+
+			@include xs-down {
+				padding-top: 6px;
+			}
+
+		}
+
+		.head {
+			display: flex;
+			justify-content: space-between;
+			padding: 0;
+			margin-bottom: 10px;
+			position: relative;
+			z-index: 1;
+			flex-wrap: nowrap;
+			align-items: flex-start;
+
+			@include xs-down {
+				display: block;
+				padding-right: 30px;
+			}
+
+			.add-to-fav {
+				display: none;
+
+				@include xs-down {
+					position: absolute;
+					top: 0;
+					right: 0;
+					display: block;
+					background: none;
+					color: $primary-color;
+					border: none;
+					text-align: center;
+					cursor: pointer;
+					padding-right: 0;
+
+					svg {
+						width: 22px;
+						height: 22px;
+						stroke: $primary-color;
+						stroke-width: 2px;
+						fill: #fff;
+					}
+
+					&.active {
+						svg {
+							fill: $primary-color;
+						}
+					}
+				}
+			}
+		}
+
+		.info {
+			padding-right: 6px;
+
+			.name {
+				font-weight: 600;
+				color: $tit-color;
+				font-size: 15px;
+				line-height: 1.1;
+				margin-bottom: 2px;
+
+
+				@include xs-down {
+					font-size: 13px;
+				}
+
+				a {
+					color: $tit-color;
+					margin-right: 3px;
+					display: inline-block;
+					text-decoration: none;
+
+					span {
+						margin-right: 4px;
+					}
+
+					&:hover {
+						text-decoration: none;
+					}
+				}
+
+				.stars {
+					transform: translateY(3px);
+				}
+			}
+
+			.location {
+				font-size: 11px;
+				line-height: 1.1;
+			}
+		}
+
+		.desc {
+			font-size: 12px;
+			line-height: 1.2;
+
+			.list {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+
+				&-item {
+					position: relative;
+					z-index: 1;
+					padding-left: 20px;
+					padding-bottom: 6px;
+
+					.ico {
+						position: absolute;
+						z-index: 1;
+						top: -1px;
+						left: 0;
+						width: 16px;
+						height: 16px;
+						fill: $text-color;
+
+						@include xs-down {
+							width: 14px;
+							height: 14px;
+							top: 0;
+						}
+					}
+				}
+			}
+		}
+
+		.special-msg {
+			color: $secondary-color;
+			font-size: 11px;
+			margin-top: 10px;
+
+			strong {
+				font-size: 15px;
+				font-weight: bold;
+			}
+		}
+
+		.action {
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-end;
+			width: 190px;
+			flex: 0 0 190px;
+			padding: 8px 12px 12px;
+			background: $light-color;
+
+			@include md-down {
+				width: 170px;
+				flex: 0 0 170px;
+			}
+
+			@include xs-down {
+				width: auto;
+				flex: 0 0 auto;
+				display: flex;
+				flex-direction: row;
+				flex-wrap: wrap;
+				align-items: flex-end;
+				padding: 6px 12px 10px;
+			}
+
+			.add-to-fav {
+				color: $primary-color;
+				text-align: left;
+				cursor: pointer;
+				text-transform: uppercase;
+				font-size: 11px;
+				background: transparent;
+				transition: background .2s ease-in-out;
+				margin-bottom: 8px;
+				text-decoration: none !important;
+				padding: 0;
+				margin-top: 2px;
+
+				@include xs-down {
+					display: none;
+				}
+
+				svg {
+					width: 18px;
+					height: 18px;
+					stroke: $primary-color;
+					stroke-width: 2px;
+					fill: #fff;
+					vertical-align: text-top;
+					transform: translateY(-1px);
+					margin-right: 3px;
+				}
+
+				&.active {
+					svg {
+						fill: $primary-color;
+					}
+				}
+
+			}
+
+			.summary {
+				flex: 1 0 auto;
+				flex: 1 0 auto;
+				display: flex;
+				flex-direction: column;
+				justify-content: flex-end;
+
+				@include xs-down {
+					flex: 0 0 50%;
+					display: block;
+				}
+			}
+		}
+
+		.price {
+			color: $primary-color;
+			margin-top: 5px;
+
+			.desc {
+				display: block;
+				font-size: 9px;
+				text-transform: uppercase;
+				line-height: .9;
+			}
+
+			.single-price {
+				font-weight: bold;
+				line-height: .9;
+				margin-bottom: 3px;
+				display: block;
+
+				.value {
+					font-size: 40px;
+
+					@include xs-down {
+						font-size: 32px;
+					}
+				}
+
+				.symbol {
+					font-size: 16px;
+				}
+			}
+		}
+
+		.total-price {
+			margin-top: 2px;
+			font-size: 9px;
+			text-transform: uppercase;
+			line-height: .9;
+
+			.desc {
+				font-size: 9px;
+				text-transform: uppercase;
+				line-height: .9;
+			}
+
+			.total-price {
+				font-weight: bold;
+				display: inline-block;
+				margin-left: 3px;
+			}
+		}
+
+		.cta {
+			margin-top: 10px;
+
+			@include xs-down {
+				flex: 0 0 50%;
+			}
+
+			.btn {
+				text-align: center;
+				display: block;
+				width: 100%;
+			}
+		}
+
+		.region,
+		.town {
+			text-transform: uppercase;
+		}
+
+	}
+
+}

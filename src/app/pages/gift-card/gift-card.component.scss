@@ -1,1 +1,188 @@
 @import "~scss/variables";
+
+/*--------------------------------------------------
+Card Cover
+--------------------------------------------------*/
+
+.card-cover {
+	text-align: center;
+
+	img {
+		max-width: 100%;
+	}
+}
+
+
+/*--------------------------------------------------
+Card Menu
+--------------------------------------------------*/
+
+.card-menu {
+	background: $primary-color;
+	margin: 0 auto;
+	max-width: 1600px;
+	margin-bottom: 30px;
+	margin-top: 1px;
+
+	ul {
+		display: flex;
+		justify-content: center;
+		padding: 15px 0;
+		margin: 0;
+		list-style: none;
+
+		li {
+			padding: 0 30px;
+
+			a {
+				color: #fff;
+				text-transform: uppercase;
+				display: inline-block;
+				font-size: 12px;
+			}
+
+			&:not(:last-child) {
+				border-right: 1px solid #fff;
+				margin-right: 30px;
+				padding-right: 30px;
+			}
+		}
+	}
+}
+
+.h1 {
+	color: $tit-color;
+	font-size: 40px;
+	line-height: 1.2;
+	font-weight: 300;
+	margin-bottom: 20px;
+
+	@include xs-down {
+		font-size: 28px;
+		font-weight: normal;
+	}
+}
+
+.h3 {
+	color: $text-color;
+	font-size: 26px;
+	line-height: 1.2;
+	font-weight: 400;
+	margin-bottom: 15px;
+
+	@include xs-down {
+		font-size: 20px;
+		font-weight: normal;
+	}
+}
+
+
+.card-list {
+	margin: 30px -20px;
+}
+
+.feature-card {
+	margin: 0 auto;
+	max-width: 1600px;
+	margin: 60px auto;
+
+	.swiper-wrapper {
+		padding-bottom: 50px;
+	}
+
+	.swiper-button {
+		width: 38px;
+		height: 36px;
+		background: url('/assets/img/gallery-arrow.png') no-repeat center;
+		margin-top: -28px;
+		right: 0;
+		opacity: .9;
+		transition: opacity .2s ease-in-out;
+
+		&:hover {
+			opacity: 1;
+		}
+
+		&:before {
+			display: none;
+			content: '';
+		}
+	}
+
+	.swiper-button-prev {
+		left: 0;
+		transform: rotate(180deg);
+	}
+
+	.swiper-button-next {
+		right: 0;
+	}
+
+	.swiper-button-disabled {
+		opacity: .5;
+		cursor: default;
+	}
+
+	.swiper-pagination-bullet-active {
+		background: $primary-color;
+	}
+}
+
+
+#scadenzaForm {
+	border: 1px solid $border-color;
+	margin: 25px 0 55px 0;
+	padding: 45px 50px;
+
+	input[type="text"],
+	input[type="date"],
+	input[type="email"],
+	input[type="password"],
+	input[type="number"],
+	textarea {
+		height: 50px;
+	}
+
+	.main-btn {
+		margin-top: 23px;
+		width: 100% !important;
+		height: 50px;
+	}
+}
+
+.table-regalo {
+	table {
+		border-bottom: 1px solid #afc3d6;
+		border-top: 1px solid #afc3d6;
+		margin: 20px 0 0 0;
+
+		th {
+			padding: 15px 0 7px 0;
+			color: #67646e;
+			font-size: 13px;
+			font-weight: normal;
+		}
+
+		td {
+			padding: 15px 0;
+			color: #f47c22;
+			font-size: 18px;
+			font-weight: bold;
+		}
+
+		sup {
+			font-size: 15px;
+			top: 0px;
+			margin: 0 1px;
+		}
+
+	}
+}
+
+/* 1200 */
+
+@media (max-width: 1200px) {
+	#scadenzaForm {
+		padding: 45px;
+	}
+}

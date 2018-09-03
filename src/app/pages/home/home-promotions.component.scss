@@ -79,7 +79,8 @@ Promotions
 				opacity: 0; // lazy-image
 				transition: .3s ease-in-out;
 				transition-property: transform, opacity;
-				&[src] {
+
+				&.ready {
 					opacity: 1;
 				}
 			}

@@ -5,7 +5,6 @@ export class Document implements Entity {
 	name?: string;
 	title?: string;
 	description?: string;
-	author?: string;
 	slug?: string;
 }
 

@@ -13,6 +13,7 @@ import { HttpResponseInterceptor } from './http';
 import { JsonFormatterComponent } from './json-formatter';
 import { CustomMissingTranslationHandler, LabelPipe, LabelService } from './labels';
 import { Logger, LoggerComponent } from './logger';
+import { MenuService } from './models/menu.service';
 import { OnceService } from './once';
 import { PageComponent, PageOutletComponent, Pages, PageService } from './pages';
 import { FacebookService, GoogleService, MapboxService } from './plugins';
@@ -21,7 +22,7 @@ import { AssetPipe, CustomAsyncPipe, ImagePipe, PublicPipe, RoutePipe, SegmentPi
 import { CookieStorageService, LocalStorageService, SessionStorageService, StorageService } from './storage';
 import { SafeUrlPipe, TrustPipe } from './trust';
 import { ClickOutsideDirective, FancyboxDirective, LazyImagesDirective } from './ui';
-import { ModalComponent, ModalService } from './ui/modal';
+import { ModalContainerComponent, ModalService, ModalViewComponent } from './ui/modal';
 
 // import { AuthService, AuthTokenInterceptor } from './auth';
 
@@ -40,12 +41,12 @@ import { ModalComponent, ModalService } from './ui/modal';
 		PageOutletComponent, PageComponent, DisposableComponent,
 		LabelPipe, AssetPipe, CustomAsyncPipe, ImagePipe, HighlightPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe, SlugAsyncPipe, MatchValidator, TrustPipe, SafeUrlPipe,
 		ControlComponent, JsonFormatterComponent,
-		ModalComponent, LoggerComponent, FancyboxDirective, ClickOutsideDirective, LazyImagesDirective, ControlEditableComponent, GoogleTagManagerComponent
+		ModalContainerComponent, ModalViewComponent, LoggerComponent, FancyboxDirective, ClickOutsideDirective, LazyImagesDirective, ControlEditableComponent, GoogleTagManagerComponent
 	],
 	exports: [
 		TranslatePipe, LabelPipe, AssetPipe, CustomAsyncPipe, ImagePipe, HighlightPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe, SlugAsyncPipe, MatchValidator, TrustPipe, SafeUrlPipe,
 		ControlComponent, JsonFormatterComponent,
-		ModalComponent, LoggerComponent, FancyboxDirective, ClickOutsideDirective, LazyImagesDirective, ControlEditableComponent, GoogleTagManagerComponent
+		ModalContainerComponent, ModalViewComponent, LoggerComponent, FancyboxDirective, ClickOutsideDirective, LazyImagesDirective, ControlEditableComponent, GoogleTagManagerComponent
 	],
 	providers: [
 		{ provide: HTTP_INTERCEPTORS, useClass: HttpResponseInterceptor, multi: true },
@@ -64,6 +65,7 @@ import { ModalComponent, ModalService } from './ui/modal';
 		ControlService,
 		FormService,
 		ModalService,
+		MenuService,
 		// pipes
 		TranslatePipe, LabelPipe, AssetPipe, CustomAsyncPipe, ImagePipe, HighlightPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe, SlugAsyncPipe, MatchValidator, TrustPipe, SafeUrlPipe,
 	],

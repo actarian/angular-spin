@@ -7,4 +7,7 @@
 	<section-footer></section-footer>
 	<section-svg></section-svg>
 </div>
-<modal-component></modal-component>
+<div *ngIf="!cookieAccepted" class="cookie-bar">
+	Questo sito web utilizza cookie di profilazione, al fine di inviare messaggi pubblicitari in linea con le preferenze manifestate nell'ambito della navigazione in rete ed installa cookies di terze parti. La prosecuzione della navigazione, compreso lo scroll ed il click su elementi del sito, equivale a consenso. Per maggiori informazioni consulta l’<a [routerLink]="'cookie-policy' | slugAsync">informativa cookies completa</a> <button (click)="acceptCookie();">Chiudi</button>
+</div>
+<modal-container-component></modal-container-component>

@@ -90,11 +90,10 @@ export class AuthSignInComponent extends DisposableComponent implements OnInit {
 			users => {
 				const user = users[0];
 				this.onAuth(user);
-				console.log('onSubmit.success', user);
 			}, error => {
 				this.error = error;
 				this.submitted = false;
-				console.log('onSubmit.error', this.error);
+				console.log('AuthSignInComponent.onSubmit.error', this.error);
 			});
 	}
 
@@ -109,7 +108,7 @@ export class AuthSignInComponent extends DisposableComponent implements OnInit {
 			takeUntil(this.unsubscribe)
 		).subscribe(e => {
 			if (e instanceof ModalCompleteEvent) {
-				console.log('signed');
+				console.log('AuthSignInComponent.onForgotten.complete');
 			}
 		});
 	}

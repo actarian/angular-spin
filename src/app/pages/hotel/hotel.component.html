@@ -1,4 +1,4 @@
-<section class="hotel-page right-side">
+<section class="hotel-page right-side" *ngIf="booking.hotel">
 	<div class="container">
 		<!-- MAIN -->
 		<div class="hotel-main-content">
@@ -6,18 +6,17 @@
 			<div class="hotel-head">
 				<div class="hotel-info">
 					<div class="hotel-name">
-						<span>{{page.title}}</span> <span class="stars"><em *ngFor="let star of hotel?.rating?.split('');" [ngClass]="{ superior: star === 'S' }">{{star}}</em></span>
+						<span>{{page.title}}</span> <span class="stars"><em *ngFor="let star of booking.hotel.rating?.split('');" [ngClass]="{ superior: star === 'S' }">{{star}}</em></span>
 					</div>
 					<div class="hotel-location">
-						<span class="hotel-region">{{hotel?.location?.avesDstCode}}</span>
+						<span class="hotel-region">{{booking.hotel.location?.avesDstCode}}</span>
 						<!-- <span class="hotel-region">Italia Toscana</span>&nbsp;<span class="hotel-town">Radda in Chianti SI</span> -->
 					</div>
 				</div>
-				<ng-container *ngIf="hotel?.trustPilot">
-					<div class="hotel-trust" [trustPilot]="hotel?.trustPilot">
-					</div>
+				<ng-container *ngIf="booking.hotel.trustPilot">
+					<div class="hotel-trust" [trustPilot]="booking.hotel.trustPilot"></div>
 				</ng-container>
-				<button class="add-to-fav" type="button" (click)="wishlist.doToggle(hotel)" [ngClass]="{ active: wishlist.has(hotel) }" *ngIf="hotel">
+				<button class="add-to-fav" type="button" (click)="wishlist.doToggle(booking.hotel)" [ngClass]="{ active: wishlist.has(booking.hotel) }">
 					<svg class="ico"><use xlink:href="#ico-fav"></use></svg>
 				</button>
 			</div>
@@ -26,7 +25,7 @@
 				<div class="swiper-wrapper" [fancybox]="fancyboxOptions">
 					<div class="swiper-slide" *ngFor="let image of page.images | hotelGallery">
 						<a href="{{image.url}}" data-fancybox="gallery">
-							<img src="{{image.url}}" alt="{{image.name}}">
+							<img sizes="(max-width: 1600px) 100vw, 300px" srcset="{{image.url}}?width=320&amp;height=180&rmode=crop 320w, {{image.url}}?width=375&height=211&rmode=crop 375w, {{image.url}}?width=575&height=323&rmode=crop 575w, {{image.url}}?width=300&height=169&rmode=crop 576w," src="{{image.url}}?width=300&height=169&rmode=crop" alt="{{image.name}}">
 						</a>
 					</div>
 				</div>
@@ -40,13 +39,13 @@
 						<svg class="ico">
 							<use xlink:href="#ico-calendar"></use>
 						</svg>
-						<span>{{hotel?.abstract}}</span>
+						<span>{{booking.hotel.abstract}}</span>
 					</li>
 					<li class="hotel-list-item">
 						<svg class="ico">
 							<use xlink:href="#ico-struttura"></use>
 						</svg>
-						<span>{{hotel?.accomodation}}</span>
+						<span>{{booking.hotel.accomodation}}</span>
 					</li>
 					<!-- TAGS -->
 					<ng-container *ngIf="page.taxonomies">
@@ -84,13 +83,13 @@
 						</div>
 					</ng-container>
 					<!-- LOCATION -->
-					<div class="hotel-mapbox" *ngIf="hotel?.location">
+					<div class="hotel-mapbox" *ngIf="booking.hotel.location">
 						<div class="hotel-mapbox--map">
 							<button type="button" (click)="onShowMap()">
 								<svg class="ico" viewBox="0 0 32 32">
 									<use xlink:href="#ico-pin"></use>
 								</svg>
-								<img alt="" src="https://api.mapbox.com/styles/v1/mapbox/streets-v10/static/{{hotel.location.longitude}},{{hotel.location.latitude}},9.0,0,0/300x150@2x?access_token=pk.eyJ1Ijoic3VwYWhmdW5rIiwiYSI6IjE4Zjg1MWMxYzQ3M2RlYTU4OGNlMTc4ODFmOTkyODczIn0.Nusb4DbKb1KnkWWDcZUy-w">
+								<img alt="" src="https://api.mapbox.com/styles/v1/mapbox/streets-v10/static/{{booking.hotel.location.longitude}},{{booking.hotel.location.latitude}},9.0,0,0/300x150@2x?access_token=pk.eyJ1Ijoic3VwYWhmdW5rIiwiYSI6IjE4Zjg1MWMxYzQ3M2RlYTU4OGNlMTc4ODFmOTkyODczIn0.Nusb4DbKb1KnkWWDcZUy-w">
 							</button>
 						</div>
 						<div class="hotel-mapbox--desc">
@@ -106,13 +105,13 @@
 									<svg class="ico ico-pin" viewBox="0 0 32 32">
 										<use xlink:href="#ico-pin"></use>
 									</svg>
-									{{hotel.address.description}}, {{hotel.address.city}}, {{hotel.address.provinceCode}}, {{hotel.address.cap}}
+									{{booking.hotel.address.description}}, {{booking.hotel.address.city}}, {{booking.hotel.address.provinceCode}}, {{booking.hotel.address.cap}}
 								</li>
 								<li>
 									<svg class="ico" viewBox="0 0 32 32">
 										<use xlink:href="#ico-tel"></use>
 									</svg>
-									{{hotel.address.phone}}
+									{{booking.hotel.address.phone}}
 								</li>
 							</ul>
 						</div>
@@ -126,20 +125,20 @@
 				<div class="sidebar-group">
 					<div class="spinner-input">
 						<strong for="">Adulti</strong>
-						<p-spinner size="10" readonly name="adults" [(ngModel)]="model.adults" [min]="1" [max]="10" (onChange)="onAdultsChanged()"></p-spinner>
+						<p-spinner size="10" readonly name="adults" [(ngModel)]="model.adults" [min]="1" [max]="10" (change)="onAdultsChanged()"></p-spinner>
 					</div>
 				</div>
 				<div class="sidebar-group">
 					<div class="spinner-input">
 						<strong>Bambini</strong>
-						<p-spinner size="10" readonly name="childs" [(ngModel)]="model.childs" [min]="0" [max]="4" (onChange)="onChildsChanged()"></p-spinner>
+						<p-spinner size="10" readonly name="childs" [(ngModel)]="model.childs" [min]="0" [max]="4" (change)="onChildsChanged()"></p-spinner>
 					</div>
 					<div class="child-ages">
-						<div class="child-age" *ngFor="let child of model.childrens; let index = $index">
+						<div class="child-age" *ngFor="let child of model.childrens; let index = index">
 							<strong>Età bambino {{index}}</strong>
 							<div class="custom-select">
-								<select dir="rtl" name="age" [(ngModel)]="child.age" (change)="onChildsChanged()" [disabled]="busy">
-									<option *ngFor="let age of search.ages" [value]="age">{{age}}</option>
+								<select dir="rtl" name="{{'age' + index}}" [(ngModel)]="child.age">
+									<option *ngFor="let age of search.ages" [ngValue]="age">{{age}}</option>
 								</select>
 							</div>
 						</div>
@@ -168,6 +167,15 @@
 					</ng-container>
 				</div>
 				<div *ngIf="booking.options">
+					<div class="sidebar-group" *ngIf="booking.options.principals">
+						<div class="tit">Seleziona partenza</div>
+						<div class="radio type-{{item.type}}" *ngFor="let item of booking.options.principals">
+							<label>
+								<input type="radio" name="partenza" value="{{item.code}}" [checked]="item.checked">
+								<span>{{item.name}}</span>
+							</label>
+						</div>
+					</div>
 					<div class="sidebar-group">
 						<div class="tit">Tipologia di camera</div>
 						<div class="radio type-{{item.type}}" *ngFor="let item of booking.options.accomodations">
@@ -178,24 +186,23 @@
 						</div>
 					</div>
 					<div class="sidebar-group">
-						<div class="tit">Assicurazione</div>
-						<div class="radio type-{{item.type}}" *ngFor="let item of booking.options.extraQuotes">
-							<label>
-								<input type="radio" name="assicurazione" value="{{item.code}}" [checked]="item.checked">
-								<span>{{item.name}} ({{item.price}}€)</span>
-							</label>
-						</div>
-					</div>
-					<div class="sidebar-group">
 						<div class="tit">Trattamento</div>
 						<div class="radio">
 							<label>
 								<input type="radio" name="trattamento" checked>
-								<span>{{hotel?.accomodation}}</span>
+								<span>{{booking.hotel.accomodation}}</span>
 							</label>
 						</div>
 					</div>
-
+					<div class="sidebar-group">
+						<div class="tit">Assicurazione</div>
+						<div class="radio type-{{item.type}}" *ngFor="let item of booking.options.extraQuotes">
+							<label>
+								<input type="checkbox" name="assicurazione" value="{{item.code}}" [checked]="item.checked">
+								<span>{{item.name}}</span> <small [innerHTML]="item.description"></small>
+							</label>
+						</div>
+					</div>
 				</div>
 				<div class="sidebar-group--sticky" *ngIf="!busy">
 					<div class="sidebar-group">
@@ -206,7 +213,8 @@
 						</div>
 					</div>
 					<div class="sidebar-cta">
-						<button type="button" class="btn" [routerLink]="'payment' | slugAsync">Prenota il tuo viaggio</button>
+						<!-- <button type="button" class="btn" [routerLink]="'payment' | slugAsync">Prenota il tuo viaggio</button> -->
+						<button type="button" class="btn" (click)="onBook($event)" [value]="'payment' | slugAsync">Prenota il tuo viaggio</button>
 						<span class="no-extra">(nessun costo aggiuntivo)</span>
 					</div>
 				</div>
@@ -243,13 +251,13 @@
 				</div>
 			</ng-container>
 			<!-- LOCATION -->
-			<div class="hotel-mapbox" *ngIf="hotel?.location">
+			<div class="hotel-mapbox" *ngIf="booking.hotel.location">
 				<div class="hotel-mapbox--map">
 					<button type="button" (click)="onShowMap()">
 						<svg class="ico" viewBox="0 0 32 32">
 							<use xlink:href="#ico-pin"></use>
 						</svg>
-						<img alt="" src="https://api.mapbox.com/styles/v1/mapbox/streets-v10/static/{{hotel.location.longitude}},{{hotel.location.latitude}},9.0,0,0/300x150@2x?access_token=pk.eyJ1Ijoic3VwYWhmdW5rIiwiYSI6IjE4Zjg1MWMxYzQ3M2RlYTU4OGNlMTc4ODFmOTkyODczIn0.Nusb4DbKb1KnkWWDcZUy-w">
+						<img alt="" src="https://api.mapbox.com/styles/v1/mapbox/streets-v10/static/{{booking.hotel.location.longitude}},{{booking.hotel.location.latitude}},9.0,0,0/300x150@2x?access_token=pk.eyJ1Ijoic3VwYWhmdW5rIiwiYSI6IjE4Zjg1MWMxYzQ3M2RlYTU4OGNlMTc4ODFmOTkyODczIn0.Nusb4DbKb1KnkWWDcZUy-w">
 					</button>
 				</div>
 				<div class="hotel-mapbox--desc">
@@ -265,13 +273,13 @@
 							<svg class="ico ico-pin" viewBox="0 0 32 32">
 								<use xlink:href="#ico-pin"></use>
 							</svg>
-							{{hotel.address.description}}, {{hotel.address.city}}, {{hotel.address.provinceCode}}, {{hotel.address.cap}}
+							{{booking.hotel.address.description}}, {{booking.hotel.address.city}}, {{booking.hotel.address.provinceCode}}, {{booking.hotel.address.cap}}
 						</li>
 						<li>
 							<svg class="ico" viewBox="0 0 32 32">
 								<use xlink:href="#ico-tel"></use>
 							</svg>
-							{{hotel.address.phone}}
+							{{booking.hotel.address.phone}}
 						</li>
 					</ul>
 				</div>
@@ -279,12 +287,12 @@
 		</div>
 		<!-- TOTAL PRICE MOBILE-->
 		<div class="total-price-mobile" *ngIf="booking.options">
-			<div class="travel-recap">Per {{booking.paxTotal}} persone - dal {{booking.checkIn | date : 'shortDate'}} al {{booking.checkOut | date : 'shortDate'}} - {{hotel?.accomodation}}</div>
+			<div class="travel-recap">Per {{booking.paxTotal}} persone - dal {{booking.checkIn | date : 'shortDate'}} al {{booking.checkOut | date : 'shortDate'}} - {{booking.hotel.accomodation}}</div>
 			<div class="total-price-recap">
 				<div class="prices">
 					<div class="price-pp">
 						<span>Prezzo<br>per persona</span>
-						<strong>{{booking.priceTotal}}€</strong>
+						<strong>{{booking.priceTotal / booking.paxTotal}}€</strong>
 					</div>
 					<div class="price-total">
 						<span>Prezzo<br>Totale</span>

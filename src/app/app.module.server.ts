@@ -3,10 +3,10 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ServerModule, ServerTransferStateModule } from '@angular/platform-server';
 import { ModuleMapLoaderModule } from '@nguniversal/module-map-ngfactory-loader';
 import { PrebootModule } from 'preboot';
+import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 
-// const prebootOptions = { appRoot: 'app-component' };  // see PrebootRecordOptions section below
 // const inlineCode = getInlinePrebootCode(prebootOptions);
 // now simply insert the inlineCode into the HEAD section of your server view
 
@@ -18,7 +18,7 @@ import { AppModule } from './app.module';
 		AppModule,
 
 		ServerModule,
-		PrebootModule.withConfig({ appRoot: 'app-component' }),
+		PrebootModule.withConfig(environment.preboot),
 
 		ServerTransferStateModule // <-- broken for the time-being with ASP.NET
 		// HttpTransferCacheModule still needs fixes for 5.0

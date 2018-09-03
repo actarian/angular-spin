@@ -1,0 +1,139 @@
+<h1 class="h1 title">I tuoi dati</h1>
+<div class="tit">Compila i campi con i tuoi dati</div>
+<form class="form" name="profile" role="form" novalidate autocomplete="off" (ngSubmit)="profile.valid && onSubmit()" #profile="ngForm">
+	<div class="fieldset">
+		<div class="form-group">
+			<label for="firstName">{{ 'signUp.firstName' | translate }} <sup>*</sup></label>
+			<input type="text" class="form-control" required [(ngModel)]="model.firstName" name="firstName" placeholder="{{ 'signUp.firstName' | translate }}" #firstName="ngModel" autocomplete="firstName">
+			<div *ngIf="firstName.invalid && (profile.submitted || firstName.dirty || firstName.touched)" class="alert alert-danger">
+				<div *ngIf="email.errors.required">{{ 'errors.required' | translate }}</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="lastName">{{ 'signUp.lastName' | translate }} <sup>*</sup></label>
+			<input type="text" class="form-control" required [(ngModel)]="model.lastName" name="lastName" placeholder="{{ 'signUp.lastName' | translate }}" #lastName="ngModel" autocomplete="lastName">
+			<div *ngIf="lastName.invalid && (profile.submitted || lastName.dirty || lastName.touched)" class="alert alert-danger">
+				<div *ngIf="lastName.errors.required">{{ 'errors.required' | translate }}</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="email">{{ 'signUp.email' | translate }} <sup>*</sup></label>
+			<input type="email" class="form-control" required pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" match="emailConfirm" reverse="true" [(ngModel)]="model.email" name="email" placeholder="{{ 'signUp.email' | translate }}" #email="ngModel" autocomplete="email">
+			<div *ngIf="email.invalid && (profile.submitted || email.dirty || email.touched)" class="alert alert-danger">
+				<div *ngIf="email.errors.required">{{ 'errors.required' | translate }}</div>
+				<div *ngIf="email.errors.pattern">{{ 'errors.email' | translate }}</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="password">{{ 'signUp.password' | translate }} <sup>*</sup> <small class="text-muted">({{ 'signUp.passwordHint' | translate }})</small></label>
+			<div class="form-password-reveal">
+				<input [type]="passwordReveal.value ? 'text' : 'password'" class="form-control" required minlength="6" [(ngModel)]="model.password" name="password" placeholder="{{ 'signUp.password' | translate }}" #password="ngModel" autocomplete="password">
+				<div class="checkbox">
+					<label class="form-check-label">
+						<input type="checkbox" class="form-check-input" [(ngModel)]="model.passwordReveal" name="passwordReveal" #passwordReveal="ngModel">
+						<span>{{ 'signUp.passwordReveal' | translate }}</span>
+					</label>
+				</div>
+			</div>
+			<div *ngIf="password.invalid && (profile.submitted || password.dirty || password.touched)" class="alert alert-danger">
+				<div *ngIf="password.errors.required">{{ 'errors.required' | translate }}</div>
+				<div *ngIf="password.errors.minlength">{{ 'errors.minlength' | label : { value: password.errors.minlength.requiredLength } }}</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="vat">P.iva o codice fiscale <sup>*</sup></label>
+			<input type="text" class="form-control" required [(ngModel)]="model.vat" name="vat" placeholder="P.iva o codice fiscale" #vat="ngModel" autocomplete="vat">
+			<div *ngIf="vat.invalid && (profile.submitted || vat.dirty || vat.touched)" class="alert alert-danger">
+				<div *ngIf="vat.errors.required">{{ 'errors.required' | translate }}</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="address">Indirizzo <sup>*</sup></label>
+			<input type="text" class="form-control" required [(ngModel)]="model.address" name="address" placeholder="Indirizzo" #address="ngModel" autocomplete="address">
+			<div *ngIf="address.invalid && (profile.submitted || address.dirty || address.touched)" class="alert alert-danger">
+				<div *ngIf="address.errors.required">{{ 'errors.required' | translate }}</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="cityName">Città <sup>*</sup></label>
+			<input type="text" class="form-control" required [(ngModel)]="model.cityName" name="cityName" placeholder="Città" #cityName="ngModel" autocomplete="cityName">
+			<div *ngIf="cityName.invalid && (profile.submitted || cityName.dirty || cityName.touched)" class="alert alert-danger">
+				<div *ngIf="cityName.errors.required">{{ 'errors.required' | translate }}</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="cap">CAP <sup>*</sup></label>
+			<input type="tel" class="form-control" required [(ngModel)]="model.cap" name="cap" placeholder="CAP" #cap="ngModel" autocomplete="cap">
+			<div *ngIf="cap.invalid && (profile.submitted || cap.dirty || cap.touched)" class="alert alert-danger">
+				<div *ngIf="cap.errors.required">{{ 'errors.required' | translate }}</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="country">Nazione</label>
+			<select class="form-control" name="country" [(ngModel)]="model.country" (change)="onCountryChanged()" [disabled]="busy">
+				<option *ngFor="let country of nations" [ngValue]="country">{{country.name}}</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="province">Provincia <sup>*</sup></label>
+			<input type="text" class="form-control" required [(ngModel)]="model.province" name="province" placeholder="Provincia" #province="ngModel" autocomplete="province">
+			<div *ngIf="province.invalid && (profile.submitted || province.dirty || province.touched)" class="alert alert-danger">
+				<div *ngIf="province.errors.required">{{ 'errors.required' | translate }}</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="birthCountry">Nazione di nascita</label>
+			<select class="form-control" name="birthCountry" [(ngModel)]="model.birthCountry" (change)="onBirthCountryChanged()" [disabled]="busy">
+				<option *ngFor="let country of nations" [ngValue]="country">{{country.name}}</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="birthProvince">Luogo di nascita <sup>*</sup></label>
+			<input type="text" class="form-control" required [(ngModel)]="model.birthProvince" name="birthProvince" placeholder="Luogo di nascita" #birthProvince="ngModel" autocomplete="birthProvince">
+			<div *ngIf="birthProvince.invalid && (profile.submitted || birthProvince.dirty || birthProvince.touched)" class="alert alert-danger">
+				<div *ngIf="birthProvince.errors.required">{{ 'errors.required' | translate }}</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="birthDate">Data di nascita <sup>*</sup></label>
+			<input type="hidden" required [(ngModel)]="model.birthDate" name="birthDate" #birthDate="ngModel">
+			<div class="birth-date">
+				<select class="form-control" name="birthDay" [(ngModel)]="birth.day" (change)="onBirthDateChanged()">
+					<option *ngFor="let item of birth.days" [ngValue]="item.value">{{item.name}}</option>
+				</select>
+				<select class="form-control" name="birthMonth" [(ngModel)]="birth.month" (change)="onBirthDateChanged()">
+					<option *ngFor="let item of birth.months" [ngValue]="item.value">{{item.name}}</option>
+				</select>
+				<select class="form-control" name="birthYear" [(ngModel)]="birth.year" (change)="onBirthDateChanged()">
+					<option *ngFor="let item of birth.years" [ngValue]="item.value">{{item.name}}</option>
+				</select>
+			</div>
+			<div *ngIf="birthDate.invalid && (profile.submitted || birthDate.dirty || birthDate.touched)" class="alert alert-danger">
+				<div *ngIf="birthDate.errors.required">{{ 'errors.required' | translate }}</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="gender">Genere</label>
+			<select class="form-control" name="gender" [(ngModel)]="model.gender" (change)="onGenderChanged()" [disabled]="busy">
+				<option [ngValue]="'M'">M</option>
+				<option [ngValue]="'F'">F</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="cell">Cellulare</label>
+			<input type="tel" class="form-control" [(ngModel)]="model.cell" name="cell" placeholder="Cellulare" #cell="ngModel" autocomplete="cell">
+			<div *ngIf="cell.invalid && (profile.submitted || cell.dirty || cell.touched)" class="alert alert-danger">
+				<div *ngIf="cell.errors.required">{{ 'errors.required' | translate }}</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="telephone">Telefono</label>
+			<input type="tel" class="form-control" [(ngModel)]="model.telephone" name="telephone" placeholder="Telefono" #telephone="ngModel" autocomplete="telephone">
+			<div *ngIf="telephone.invalid && (profile.submitted || telephone.dirty || telephone.touched)" class="alert alert-danger">
+				<div *ngIf="telephone.errors.required">{{ 'errors.required' | translate }}</div>
+			</div>
+		</div>
+	</div>
+	<br>
+	<button type="submit" class="btn btn-primary">Conferma</button>
+</form>

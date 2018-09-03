@@ -1,8 +1,9 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { RouteService } from '../../core';
+import { ModalCompleteEvent, ModalService, RouteService } from '../../core';
 import { PageComponent } from '../../core/pages';
-import { User, UserService, UserSignUp } from '../../models';
+import { Booking, BookingService, User, UserAuth, UserService, UserSignUp } from '../../models';
+import { AuthComponent } from '../auth/auth.component';
 
 @Component({
 	selector: 'page-payment',
@@ -15,24 +16,64 @@ export class PaymentComponent extends PageComponent implements OnInit {
 	@Input() user: User;
 	@Input() step: Number = 1;
 
+	booking: Booking;
 	model: UserSignUp = new UserSignUp();
+	error: any;
+	submitted: boolean = false;
 
 	constructor(
 		protected routeService: RouteService,
-		private userService: UserService
+		private modalService: ModalService,
+		public userService: UserService,
+		public bookingService: BookingService,
 	) {
 		super(routeService);
 		// this.attrClass = 'payment';
 	}
 
 	ngOnInit() {
-		this.getUser();
+		this.bookingService.booking$.pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(booking => {
+			this.booking = booking;
+		});
+		this.userService.user$.pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(user => {
+			this.user = user;
+			if (user && this.step === 1) {
+				this.step = 2;
+			}
+		});
 	}
 
-	getUser(): void {
-		this.userService.currentUser().pipe(
+	onSign(): void {
+		this.modalService.open({ component: AuthComponent }).pipe(
 			takeUntil(this.unsubscribe)
-		).subscribe(user => this.user = user);
+		).subscribe(e => {
+			if (e instanceof ModalCompleteEvent) {
+				console.log('PaymentComponent.ModalCompleteEvent');
+				this.onAuth(e.data);
+			}
+		});
+	}
+
+	onSignUp(): void {
+		this.submitted = true;
+		this.userService.signUp(this.model).pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(
+			user => {
+				this.onAuth(user);
+			}, error => {
+				this.error = error;
+				this.submitted = false;
+			});
+	}
+
+	onAuth(user: UserAuth): void {
+		this.user = user;
+		this.step = 2;
 	}
 
 	save(): void {
@@ -41,5 +82,9 @@ export class PaymentComponent extends PageComponent implements OnInit {
 		).subscribe(() => {
 			console.log('saved');
 		});
+	}
+
+	getChecked(list: any[]): any[] {
+		return list.filter(x => x.checked);
 	}
 }

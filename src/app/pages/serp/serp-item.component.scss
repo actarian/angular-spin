@@ -142,11 +142,11 @@
 				height: auto;
 				min-width: 100%;
 				min-height: 100%;
-
 				opacity: 0; // lazy-image
-				transition: .3s ease-in-out;
+				transition: all .3s ease-in-out !important;
 				transition-property: transform, opacity;
-				&[src] {
+
+				&.ready {
 					opacity: 1;
 				}
 
@@ -361,7 +361,7 @@
 				width: 18px;
 				height: 18px;
 				stroke: $primary-color;
-				stroke-width: 1px;
+				stroke-width: 2px;
 				fill: #fff;
 				vertical-align: text-top;
 				transform: translateY(-1px);

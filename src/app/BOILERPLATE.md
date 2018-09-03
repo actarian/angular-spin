@@ -13,7 +13,6 @@ const publicRoutes: Routes = [
 ];
 
 const authRoutes: Routes = [
-	{ path: 'profile', component: ProfileComponent, canActivate: [Attributes.AuthAttribute], data: { title: 'Profile' } },
 	{ path: 'payment', component: PaymentComponent, canActivate: [Attributes.AuthAttribute], data: { title: 'Payment' } },
 ];
 

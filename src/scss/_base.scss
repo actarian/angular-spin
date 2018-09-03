@@ -5,7 +5,7 @@ Base
 --------------------------------------------------*/
 
 .wrapper {
-	max-width: 1600px;
+	max-width: 1920px;
 	min-height: 100vh;
 	margin: 0 auto;
 	background: #fff;
@@ -55,6 +55,9 @@ svg {
 	fill: #eee;
 }
 
+[hidden] {
+	display: none !important;
+}
 
 /*--------------------------------------------------
 Card Row
@@ -122,5 +125,47 @@ Stars
 			left: 2px;
 			top: 2px;
 		}
+	}
+}
+
+
+/*--------------------------------------------------
+Cookie Bar
+--------------------------------------------------*/
+
+.cookie-bar {
+	position: fixed;
+	background: #333;
+	color: #fff;
+	max-width: 1144px;
+	width: 100%;
+	margin: 0 auto;
+	left: 0;
+	right: 0;
+	bottom: 5px;
+	padding: 10px 100px 10px 15px;
+	font-size: 11px;
+	line-height: 1.5;
+	border-radius: 2px;
+	z-index: 1;
+
+	a {
+		color: #fff;
+		text-decoration: underline;
+	}
+
+	button {
+		padding: 5px 11px;
+		border-radius: 2px;
+		line-height: 1.5;
+		font-size: 11px;
+		background: #fff;
+		text-transform: uppercase;
+		color: #111;
+		margin: 0 6px;
+		position: absolute;
+		right: 8px;
+		top: 10px;
+		font-weight: 600;
 	}
 }

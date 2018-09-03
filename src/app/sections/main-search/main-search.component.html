@@ -67,7 +67,7 @@
 					</div>
 				</div>
 				<div class="calendar popup-calendar">
-					<p-calendar name="startDate" [(ngModel)]="model.startDate" [inline]="true" [monthNavigator]="true" [yearNavigator]="true" [yearRange]="search.calendar.minYear + ':' + search.calendar.maxYear" [minDate]="search.calendar.minDate" [maxDate]="search.calendar.maxDate" [locale]="search.calendar.it" dateFormat="dd/mm/yy"></p-calendar>
+					<p-calendar name="startDate" [(ngModel)]="model.startDate" [defaultDate]="model.startDate" [inline]="true" [monthNavigator]="true" [yearNavigator]="true" [yearRange]="search.calendar.minYear + ':' + search.calendar.maxYear" [minDate]="search.calendar.minDate" [maxDate]="search.calendar.maxDate" [locale]="search.calendar.it" dateFormat="dd/mm/yy"></p-calendar>
 				</div>
 			</div>
 		</div>
@@ -160,11 +160,11 @@
 					<p-spinner size="10" readonly name="childs" [(ngModel)]="model.childs" [min]="0" [max]="4" (onChange)="onChildsChanged()"></p-spinner>
 				</div>
 				<div class="child-ages">
-					<div class="child-age" *ngFor="let child of model.childrens; let index = $index">
+					<div class="child-age" *ngFor="let child of model.childrens; let index = index">
 						<strong>Età bambino {{index}}</strong>
 						<div class="custom-select">
-							<select dir="rtl" name="age" [(ngModel)]="child.age">
-								<option *ngFor="let age of search.ages" [value]="age">{{age}}</option>
+							<select dir="rtl" name="{{'age' + index}}" [(ngModel)]="child.age">
+								<option *ngFor="let age of search.ages" [ngValue]="age">{{age}}</option>
 							</select>
 						</div>
 					</div>

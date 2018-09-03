@@ -1,29 +1,38 @@
 {
-	"/proxy": {
+	"/www": {
 		"changeOrigin": true,
 		"logLevel": "debug",
 		"pathRewrite": {
-			"^/proxy": ""
+			"^/www": ""
 		},
 		"secure": true,
-		"target": "http://eurospin-viaggi.wslabs.it"
+		"target": "https://www.eurospin-viaggi.it"
 	},
-	"/media/immagini": {
+	"/wslabs": {
 		"changeOrigin": true,
 		"logLevel": "debug",
 		"pathRewrite": {
-			"^/media/immagini": "/media/immagini"
-		},
-		"secure": true,
-		"target": "http://eurospin-viaggi.wslabs.it"
-	},
-	"/api/page": {
-		"changeOrigin": true,
-		"logLevel": "debug",
-		"pathRewrite": {
-			"^/api/page": "/api/page"
+			"^/www": ""
 		},
 		"secure": true,
 		"target": "http://eurospin-viaggi2.wslabs.it"
+	},
+	"/api": {
+		"changeOrigin": true,
+		"logLevel": "debug",
+		"pathRewrite": {
+			"^/api": "/api"
+		},
+		"secure": true,
+		"target": "http://eurospin-viaggi2.wslabs.it"
+	},
+	"/media": {
+		"changeOrigin": true,
+		"logLevel": "debug",
+		"pathRewrite": {
+			"^/media": "/media"
+		},
+		"secure": true,
+		"target": "https://eurospin-viaggi2.wslabs.it"
 	}
 }

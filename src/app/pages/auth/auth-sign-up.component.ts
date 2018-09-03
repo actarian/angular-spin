@@ -56,7 +56,7 @@ export class AuthSignUpComponent extends DisposableComponent implements OnInit {
 
 	onSubmit(): void {
 		this.submitted = true;
-		this.userService.add(this.model).pipe(
+		this.userService.signUp(this.model).pipe(
 			takeUntil(this.unsubscribe)
 		).subscribe(
 			user => {

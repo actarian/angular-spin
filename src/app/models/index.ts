@@ -1,3 +1,5 @@
+export * from './booking';
+export * from './booking.service';
 export * from './calendar-options';
 export * from './category';
 export * from './category.service';
@@ -6,7 +8,6 @@ export * from './destination.service';
 export * from './filter';
 export * from './filter.service';
 export * from './hotel';
-export * from './hotel.service';
 export * from './landing.service';
 export * from './promotion';
 export * from './promotion.service';
@@ -19,6 +20,8 @@ export * from './tag.service';
 export * from './test.service';
 export * from './trustPilot';
 export * from './user';
+export * from './user.guard';
+export * from './user.resolve';
 export * from './user.service';
 export * from './wishlist.service';
 

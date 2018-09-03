@@ -1,10 +1,10 @@
-<div class="head">
+<div class="head" *ngIf="search.busy">
+	<div class="tit">Caricamento delle offerte in corso...</div>
+</div>
+<div class="head" *ngIf="!search.busy">
 	<ng-container [ngSwitch]="(search.resultsFiltered$ | async)?.length">
-		<ng-container *ngSwitchCase="null">
-			loading...
-		</ng-container>
 		<ng-container *ngSwitchCase="0">
-			no results
+			<div class="tit">Nessun risultato</div>
 		</ng-container>
 		<ng-container *ngSwitchDefault>
 			<div class="tit" *ngIf="search.model.destination">Ci sono <strong>{{(search.resultsFiltered$ | async)?.length}}</strong> offerte per <strong>{{search.model.destination?.name}}</strong></div>
@@ -22,7 +22,7 @@
 		</div>
 	</div>
 </div>
-<div class="hotel-list">
+<div class="hotel-list" *ngIf="!search.busy">
 	<ng-container *ngFor="let item of (search.resultsFiltered$ | async); let i = index;">
 		<ng-container *ngIf="i < search.visibleItems">
 			<serp-item [item]="item" [state]="'appear'"></serp-item>

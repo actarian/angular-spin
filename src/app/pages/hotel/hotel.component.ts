@@ -1,11 +1,11 @@
 import { isPlatformBrowser } from '@angular/common';
-import { AfterViewInit, Component, Inject, Input, NgZone, OnInit, PLATFORM_ID, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, Inject, NgZone, OnInit, PLATFORM_ID, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { ModalCloseEvent, ModalCompleteEvent, ModalEvent, ModalService, RouteService } from '../../core';
 import { PageComponent } from '../../core/pages';
-import { Hotel, HotelService, MainSearch, SearchService } from '../../models';
+import { BookingService, Hotel, MainSearch, SearchService } from '../../models';
 import { Booking, BookingAvailability, BookingCalendar, BookingOptions } from '../../models/booking';
 import { WishlistService } from '../../models/wishlist.service';
 import { HotelMapComponent } from './hotel-map.component';
@@ -26,18 +26,18 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 		thumbs: {
 			autoStart: true
 		},
+		idleTime: 9999,
 		btnTpl: {
 			close: `<button data-fancybox-close class="fancybox-button fancybox-button--close" title="{{CLOSE}}">
 						<svg viewBox="0 0 40 40">
 							<use xlink:href="#ico-close"></use>
 						</svg>
+						<span>Torna all'offerta</span>
 					</button>`,
 			arrowLeft: `<a data-fancybox-prev class="fancybox-button fancybox-button--arrow_left" title="{{PREV}}" href="javascript:;"></a>`,
 			arrowRight: `<a data-fancybox-next class="fancybox-button fancybox-button--arrow_right" title="{{NEXT}}" href="javascript:;"></a>`
 		},
 	};
-
-	@Input() hotel: Hotel;
 
 	model: MainSearch;
 	booking: Booking = new Booking();
@@ -52,7 +52,7 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 		private router: Router,
 		public search: SearchService,
 		public wishlist: WishlistService,
-		private hotelService: HotelService,
+		private bookingService: BookingService,
 		private modalService: ModalService,
 	) {
 		super(routeService);
@@ -64,6 +64,7 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 				children: model.childrens,
 				flexibleDate: model.flexibleDates,
 				startDate: model.startDate || new Date(),
+				hotel: this.booking.hotel,
 			});
 		});
 	}
@@ -76,9 +77,9 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 	}
 
 	getHotel(): void {
-		this.hotelService.getTopServiceDetailsById(this.getId()).pipe(
+		this.bookingService.getTopServiceDetailsById(this.getId()).pipe(
 			takeUntil(this.unsubscribe)
-		).subscribe(hotel => this.hotel = hotel);
+		).subscribe(hotel => this.booking.hotel = hotel);
 	}
 
 	getCheckIn(): Observable<BookingAvailability[]> {
@@ -87,10 +88,10 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 		this.booking.checkIn = null;
 		this.booking.checkOut = null;
 		this.booking.options = null;
-		return this.hotelService.getBookingCheckInById(this.getId(), this.booking.getPayload()).pipe(
+		return this.bookingService.getBookingCheckInById(this.getId(), this.booking.getPayload()).pipe(
 			map((checkins: any[]) => {
 				checkins = checkins.map(a => new BookingAvailability(a));
-				// console.log('HotelService.getCheckIn', checkins);
+				// console.log('BookingService.getCheckIn', checkins);
 				this.calendar.checkins = checkins;
 				return checkins;
 			})
@@ -108,12 +109,12 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 		this.booking.checkIn = checkIn;
 		this.booking.checkOut = null;
 		this.booking.options = null;
-		return this.hotelService.getBookingCheckOutById(this.getId(), this.booking.getPayload()).pipe(
+		return this.bookingService.getBookingCheckOutById(this.getId(), this.booking.getPayload()).pipe(
 			map((checkouts: any[]) => {
 				checkouts = checkouts.map(a => new BookingAvailability(a));
 				this.calendar.checkouts = checkouts;
 				this.calendar.nights = checkouts.filter(a => a.date > checkIn).map(a => this.booking.getNights(checkIn, a.date));
-				// console.log('HotelService.getCheckOut', checkouts);
+				// console.log('BookingService.getCheckOut', checkouts);
 				if (checkouts.length) {
 					this.booking.nights = this.calendar.nights[0];
 				}
@@ -125,7 +126,7 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 	getBookingOptions(checkOut: Date): Observable<BookingOptions> {
 		this.booking.checkOut = checkOut;
 		this.booking.options = null;
-		return this.hotelService.getBookingOptionsById(this.getId(), this.booking.getPayload());
+		return this.bookingService.getBookingOptionsById(this.getId(), this.booking.getPayload());
 	}
 
 	setCheckIn(): void {
@@ -203,7 +204,7 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 	}
 
 	onNightsChanged(nights: string): void {
-		console.log('onNightsChanged', nights, this.booking.nights);
+		console.log('HotelComponent.onNightsChanged', nights, this.booking.nights);
 		const checkOut = new Date(this.booking.checkIn.valueOf());
 		checkOut.setDate(checkOut.getDate() + +nights); // mantenere il più è una conversione a numeric
 		this.booking.checkOut = checkOut;
@@ -211,10 +212,10 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 	}
 
 	onShowMap(): void {
-		this.modalService.open({ component: HotelMapComponent, data: this.hotel, className: 'hotel-map' }).pipe(
+		this.modalService.open({ component: HotelMapComponent, data: this.booking.hotel, className: 'hotel-map' }).pipe(
 			takeUntil(this.unsubscribe)
 		).subscribe((e: ModalEvent<ModalCompleteEvent | ModalCloseEvent>) => {
-			console.log('onShowMap.complete', e);
+			console.log('HotelComponent.onShowMap.complete', e);
 			if (e.data) {
 				const hotel = e.data as Hotel;
 				const segments = this.routeService.toRoute([hotel.slug]);
@@ -228,6 +229,24 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 			}
 			*/
 		});
+	}
+
+	onBook(e: any): void {
+		// console.log('onBook', this.booking, e.target.value);
+		this.bookingService.doBook(this.getId(), this.booking);
+		this.router.navigate(e.target.value.split(','));
+		/*
+		this.bookingService.setBookingOptionsById(this.getId(), this.booking).pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(x => {
+			console.log('HotelComponent.onBook', x);
+			// const segments = this.routeService.toRoute(e.target.value.split(','));
+			this.router.navigate(e.target.value.split(','));
+		}, error => {
+			console.log('HotelComponent.onBook.error', error);
+			this.router.navigate(e.target.value.split(','));
+		});
+		*/
 	}
 
 	ngAfterViewInit() {

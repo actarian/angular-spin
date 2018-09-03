@@ -542,8 +542,29 @@ Popup Hint Childs
 
 .popup-hint__childs {
 
+	@include md-down {
+		right: 0;
+		left: auto;
+
+		.head {
+			&:before {
+				left: auto;
+				right: 38px;
+			}
+		}
+	}
+
 	@include sm-down {
+		left: 0;
+		right: auto;
 		min-width: 220px;
+
+		.head {
+			&:before {
+				left: 10px;
+				right: auto;
+			}
+		}
 	}
 
 

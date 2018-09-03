@@ -42,11 +42,11 @@ Categories
 				transform: translate(-50%, -50%);
 				height: 100%;
 				max-width: none;
-
 				opacity: 0; // lazy-image
 				transition: .3s ease-in-out;
 				transition-property: transform, opacity;
-				&[src] {
+
+				&.ready {
 					opacity: 1;
 				}
 			}
