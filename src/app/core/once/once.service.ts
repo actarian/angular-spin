@@ -42,20 +42,10 @@ export class OnceService {
 					);
 				} else {
 					element.async = true;
-					/*
-					element.onload = function () {
-						console.log('onload fired');
-						// remote script has loaded
-					};
-					*/
 					callback$ = fromEvent(element, 'load').pipe(
 						map(x => x as Event)
 					);
 				}
-				/*
-				const html: string = `<script type="text/javascript" src="${url}"></script>`;
-				const fragment = document.createRange().createContextualFragment(html);
-				*/
 				const scripts = document.getElementsByTagName('script');
 				if (scripts.length) {
 					const script = scripts[scripts.length - 1];
@@ -71,30 +61,3 @@ export class OnceService {
 		}
 	}
 }
-
-/*
-var id = (paths[path] = paths[path] || ++uid);
-                    id = 'OnceScript' + id;
-                    if (document.getElementById(id)) {
-                        promise.reject();
-                    } else {
-                        var scripts = document.getElementsByTagName('script');
-                        var script = scripts[scripts.length - 1];
-                        var node = document.createElement('script');
-                        node.id = id;
-                        if (callback) {
-                            if (callback === true) {
-                                callback = id;
-                                path = path.split('{{callback}}').join(callback);
-                            }
-                            window[callback] = function(data) {
-                                promise.resolve(data);
-                            };
-                        } else {
-                            node.addEventListener('load', promise.resolve);
-                        }
-                        node.addEventListener('error', promise.reject);
-                        node.src = path;
-                        script.parentNode.insertBefore(node, script.nextSibling);
-                    }
-*/

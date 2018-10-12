@@ -1,27 +1,6 @@
 @import "~scss/variables";
 
 /*--------------------------------------------------
-Top Header
---------------------------------------------------*/
-
-.top-header {
-	line-height: 1;
-	height: 3px;
-
-	@media print {
-		display: none !important;
-	}
-
-	img {
-		line-height: 1;
-		vertical-align: text-top;
-		width: 100%;
-		height: 100%;
-	}
-}
-
-
-/*--------------------------------------------------
 Header
 --------------------------------------------------*/
 
@@ -42,6 +21,9 @@ Header
 	}
 
 	&.nav-active {
+		z-index: 120;
+		overflow-x: visible;
+
 		@include sm-down {
 			.desktop-navbar {
 				pointer-events: all;
@@ -156,12 +138,30 @@ Header
 					border: none !important;
 					background: transparent;
 					padding: 0;
+					position: relative;
+
+					&:before {
+						content: '';
+						position: absolute;
+						bottom: -10px;
+						left: 0;
+						width: 100%;
+						background: $tertiary-color;
+						height: 2px;
+						opacity: 0;
+						transition: opacity .2s ease-in-out;
+					}
 
 					&.active {
 						@include sm-up {
 							background: #fff;
-							box-shadow: 0 6px 0 #fff, 0 8px 0 $tertiary-color;
 							color: $tertiary-color;
+							position: relative;
+							z-index: 1;
+
+							&:before {
+								opacity: 1;
+							}
 						}
 					}
 
@@ -183,6 +183,10 @@ Header
 					width: 100%;
 					padding: 12px;
 				}
+			}
+
+			.btn--operator {
+				margin-left: 10px;
 			}
 
 			.navbar-ico {
@@ -253,11 +257,14 @@ Header
 
 			button {
 				padding: 0;
+				position: relative;
 			}
 
 			.nav-link {
 				color: $tertiary-color;
 				text-decoration: none;
+				position: relative;
+				z-index: 1;
 			}
 
 			span {
@@ -347,13 +354,25 @@ Header
 /*--------------------------------------------------
 Subnav
 --------------------------------------------------*/
+@keyframes fade-in {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}
 
 .subnav {
-	z-index: 100;
+	position: absolute;
+	z-index: 99;
 	width: 100%;
-	background: #fafafa;
-	border-top: 1px solid $border-color;
-	border-bottom: 1px solid $border-color;
+	background: linear-gradient(to top, lighten($tertiary-color, 5%), darken($tertiary-color, 10%));
+	transform-origin: center top;
+	box-shadow: 0 3px 7px rgba(0, 0, 0, 0.15);
+	opacity: 0;
+	animation: fade-in .3s normal forwards ease-in-out;
 
 	@include sm-down {
 		display: none;
@@ -364,6 +383,8 @@ Subnav
 		height: 100vh;
 		overflow-y: scroll;
 		width: calc(100% - 60px);
+		opacity: 1;
+		animation: none;
 
 		.nav-active & {
 			display: block;
@@ -402,8 +423,9 @@ Subnav
 			svg {
 				width: 12px;
 				height: 12px;
-				margin: 1px 3px 0 0;
+				margin: 0 3px 0 0;
 				fill: $tit-color;
+				transform: translateY(1px);
 			}
 		}
 	}
@@ -411,7 +433,7 @@ Subnav
 	.subnav-col {
 		flex: 0 0 33.333%;
 		padding: 20px 20px;
-		border-right: 1px solid $border-color;
+		border-right: 1px solid rgba(255, 255, 255, .2);
 
 		&:last-child {
 			border-right: 0;
@@ -429,6 +451,8 @@ Subnav
 
 
 		h3 {
+			color: #fff;
+
 			@include sm-down {
 				display: block;
 				padding: 18px 15px;
@@ -463,6 +487,12 @@ Subnav
 					z-index: 1;
 					display: inline-block;
 					padding: 4px 20px 5px 0;
+					color: rgba(255, 255, 255, .8);
+					transition: color .2s ease-in-out;
+
+					&:hover {
+						color: #fff;
+					}
 
 					@include sm-down {
 						display: block;
@@ -470,6 +500,11 @@ Subnav
 						border-bottom: 1px solid $border-color;
 						background: #fff;
 						text-decoration: none !important;
+						color: $tertiary-color;
+
+						&:hover {
+							color: $tertiary-color;
+						}
 					}
 
 					&:before {

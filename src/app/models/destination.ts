@@ -16,7 +16,7 @@ export class Destination implements Document {
 	icon?: string;
 	name: string;
 	slug?: string;
-	texts: string[];
+	texts?: string[];
 	type: DestinationTypes;
 	// area?: string;
 	// country?: string;
@@ -31,7 +31,7 @@ export class Destination implements Document {
 			this.slug = options.slug;
 			this.texts = options.texts;
 			this.type = options.type;
-			this.abstract = this.texts.join(', ');
+			this.abstract = (this.texts || []).join(', ');
 		}
 	}
 }

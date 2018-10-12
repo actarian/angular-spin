@@ -88,59 +88,61 @@
 					</svg>
 				</a>
 			</div>
-			<main-search (doSearch)="active = null; search.onSearchIn($event)">---</main-search>
+			<main-search [useBreadcrumbs]="useBreadcrumbs" (doSearch)="active = null; search.onSearchIn($event)">---</main-search>
 		</div>
 		<!-- Main Search Popup -->
 	</div>
 </div>
 <div class="serp-content">
 	<div class="container" lazy-images>
-		<div class="serp-filter">
-			<div class="switch-map-list">
-				<div class="switch-map-list--item switch-map-list--item__map" [ngClass]="{ active: viewType === viewTypes.List }">
-					<img src="assets/img/map.png">
-					<button type="button" class="btn" (click)="viewType = viewTypes.Map">
-						<svg class="ico">
-							<use xlink:href="#ico-pin"></use>
-						</svg>
-						Visualizza nella mappa
-					</button>
-				</div>
-				<div class="switch-map-list--item switch-map-list--item__list" [ngClass]="{ active: viewType === viewTypes.Map }">
-					<button type="button" class="btn" (click)="viewType = viewTypes.List">
-						<svg class="ico">
-							<use xlink:href="#ico-list"></use>
-						</svg>
-						Torna all'elenco
-					</button>
-				</div>
-				<!--
-				<div class="switch-map-list--item switch-map-list--item__map" [ngClass]="{ active: rList.isActive }">
-					<img src="assets/img/map.png">
-					<a class="btn" [routerLink]="['map']" routerLinkActive #rMap="routerLinkActive">
-						[queryParams]="search.queryParams" queryParamsHandling="merge"
-						<svg class="ico">
-							<use xlink:href="#ico-pin"></use>
-						</svg>
-						Visualizza nella mappa
-					</a>
-				</div>
-				<div class="switch-map-list--item switch-map-list--item__list" [ngClass]="{ active: rMap.isActive }">
-					<a class="btn" [routerLink]="['list']" routerLinkActive #rList="routerLinkActive">
-						<svg class="ico">
-							<use xlink:href="#ico-list"></use>
-						</svg>
-						Torna all'elenco
-					</a>
-				</div>
-				-->
+		<ng-container *ngIf="search.busy">
+			<div class="head">
+				<div class="tit">Caricamento delle offerte in corso...</div>
 			</div>
-			<div class="serp-filter--sticky">
-				<section-filter (selectFilter)="filterService.setGroups()"></section-filter>
-			</div>
-		</div>
-		<!-- <router-outlet></router-outlet> -->
-		<serp-list-component *ngIf="viewType == viewTypes.List"></serp-list-component>
-		<serp-map-component *ngIf="viewType == viewTypes.Map"></serp-map-component>
+		</ng-container>
+		<ng-container *ngIf="!search.busy">
+			<ng-container [ngSwitch]="(search.results$ | async)?.length">
+				<ng-container *ngSwitchCase="0">
+					<div class="nrp" *ngIf="!search.busy && (search.results$ | async)?.length == 0">
+						<div class="tit h1">Purtroppo la ricerca non ha prodotto nessun risultato</div>
+						<div class="text">Hai una richiesta particolare?<br>
+							Prova a contattare il nostro Call Center al numero di telefono <a href="tel:+39 045 9599"><svg class="ico">
+									<use xlink:href="#ico-tel"></use>
+								</svg>045 9599</a></div>
+					</div>
+					<div class="home-lastviews">
+						<home-lastviews></home-lastviews>
+					</div>
+				</ng-container>
+				<ng-container *ngSwitchDefault>
+					<div class="serp-filter">
+						<div class="switch-map-list">
+							<div class="switch-map-list--item switch-map-list--item__map" [ngClass]="{ active: viewType === viewTypes.List }">
+								<img src="assets/img/map.png">
+								<button type="button" class="btn" (click)="viewType = viewTypes.Map">
+									<svg class="ico">
+										<use xlink:href="#ico-pin"></use>
+									</svg>
+									Visualizza nella mappa
+								</button>
+							</div>
+							<div class="switch-map-list--item switch-map-list--item__list" [ngClass]="{ active: viewType === viewTypes.Map }">
+								<button type="button" class="btn" (click)="viewType = viewTypes.List">
+									<svg class="ico">
+										<use xlink:href="#ico-list"></use>
+									</svg>
+									Torna all'elenco
+								</button>
+							</div>
+						</div>
+						<div class="serp-filter--sticky">
+							<section-filter (selectFilter)="filterService.setGroups()"></section-filter>
+						</div>
+					</div>
+					<serp-list-component *ngIf="viewType == viewTypes.List"></serp-list-component>
+					<serp-map-component *ngIf="viewType == viewTypes.Map"></serp-map-component>
+				</ng-container>
+			</ng-container>
+		</ng-container>
 	</div>
 </div>

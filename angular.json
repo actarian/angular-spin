@@ -205,18 +205,6 @@
 						}
 					}
 				},
-				"serve": {
-					"builder": "@angular-devkit/build-angular:dev-server",
-					"options": {
-						"browserTarget": "docs:build",
-						"port": 40000
-					},
-					"configurations": {
-						"production": {
-							"browserTarget": "docs:build:production"
-						}
-					}
-				},
 				"extract-i18n": {
 					"builder": "@angular-devkit/build-angular:extract-i18n",
 					"options": {

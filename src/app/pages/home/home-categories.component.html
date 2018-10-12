@@ -1,35 +1,15 @@
-<!--
-<section class="categories">
-	<div class="container">
-		<div class="head">
-			<h2>Organizza il tuo tipo di vacanza ideale</h2>
-		</div>
-		<div class="card-row">
-			<div class="card-col" *ngFor="let category of categories">
-				<a class="category-card" [routerLink]="['category', category.id] | route">
-					<figure class="figure">
-						<img class="img" [src]="category.image | asset" alt="{{category.name}}">
-					</figure>
-					<div class="body">
-						<h3 class="title">{{category.name}}</h3>
-					</div>
-				</a>
-			</div>
-		</div>
-	</div>
-</section>
--->
 <!-- Categories -->
-<section class="categories" lazy-images>
+<section class="categories" *ngIf="item">
 	<div class="container">
 		<div class="head">
-			<h2>Organizza il tuo tipo di vacanza ideale</h2>
+			<h2 [innerHtml]="item.title"></h2>
+			<button type="button" class="btn btn--ghost" (click)="limit = 1000;" *ngIf="item.images?.length > limit">Visualizza tutte</button>
 		</div>
-		<div class="card-row">
-			<div class="card-col" *ngFor="let item of items$ | async | slice :0 :6">
+		<div class="card-row" lazy-images>
+			<div class="card-col" *ngFor="let item of items | slice :0 :limit">
 				<a class="category-card" [routerLink]="[item.slug] | route">
 					<figure class="figure">
-						<img class="img" [attr.data-src]="item.images | image  :'Default' :'width=361&height=203&rmode=crop'" alt="{{item.title}}">
+						<img class="img" [attr.data-src]="item.images | image :'Default' :'width=361&height=203&rmode=crop'" alt="{{item.title}}">
 					</figure>
 					<div class="body">
 						<h3 class="title">{{item.title}}</h3>

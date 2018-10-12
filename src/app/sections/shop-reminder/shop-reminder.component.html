@@ -1,0 +1,16 @@
+<section class="shop-reminder" *ngIf="visible">
+	<div class="shop-reminder-wrap">
+		<div class="container">
+			Completa l'acquisto di <a [routerLink]="['/' + cart.serviceDetail.slug]">{{cart.serviceDetail.name}}</a> <a class="btn" [routerLink]="['/cassa']">Prenota il tuo viaggio</a>
+		</div>
+		<button class="close-shop-reminder" (click)="removeFromCart()">
+			<span>Rimuovi</span>
+			<svg class="ico">
+				<use xlink:href="#ico-close"></use>
+			</svg>
+		</button>
+		<div class="top-header">
+			<img src="assets/img/top.png" alt="">
+		</div>
+		</div>
+</section>

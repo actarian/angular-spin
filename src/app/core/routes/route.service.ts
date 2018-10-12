@@ -10,7 +10,7 @@ import { concatMap, distinctUntilChanged, filter, map, switchMap, tap } from 'rx
 // import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { Page, PageComponent } from '../pages';
-import { SegmentPipe } from './segment.pipe';
+import { SegmentPipe } from '../pipes';
 
 @Injectable({
 	providedIn: 'root'
@@ -27,24 +27,6 @@ export class RouteService {
 	public readonly languages: Observable<any[]> = this._languages.asObservable();
 
 	private _lang: string;
-	private get lang(): string {
-		return this._lang;
-	}
-	private set lang(lang: string) {
-		if (lang !== this._lang) {
-			let path = this.location.path();
-			if (path.indexOf(`/${this._lang}`) === 0) {
-				path = path.replace(`/${this._lang}`, `/${lang}`);
-			} else if (path.indexOf(`/${lang}`) !== 0) {
-				path = `/${lang}` + path;
-			}
-			this.path = path;
-			this._lang = lang;
-			const language = this._languages.getValue().find(x => x.lang === lang);
-			this._language.next(language);
-			this.translateService.use(lang);
-		}
-	}
 
 	private path: string;
 
@@ -53,10 +35,6 @@ export class RouteService {
 	public queryParams: Observable<Params>;
 
 	private busy: boolean;
-
-	public get currentLang(): string {
-		return this._lang;
-	}
 
 	public currentMarket: string = environment.defaultMarket;
 
@@ -71,7 +49,38 @@ export class RouteService {
 		private componentFactoryResolver: ComponentFactoryResolver
 	) {
 		this.setLanguages();
-		this.subscribeToRouter();
+		if (environment.useLang || environment.useMarket) {
+			this.subscribeToRouter();
+		}
+	}
+
+	private get lang(): string {
+		return this._lang;
+	}
+
+	private set lang(lang: string) {
+		if (lang !== this._lang) {
+			this._lang = lang;
+			const language = this._languages.getValue().find(x => x.lang === lang);
+			this._language.next(language);
+			this.translateService.use(lang);
+			console.log('RouteService.set lang', lang, environment.useLang);
+			if (environment.useLang) {
+				const _lang: string = this._lang;
+				let path = this.location.path();
+				if (path.indexOf(`/${_lang}`) === 0) {
+					path = path.replace(`/${_lang}`, `/${lang}`);
+				} else if (path.indexOf(`/${lang}`) !== 0) {
+					path = `/${lang}` + path;
+				}
+				this.path = path;
+				// const langIndex = this.urlStrategy.split('/').indexOf(':lang');
+			}
+		}
+	}
+
+	public get currentLang(): string {
+		return this._lang;
 	}
 
 	// PUBLIC METHODS
@@ -219,12 +228,14 @@ export class RouteService {
 
 	public setLanguage(lang: string, silent?: boolean) {
 		this.lang = lang;
-		if (silent) {
-			this.location.replaceState(this.path);
-		} else {
-			this.router.navigate([this.path]);
+		if (environment.useLang && this.path) {
+			console.log('RouteService.setLanguage', this.path, this._lang, lang, silent);
+			if (silent) {
+				this.location.replaceState(this.path);
+			} else {
+				this.router.navigate([this.path]);
+			}
 		}
-		// console.log('RouteService.setLanguage', this.path, this._lang, lang, silent);
 	}
 
 	// PRIVATE METHODS

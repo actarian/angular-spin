@@ -1,0 +1,193 @@
+<div class="checkout-step-2">
+	<form class="form" [ngClass]="{ submitted: paxData.submitted }" name="paxData" role="form" novalidate autocomplete="off" (ngSubmit)="paxData.valid && onPax()" #paxData="ngForm">
+		<h2 class="h1">Dati passeggeri</h2>
+		<ng-container *ngFor="let pax of model.passengers; let i = index;">
+			<!-- bambino 0-12 ragazzo 13-17 -->
+			<h4>PASSEGGERO {{i + 1}} <span *ngIf="pax.ageRequired < 18">({{pax.ageRequiredLabel}} {{pax.ageRequired}} ANNI)</span></h4>
+			<div class="fieldset fieldset--divider">
+				<div class="form-group">
+					<label>{{ 'signUp.firstName' | translate }}</label>
+					<input placeholder="{{ 'signUp.firstName' | translate }}" type="text" class="form-control" required [(ngModel)]="pax.firstName" name="firstName{{i}}" #firstName="ngModel" autocomplete="firstName">
+					<div *ngIf="firstName.invalid && (paxData.submitted || firstName.dirty || firstName.touched)" class="alert alert-danger">
+						<div *ngIf="firstName.errors.required">{{ 'errors.required' | translate }}</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label>{{ 'signUp.lastName' | translate }}</label>
+					<input placeholder="{{ 'signUp.lastName' | translate }}" type="text" class="form-control" required [(ngModel)]="pax.lastName" name="lastName{{i}}" #lastName="ngModel" autocomplete="lastName">
+					<div *ngIf="lastName.invalid && (paxData.submitted || lastName.dirty || lastName.touched)" class="alert alert-danger">
+						<div *ngIf="lastName.errors.required">{{ 'errors.required' | translate }}</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label>Data di nascita</label>
+					<input-date name="birthDate{{i}}" [(ngModel)]="pax.birthDate" [age]="{ age: pax.ageRequired, date: cart.checkIn }" #birthDate="ngModel"></input-date>
+					<div *ngIf="birthDate.invalid && (paxData.submitted || birthDate.dirty || birthDate.touched)" class="alert alert-danger">
+						<div *ngIf="birthDate.errors.required">{{ 'errors.required' | translate }}</div>
+						<div *ngIf="birthDate.errors.age">{{pax.ageRequiredError}}</div>
+					</div>
+				</div>
+				<ng-container *ngIf="hotel.esType === hotelTypes.HotelAndFerry && !hotel.mandatoryDocument">
+					<div class="form-group">
+						<label>Luogo di nascita</label>
+						<input placeholder="Luogo di nascita" type="text" class="form-control" required [(ngModel)]="pax.birthPlace" name="birthPlace{{i}}" #birthPlace="ngModel" autocomplete="birthPlace">
+						<div *ngIf="birthPlace.invalid && (paxData.submitted || birthPlace.dirty || birthPlace.touched)" class="alert alert-danger">
+							<div *ngIf="birthPlace.errors.required">{{ 'errors.required' | translate }}</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label>Nazionalità</label>
+						<select class="form-control" name="nationCode" [(ngModel)]="pax.nationCode" (change)="onCountryChanged()" #nationCode="ngModel" required>
+							<option *ngFor="let nation of nations" [value]="nation.code">{{nation.name}}</option>
+						</select>
+						<div *ngIf="nationCode.invalid && (paxData.submitted || nationCode.dirty || nationCode.touched)" class="alert alert-danger">
+							<div *ngIf="nationCode.errors.required">{{ 'errors.required' | translate }}</div>
+						</div>
+					</div>
+				</ng-container>
+				<ng-container *ngIf="hotel.mandatoryDocument">
+					<div class="form-group">
+						<label>Luogo di nascita</label>
+						<input placeholder="Luogo di nascita" type="text" class="form-control" required [(ngModel)]="pax.birthPlace" name="birthPlace{{i}}" #birthPlace="ngModel" autocomplete="birthPlace">
+						<div *ngIf="birthPlace.invalid && (paxData.submitted || birthPlace.dirty || birthPlace.touched)" class="alert alert-danger">
+							<div *ngIf="birthPlace.errors.required">{{ 'errors.required' | translate }}</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label>Tipo documento</label>
+						<select class="form-control" name="idType{{i}}" [(ngModel)]="pax.idDocInfo.idType" (change)="onDocumentTypeChanged()" #idType="ngModel" required>
+							<option [value]="'Carta di identità'">Carta di identità</option>
+							<option [value]="'Passaporto'">Passaporto</option>
+						</select>
+						<div *ngIf="idType.invalid && (paxData.submitted || idType.dirty || idType.touched)" class="alert alert-danger">
+							<div *ngIf="idType.errors.required">{{ 'errors.required' | translate }}</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label>Numero documento</label>
+						<input placeholder="Numero documento" type="text" class="form-control" required [(ngModel)]="pax.idDocInfo.idCode" name="idCode{{i}}" #idCode="ngModel" autocomplete="idCode">
+						<div *ngIf="idCode.invalid && (paxData.submitted || idCode.dirty || idCode.touched)" class="alert alert-danger">
+							<div *ngIf="idCode.errors.required">{{ 'errors.required' | translate }}</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label>Data di emissione</label>
+						<input-date name="idIssueDate{{i}}" [(ngModel)]="pax.idDocInfo.idIssueDate" #idIssueDate="ngModel"></input-date>
+						<div *ngIf="idIssueDate.invalid && (paxData.submitted || idIssueDate.dirty || idIssueDate.touched)" class="alert alert-danger">
+							<div *ngIf="idIssueDate.errors.required">{{ 'errors.required' | translate }}</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label>Data di scadenza</label>
+						<input-date name="idExpireDate{{i}}" [(ngModel)]="pax.idDocInfo.idExpireDate" [futureDate]="true" #idExpireDate="ngModel"></input-date>
+						<div *ngIf="idExpireDate.invalid && (paxData.submitted || idExpireDate.dirty || idExpireDate.touched)" class="alert alert-danger">
+							<div *ngIf="idExpireDate.errors.required">{{ 'errors.required' | translate }}</div>
+						</div>
+					</div>
+					<ng-container *ngIf="hotel.esType === hotelTypes.Cruise || hotel.esType === hotelTypes.TourOperator">
+						<div class="form-group">
+							<label>Luogo rilascio documento</label>
+							<input placeholder="Luogo rilascio documento" type="text" class="form-control" required [(ngModel)]="pax.idDocInfo.idIssueLocation" name="idIssueLocation{{i}}" #idIssueLocation="ngModel" autocomplete="idIssueLocation">
+							<div *ngIf="idIssueLocation.invalid && (paxData.submitted || idIssueLocation.dirty || idIssueLocation.touched)" class="alert alert-danger">
+								<div *ngIf="idIssueLocation.errors.required">{{ 'errors.required' | translate }}</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label>Nazionalità</label>
+							<select class="form-control" name="nationCode" [(ngModel)]="pax.nationCode" (change)="onCountryChanged()" #nationCode="ngModel" required>
+								<option *ngFor="let nation of nations" [value]="nation.code">{{nation.name}}</option>
+							</select>
+							<div *ngIf="nationCode.invalid && (paxData.submitted || nationCode.dirty || nationCode.touched)" class="alert alert-danger">
+								<div *ngIf="nationCode.errors.required">{{ 'errors.required' | translate }}</div>
+							</div>
+						</div>
+					</ng-container>
+				</ng-container>
+			</div>
+		</ng-container>
+		<!-- Auto -->
+		<ng-container *ngIf="hotel.mandatoryDocument && service.mandatoryDocument.car">
+			<h2 class="h1">Altri dati di viaggio</h2>
+			<div class="fieldset fieldset--divider">
+				<div class="form-group form-group--full">
+					<h4>Trasporto auto</h4>
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" class="form-check-input" required [(ngModel)]="service.mandatoryDocuments.car.enable" name="privacyAccepted" #privacyAccepted="ngModel">
+							<span>Se desideri trasportare l'auto sul traghetto seleziona l'opzione e compila i dati richiesti.</span>
+						</label>
+					</div>
+					<div *ngIf="privacyAccepted.invalid && (paxData.submitted || privacyAccepted.dirty || privacyAccepted.touched)" class="alert alert-danger">
+						<div *ngIf="privacyAccepted.errors.required">{{ 'errors.required' | translate }}</div>
+					</div>
+				</div>
+				<ng-container *ngIf="service.mandatoryDocuments.car.enable">
+					<div class="form-group">
+						<label>Targa auto</label>
+						<input placeholder="Targa" type="text" class="form-control" required [(ngModel)]="service.mandatoryDocuments.car.plate" name="carPlate" #carPlate="ngModel" autocomplete="carPlate">
+						<div *ngIf="carPlate.invalid && (paxData.submitted || carPlate.dirty || carPlate.touched)" class="alert alert-danger">
+							<div *ngIf="carPlate.errors.required">{{ 'errors.required' | translate }}</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label>Modello auto</label>
+						<input placeholder="Modello" type="text" class="form-control" required [(ngModel)]="service.mandatoryDocuments.car.model" name="carModel" #carModel="ngModel" autocomplete="carModel">
+						<div *ngIf="carModel.invalid && (paxData.submitted || carModel.dirty || carModel.touched)" class="alert alert-danger">
+							<div *ngIf="carModel.errors.required">{{ 'errors.required' | translate }}</div>
+						</div>
+					</div>
+				</ng-container>
+			</div>
+		</ng-container>
+		<!-- Preferenza Turno Cena -->
+		<!-- <p>!!! features.NoDinnerShift {{ page?.getFeature(features.NoDinnerShift) | json }}</p> -->
+		<ng-container *ngIf="hotel.esType === hotelTypes.Cruise && !(page?.getFeature(features.NoDinnerShift)?.description == 'true')">
+			<div class="fieldset">
+				<div class="form-group">
+					<label>Preferenza turno cena</label>
+					<select class="form-control" name="dinnerShift" [(ngModel)]="model.dinnerShift" (change)="onDinnerShiftChanged()" #dinnerShift="ngModel" required>
+						<option [value]="'1'">Primo turno (indicativamente dalle ore 19)</option>
+						<option [value]="'2'">Secondo turno (indicativamente dalle ore 21)</option>
+					</select>
+					<div *ngIf="dinnerShift.invalid && (paxData.submitted || dinnerShift.dirty || dinnerShift.touched)" class="alert alert-danger">
+						<div *ngIf="dinnerShift.errors.required">{{ 'errors.required' | translate }}</div>
+					</div>
+				</div>
+			</div>
+		</ng-container>
+		<!-- Preferenza Turno Cena -->
+		<!-- Contatto Crociera -->
+		<!-- <p>!!! features.NoContact {{ page?.getFeature(features.NoContact) | json }}</p> -->
+		<ng-container *ngIf="hotel.esType === hotelTypes.Cruise && !(page?.getFeature(features.NoContact)?.description == 'true')">
+			<div>RECAPITO FAMILIARE/AMICO CHE LA COMPAGNIA NAVALE POSSA CONTATTARE DURANTE LA CROCIERA</div>
+			<div class="fieldset">
+				<div class="form-group">
+					<label>Nome</label>
+					<input placeholder="Nome" type="text" class="form-control" required [(ngModel)]="model.contact.name" name="contactName" #contactName="ngModel" autocomplete="contactName">
+					<div *ngIf="contactName.invalid && (paxData.submitted || contactName.dirty || contactName.touched)" class="alert alert-danger">
+						<div *ngIf="contactName.errors.required">{{ 'errors.required' | translate }}</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label>Cognome</label>
+					<input placeholder="Cognome" type="text" class="form-control" required [(ngModel)]="model.contact.lastName" name="contactLastName" #contactLastName="ngModel" autocomplete="contactLastName">
+					<div *ngIf="contactLastName.invalid && (paxData.submitted || contactLastName.dirty || contactLastName.touched)" class="alert alert-danger">
+						<div *ngIf="contactLastName.errors.required">{{ 'errors.required' | translate }}</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label>Telefono</label>
+					<input placeholder="Telefono" type="text" class="form-control" required [(ngModel)]="model.contact.phoneNumber" name="contactPhoneNumber" #contactPhoneNumber="ngModel" autocomplete="contactPhoneNumber">
+					<div *ngIf="contactPhoneNumber.invalid && (paxData.submitted || contactPhoneNumber.dirty || contactPhoneNumber.touched)" class="alert alert-danger">
+						<div *ngIf="contactPhoneNumber.errors.required">{{ 'errors.required' | translate }}</div>
+					</div>
+				</div>
+			</div>
+		</ng-container>
+		<!-- Contatto Crociera -->
+		<br />
+		<button type="submit" class="btn" [ngClass]="{ 'btn--busy': busy }" title="Prosegui">
+			<span>Prosegui</span>
+		</button>
+	</form>
+</div>

@@ -2,5 +2,12 @@
 @import "~scss/variables";
 
 /*--------------------------------------------------
-hotel List
+Landing Serp
 --------------------------------------------------*/
+landing-component {
+	.serp-search {
+		@include md-up {
+			margin-bottom: 50px !important;
+		}
+	}
+}

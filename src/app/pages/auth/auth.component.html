@@ -2,19 +2,19 @@
 	<div class="sign-page">
 		<h2>Accedi al tuo account</h2>
 		<br>
-		<button type="button" class="btn btn btn-block btn-facebook" (click)="onFacebook()">
+		<button type="button" class="btn btn btn-block btn-facebook" (click)="onFacebook()" title="Esci da Facebook">
 			<svg class="ico">
 				<use xlink:href="#ico-facebook"></use>
 			</svg>
 			<span>{{ 'sign.facebook' | translate }}</span>
 		</button>
-		<button type="button" class="btn btn btn-block btn-google" (click)="onGoogle()">
+		<button type="button" class="btn btn btn-block btn-google" (click)="onGoogle()" title="Esci da Google">
 			<svg class="ico">
 				<use xlink:href="#ico-google"></use>
 			</svg>
 			<span>{{ 'sign.google' | translate }}</span>
 		</button>
-		<button type="button" class="btn btn btn-block btn-warning" (click)="onSignIn()">
+		<button type="button" class="btn btn btn-block btn-warning" (click)="onSignIn()" title="{{ 'sign.account' | translate }}">
 			<svg class="ico">
 				<use xlink:href="#ico-mail"></use>
 			</svg>
@@ -50,6 +50,6 @@
 				Nuove offerte e promozioni solo per te
 			</li>
 		</ul>
-		<button type="button" class="btn btn btn-block btn-primary" (click)="onSignUp()"><span>{{ 'sign.create' | translate }}</span></button>
+		<button type="button" class="btn btn btn-block btn-primary" (click)="onSignUp()" title="{{ 'sign.create' | translate }}"><span>{{ 'sign.create' | translate }}</span></button>
 	</div>
 </div>

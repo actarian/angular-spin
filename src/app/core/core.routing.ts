@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { PageOutletComponent, PageResolverService } from './pages';
+import { PageGuard, PageNotFoundComponent, PageOutletComponent, PageResolverService, StaticGuard } from './pages';
 import { RouteService } from './routes';
 
 const routes: Routes = [
 	{ path: 'page/:id', component: PageOutletComponent, resolve: { pageResolver: PageResolverService } },
-	{ path: '**', component: PageOutletComponent, resolve: { pageResolver: PageResolverService } },
+	{ path: '**', component: PageOutletComponent, resolve: { pageResolver: PageResolverService }, canActivate: [PageGuard] },
+	{ path: '**', component: PageNotFoundComponent, canActivate: [StaticGuard] },
 ];
 
 @NgModule({

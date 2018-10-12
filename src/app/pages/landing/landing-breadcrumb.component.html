@@ -1,0 +1,8 @@
+<div class="breadcrumb">
+	<div class="container">
+		<ul>
+			<li><a [routerLink]="'homepage' | slugAsync">Home</a></li>
+			<li *ngFor="let segment of segments"><a [routerLink]="segment.slug" routerLinkActive="active" [innerHTML]="segment.name"></a></li>
+		</ul>
+	</div>
+</div>

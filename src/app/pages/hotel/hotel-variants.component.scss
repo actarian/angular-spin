@@ -1,0 +1,47 @@
+@import "~scss/variables";
+
+/*--------------------------------------------------
+Hotel Variants View
+--------------------------------------------------*/
+.hotel-variants-views {
+	margin-bottom: 60px;
+	border-top: 1px solid $border-color;
+	padding-top: 40px;
+
+	@include xs-down {
+		margin-top: 40px;
+		margin-bottom: 20px;
+		border-top: none;
+		padding-top: 0;
+	}
+
+	.card-row {
+		flex-wrap: nowrap;
+
+		@include md-down {
+			flex-wrap: wrap;
+		}
+
+		.card-col {
+			flex: 0 0 25%;
+			max-width: 25%;
+
+			@include xs-down {
+				flex: 0 0 50%;
+				max-width: 50%;
+				margin-bottom: 20px;
+			}
+
+			@include xxs-down {
+				flex: 0 0 100%;
+				max-width: none;
+			}
+		}
+	}
+}
+
+featured-hotels-item {
+	display: block;
+	width: 100%;
+	margin-bottom: 40px;
+}

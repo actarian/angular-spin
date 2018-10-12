@@ -4,7 +4,7 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { ORIGIN_URL } from '@nguniversal/aspnetcore-engine/tokens';
 import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { OnceService } from '../../once';
 
@@ -69,6 +69,21 @@ export class GoogleTagManagerService {
 		}
 	}
 
+	push(payload: any): void {
+		if (this.dataLayer) {
+			this.dataLayer.push(payload);
+			console.log('GoogleTagManagerConfig.push', payload);
+		} else {
+			this.once().pipe(
+				first(),
+			).subscribe(dataLayer => {
+				if (this.dataLayer) {
+					this.dataLayer.push(payload);
+					console.log('GoogleTagManagerConfig.push', payload);
+				}
+			});
+		}
+	}
 }
 
 /*

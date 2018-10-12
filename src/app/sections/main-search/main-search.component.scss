@@ -192,9 +192,12 @@ Main Search
 		font-size: 15px;
 		padding-left: 20px;
 		appearance: none;
+		padding-right: 4px;
 
 		&[disabled] {
 			pointer-events: none;
+			color: $tit-color;
+			opacity: 1;
 		}
 
 		&::placeholder {
@@ -203,7 +206,6 @@ Main Search
 		}
 
 		@include xs-down {
-			font-size: 13px;
 			padding-left: 23px;
 		}
 
@@ -471,6 +473,11 @@ Popup Hint Duration
 --------------------------------------------------*/
 
 .popup-hint__duration {
+	width: 293px;
+
+	@include md-down {
+		width: 287px;
+	}
 
 	@include xs-down {
 		width: 100%;

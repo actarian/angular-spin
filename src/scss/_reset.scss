@@ -271,6 +271,7 @@ button {
 	background-color: transparent;
 	cursor: pointer;
 	-webkit-text-decoration-skip: objects;
+
 	&:hover {
 		color: $tertiary-color;
 		text-decoration: underline;

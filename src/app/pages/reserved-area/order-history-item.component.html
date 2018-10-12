@@ -1,0 +1,52 @@
+<div class="hotel-item" *ngIf="item">
+	<div class="status status-{{item.bookingFileStatus.value}}">
+		{{item.statusShort}}
+	</div>
+	<div class="image">
+		<div class="discount" *ngIf="item.serviceDetail?.overlayCoverImage">
+			<img [attr.data-src]="item.serviceDetail?.overlayCoverImage | asset" alt="{{item.serviceDetail?.overlayCoverText}}" />
+		</div>
+		<a [routerLink]="item.bookingFileCode">
+			<img class="image-thumb" [attr.data-src]="item.serviceDetail?.photo + '?width=350&height=197&rmode=crop'" alt="{{item.serviceDetail?.name}}" />
+		</a>
+	</div>
+	<div class="content">
+		<div class="head">
+			<div class="info">
+				<div class="name">
+					<a [routerLink]="item.bookingFileCode">
+					<span>{{item.serviceDetail?.name}}</span> <span class="stars"><em *ngFor="let star of item?.rating?.split('');" [ngClass]="{ superior: star === 'S' }">{{star}}</em></span>
+				</a>
+				</div>
+				<div class="location">
+					<span class="region">{{item.serviceDetail?.destinationNation}} {{item.serviceDetail?.destinationRegion}}</span>&nbsp;<span class="town">{{item.serviceDetail?.destinationDescription}} {{item.serviceDetail?.destinationProvince}}</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc">
+			<ul class="list">
+				<li class="list-item">
+					<svg class="ico">
+						<use xlink:href="#ico-check"></use>
+					</svg><span>Dal {{item.startDate | date:'dd/MM/yyyy'}} al {{item.endDate | date:'dd/MM/yyyy'}}</span>
+				</li>
+				<li class="list-item">
+					<svg class="ico">
+						<use xlink:href="#ico-check"></use>
+					</svg><span>Data di prenotazione: {{item.creationDate | date:'dd/MM/yyyy'}}</span>
+				</li>
+				<li class="list-item">
+					<svg class="ico">
+						<use xlink:href="#ico-check"></use>
+					</svg><span>Codice pratica: {{item.bookingFileCode}}</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="action">
+		<div class="summary">
+			<div class="price"><span class="desc">Prezzo totale</span><span class="single-price"><span class="value">{{item.totalAmountDetail.totalAmountAfterDiscount}}</span><span class="symbol">€</span></span></div>
+		</div>
+		<div class="cta"><a class="btn" [routerLink]="item.bookingFileCode">Dettagli</a></div>
+	</div>
+</div>

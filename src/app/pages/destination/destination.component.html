@@ -1,0 +1,30 @@
+<!-- <home-search></home-search> -->
+<div class="destination-search">
+	<div class="container">
+		<main-search [useBreadcrumbs]="true" (doSearch)="search.onSearchIn($event)">---</main-search>
+	</div>
+</div>
+
+<!-- Tags -->
+<section class="tags">
+	<div class="container">
+		<div class="head">
+			<h2 [innerHtml]="page.title"></h2>
+			<button type="button" class="btn btn--ghost" (click)="limit = 1000;" *ngIf="items?.length > limit">Visualizza tutte</button>
+		</div>
+		<div class="card-row" lazy-images>
+			<div class="card-col" *ngFor="let item of items | slice :0 :limit">
+				<a class="tag-card" [routerLink]="[item.slug] | route">
+					<figure class="figure">
+						<img class="img" [attr.data-src]="item.image + '?width=361&height=203&rmode=crop'" alt="{{item.name}}">
+					</figure>
+					<div class="body">
+						<h3 class="title">{{item.name}}</h3>
+					</div>
+				</a>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- /Tags -->
+<section-value-proposition></section-value-proposition>

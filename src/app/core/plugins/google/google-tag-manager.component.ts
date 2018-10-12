@@ -23,6 +23,8 @@ export class GoogleTagManagerComponent extends DisposableComponent {
 	iframeUrl: string;
 	dataLayer: any[];
 
+	// @Output() public navigationEnd = new EventEmitter();
+
 	constructor(
 		@Inject(PLATFORM_ID) private platformId: string,
 		@Inject(ORIGIN_URL) private originUrl: string,

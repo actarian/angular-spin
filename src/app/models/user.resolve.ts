@@ -11,7 +11,7 @@ export class UserResolve implements Resolve<User> {
 	) { }
 
 	resolve(route: ActivatedRouteSnapshot) {
-		return this.userService.current();
+		return this.userService.me();
 	}
 
 }

@@ -15,7 +15,7 @@
 			"^/www": ""
 		},
 		"secure": true,
-		"target": "http://eurospin-viaggi2.wslabs.it"
+		"target": "https://eurospin-viaggi2.wslabs.it"
 	},
 	"/api": {
 		"changeOrigin": true,
@@ -24,7 +24,7 @@
 			"^/api": "/api"
 		},
 		"secure": true,
-		"target": "http://eurospin-viaggi2.wslabs.it"
+		"target": "https://eurospin-viaggi2.wslabs.it"
 	},
 	"/media": {
 		"changeOrigin": true,

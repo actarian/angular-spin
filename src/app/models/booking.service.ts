@@ -1,6 +1,7 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { LocalStorageService, StorageService } from '../core';
 import { DocumentService } from '../core/models';
 import { Booking, BookingAvailability, BookingOptions } from './booking';
@@ -13,7 +14,7 @@ import { SearchService } from './search.service';
 export class BookingService extends DocumentService<Hotel> {
 
 	public storage: StorageService;
-	public booking$: BehaviorSubject<Booking>;
+	public booking$: BehaviorSubject<Booking> = new BehaviorSubject<Booking>(null);
 
 	get collection(): string {
 		return ''; // '/www/api';
@@ -26,74 +27,65 @@ export class BookingService extends DocumentService<Hotel> {
 	) {
 		super(injector);
 		this.storage = this.storageService.tryGet();
-		const storedBooking = this.storage.get('booking');
-		this.booking$ = new BehaviorSubject<Booking>(storedBooking ? new Booking(storedBooking) : null);
+		const stored = this.storage.get('booking');
+		if (stored) {
+			this.booking$.next(new Booking(stored));
+		}
 	}
 
-	getTopServiceDetailsById(id: number | string): Observable<Hotel> {
-		return this.get(`/api/data/topservicedetails/${id}`).pipe(
-			map((x: any) => this.toCamelCase(x)),
-			map((x: any) => new Hotel(x)), // mapping to hotel
-			tap(x => console.log('BookingService.getTopServiceDetailsById', id, x)),
+	public current(): Observable<Booking> {
+		const booking: Booking = this.booking$.getValue();
+		if (booking) {
+			return of(booking);
+		} else {
+			// return from api session
+			return of(null);
+		}
+	}
+
+	getTopServiceDetailById(id: number | string): Observable<Hotel> {
+		return this.get(`/api/data/topservicedetail/${id}`).pipe(
+			catchError((response: HttpErrorResponse) => {
+				// console.log('BookingService.getTopServiceDetailById', response);
+				if (response.status === 410) {
+					const hotel = new Hotel(response.error);
+					hotel.active = false; // expired;
+					return of(hotel);
+				} else {
+					return of(null);
+				}
+			}),
+			// map((x: any) => this.toCamelCase(x)),
+			map((data: any) => new Hotel(data)),
+			// tap(x => console.log('BookingService.getTopServiceDetailsById', id, x)),
 		);
 	}
 
 	getBookingCheckInById(id: number | string, payload: Booking): Observable<BookingAvailability[]> {
 		// !!!
-		return this.post(`/www/api/booking/checkin/${id}`, payload).pipe(
-			map((x: any) => this.toCamelCase(x)),
+		return this.post(`/api/booking/checkin/${id}`, payload).pipe(
+			// map((x: any) => this.toCamelCase(x)),
 			// map((x: any) => new Hotel(x)), // mapping to hotel
-			tap(x => console.log('BookingService.getBookingCheckInById', id, x)),
+			// tap(x => console.log('BookingService.getBookingCheckInById', id, x)),
 		);
 	}
 
 	getBookingCheckOutById(id: number | string, payload: Booking): Observable<BookingAvailability[]> {
 		// !!!
-		return this.post(`/www/api/booking/checkout/${id}`, payload).pipe(
-			map((x: any) => this.toCamelCase(x)),
+		return this.post(`/api/booking/checkout/${id}`, payload).pipe(
+			// map((x: any) => this.toCamelCase(x)),
 			// map((x: any) => new Hotel(x)), // mapping to hotel
-			tap(x => console.log('BookingService.getBookingCheckOutById', id, x)),
+			// tap(x => console.log('BookingService.getBookingCheckOutById', id, x)),
 		);
 	}
 
 	getBookingOptionsById(id: number | string, payload: Booking): Observable<BookingOptions> {
 		// !!!
-		return this.post(`/www/api/booking/solution/${id}?state=true`, payload).pipe(
-			map((x: any) => this.toCamelCase(x)),
+		return this.post(`/api/booking/solution/${id}`, payload).pipe(
+			// map((x: any) => this.toCamelCase(x)),
 			map((x: any) => new BookingOptions(x)), // mapping to BookingOptions
-			tap(x => console.log('BookingService.getBookingOptionsById', id, x)),
+			// tap(x => console.log('BookingService.getBookingOptionsById', id, x)),
 		);
 	}
-
-	setBookingOptionsById(id: number | string, payload: Booking): Observable<BookingOptions> {
-		return this.post(`/api/booking/book/${id}?state=true`, payload).pipe(
-			map((x: any) => this.toCamelCase(x)),
-			map((x: any) => new BookingOptions(x)), // mapping to BookingOptions
-			tap(x => console.log('BookingService.setBookingOptionsById', id, x)),
-		);
-	}
-
-	doBook(id: number | string, payload: Booking): void {
-		this.storage.set('booking', payload);
-		this.booking$.next(payload);
-	}
-
-	/*
-	getCoupon: function () {
-		return _this._get('/api/booking/coupon?state=true');
-	},
-	addCoupon: function (code) {
-		return _this._post('/api/booking/coupon?state=true', '"' + code + '"');
-	},
-	reserve: function (data) {
-		return _this._post('/api/booking/reserve/?state=true', this.getFilter(data));
-	},
-	quote: function (code, data) {
-		return _this._post('/api/booking/quote/' + code + '?state=true', this.getFilter(data));
-	},
-	complete: function (data) {
-		return _this._post('/api/booking/complete/?state=true', this.getFilter(data));
-	},
-	*/
 
 }

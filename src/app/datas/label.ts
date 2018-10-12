@@ -13,11 +13,11 @@ export const label: Label[] = [{
 		errors: {
 			required: 'campo obbligatorio',
 			email: 'l\'indirizzo email non è valido',
-			minlength: 'dev\'essere almeno {{value}} caratteri',
+			exists: 'l\'indirizzo email è già presente',
+			minlength: 'dev\'essere almeno @value caratteri',
 			match: 'I campi devono corrispondere',
 		},
 		header: {
-			regions: 'Regioni',
 			profile: 'Profilo',
 			homepage: 'Homepage',
 			destinations: 'Destinazioni',
@@ -41,6 +41,7 @@ export const label: Label[] = [{
 		signIn: {
 			title: 'Accedi al tuo account',
 			email: 'Email',
+			emailOrCode: 'Email o codice utente',
 			password: 'Password',
 			passwordReveal: 'Vedi password',
 			rememberMe: 'Ricordami',
@@ -63,7 +64,7 @@ export const label: Label[] = [{
 			password: 'Password',
 			privacyLink: 'Privacy link',
 			privacy: 'Privacy',
-			passwordHint: 'minimo 6 caratteri',
+			passwordHint: 'tra 6 e 10 caratteri',
 			passwordReveal: 'vedi password',
 			register: 'Registrati',
 			registered: 'Registrazione completata',
@@ -71,18 +72,6 @@ export const label: Label[] = [{
 		},
 		profile: {
 			userName: 'Nome utente',
-		},
-		region: {
-			description: 'Questa è una card più ampia con il testo di supporto come lead-in naturale per contenuti aggiuntivi. Questo contenuto è un pò più lungo.',
-			lastUpdated: 'Ultimo aggiornamento 3 minuti fa',
-		},
-		regions: {
-			headline: 'Regioni',
-			addRegion: 'Aggiungi regione',
-			regionName: 'Nome regione',
-		},
-		regionSearch: {
-			regionName: 'Ricerca regione',
 		},
 		footer: {
 			disclaimer: 'Le foto mostrate hanno un valore puramente illustrativo. Prezzi, disponibilità ed informazioni possono essere soggette a modifiche.',
@@ -102,11 +91,11 @@ export const label: Label[] = [{
 		errors: {
 			required: 'field required',
 			email: 'invalid email',
-			minlength: 'Must be at least {{value}} characters long',
+			exists: 'email already exists',
+			minlength: 'Must be at least @value characters long',
 			match: 'Fields should match',
 		},
 		header: {
-			regions: 'Regions',
 			profile: 'Profile',
 			homepage: 'Homepage',
 			destinations: 'Destinations',
@@ -159,18 +148,5 @@ export const label: Label[] = [{
 		profile: {
 			userName: 'User Name',
 		},
-		region: {
-			description: 'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.',
-			lastUpdated: 'Last updated 3 mins ago',
-		},
-		regions: {
-			headline: 'Regions',
-			addRegion: 'Add Region',
-			regionName: 'Region Name',
-		},
-		regionSearch: {
-			regionName: 'Search Region',
-			search: 'search',
-		}
 	}
 }];

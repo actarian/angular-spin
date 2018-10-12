@@ -11232,43 +11232,43 @@ export const destination: Destination[] = [{
 }, {
 	id: 1,
 	name: 'Mare Italia',
-	slug: 'viaggi_mare_italia',
+	slug: 'destinazioni/mare-italia',
 	texts: [],
 	type: 0
 }, {
 	id: 3,
 	name: 'Sardegna + traghetto',
-	slug: 'viaggi_sardegna_traghetto',
+	slug: 'destinazioni/sardegna-traghetto',
 	texts: [],
 	type: 0
 }, {
 	id: 4,
 	name: 'Montagna',
-	slug: 'viaggi_in_montagna',
+	slug: 'destinazioni/montagna',
 	texts: [],
 	type: 0
 }, {
 	id: 5,
 	name: 'Crociere',
-	slug: 'viaggi_in_crociera',
+	slug: 'destinazioni/crociera',
 	texts: [],
 	type: 0
 }, {
 	id: 42,
 	name: 'Terme & benessere',
-	slug: 'viaggi_terme_benessere',
+	slug: 'destinazioni/terme-benessere',
 	texts: [],
 	type: 0
 }, {
 	id: 40,
 	name: 'Lago',
-	slug: 'viaggi_lago',
+	slug: 'destinazioni/lago',
 	texts: [],
 	type: 0
 }, {
 	id: 75,
 	name: 'Campagna',
-	slug: 'viaggi_campagna',
+	slug: 'destinazioni/campagna',
 	texts: [],
 	type: 0
 }, {
@@ -11280,13 +11280,13 @@ export const destination: Destination[] = [{
 }, {
 	id: 2,
 	name: 'Mare estero',
-	slug: 'viaggi_mare_estero',
+	slug: 'destinazioni/mare-estero',
 	texts: [],
 	type: 0
 }, {
 	id: 41,
 	name: 'Città',
-	slug: 'viaggi_in_città',
+	slug: 'destinazioni/città',
 	texts: [],
 	type: 0
 }, {
@@ -11298,7 +11298,7 @@ export const destination: Destination[] = [{
 }, {
 	id: 44,
 	name: 'Tour',
-	slug: 'viaggi_tour_organizzati',
+	slug: 'destinazioni/tour-organizzati',
 	texts: [],
 	type: 0
 }, {
@@ -11312,184 +11312,184 @@ export const destination: Destination[] = [{
 	icon: '104_8_ico-bimbigratis.png',
 	id: 8,
 	name: 'Bimbo gratis',
-	slug: 'viaggi_bimbo_gratis',
+	slug: 'destinazioni/bimbo-gratis',
 	texts: [],
 	type: 1
 }, {
 	icon: '104_9_ico-amici4zampe.png',
 	id: 9,
 	name: 'Amici 4 zampe',
-	slug: 'viaggi_amici_4_zampe',
+	slug: 'destinazioni/amici-4-zampe',
 	texts: [],
 	type: 1
 }, {
 	icon: '',
 	id: 11,
 	name: 'Prenota prima',
-	slug: 'viaggi_prenota_prima',
+	slug: 'destinazioni/prenota-prima',
 	texts: [],
 	type: 1
 }, {
 	icon: '104_56_ico-last-minute.png',
 	id: 56,
 	name: 'Last minute',
-	slug: 'viaggi_last_minute',
+	slug: 'destinazioni/last-minute',
 	texts: [],
 	type: 1
 }, {
 	id: 12,
 	name: 'Abruzzo',
-	slug: 'viaggi_in_abruzzo',
+	slug: 'destinazioni/abruzzo',
 	texts: [],
 	type: 2
 }, {
 	id: 14,
 	name: 'Basilicata',
-	slug: 'viaggi_in_basilicata',
+	slug: 'destinazioni/basilicata',
 	texts: [],
 	type: 2
 }, {
 	id: 15,
 	name: 'Calabria',
-	slug: 'viaggi_in_calabria',
+	slug: 'destinazioni/calabria',
 	texts: [],
 	type: 2
 }, {
 	id: 16,
 	name: 'Campania',
-	slug: 'viaggi_in_campania',
+	slug: 'destinazioni/campania',
 	texts: [],
 	type: 2
 }, {
 	id: 17,
 	name: 'Emilia Romagna',
-	slug: 'viaggi_emilia_romagna',
+	slug: 'destinazioni/emilia-romagna',
 	texts: [],
 	type: 2
 }, {
 	id: 18,
 	name: 'Friuli Venezia Giulia',
-	slug: 'viaggi_friuli_venezia_giulia',
+	slug: 'destinazioni/friuli-venezia-giulia',
 	texts: [],
 	type: 2
 }, {
 	id: 19,
 	name: 'Lazio',
-	slug: 'viaggi_in_lazio',
+	slug: 'destinazioni/lazio',
 	texts: [],
 	type: 2
 }, {
 	id: 20,
 	name: 'Liguria',
-	slug: 'viaggi_in_liguria',
+	slug: 'destinazioni/liguria',
 	texts: [],
 	type: 2
 }, {
 	id: 21,
 	name: 'Lombardia',
-	slug: 'viaggi_in_lombardia',
+	slug: 'destinazioni/lombardia',
 	texts: [],
 	type: 2
 }, {
 	id: 22,
 	name: 'Marche',
-	slug: 'viaggi_marche',
+	slug: 'destinazioni/marche',
 	texts: [],
 	type: 2
 }, {
 	id: 47,
 	name: 'Molise',
-	slug: 'viaggi_in_molise',
+	slug: 'destinazioni/molise',
 	texts: [],
 	type: 2
 }, {
 	id: 23,
 	name: 'Piemonte',
-	slug: 'viaggi_in_piemonte',
+	slug: 'destinazioni/piemonte',
 	texts: [],
 	type: 2
 }, {
 	id: 24,
 	name: 'Puglia',
-	slug: 'viaggi_in_puglia',
+	slug: 'destinazioni/puglia',
 	texts: [],
 	type: 2
 }, {
 	id: 25,
 	name: 'Sardegna',
-	slug: 'viaggi_in_sardegna',
+	slug: 'destinazioni/sardegna',
 	texts: [],
 	type: 2
 }, {
 	id: 26,
 	name: 'Sicilia',
-	slug: 'viaggi_in_sicilia',
+	slug: 'destinazioni/sicilia',
 	texts: [],
 	type: 2
 }, {
 	id: 27,
 	name: 'Toscana',
-	slug: 'viaggi_in_toscana',
+	slug: 'destinazioni/toscana',
 	texts: [],
 	type: 2
 }, {
 	id: 28,
 	name: 'Trentino Alto Adige',
-	slug: 'viaggi_trentino_alto_adige',
+	slug: 'destinazioni/trentino-alto-adige',
 	texts: [],
 	type: 2
 }, {
 	id: 48,
 	name: 'Umbria',
-	slug: 'viaggi_in_umbria',
+	slug: 'destinazioni/umbria',
 	texts: [],
 	type: 2
 }, {
 	id: 29,
 	name: 'Valle d\'Aosta',
-	slug: 'viaggi_valle_aosta',
+	slug: 'destinazioni/valle-aosta',
 	texts: [],
 	type: 2
 }, {
 	id: 30,
 	name: 'Veneto',
-	slug: 'viaggi_in_veneto',
+	slug: 'destinazioni/veneto',
 	texts: [],
 	type: 2
 }, {
 	id: 32,
 	name: 'Egitto',
-	slug: 'viaggi_in_egitto',
+	slug: 'destinazioni/egitto',
 	texts: [],
 	type: 3
 }, {
 	id: 49,
 	name: 'Francia',
-	slug: 'viaggi_in_francia',
+	slug: 'destinazioni/francia',
 	texts: [],
 	type: 3
 }, {
 	id: 51,
 	name: 'Kenya',
-	slug: 'viaggi_in_kenya',
+	slug: 'destinazioni/kenya',
 	texts: [],
 	type: 3
 }, {
 	id: 67,
 	name: 'Ungheria',
-	slug: 'viaggi_in_ungheria',
+	slug: 'destinazioni/ungheria',
 	texts: [],
 	type: 3
 }, {
 	id: 68,
 	name: 'Mediterraneo Occidentale',
-	slug: 'viaggi_mediterraneo_occidentale',
+	slug: 'destinazioni/mediterraneo-occidentale',
 	texts: [],
 	type: 3
 }, {
 	id: 69,
 	name: 'Mediterraneo Orientale',
-	slug: 'viaggi_mediterraneo_orientale',
+	slug: 'destinazioni/mediterraneo-orientale',
 	texts: [],
 	type: 3
 }, {
@@ -11507,49 +11507,49 @@ export const destination: Destination[] = [{
 }, {
 	id: 59,
 	name: 'Cuba',
-	slug: 'viaggi_a_cuba',
+	slug: 'destinazioni/a-cuba',
 	texts: [],
 	type: 3
 }, {
 	id: 13,
 	name: 'Austria',
-	slug: 'viaggi_in_austria',
+	slug: 'destinazioni/austria',
 	texts: [],
 	type: 3
 }, {
 	id: 57,
 	name: 'Croazia',
-	slug: 'viaggi_in_croazia',
+	slug: 'destinazioni/croazia',
 	texts: [],
 	type: 3
 }, {
 	id: 34,
 	name: 'Grecia',
-	slug: 'viaggi_in_grecia',
+	slug: 'destinazioni/grecia',
 	texts: [],
 	type: 3
 }, {
 	id: 35,
 	name: 'Messico',
-	slug: 'viaggi_in_messico',
+	slug: 'destinazioni/messico',
 	texts: [],
 	type: 3
 }, {
 	id: 53,
 	name: 'Slovenia',
-	slug: 'viaggi_in_slovenia',
+	slug: 'destinazioni/slovenia',
 	texts: [],
 	type: 3
 }, {
 	id: 33,
 	name: 'Spagna',
-	slug: 'viaggi_in_spagna',
+	slug: 'destinazioni/spagna',
 	texts: [],
 	type: 3
 }, {
 	id: 50,
 	name: 'Tanzania',
-	slug: 'viaggi_zanzibar',
+	slug: 'destinazioni/zanzibar',
 	texts: [],
 	type: 3
 }];

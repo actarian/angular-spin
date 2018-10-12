@@ -56,7 +56,6 @@ Checkbox
 
 .checkbox,
 .radio {
-
 	label {
 		display: block;
 		position: relative;
@@ -139,7 +138,6 @@ Checkbox
 				}
 			}
 		}
-
 
 	}
 
@@ -234,10 +232,6 @@ Form
 
 	.form-group {
 		margin-bottom: 15px;
-
-		@include xs-down {
-			margin-bottom: 10px;
-		}
 	}
 
 
@@ -252,7 +246,7 @@ Form
 		}
 
 		sup {
-			color: rgba($alert-color, 1);
+			color: rgba($text-color, .8);
 		}
 	}
 
@@ -263,14 +257,12 @@ Form
 	}
 
 	sup {
-		top: -.3em;
+		top: 0;
 	}
 
-	.form-control,
-	textarea,
+	select,
 	input[type="text"],
 	input[type="email"],
-	input[type="password"],
 	input[type="tel"],
 	input[type="number"],
 	input[type="date"] {
@@ -278,9 +270,21 @@ Form
 		background: #fff;
 		box-shadow: none;
 		border-radius: 1px;
+		padding-right: 30px;
+		font-size: 16px;
+
+		&[required] {
+			border-color: $border-required-color;
+		}
 
 		&.ng-invalid:not(.ng-untouched) {
-			border-color: rgba($alert-color, .5);
+			background: url('/assets/img/input-invalid.png') no-repeat right 7px center;
+			background-size: 14px;
+		}
+
+		&.ng-valid {
+			background: url('/assets/img/input-valid.png') no-repeat right 7px center;
+			background-size: 14px;
 		}
 
 		&:focus {
@@ -289,6 +293,10 @@ Form
 
 		&::placeholder {
 			color: rgba($text-color, .6);
+		}
+
+		&:disabled {
+			background-color: #e9ecef;
 		}
 	}
 
@@ -311,15 +319,57 @@ Form
 		font-size: 12px;
 		padding: 5px 12px;
 		margin: 9px 0;
+		display: none !important;
+	}
+
+	&.submitted {
+		.alert {
+			font-size: 12px;
+			padding: 5px 12px;
+			margin: 9px 0;
+			display: block !important;
+		}
 	}
 
 	select.form-control {
 		padding-left: 7px;
+		font-size: 16px;
+		outline: none;
+		box-shadow: none;
+		min-height: 37px;
 	}
 
 }
 
+/*--------------------------------------------------
+Form Group errors
+--------------------------------------------------*/
 
+.form-group-errors {
+	.alert {
+		display: block !important;
+	}
+}
+
+.form.submitted {
+
+	input[type="text"],
+	input[type="email"],
+	input[type="tel"],
+	input[type="number"],
+	input[type="date"] {
+
+		&.ng-invalid {
+			background: url('/assets/img/input-invalid.png') no-repeat right 7px center;
+			background-size: 14px;
+		}
+
+		&.ng-valid {
+			background: url('/assets/img/input-valid.png') no-repeat right 7px center;
+			background-size: 14px;
+		}
+	}
+}
 
 /*--------------------------------------------------
 Form Password Reveal
@@ -333,13 +383,20 @@ Form Password Reveal
 		flex-wrap: wrap;
 	}
 
+	&+.alert {
+		display: block !important;
+	}
+
 	.form-control {
+		font-size: 16px;
 		flex: 0 1 auto;
 		margin-right: 10px;
 
 		@include xs-down {
-			flex: 1 1 calc(100% - 40px);
+			flex: 1 1 100%;
+			margin-right: 0;
 		}
+
 	}
 
 	&>div {
@@ -348,7 +405,73 @@ Form Password Reveal
 		white-space: nowrap;
 
 		@include xs-down {
-			padding-top: 6px;
+			padding: 10px 0;
+		}
+	}
+}
+
+
+/*--------------------------------------------------
+Form Fieldset
+--------------------------------------------------*/
+.fieldset {
+	display: flex;
+	justify-content: space-between;
+	width: calc(100% + 30px);
+	flex-wrap: wrap;
+
+	@include xxs-down {
+		width: 100%;
+	}
+
+	.form-group {
+		flex: 1 0 50%;
+		padding-right: 30px;
+
+		// @include sm-down {
+		// 	flex: 0 0 100%;
+		// 	padding-right: 0;
+		// 	max-width: none;
+		// }
+
+		@include xxs-down {
+			flex: 0 0 100%;
+			padding-right: 0;
+			max-width: none;
+		}
+	}
+
+	.form-group--full {
+		flex: 0 0 100%;
+		max-width: 100%;
+		padding-right: 0;
+
+		@include xs-down {
+			flex: 0 0 100%;
+			max-width: 100%;
+			padding-right: 0;
+		}
+	}
+
+}
+
+.fieldset--divider {
+	border-bottom: 1px solid #e0e0e0;
+	margin-bottom: 20px;
+}
+
+/*--------------------------------------------------
+Input Date
+--------------------------------------------------*/
+.input-date {
+	display: flex;
+	justify-content: space-between;
+
+	select:not(:last-child) {
+		margin-right: 10px;
+
+		@include xxs-down {
+			margin-right: 5px;
 		}
 	}
 }

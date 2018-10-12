@@ -1,9 +1,12 @@
 <h1 class="h1 title">Strutture Preferite</h1>
 <div class="favourites" lazy-images>
 	<div class="tit" *ngIf="busy">Caricamento dei preferiti...</div>
+	<ng-container *ngIf="items?.length === 0">
+		Nessuna struttura aggiunta
+	</ng-container>
 	<ng-container *ngFor="let item of items; let i = index;">
 		<ng-container *ngIf="i < visibleItems">
-			<serp-item [item]="item" [state]="'appear'"></serp-item>
+			<serp-item [item]="item" [index]="i"></serp-item>
 		</ng-container>
 	</ng-container>
 	<button type="button" class="btn" *ngIf="items?.length > visibleItems" (click)="visibleItems = visibleItems + 20">carica altri</button>

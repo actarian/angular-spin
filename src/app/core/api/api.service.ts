@@ -2,8 +2,8 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
 import { ORIGIN_URL } from '@nguniversal/aspnetcore-engine/tokens';
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { Logger } from '../logger';
 import { Identity } from '../models/identity';
 
@@ -81,13 +81,8 @@ export class ApiService<T extends Identity> {
 		const params: {} = (typeof first === 'object' ? first : second);
 		const url: string = this.getUrl(method);
 		const options = new ApiRequestOptions(params);
-		// console.log('ApiService.origin', this.origin, url);
 		return this.http.get<T>(url, options).pipe(
 			tap(x => this.logger.log(url)),
-			catchError(e => {
-				console.error('ApiService.get', e, url, options);
-				return of(null);
-			})
 		);
 	}
 
@@ -99,10 +94,6 @@ export class ApiService<T extends Identity> {
 		const options = new ApiRequestOptions(params);
 		return this.http.post<T>(url, model, options).pipe(
 			tap(x => this.logger.log(url)),
-			catchError(e => {
-				console.error('ApiService.post', e, url, model, options);
-				return of(null);
-			})
 		);
 	}
 
@@ -114,26 +105,29 @@ export class ApiService<T extends Identity> {
 		const options = new ApiRequestOptions(params);
 		return this.http.put<T>(url, model, options).pipe(
 			tap(x => this.logger.log(url)),
-			catchError(e => {
-				console.error('ApiService.put', e, url, model, options);
-				return of(null);
-			})
+		);
+	}
+
+	patch(first: string | T, second?: T | {}, third?: {}): Observable<any> {
+		const method: string = (typeof first === 'string' ? first : '');
+		const model: T = (typeof first === 'object' ? first : second) as T;
+		const params: {} = (typeof second === 'object' ? second : third);
+		const url: string = this.getUrl(method);
+		const options = new ApiRequestOptions(params);
+		return this.http.patch<T>(url, model, options).pipe(
+			tap(x => this.logger.log(url)),
 		);
 	}
 
 	delete(first: string | T | number, second?: T | number | {}, third?: {}): Observable<any> {
 		const method: string = (typeof first === 'string' ? first : '');
 		const identity: T | number = (typeof first !== 'string' ? first : second) as T | number;
-		const id = typeof identity === 'number' ? identity : identity.id;
+		const id = identity ? (typeof identity === 'number' ? identity : identity.id) : null;
 		const params: {} = (typeof second === 'object' ? second : third);
-		const url: string = this.getUrl(`${method}/${id}`);
+		const url: string = id !== null ? this.getUrl(`${method}/${id}`) : this.getUrl(method);
 		const options = new ApiRequestOptions(params);
 		return this.http.delete<T[]>(url, options).pipe(
 			tap(x => this.logger.log(url)),
-			catchError(e => {
-				console.error('ApiService.post', e, url, options);
-				return of(null);
-			})
 		);
 	}
 
@@ -151,7 +145,6 @@ export class ApiService<T extends Identity> {
 			for (key in input) {
 				if (input.hasOwnProperty(key)) {
 					keyCamelCase = (key.charAt(0).toLowerCase() + key.slice(1) || key).toString();
-					keyCamelCase = keyCamelCase === 'url' ? 'slug' : keyCamelCase; // !!!
 					value = input[key];
 					if (value instanceof Array || (value !== null && value.constructor === Object)) {
 						value = this.toCamelCase(value);

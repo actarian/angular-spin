@@ -62,7 +62,14 @@ export class HttpResponseInterceptor implements HttpInterceptor {
 					switch (error.status) {
 						case 401:
 							// unauthorized
-							this.logger.http(error);
+							// this.logger.http(error);
+							break;
+						case 404:
+							// not found
+							break;
+						case 409:
+							break;
+						case 410:
 							break;
 						default:
 							this.logger.http(error);

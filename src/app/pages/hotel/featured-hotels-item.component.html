@@ -1,0 +1,104 @@
+<div class="hotel-item">
+	<!-- Hotel Image -->
+	<div class="image">
+		<div class="discount" *ngIf="item.overlayCoverImage">
+			<img [attr.data-src]="item.overlayCoverImage | asset" alt="{{item.overlayCoverText}}">
+		</div>
+		<a [routerLink]="[item.slug] | route" (click)="onBeforeNav()">
+			<img class="image-thumb" [attr.data-src]="item.photo + '?width=350&height=197&rmode=crop'" alt="{{item.name}}">
+		</a>
+	</div>
+	<!-- /Hotel Image -->
+	<!-- Hotel Content -->
+	<div class="content">
+		<div class="head">
+			<div class="info">
+				<div class="name">
+					<a [routerLink]="[item.slug] | route" (click)="onBeforeNav()">
+						<span>{{item.name}}</span> <span class="stars"><em *ngFor="let star of item?.rating?.split('');" [ngClass]="{ superior: star === 'S' }">{{star}}</em></span>
+					</a>
+				</div>
+				<div class="location">
+					<span class="region">{{item.destinationNation}} {{item.destinationRegion}}</span>&nbsp;<span class="town">{{item.destinationDescription}} {{item.destinationProvince}}</span>
+				</div>
+			</div>
+			<ng-container *ngIf="item.trustPilot?.totalReviews > 0">
+				<div [trustPilot]="item.trustPilot"></div>
+			</ng-container>
+			<button type="button" class="add-to-fav" (click)="wishlist.doToggle(item)" [ngClass]="{ active: wishlist.has(item) }">
+				<svg class="ico">
+					<use xlink:href="#ico-fav"></use>
+				</svg>
+			</button>
+		</div>
+		<div class="desc">
+			<ul class="list">
+				<li class="list-item">
+					<svg class="ico">
+						<use xlink:href="#ico-calendar"></use>
+					</svg>
+					<span>{{item.abstract}}</span>
+				</li>
+				<li class="list-item">
+					<svg class="ico">
+						<use xlink:href="#ico-struttura"></use>
+					</svg>
+					<span>{{item.accomodation}}</span>
+				</li>
+				<li class="list-item">
+					<svg class="ico">
+						<use xlink:href="#ico-fav"></use>
+					</svg>
+					<span>utilizzo centro benessere</span>
+				</li>
+				<li class="list-item">
+					<svg class="ico">
+						<use xlink:href="#ico-fav"></use>
+					</svg>
+					<span>utilizzo wi-fi</span>
+				</li>
+				<li class="list-item">
+					<svg class="ico">
+						<use xlink:href="#ico-fav"></use>
+					</svg>
+					<span>utilizzo centro sportivo</span>
+				</li>
+			</ul>
+			<div class="special-msg">
+				<!-- <strong>20%</strong> PRENOTA PRIMA -->
+				{{item.earlyBookingText}}
+			</div>
+		</div>
+	</div>
+	<!-- /Hotel Content -->
+	<!-- Hotel Action -->
+	<div class="action">
+		<button type="button" class="add-to-fav" (click)="wishlist.doToggle(item)" [ngClass]="{ active: wishlist.has(item) }">
+			<svg class="ico">
+				<use xlink:href="#ico-fav"></use>
+			</svg>
+			<span *ngIf="!wishlist.has(item)">Salva</span>
+			<span *ngIf="wishlist.has(item)">Rimuovi</span>
+		</button>
+		<!--
+		<div class="special-msg">
+			<strong>20%</strong> PRENOTA PRIMA {{item.earlyBookingText}}
+		</div>
+		-->
+		<div class="summary">
+			<div class="price">
+				<span class="desc">Da</span>
+				<span class="single-price"><span class="value">{{item.price}}</span><span class="symbol">€</span></span>
+				<span class="desc">Prezzo per persona</span>
+			</div>
+			<div class="total-price">
+				<span class="desc">Prezzo totale</span>
+				<span class="total-price"><span class="value">{{item.totalPrice}}</span><span class="symbol">€</span></span>
+			</div>
+		</div>
+		<div class="cta">
+			<a class="btn" [routerLink]="[item.slug] | route" (click)="onBeforeNav()">Scopri offerta</a>
+		</div>
+	</div>
+	<!-- /Hotel Action -->
+</div>

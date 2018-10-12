@@ -1,0 +1,12 @@
+<input type="hidden" required [(ngModel)]="ngModel" name="inputDate" #inputDate="ngModel">
+<div class="input-date">
+	<select class="form-control" name="inputDay" [(ngModel)]="model.day" (change)="onInputDateChanged()" *ngIf="!futureDate">
+		<option *ngFor="let item of model.days" [ngValue]="item.value">{{item.name}}</option>
+	</select>
+	<select class="form-control" name="inputMonth" [(ngModel)]="model.month" (change)="onInputDateChanged()">
+		<option *ngFor="let item of model.months" [ngValue]="item.value">{{item.name | date : 'MMM'}}</option>
+	</select>
+	<select class="form-control" name="inputYear" [(ngModel)]="model.year" (change)="onInputDateChanged()">
+		<option *ngFor="let item of model.years" [ngValue]="item.value">{{item.name}}</option>
+	</select>
+</div>

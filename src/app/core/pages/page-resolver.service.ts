@@ -22,45 +22,10 @@ export class PageResolverService implements Resolve<PageResolver> {
 		private routeService: RouteService
 	) { }
 
-	/*
-	public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<PageResolver> {
-		const paths = route.url.filter(x => {
-			return x.path;
-		}).map(x => {
-			return x.path;
-		});
-		const slug = this.routeService.toSlug(paths).join('/');
-		// console.log('PageResolverService.resolve', slug);
-		return new Promise((resolve, reject) => {
-			this.pageService.getPageBySlug(slug).pipe(
-				map(page => page ? new PageResolver(page, this.config) : null)
-			).subscribe(page => {
-				if (page) {
-					resolve(page);
-				} else {
-					this.router.navigate(this.routeService.toRoute(['not-found']));
-					resolve(null);
-				}
-			});
-		});
-	}
-	*/
-
 	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<PageResolver> {
-		console.log('route', route);
+		// console.log('route', route);
 		if (route.params && route.params.id) {
-			return this.pageService.getPageById(route.params.id).pipe(
-				map(page => {
-					if (page) {
-						// console.log('PageResolverService.page', pages[0]);
-						return new PageResolver(page, this.config);
-					} else {
-						// console.log('routeService', this.routeService);
-						this.router.navigate(this.routeService.toRoute(['not-found']));
-						return null;
-					}
-				})
-			);
+			return this.getPageById(route.params.id);
 		} else {
 			const paths = route.url.filter(x => {
 				return x.path;
@@ -68,34 +33,38 @@ export class PageResolverService implements Resolve<PageResolver> {
 				return x.path;
 			});
 			const slug = this.routeService.toSlug(paths).join('/');
-			// console.log('PageResolverService.resolve', slug);
-			return this.pageService.getStatePageBySlug(slug).pipe(
-				map(page => {
-					if (page) {
-						// console.log('PageResolverService.page', pages[0]);
-						return new PageResolver(page, this.config);
-					} else {
-						// console.log('routeService', this.routeService);
-						this.router.navigate(this.routeService.toRoute(['not-found']));
-						return null;
-					}
-				})
-			);
+			return this.getPageBySlug(slug);
 		}
-		/*
-		return this.pageService.getPageBySlug(slug).pipe(
-			take(1),
-			map(pages => {
-				if (pages && pages.length) {
+	}
+
+	getPageById(id: number | string): Observable<PageResolver> {
+		return this.pageService.getPageById(id).pipe(
+			map(page => {
+				if (page) {
 					// console.log('PageResolverService.page', pages[0]);
-					return new PageResolver(pages[0], this.config);
+					return new PageResolver(page, this.config);
 				} else {
 					// console.log('routeService', this.routeService);
 					this.router.navigate(this.routeService.toRoute(['not-found']));
 					return null;
 				}
-			}), );
-		*/
+			})
+		);
+	}
+
+	getPageBySlug(slug: string): Observable<PageResolver> {
+		return this.pageService.getStatePageBySlug(slug).pipe(
+			map(page => {
+				if (page) {
+					// console.log('PageResolverService.page', pages[0]);
+					return new PageResolver(page, this.config);
+				} else {
+					// console.log('routeService', this.routeService);
+					this.router.navigate(this.routeService.toRoute(['not-found']));
+					return null;
+				}
+			})
+		);
 	}
 
 }

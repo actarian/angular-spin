@@ -1,36 +1,17 @@
 <h1 class="h1 title">Riepilogo ordini</h1>
-
-<div class="order-history__list">
-	<div class="hotel-item">
-		<div class="image">
-			<a  href="/residence_lancora"><img class="image-thumb ready" alt="RESIDENCE L'ANCORA" src="http://localhost:40000/media/immagini/25839_n_Ancora_Lu%20Bagnu_terrazzo_M.jpg?width=350&amp;height=197&amp;rmode=crop"></a>
-		</div>
-		<div class="content">
-			<div class="head">
-				<div class="info">
-					<div class="name"><a href="/residence_lancora"><span>RESIDENCE L'ANCORA</span><span class="stars"><em>*</em><em>*</em><em>*</em></span></a></div>
-					<div class="location"><span class="region">Italia Sardegna</span>&nbsp;<span class="town">Castelsardo SS</span></div>
+<div class="order-history-views" lazy-images>
+	<div class="tit" *ngIf="busy">Caricamento degli ordini...</div>
+	<ng-container *ngIf="items?.length === 0">
+		Nessun ordine registrato
+	</ng-container>
+	<div class="card-row">
+		<ng-container *ngFor="let item of items; let i = index;">
+			<ng-container *ngIf="i < visibleItems">
+				<div class="card-col">
+					<order-history-item [item]="item"></order-history-item>
 				</div>
-			</div>
-			<div class="desc">
-				<ul class="list">
-					<li class="list-item"><svg class="ico">
-							<use xlink:href="#ico-check"></use>
-						</svg><span>Dal 07/07/2018 al 10/07/2018</span></li>
-					<li class="list-item"><svg class="ico">
-							<use xlink:href="#ico-check"></use>
-						</svg><span>Data di prenotazione: 09/05/2018</span></li>
-					<li class="list-item"><svg class="ico">
-							<use xlink:href="#ico-check"></use>
-						</svg><span>Codice pratica: 17/014465</span></li>
-				</ul>
-			</div>
-		</div>
-		<div class="action">
-			<div class="summary">
-				<div class="price"><span class="desc">Prezzo totale</span><span class="single-price"><span class="value">209</span><span class="symbol">€</span></span></div>
-			</div>
-			<div class="cta"><a class="btn" href="/area_riservata/dettaglio_ordine">Dettagli</a></div>
-		</div>
+			</ng-container>
+		</ng-container>
 	</div>
+	<button type="button" class="btn" *ngIf="items?.length > visibleItems" (click)="visibleItems = visibleItems + 20">carica altri</button>
 </div>

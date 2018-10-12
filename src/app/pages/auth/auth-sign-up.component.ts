@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { DisposableComponent } from '../../core/disposable';
 import { FacebookService, FacebookUser, GoogleService, GoogleUser } from '../../core/plugins';
 import { ModalCompleteEvent, ModalData, ModalService } from '../../core/ui/modal';
@@ -21,7 +21,9 @@ export class AuthSignUpComponent extends DisposableComponent implements OnInit {
 	facebook: FacebookUser;
 	google: GoogleUser;
 	error: any;
+	busy: boolean = false;
 	submitted: boolean = false;
+	exists$: Function;
 
 	constructor(
 		private modalService: ModalService,
@@ -31,6 +33,10 @@ export class AuthSignUpComponent extends DisposableComponent implements OnInit {
 		private userService: UserService
 	) {
 		super();
+		// wrap in block function needed for async validators
+		this.exists$ = (email: string) => {
+			return this.userService.exists(email);
+		};
 	}
 
 	ngOnInit() {
@@ -55,16 +61,19 @@ export class AuthSignUpComponent extends DisposableComponent implements OnInit {
 	}
 
 	onSubmit(): void {
+		this.error = null;
 		this.submitted = true;
+		this.busy = true;
 		this.userService.signUp(this.model).pipe(
-			takeUntil(this.unsubscribe)
+			takeUntil(this.unsubscribe),
+			finalize(() => this.busy = false),
 		).subscribe(
-			user => {
-				this.user = user;
-			}, error => {
+			user => this.user = user,
+			error => {
 				this.error = error;
 				this.submitted = false;
-			});
+			}
+		);
 	}
 
 	onFacebookLogout(): void {
@@ -87,11 +96,12 @@ export class AuthSignUpComponent extends DisposableComponent implements OnInit {
 
 	onSignIn(): void {
 		this.modalService.open({ component: AuthSignInComponent }).pipe(
-			takeUntil(this.unsubscribe)
+			takeUntil(this.unsubscribe),
 		).subscribe(e => {
 			if (e instanceof ModalCompleteEvent) {
 				console.log('signed');
 			}
 		});
 	}
+
 }

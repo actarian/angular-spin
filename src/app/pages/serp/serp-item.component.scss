@@ -7,10 +7,10 @@
 	min-height: 197px;
 
 	&.inside {
-		position: relative;
+		position: sticky;
+		bottom: 0;
 		background: white;
 		z-index: 10;
-		transform: translateY(-100%);
 		box-shadow: 0 -5px 5px rgba(0, 0, 0, .05);
 
 		&:before {

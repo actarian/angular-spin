@@ -5,7 +5,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { fromPromise } from 'rxjs/observable/fromPromise';
-import { concatMap } from 'rxjs/operators';
+import { concatMap, filter } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { OnceService } from '../../once';
 import { RouteService } from '../../routes';
@@ -82,7 +82,7 @@ export class FacebookService {
 	* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	facebook(): Observable<any> {
-		if (isPlatformBrowser(this.platformId)) {
+		if (isPlatformBrowser(this.platformId) && window.location.protocol === 'https') {
 			if (this.FB) {
 				return of(this.FB);
 			} else {
@@ -109,6 +109,7 @@ export class FacebookService {
 
 	status() {
 		return this.facebook().pipe(
+			filter(f => f !== null),
 			concatMap(f => {
 				return fromPromise(new Promise((resolve, reject) => {
 					f.getLoginStatus((r) => {
@@ -150,6 +151,7 @@ export class FacebookService {
 
 	login() {
 		return this.facebook().pipe(
+			filter(f => f !== null),
 			concatMap(f => {
 				return fromPromise(new Promise((resolve, reject) => {
 					f.login((r) => {
@@ -191,6 +193,7 @@ export class FacebookService {
 
 	logout(): Observable<any> {
 		return this.facebook().pipe(
+			filter(f => f !== null),
 			concatMap(f => {
 				return fromPromise(new Promise((resolve, reject) => {
 					// console.log('f', f);

@@ -1,6 +1,7 @@
 import { InMemoryDbService, ParsedRequestUrl } from 'angular-in-memory-web-api';
-import * as Datas from '../../datas';
 // import { Page } from '../pages';
+import { environment } from '../../../environments/environment';
+import * as Datas from '../../datas';
 
 export class MemoryService implements InMemoryDbService {
 
@@ -19,6 +20,9 @@ export class MemoryService implements InMemoryDbService {
 	*/
 
 	parseRequestUrl(url: string, service): ParsedRequestUrl {
+		Object.keys(environment.memoryApi.remap).forEach((k: string) => {
+			url = url.replace(k, environment.memoryApi.remap[k]);
+		});
 		const parsed: ParsedRequestUrl = service.parseRequestUrl(url);
 		// console.log('MemoryService.parseRequestUrl', url, parsed);
 		/*

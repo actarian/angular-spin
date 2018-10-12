@@ -9,7 +9,7 @@ Reserved Area
 	padding: 20px 0 35px;
 
 	.container {
-		padding: 0;
+		padding: 0 15px;
 		display: flex;
 		justify-content: space-between;
 		flex-wrap: wrap;
@@ -24,6 +24,10 @@ Reserved Area
 		@include xs-down {
 			flex: 0 0 100%;
 			max-width: none;
+		}
+
+		@media print {
+			display: none;
 		}
 
 		ul {
@@ -77,7 +81,6 @@ Reserved Area
 
 	.content {
 		flex: 1 0 calc(100% - 330px);
-		width: calc(100% - 330px);
 		max-width: calc(100% - 330px);
 		padding-right: 15px;
 
@@ -85,6 +88,11 @@ Reserved Area
 			flex: 0 0 100%;
 			max-width: none;
 			padding: 30px 15px;
+		}
+
+		@media print {
+			flex: 0 0 100%;
+			max-width: none;
 		}
 
 	}

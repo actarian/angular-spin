@@ -1,38 +1,37 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { PageIndex } from '../../core';
-import { Category, CategoryService, LandingService } from '../../models';
+import { map, takeUntil } from 'rxjs/operators';
+import { DisposableComponent, Page, PageIndex } from '../../core';
+import { Category, LandingService } from '../../models';
 
 @Component({
-	selector: 'section-categories',
+	selector: 'home-categories',
 	templateUrl: './home-categories.component.html',
 	styleUrls: ['./home-categories.component.scss'],
 	encapsulation: ViewEncapsulation.Emulated,
 })
-
-export class HomeCategoriesComponent implements OnInit {
+export class HomeCategoriesComponent extends DisposableComponent implements OnInit {
 
 	@Input() type: number;
-	items$: Observable<PageIndex[]>; // type, destination, time
+	limit: number = 6;
+	item: Page;
+	items: PageIndex[]; // type, destination, time
 
 	categories: Category[] = [];
 
 	constructor(
 		private landingService: LandingService,
-		private categoryService: CategoryService,
 	) {
-
+		super();
 	}
 
 	ngOnInit() {
-		this.items$ = this.landingService.get().pipe(
-			map(x => x.filter((p: PageIndex) => p.type === this.type))
-		);
-		// this.getCategories();
+		this.landingService.getLandings().pipe(
+			takeUntil(this.unsubscribe),
+			map(x => x.find((p: Page) => p.type === this.type)),
+		).subscribe(item => {
+			this.item = item;
+			this.items = item ? item.related : [];
+		});
 	}
 
-	getCategories(): void {
-		this.categoryService.getList().subscribe(x => this.categories = x.slice(0, 6));
-	}
 }

@@ -1,9 +1,18 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Output, ViewChild, ViewEncapsulation } from '@angular/core';
-import { fromEvent } from 'rxjs';
+import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, HostListener, Inject, Input, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { DOCUMENT } from '@angular/platform-browser';
+import { fromEvent, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
 import { DisposableComponent } from '../../core/disposable';
 import { Destination, MainSearch, SearchService } from '../../models';
 
+export enum SearchTab {
+	None = 0,
+	Destination = 1,
+	Date = 2,
+	Duration = 3,
+	Adults = 4,
+	Childs = 5,
+}
 
 @Component({
 	selector: 'main-search',
@@ -15,24 +24,46 @@ import { Destination, MainSearch, SearchService } from '../../models';
 
 export class MainSearchComponent extends DisposableComponent implements AfterViewInit {
 
+	tab: SearchTab = SearchTab.None;
+	tabs: any = SearchTab;
 	model: MainSearch;
-	active: ElementRef;
-
+	query$: Observable<any>;
 	@ViewChild('query') query;
-	query$;
-
 	@ViewChild('searchLocation') searchLocation;
-
-	@Output()
-	doSearch: EventEmitter<any> = new EventEmitter();
+	@Input() useBreadcrumbs: boolean = false;
+	@Output() doSearch: EventEmitter<any> = new EventEmitter();
 
 	constructor(
+		@Inject(DOCUMENT) private doc: any,
 		private changeDetector: ChangeDetectorRef,
 		public search: SearchService
 	) {
 		super();
 		// cloniamo il modello per emettere la modifica solo al click sulla cta search
-		this.search.model$.subscribe(model => this.model = new MainSearch(model));
+		this.search.model$.subscribe(model => {
+			this.model = new MainSearch(model);
+			this.model.query = this.model.destination ? this.model.destination.name : null;
+		});
+	}
+
+	@HostListener('document:keyup', ['$event'])
+	onKeyup(e: KeyboardEvent) {
+		switch (e.key) {
+			case 'Enter':
+			case 'Tab':
+				if (this.tab === SearchTab.Destination) {
+					const query: string = this.query.nativeElement.value;
+					if (!query.trim()) {
+						this.onTab();
+					} else {
+						this.onEnter(query);
+					}
+					// console.log('MainSearchComponent.document:keyup', query.trim());
+				} else if (this.tab !== SearchTab.None) {
+					this.onTab();
+				}
+				break;
+		}
 	}
 
 	ngAfterViewInit() {
@@ -54,14 +85,59 @@ export class MainSearchComponent extends DisposableComponent implements AfterVie
 		});
 	}
 
-	onDestinationSet(item: Destination) {
-		this.model.destination = item;
-		this.model.query = item.name;
+	onTab() {
+		console.log('MainSearchComponent.onTab', this.tab);
+		switch (this.tab) {
+			case SearchTab.Destination:
+				this.tab = SearchTab.Date;
+				break;
+			case SearchTab.Date:
+				this.tab = SearchTab.Duration;
+				break;
+			case SearchTab.Duration:
+				this.tab = SearchTab.Adults;
+				break;
+			case SearchTab.Adults:
+				this.tab = SearchTab.Childs;
+				break;
+			case SearchTab.Childs:
+				this.tab = SearchTab.Destination;
+				break;
+		}
 	}
 
-	onSubmit() {
-		this.active = null;
-		this.doSearch.emit(this.model);
+	onDestinationSet(item: Destination) {
+		if (item) {
+			this.model.destination = item;
+			this.model.query = item.name;
+			this.onTab();
+		}
+	}
+
+	onEnter(query: string) {
+		this.search.onDestinationTrySearch(query).pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(item => {
+			if (item) {
+				this.model.destination = item;
+				this.model.query = item.name;
+				// console.log('MainSearchComponent.onEnter', item);
+				this.onTab();
+				// this.doSearch.emit(this.model);
+			}
+		});
+	}
+
+	onDateSelected(event) {
+		// console.log('onDateSelected', event);
+		setTimeout(() => {
+			this.onTab();
+		}, 0);
+	}
+
+	onDurationSelected(event) {
+		// console.log('onDurationSelected', event);
+		this.tab = SearchTab.None;
 	}
 
 	onChildsChanged() {
@@ -69,6 +145,11 @@ export class MainSearchComponent extends DisposableComponent implements AfterVie
 			this.model.childrens.push({ age: 0 });
 		}
 		this.model.childrens.length = Math.min(this.model.childs, this.model.childrens.length);
+	}
+
+	onSubmit() {
+		this.tab = SearchTab.None;
+		this.doSearch.emit(this.model);
 	}
 
 }

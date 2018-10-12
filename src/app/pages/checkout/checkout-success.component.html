@@ -1,0 +1,68 @@
+<div class="checkout-step-4">
+	<!-- <code>params: {{params | json}}</code> -->
+	<ng-container *ngIf="busy">
+		<h2 class="h1">Registrazione pagamento</h2>
+		<h3>Stiamo completando la registrazione del pagamento. Attendere prego...</h3>
+	</ng-container>
+	<ng-container *ngIf="detail">
+		<h2 class="h1">Congratulazioni</h2>
+		<h3>La tua prenotazione è confermata! Abbiamo inviato un’email a <strong [innerHtml]="cart.customer.email"></strong></h3>
+		<div class="btn-group" *ngIf="detail.printableDocumentsList?.length > 0">
+			<a [href]="'/api/user/bookingFileDetail/printable/' + bookingFileCode + '/' + document.documentType" download target="_blank" class="btn" *ngFor="let document of detail.printableDocumentsList">
+				<span [innerHtml]="document.documentType === 10 ? 'Stampa la tua prenotazione' : 'Stampa il voucher'"></span>
+			</a>
+		</div>
+		<br>
+		<!-- PAY IN ADVANCE -->
+		<ng-container *ngIf="cart.paymentAdvance">
+			<div class="fieldset">
+				<h4 class="h4">Pagamento in acconto</h4>
+				<span>Acconto di {{cart.paymentAdvance.amount | price : '€'}}. Saldo di {{cart.paymentAdvance.balance | price : '€'}} da pagare entro il {{cart.paymentAdvance.dueDateTime | date : 'dd/MM/yyyy'}}</span>
+			</div>
+			<div class="fieldset">
+				<div class="form-group" *ngIf="cart.detail.totalAmountDetail.totalAmountBeforeDiscount != cart.detail.totalAmountDetail.totalAmountAfterDiscount">
+					<label>Totale</label>
+					<div class="form-value">
+						<span class="price" [innerHtml]="cart.detail.totalAmountDetail.totalAmountBeforeDiscount | price : '€'"></span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label>Totale</label>
+					<div class="form-value">
+						<span class="price" [innerHtml]="cart.detail.totalAmountDetail.totalAmountAfterDiscount | price : '€'"></span>
+					</div>
+				</div>
+				<div class="form-group" *ngIf="cart.paymentAdvance?.enable">
+					<label>Acconto</label>
+					<div class="form-value">
+						<span class="price" [innerHtml]="cart.paymentAdvance.amount | price : '€'"></span>
+					</div>
+				</div>
+				<div class="form-group" *ngIf="cart.paymentPaidAmount > 0">
+					<label>Da pagare</label>
+					<div class="form-value">
+						<span class="price" [innerHtml]="cart.paymentAdvance.balance | price : '€'"></span>
+					</div>
+				</div>
+			</div>
+		</ng-container>
+		<!-- PAY IN ADVANCE -->
+		<br>
+		<p><strong>SE HAI CONFERMATO CON CARTA DI CREDITO/MYBANK/PAYPAL:</strong><br> riceverai email con gli allegati della conferma di prenotazione, la fattura e il voucher da stampare e presentare al momento del check-in in hotel. Se hai prenotato un pacchetto Tour Operator/traghetto/crociera, i documenti di viaggio saranno spediti via email prima della partenza.</p>
+		<p><strong>SE HAI SCELTO LA MODALITA’ DI PAGAMENTO CON BONIFICO BANCARIO:</strong><br>per confermare la tua richiesta di opzione, effettua il bonifico e invia copia della ricevuta di bonifico a bonifico@eurospin-viaggi.it o al fax 045 9598500 entro e non oltre le ore 14.00 del giorno lavorativo successivo alla prenotazione (per prenotazioni effettuate il venerdì e il sabato, l’invio della ricevuta di bonifico dovrà essere effettuato entro le ore 14.00 del lunedì).</p>
+		<p><strong>NOTA IMPORTANTE:</strong><br> in caso di mancata ricezione della ricevuta di bonifico nei termini sopra indicati, la prenotazione sarà automaticamente annullata.</p>
+		<p>Non appena il tuo pagamento sarà contabilizzato, riceverai email con gli allegati della conferma di prenotazione, la fattura e il voucher da stampare e presentare al momento del check-in in hotel. Se hai prenotato un pacchetto Tour Operator/traghetto/crociera, i documenti di viaggio saranno spediti via email prima della partenza.</p>
+		<p>Per ogni informazione o assistenza, puoi contattarci al numero +39 045 9599 (consulta gli orari del nostro Call Center su <a href="https://www.eurospin-viaggi.it">www.eurospin-viaggi.it</a>)</p>
+	</ng-container>
+	<ng-container *ngIf="error">
+		<h2 class="h1">Pagamento Annullato</h2>
+		<h3>La transazione non è andata a buon fine</h3>
+		<br>
+		<div class="form-group form-group-errors" *ngIf="error">
+			<div class="alert alert-danger">
+				<span [innerHtml]="error.statusText"></span>
+			</div>
+		</div>
+		<p>Per ogni informazione o assistenza, puoi contattarci al numero +39 045 9599 (consulta gli orari del nostro Call Center su <a href="https://www.eurospin-viaggi.it">www.eurospin-viaggi.it</a>)</p>
+	</ng-container>
+</div>

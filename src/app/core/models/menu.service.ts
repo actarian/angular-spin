@@ -8,7 +8,7 @@ import { MenuItem } from './menu';
 export class MenuService extends EntityService<MenuItem> {
 
 	get collection(): string {
-		return '/api/menu';
+		return '/api/page/data/menu';
 	}
 
 }

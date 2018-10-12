@@ -7,19 +7,14 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 
-// const inlineCode = getInlinePrebootCode(prebootOptions);
-// now simply insert the inlineCode into the HEAD section of your server view
-
 @NgModule({
 	bootstrap: [AppComponent],
 	imports: [
 		ModuleMapLoaderModule, // <-- *Important* to have lazy-loaded routes work
 		NoopAnimationsModule,
 		AppModule,
-
 		ServerModule,
 		PrebootModule.withConfig(environment.preboot),
-
 		ServerTransferStateModule // <-- broken for the time-being with ASP.NET
 		// HttpTransferCacheModule still needs fixes for 5.0
 		//   Leave this commented out for now, as it breaks Server-renders

@@ -6,8 +6,20 @@
 	</div>
 	<div class="landing-search--desc">
 		<div class="container">
-			<div class="desc" [innerHTML]="page.description"></div>
+			<div class="readmore-wrap desc" [ngClass]="{active: readmore}">
+				<div class="readmore-accordion">
+					<div [innerHTML]="page.description"></div>
+				</div>
+				<div class="readmore-button">
+					<button (click)="readmore = !readmore">
+						<span *ngIf="!readmore">Leggi di più</span>
+						<span *ngIf="readmore">Leggi di meno</span>
+					</button>
+				</div>
+			</div>
+
 		</div>
 	</div>
 </div>
-<serp-component></serp-component>
+<serp-component [useBreadcrumbs]="true"></serp-component>
+<section-value-proposition></section-value-proposition>

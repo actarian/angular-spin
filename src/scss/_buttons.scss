@@ -17,6 +17,14 @@ Buttons
 	transition: background .2s ease-in-out;
 	outline: 0;
 
+	@include xxs-down {
+		padding: 12px 20px;
+	}
+
+	@include xxxs-down {
+		padding: 10px 15px;
+	}
+
 	&:hover {
 		background: darken($primary-color, 5%);
 		color: #fff;
@@ -47,7 +55,6 @@ Buttons
 	}
 }
 
-
 .btn--tertiary {
 	background-color: $tertiary-color;
 
@@ -75,4 +82,85 @@ Buttons
 	text-transform: none;
 	font-size: inherit;
 	font-weight: normal;
+}
+
+.btn--small {
+	padding: 6px 12px;
+	font-size: 13px;
+}
+
+.btn--operator {
+	svg {
+		width: 14px;
+		height: 14px;
+		margin-left: 3px;
+		transform: translateX(4px) translateY(2px);
+	}
+}
+
+@mixin center {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+@mixin ball {
+	@include center;
+	content: '';
+	display: block;
+	width: 4px;
+	height: 4px;
+	border-radius: 50%;
+	background: #fff;
+	z-index: 2;
+	margin-top: 4px;
+	animation: ball .45s cubic-bezier(0, 0, 0.15, 1) alternate infinite;
+}
+
+.btn--busy {
+	position: relative;
+	user-select: none;
+	pointer-events: none;
+	transition: none;
+
+	&,
+	&:hover,
+	&:focus,
+	&:active,
+	&.active {
+		color: rgba(0, 0, 0, 0);
+	}
+
+	&:before {
+		@include ball;
+		animation-delay: .15s;
+	}
+
+	&>span {
+		&::before {
+			@include ball;
+			margin-left: -10px;
+		}
+
+		&::after {
+			@include ball;
+			margin-left: 10px;
+			animation-delay: .3s;
+		}
+	}
+
+}
+
+/*--------------------
+Keyframe
+--------------------*/
+@keyframes ball {
+	from {
+		transform: translateY(0) scaleY(.8);
+	}
+
+	to {
+		transform: translateY(-10px);
+	}
 }

@@ -12,7 +12,6 @@ import { RouteService } from '../../routes';
 import { LocalStorageService, StorageService } from '../../storage';
 
 export class GoogleConfig {
-	public apiKey: string;
 	public clientId: string;
 	public cookiepolicy?: string = 'single_host_origin';
 	public scope?: string = 'profile email';

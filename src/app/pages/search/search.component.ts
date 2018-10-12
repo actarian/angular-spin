@@ -21,13 +21,13 @@ export class SearchComponent extends PageComponent {
 			takeUntil(this.unsubscribe),
 			first()
 		).subscribe(params => {
-			console.log('SerpComponent.queryParams', params);
+			console.log('SearchComponent.queryParams', params);
 			this.search.setParams(params);
 			this.search.doSearch();
 			this.search.connect().pipe(
 				takeUntil(this.unsubscribe),
 			).subscribe(results => {
-				// console.log('SerpComponent.results', results);
+				// console.log('SearchComponent.results', results);
 			});
 		});
 	}

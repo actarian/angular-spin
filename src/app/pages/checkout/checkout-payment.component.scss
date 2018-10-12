@@ -1,0 +1,59 @@
+@import "~scss/variables";
+
+.card-security {
+	margin: 8px;
+	max-width: 160px;
+}
+
+.form-checkout {
+	padding-top: 10px;
+
+	span {
+		display: block;
+		padding-bottom: 5px;
+
+		img {
+			float: right;
+
+			@include xs-down {
+				height: 20px;
+				width: auto;
+			}
+		}
+	}
+}
+
+.form-group.secret-code {
+	display: flex;
+	flex-wrap: wrap;
+
+	label {
+		flex: 0 0 100%;
+	}
+
+	input {
+		flex: 1 1 auto;
+		width: auto;
+		max-width: none;
+		margin-right: 10px;
+
+		@include xxs-down {
+			margin-right: 0;
+		}
+	}
+
+	.btn {
+		flex: 1 1 auto;
+		min-width: 0;
+		max-width: 120px;
+		width: auto;
+		padding: 4px 10px;
+
+		@include xxs-down {
+			flex: 1 1 100%;
+			max-width: none;
+			width: 100%;
+			margin: 10px 0 0 0;
+		}
+	}
+}

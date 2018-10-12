@@ -1,0 +1,118 @@
+@import "~scss/variables";
+
+/*--------------------------------------------------
+Leaflet
+--------------------------------------------------*/
+.leaflet {
+	border-top: 1px solid #e0e0e0;
+	padding: 20px 0 35px;
+
+	.container {
+		padding: 0 30px 0 15px;
+	}
+
+	.h1 {
+		color: $tit-color;
+		font-size: 40px;
+		line-height: 1.2;
+		font-weight: 300;
+
+		@include xs-down {
+			font-size: 28px;
+			font-weight: normal;
+		}
+	}
+
+	&__box {
+		display: flex;
+		flex-wrap: wrap;
+		margin: 60px 0 100px;
+
+		@include xs-down {
+			margin-bottom: 60px;
+		}
+
+		h2 {
+			flex: 1 0 100%;
+			margin-bottom: 20px;
+			font-size: 24px;
+		}
+	}
+
+	&__img {
+		flex: 0 0 calc(50% - 40px);
+		margin-right: 40px;
+		padding-right: 40px;
+		padding: 40px 20px;
+		text-align: center;
+		background: rgba($border-color, .5);
+
+		@include md-down {
+			margin-right: 20px;
+		}
+
+		@include xs-down {
+			flex: 0 0 100%;
+			margin-bottom: 20px;
+		}
+
+		img {
+			max-width: 100%;
+			box-shadow: 0 20px 40px -10px rgba(0, 0, 0, .14);
+		}
+	}
+
+	&__content {
+		flex: 0 0 50%;
+		padding-top: 20px;
+		padding-left: 20px;
+		font-size: 16px;
+
+		@include xs-down {
+			flex: 0 0 100%;
+		}
+
+		h3 {
+			font-size: 21px;
+			margin-bottom: 10px;
+		}
+
+		ul {
+			margin: 20px 0;
+			padding: 0;
+			list-style: none;
+
+			li {
+				position: relative;
+				z-index: 1;
+				margin: 0 0 4px 0;
+				padding: 0 0 0 30px;
+
+				&:before {
+					content: '';
+					width: 4px;
+					height: 4px;
+					background: $text-color;
+					border-radius: 4px;
+					position: absolute;
+					z-index: 1;
+					top: 10px;
+					left: 10px;
+				}
+			}
+		}
+
+		.cta {
+			margin: 20px 0;
+
+			a {
+				margin-right: 10px;
+				margin-bottom: 10px;
+			}
+		}
+
+		.support {
+			font-size: 12px;
+		}
+	}
+}

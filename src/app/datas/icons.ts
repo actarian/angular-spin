@@ -69,7 +69,7 @@ export const icon = [{
 	icon: '104_8_ico-bimbigratis.png',
 	id: 8,
 	name: 'Bimbo gratis',
-	slug: 'viaggi_bimbo_gratis'
+	slug: 'destinazioni/bimbo-gratis'
 }, {
 	abstract: '',
 	category: 1,
@@ -78,7 +78,7 @@ export const icon = [{
 	icon: '104_9_ico-amici4zampe.png',
 	id: 9,
 	name: 'Amici 4 zampe',
-	slug: 'viaggi_amici_4_zampe'
+	slug: 'destinazioni/amici-4-zampe'
 }, {
 	abstract: '',
 	category: 1,
@@ -87,5 +87,5 @@ export const icon = [{
 	icon: '104_56_ico-last-minute.png',
 	id: 56,
 	name: 'Last minute',
-	slug: 'viaggi_last_minute'
+	slug: 'destinazioni/last-minute'
 }];

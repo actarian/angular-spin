@@ -1,17 +1,15 @@
 <div class="card-cover">
-	<img [src]="(page.images | image : 'Share') || '/img/card/card.jpg'" />
+	<img [src]="(page.images | image :'Share') || '/img/card/card.jpg'" />
 </div>
 <div class="card-menu clearfix">
 	<ul class="clearfix">
-		<li><a href="#cosa" title="Che cos'è'">Che cos'è</a></li>
-		<li><a href="#come" title="Come utilizzarla">Come utilizzarla</a></li>
-		<li><a href="#verifica" title="Verifica la scadenza">Verifica la data di scadenza</a></li>
-		<li><a href="/img/card/termini_condizioni_carta_regalo_eurospin_viaggi.pdf" title="Termini e condizioni" target="_blank">Termini e condizioni</a></li>
+		<li><a title="Che cos'è" (click)="scrollToElementRef(refWhat)">Che cos'è</a></li>
+		<li><a title="Come utilizzarla" (click)="scrollToElementRef(refHow)">Come utilizzarla</a></li>
+		<li><a title="Verifica la scadenza" (click)="scrollToElementRef(refVerify)">Verifica la data di scadenza</a></li>
+		<li><a title="Termini e condizioni" href="/assets/img/card/termini_condizioni_carta_regalo_eurospin_viaggi.pdf" target="_blank">Termini e condizioni</a></li>
 	</ul>
 </div>
-
 <div class="tmpl-card generic-component">
-
 	<section id="page">
 		<div class="container">
 			<div class="col-sm-10 block-center">
@@ -21,14 +19,11 @@
 			</div>
 		</div>
 	</section>
-
 	<section class="card-cosa inner-bottom">
 		<div class="container">
 			<div class="col-sm-10 block-center">
-				<h3 class="h3" id="cosa">Che cos'è</h3>
-				<p>
-					La Carta Regalo Eurospin Viaggi è una card acquistabile <strong>presso i punti vendita Eurospin</strong> aderenti all’iniziativa. E’ adatta ad ogni occasione, <strong>per un regalo speciale</strong> e per qualsiasi budget. La Carta Regalo Eurospin Viaggi è disponibile in 3 tipologie (25, 50 e 100 euro) e consente di acquistare <strong>qualsiasi pacchetto turistico</strong>, tra le numerose offerte di viaggio presenti sul nostro sito <a href="http://www.eurospin-viaggi.it">www.eurospin-viaggi.it.</a>
-				</p>
+				<h3 class="h3" #refWhat>Che cos'è</h3>
+				<p>La Carta Regalo Eurospin Viaggi è una card acquistabile <strong>presso i punti vendita Eurospin</strong> aderenti all’iniziativa. E’ adatta ad ogni occasione, <strong>per un regalo speciale</strong> e per qualsiasi budget. La Carta Regalo Eurospin Viaggi è disponibile in 3 tipologie (25, 50 e 100 euro) e consente di acquistare <strong>qualsiasi pacchetto turistico</strong>, tra le numerose offerte di viaggio presenti sul nostro sito <a href="http://www.eurospin-viaggi.it">www.eurospin-viaggi.it.</a></p>
 				<div class="row card-list">
 					<div class="col-sm-4">
 						<img src="/assets/img/card/card-25.jpg" />
@@ -43,11 +38,10 @@
 			</div>
 		</div>
 	</section>
-
 	<section class="card-come inner-bottom">
 		<div class="container">
 			<div class="col-sm-10 block-center">
-				<h3 class="h3" id="come">Come utilizzarla</h3>
+				<h3 class="h3" #refHow>Come utilizzarla</h3>
 				<p>Utilizzare la Carta Regalo Eurospin Viaggi è semplicissimo:</p>
 				<ul>
 					<li>
@@ -62,7 +56,6 @@
 				<p>La Carta Regalo verrà automaticamente annullata all’atto della prenotazione del viaggio e il suo valore sarà scalato dall'importo totale.</p>
 			</div>
 		</div>
-
 		<!-- SWIPER -->
 		<div class="swiper-container feature-card" [swiper]>
 			<div class="swiper-wrapper" [fancybox]="fancyboxOptions">
@@ -80,34 +73,38 @@
 			<div class="swiper-button swiper-button-next"></div>
 			<div class="swiper-pagination"></div>
 		</div>
-
-
 	</section>
 	<section class="card-verifica inner-bottom">
 		<div class="container">
 			<div class="col-sm-10 block-center">
-				<h3 class="h3" id="verifica">Verifica la data di scadenza</h3>
-				<p>
-					La Carta Regalo Eurospin Viaggi è valida solo dopo l’attivazione in cassa e ha una <strong>validità di 12 mesi</strong> (365 giorni) dalla data di attivazione indicata sullo scontrino.<br /><br /> Per consultare la data di scadenza della Carta Regalo, inserisci i codici della Carta.
-				</p>
-				<form id="scadenzaForm" class="form" ng-controller="GiftCard">
+				<h3 class="h3" #refVerify>Verifica la data di scadenza</h3>
+				<p>La Carta Regalo Eurospin Viaggi è valida solo dopo l’attivazione in cassa e ha una <strong>validità di 12 mesi</strong> (365 giorni) dalla data di attivazione indicata sullo scontrino.<br /><br /> Per consultare la data di scadenza della Carta Regalo, inserisci i codici della Carta.</p>
+				<form id="scadenzaForm" class="form" [ngClass]="{ submitted: giftCard.submitted }" name="giftCard" role="form" novalidate autocomplete="off" (ngSubmit)="giftCard.valid && onGiftCardCheck()" #giftCard="ngForm">
 					<fieldset>
 						<div class="row">
 							<div class="col-sm-4">
-								<label for="nome">Codice utilizzo (7 cifre) <em>*</em></label>
-								<input type="text" class="form-control" id="code1" name="code1" ng-model="data.code1" maxlength="7" required>
+								<label>Codice utilizzo (7 cifre)</label>
+								<input placeholder="Codice utilizzo" type="text" class="form-control" required pattern="[0-9]{7}" [(ngModel)]="model.code" name="code" #code="ngModel" autocomplete="code">
+								<div *ngIf="code.invalid && (giftCard.submitted || code.dirty || code.touched)" class="alert alert-danger">
+									<div *ngIf="code.errors.required">{{ 'errors.required' | translate }}</div>
+									<div *ngIf="code.errors.pattern">inserire un codice numerico a 7 cifre</div>
+								</div>
 							</div>
 							<div class="col-sm-4">
-								<label for="cognome">Codice segreto (4 cifre) <em>*</em></label>
-								<input type="text" class="form-control" id="code2" name="code2" ng-model="data.code2" maxlength="4" required>
+								<label>Codice segreto (4 cifre)</label>
+								<input placeholder="Codice segreto" type="password" class="form-control" required pattern="[0-9]{4}" [(ngModel)]="model.secret" name="secret" #secret="ngModel" autocomplete="secret">
+								<div *ngIf="secret.invalid && (giftCard.submitted || secret.dirty || secret.touched)" class="alert alert-danger">
+									<div *ngIf="secret.errors.required">{{ 'errors.required' | translate }}</div>
+									<div *ngIf="secret.errors.pattern">inserire un codice numerico a 4 cifre</div>
+								</div>
 							</div>
 							<div class="col-sm-4">
-								<button class="btn main-btn" type="submit" ng-click="check()" ng-disabled="busy">
-                                    Verifica
-                                </button>
+								<button class="btn main-btn" type="submit" [ngClass]="{ 'btn--busy': busy }">
+									<span>Verifica</span>
+								</button>
 							</div>
 						</div>
-						<div class="row table-regalo" *ngIf="success">
+						<div class="row table-regalo" *ngIf="card">
 							<div class="col-sm-12">
 								<div class="wrap-table-regalo">
 									<table style="width:100%">
@@ -119,33 +116,28 @@
 										</tr>
 										<tr>
 											<td>{{card?.credits}}<sup>€</sup></td>
-											<td ng-bind="card?.Activation | date:'dd/MM/yyyy'"></td>
-											<td ng-bind="card?.Expire | date:'dd/MM/yyyy'"></td>
-											<td ng-bind="getState(card?.State)"></td>
+											<td [innerHtml]="card.activation | date:'dd/MM/yyyy'"></td>
+											<td [innerHtml]="card.expire | date:'dd/MM/yyyy'"></td>
+											<td [innerHtml]="card.stateShort"></td>
 										</tr>
 									</table>
 								</div>
 							</div>
 						</div>
-
-						<div class="alert alert-danger" *ngIf="error">
-							<span *ngIf="error.status == 404">@Localize.GetLabelHtml("lbl_gift_card_non_valida")</span>
-							<span *ngIf="error.status == 400 || error.status > 410" ng-bind-html="trustHtml(error.Message)"></span>
+						<div class="form-group form-group-errors">
+							<div class="alert alert-danger" *ngIf="card && card.state != cardState.Active">
+								<span [innerHtml]="card.stateLong"></span>
+							</div>
+							<div class="alert alert-danger" *ngIf="cardError">
+								<span *ngIf="cardError.status == 404">codice non valido</span>
+								<span *ngIf="cardError.status == 410">La carta è scaduta</span>
+								<span *ngIf="cardError.status != 404 && cardError.status != 410" [innerHtml]="cardError.statusText"></span>
+							</div>
 						</div>
-
-						<div class="alert alert-danger" *ngIf="success && card?.State != 0">
-							<span *ngIf="card?.State == 1 || card?.State == 4">@Localize.GetLabelHtml("lbl_gift_card_non_attiva")</span>
-							<span *ngIf="card?.State == 2">@Localize.GetLabelHtml("lbl_gift_card_gia_utilizzata")</span>
-							<span *ngIf="card?.State == 3">@Localize.GetLabelHtml("lbl_gift_card_scaduta")</span>
-							<span *ngIf="card?.State == 5">@Localize.GetLabelHtml("lbl_gift_card_non_valida")</span>
-						</div>
-
 					</fieldset>
-
 				</form>
-
 			</div>
 		</div>
 	</section>
-
 </div>
+<section-value-proposition></section-value-proposition>

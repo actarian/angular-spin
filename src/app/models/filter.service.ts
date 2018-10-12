@@ -3,9 +3,10 @@ import { Params } from '@angular/router';
 import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { first, map } from 'rxjs/operators';
-import { RouteService } from '../core/routes';
+import { Option } from '../core';
 import { DestinationTypes } from './destination';
 import { Group, GroupSelectionType, GroupType, ratings, Sorting, sortings, treatments } from './filter';
+import { GtmService } from './gtm.service';
 import { Tag } from './tag';
 import { TagService } from './tag.service';
 
@@ -29,7 +30,7 @@ export class FilterService {
 
 	constructor(
 		private tagService: TagService,
-		private routeService: RouteService,
+		private gtm: GtmService,
 	) {
 		this.onReset();
 	}
@@ -87,7 +88,7 @@ export class FilterService {
 	}
 
 	private getGroups(): Observable<Group[]> {
-		return this.tagService.get().pipe(
+		return this.tagService.getTags().pipe(
 			map((tags: Tag[]) => {
 				const groups = [
 					new Group({
@@ -174,10 +175,35 @@ export class FilterService {
 		this.sortings$.next(this.sorting);
 	}
 
+	// gtm.search('Filter', 'Categoria', newValue.filter.Rating);
+	// gtm.search('Filter', 'Trattamento', newValue.filter.Accomodation);
+	// gtm.search('Filter', 'Tipologia', tag.Name);
+	// gtm.search('Filter', 'Destinazione', tag.Name);
+	// gtm.search('Filter', 'Servizio', tag.Name);
 	onToggle(id: number | string, groupType: GroupType) {
 		const groups = this.groups$.getValue();
 		const group = groups.find(group => group.type === groupType);
 		if (group) {
+			const item: Option = group.items.find(item => item.id === id);
+			if (item) {
+				switch (groupType) {
+					case GroupType.Destination:
+						this.gtm.onSearch('Filter', 'Destinazione', item.name);
+						break;
+					case GroupType.Rating:
+						this.gtm.onSearch('Filter', 'Categoria', item.name);
+						break;
+					case GroupType.Service:
+						this.gtm.onSearch('Filter', 'Servizio', item.name);
+						break;
+					case GroupType.Tipology:
+						this.gtm.onSearch('Filter', 'Tipologia', item.name);
+						break;
+					case GroupType.Treatment:
+						this.gtm.onSearch('Filter', 'Trattamento', item.name);
+						break;
+				}
+			}
 			if (group.type === groupType) {
 				if (group.selectionType === GroupSelectionType.Or) {
 					group.items.forEach(item => {
@@ -214,7 +240,8 @@ export class FilterService {
 	}
 
 	setGroups(): void {
-		this.groups$.next(this.groups$.getValue());
+		const groups = this.groups$.getValue();
+		this.groups$.next(groups);
 	}
 
 }

@@ -74,3 +74,16 @@ Home Search
 		}
 	}
 }
+
+/*--------------------------------------------------
+Value Proposition
+--------------------------------------------------*/
+.home-value-proposition {
+	margin-top: -60px;
+	margin-bottom: 60px;
+
+	@include sm-down {
+		margin-top: -30px;
+		margin-bottom: 30px;
+	}
+}

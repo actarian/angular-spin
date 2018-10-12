@@ -2,27 +2,36 @@
 	<div class="container">
 		<div class="footer-newsletter">
 			<h3>Non perderti più nessuna offerta!</h3>
-			<form action="" class="form">
-				<input type="email" placeholder="Iscriviti alla newsletter">
-				<button type="submit" class="btn">Invia</button>
+			<form class="form" [ngClass]="{ submitted: newsletter.submitted }" name="newsletter" role="form" novalidate autocomplete="off" (ngSubmit)="newsletter.valid && onNewsletter()" #newsletter="ngForm">
+				<input placeholder="Iscriviti alla newsletter" type="email" required [(ngModel)]="model.email" name="email" #email="ngModel" autocomplete="email" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}">
+				<div *ngIf="email.invalid && (newsletter.submitted || email.dirty || email.touched)" class="alert alert-danger">
+					<div *ngIf="email.errors.required">{{ 'errors.required' | translate }}</div>
+					<div *ngIf="email.errors.pattern">{{ 'errors.email' | translate }}</div>
+				</div>
+				<button type="button" [routerLink]="['/newsletter', model.email]" class="btn" [ngClass]="{ 'btn--busy': busy }">
+					<span>Invia</span>
+				</button>
 			</form>
 		</div>
 		<div class="footer-seguici">
 			<h3>Seguici su Facebook</h3>
 			<div>
-				<a href="" class="btn-seguici">
+				<a class="btn-seguici" href="https://www.facebook.com/EurospinViaggi" target="_blank">
 					<svg class="ico">
 						<use xlink:href="#ico-facebook-square"></use>
 					</svg>
 					<span>Mi piace</span>
 				</a>
+				<!--
+				<div class="fb-like" data-href="https://www.eurospin-viaggi.it/" data-width="80" data-layout="button" data-action="like" data-size="large" data-show-faces="false" data-share="false"></div>
+				-->
 			</div>
 		</div>
 		<div class="footer-volantini">
 			<h3>Volantini online</h3>
 			<div>
 				Non perderderti le nostre offerte
-				<a href="#" class="btn">Sfoglia i volantini</a>
+				<a [routerLink]="'leaflets' | slugAsync" class="btn">Sfoglia i volantini</a>
 			</div>
 		</div>
 		<div class="footer-disclaimer">
@@ -34,57 +43,34 @@
 		<div class="footer-condizioni">
 			<h3>Condizioni</h3>
 			<ul class="footer-links">
-				<li>
-					<a [routerLink]="'privacy' | slugAsync">Privacy Policy</a>
-				</li>
-				<li>
-					<a [routerLink]="'cookie-policy' | slugAsync">Gestione Cookies</a>
-				</li>
-				<li>
-					<a [routerLink]="'how-it-works' | slugAsync">Come funziona</a>
-				</li>
-				<li>
-					<a [routerLink]="'terms' | slugAsync">Termini e condizioni vendita</a>
-				</li>
-				<li>
-					<a [routerLink]="'faq' | slugAsync">Informazioni utili</a>
-				</li>
-				<li>
-					<a [routerLink]="'gift-card' | slugAsync">Carta regalo</a>
-				</li>
+				<li><a [routerLink]="'privacy' | slugAsync">Privacy Policy</a></li>
+				<li><a [routerLink]="'cookie-policy' | slugAsync">Gestione Cookies</a></li>
+				<li><a [routerLink]="'how-it-works' | slugAsync">Come funziona</a></li>
+				<li><a [routerLink]="'terms' | slugAsync">Termini e condizioni vendita</a></li>
+				<li><a [routerLink]="'faq' | slugAsync">Informazioni utili</a></li>
+				<li><a [routerLink]="'gift-card' | slugAsync">Carta regalo</a></li>
 			</ul>
 		</div>
 		<div class="footer-servizi">
 			<h3>Servizi</h3>
 			<ul class="footer-links">
-				<li>
-					<a [routerLink]="'contacts' | slugAsync">Contatti</a>
-				</li>
-				<li>
-					<a href="#">Sfoglia volantini</a>
-				</li>
-				<li>
-					<a href="#">Iscriviti alla newsletter</a>
-				</li>
-				<li>
-					<a href="#">Area strutture</a>
-				</li>
-				<li>
-					<a href="#">Scarica App</a>
-				</li>
+				<li><a [routerLink]="'contacts' | slugAsync">Contatti</a></li>
+				<li><a [routerLink]="'leaflets' | slugAsync">Sfoglia volantini</a></li>
+				<li><a [routerLink]="'newsletter' | slugAsync">Iscriviti alla newsletter</a></li>
+				<li><a [routerLink]="'structure' | slugAsync">Area strutture</a></li>
+				<li><a href="https://itunes.apple.com/it/app/eurospin-viaggi/id652013984" target="_blank">Scarica App iOS</a></li>
+				<li><a href="https://play.google.com/store/apps/details?id=it.eurospin.EurospinViaggi" target="_blank">Scarica App Android</a></li>
 			</ul>
 		</div>
 		<div class="footer-copy">
 			{{ 'footer.copy' | translate }}
 		</div>
-		<div class="footer-pagamenti">
+		<div class="footer-pagamenti" lazy-images>
 			<h3>Accettiamo questi pagamenti</h3>
-			<div>
-				<img src="assets/img/carte-pagamenti.png" alt="pagamenti">
-			</div>
+			<div><img [attr.data-src]="'assets/img/carte-pagamenti.png'" alt="pagamenti"></div>
 		</div>
 		<div class="footer-credits">
-			<a title="Digital Marketing" target="_blank" href="https://www.websolute.com"><img src="assets/img/webagency.png" alt="Digital Marketing"> Websolute</a>
+			<a title="Digital Marketing" href="https://www.websolute.com" target="_blank" rel="noopener"><img src="assets/img/webagency.png" alt="Digital Marketing"> Websolute</a>
 		</div>
 	</div>
 </footer>

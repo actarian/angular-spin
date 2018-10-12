@@ -88,7 +88,7 @@ export class DestinationHintComponent extends DisposableComponent implements OnI
 
 	@HostListener('document:keyup', ['$event'])
 	onKeyup(e: KeyboardEvent) {
-		// console.log('DestinationHintComponent.document:keyup', e);
+		// console.log('DestinationHintComponent.document:keyup', e.key);
 		switch (e.key) {
 			case 'ArrowUp':
 				this.active = this.active === -1 ? this.visibleItems : this.active;
@@ -98,9 +98,11 @@ export class DestinationHintComponent extends DisposableComponent implements OnI
 				this.active++;
 				break;
 			case 'Enter':
-				if (this.destinations && this.active !== undefined) {
+				if (this.active > 0 && this.destinations && this.destinations.length > this.active) {
 					this.onClick(this.destinations[this.active]);
 				}
+				// console.log('destinations', this.destinations, this.active);
+				break;
 		}
 		this.active = this.active % this.visibleItems;
 		this.setVisibleItems(this.active);

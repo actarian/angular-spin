@@ -15,6 +15,41 @@ Order Detail
 	}
 }
 
+.status {
+	color: #fff;
+	font-weight: 600;
+	font-size: 12px;
+	padding: 5px 12px;
+	background: #72b244;
+	text-transform: uppercase;
+	vertical-align: middle;
+}
+
+// STATUS
+
+// Preventivo, Opzionato, In Richiesta
+.status-1,
+.status-2,
+.status-3 {
+	background-color: $primary-color;
+}
+
+// In lavorazione
+.status-4 {
+	background-color: #72b244;
+}
+
+// Confermato
+.status-5 {
+	background-color: #72b244;
+}
+
+// Annullato, Cancellato
+.status-6,
+.status-7 {
+	background-color: #f84717;
+}
+
 .order-detail {
 	&__head {
 		display: flex;

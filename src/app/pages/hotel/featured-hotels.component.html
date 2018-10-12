@@ -1,0 +1,16 @@
+<section class="featured-hotels-views" *ngIf="items && items.length">
+	<div class="container">
+		<div class="head">
+			<h2>Ti potrebbero interessare anche</h2>
+		</div>
+		<div class="card-row" lazy-images>
+			<ng-container *ngFor="let item of items; let i = index;">
+				<ng-container *ngIf="i < visibleItems">
+					<div class="card-col">
+						<featured-hotels-item [item]="item" [index]="i"></featured-hotels-item>
+					</div>
+				</ng-container>
+			</ng-container>
+		</div>
+	</div>
+</section>

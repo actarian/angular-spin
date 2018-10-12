@@ -1,4 +1,5 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { EventEmitter, Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Modal, ModalCloseEvent, ModalCompleteEvent } from './modal';
@@ -10,6 +11,10 @@ export class ModalService {
 
 	modals$ = new BehaviorSubject<Modal[]>([]);
 
+	constructor(
+		@Inject(PLATFORM_ID) private platformId: string
+	) { }
+
 	getInfos(): Observable<Modal> {
 		return this.modals$.pipe(
 			map((modals: Modal[]) => {
@@ -18,7 +23,22 @@ export class ModalService {
 		);
 	}
 
+	addClass(name: string): void {
+		if (isPlatformBrowser(this.platformId)) {
+			const body = document.querySelector('body') as HTMLElement;
+			body.classList.add(name);
+		}
+	}
+
+	removeClass(name: string): void {
+		if (isPlatformBrowser(this.platformId)) {
+			const body = document.querySelector('body') as HTMLElement;
+			body.classList.remove(name);
+		}
+	}
+
 	open(modal: Modal): EventEmitter<ModalCompleteEvent | ModalCloseEvent> {
+		this.addClass('modal-active');
 		modal = new Modal(modal);
 		const modals = this.modals$.getValue();
 		modals.push(modal);
@@ -52,6 +72,9 @@ export class ModalService {
 		const modals = this.modals$.getValue();
 		if (modals.length) {
 			const modal = modals.pop();
+			if (!modals.length) {
+				this.removeClass('modal-active');
+			}
 			this.modals$.next(modals);
 			return modal;
 		} else {
@@ -63,6 +86,9 @@ export class ModalService {
 		const modals = this.modals$.getValue();
 		if (modals.length && modals[modals.length - 1] === modal) {
 			modals.pop();
+			if (!modals.length) {
+				this.removeClass('modal-active');
+			}
 			this.modals$.next(modals);
 			return modal;
 		} else {
@@ -74,6 +100,7 @@ export class ModalService {
 		const modals = this.modals$.getValue();
 		if (modals.length) {
 			const modal = modals.pop();
+			this.removeClass('modal-active');
 			this.modals$.next([]);
 			return modal;
 		} else {

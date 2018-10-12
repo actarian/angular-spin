@@ -1,8 +1,8 @@
 
 // import { animate, state, style, transition, trigger } from '@angular/animations';
-import { AfterViewInit, Component, Input, ViewEncapsulation } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 // import { ChangeDetectorRef } from '@angular/core';
-import { SearchResult, WishlistService } from '../../models';
+import { GtmService, SearchResult, WishlistService } from '../../models';
 
 @Component({
 	selector: 'serp-item',
@@ -10,37 +10,28 @@ import { SearchResult, WishlistService } from '../../models';
 	styleUrls: ['./serp-item.component.scss'],
 	encapsulation: ViewEncapsulation.Emulated,
 	exportAs: 'results',
-	/*
-	animations: [
-		trigger('animationState', [
-			state('outside', style({
-				opacity: 0, transform: 'translateY(0)'
-			})),
-			state('inside', style({
-				opacity: 1, transform: 'translateY(-100%)'
-			})),
-			transition('void => inside', animate('250ms ease-in-out')),
-			transition('inside => void', animate('250ms ease-in-out')),
-		])
-	]
-	*/
 })
 
-export class SerpItemComponent implements AfterViewInit {
+export class SerpItemComponent {
 
-	@Input()
-	state: string;
-
-	@Input()
-	item: SearchResult;
+	@Input() item: SearchResult;
+	@Input() index?: number = 0;
+	@Input() state?: string;
 
 	constructor(
-		public wishlist: WishlistService
-		// private changeDetector: ChangeDetectorRef
+		// private dispatcher: EventDispatcherService,
+		public wishlist: WishlistService,
+		private gtm: GtmService,
 	) { }
 
-	ngAfterViewInit() {
-		// this.changeDetector.detectChanges();
+	onBeforeNav() {
+		this.gtm.onProductClick('Search Result', this.item, this.index);
+		/*
+		this.dispatcher.emit({
+			type: 'onProductClick',
+			data: { type: 'Search Result', result: this.item, index: this.index, }
+		});
+		*/
 	}
 
 }

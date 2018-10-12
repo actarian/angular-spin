@@ -1,6 +1,8 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { first, takeUntil } from 'rxjs/operators';
-import { PageComponent, PageInit, RouteService } from '../../core';
+import { Router } from '@angular/router';
+import { first, takeUntil, tap } from 'rxjs/operators';
+import { DisposableComponent, PageService } from '../../core';
+import { UserService } from '../../models';
 
 @Component({
 	selector: 'reserved-area-component',
@@ -9,22 +11,27 @@ import { PageComponent, PageInit, RouteService } from '../../core';
 	encapsulation: ViewEncapsulation.Emulated,
 })
 
-export class ReservedAreaComponent extends PageComponent implements PageInit {
+export class ReservedAreaComponent extends DisposableComponent {
 
 	constructor(
-		protected routeService: RouteService
+		private router: Router,
+		private userService: UserService,
+		private pageService: PageService,
 	) {
-		super(routeService);
+		super();
+		this.pageService.getPageBySlug('/area_riservata').pipe(
+			first()
+		).subscribe(page => {
+			console.log('ReservedAreaComponent', page);
+			this.pageService.addOrUpdateMetaData(page);
+		});
 	}
 
-	PageInit(): void {
-		console.log('ReservedAreaComponent.PageInit', this.page);
-		this.routeService.getPageParams().pipe(
+	SignOut(): void {
+		this.userService.signOut().pipe(
 			takeUntil(this.unsubscribe),
-			first()
-		).subscribe(params => {
-			console.log('ReservedAreaComponent.params', params);
-		});
+			tap(x => this.router.navigate(['/']))
+		).subscribe();
 	}
 
 }

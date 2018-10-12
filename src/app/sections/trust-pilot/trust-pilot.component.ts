@@ -10,7 +10,6 @@ import { TrustPilot } from '../../models';
 
 export class TrustPilotComponent {
 
-	@Input()
-	trustPilot: TrustPilot;
+	@Input() trustPilot: TrustPilot;
 
 }

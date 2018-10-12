@@ -1,0 +1,50 @@
+@import "~scss/variables";
+
+/*--------------------------------------------------
+Breadcrumb
+--------------------------------------------------*/
+.breadcrumb {
+	background: $tertiary-color;
+	padding-bottom: 8px;
+	width: 100%;
+	height: auto;
+	margin-top: -8px;
+
+	@include sm-down {
+		display: none;
+	}
+
+	ul {
+		margin: 0;
+		padding: 0 5px;
+		list-style: none;
+		display: flex;
+		flex-wrap: wrap;
+		font-size: 12px;
+
+		li {
+			margin: 0;
+			padding: 0 10px;
+			position: relative;
+			z-index: 1;
+			max-width: 25%;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			overflow: hidden;
+
+			&:not(:last-child) {
+				&:after {
+					content: '/';
+					color: rgba(255, 255, 255, .5);
+					position: absolute;
+					right: -2px;
+					top: 1px;
+				}
+			}
+
+			a {
+				color: rgba(255, 255, 255, .8);
+			}
+		}
+	}
+}

@@ -1,0 +1,87 @@
+@import "~scss/variables";
+
+
+.btn--login {
+	color: #fff;
+	display: inline-block;
+	vertical-align: middle;
+	font-size: 11px;
+	transform: translateY(-1px);
+	margin: 0 5px;
+}
+
+h3 {
+	line-height: 1.2;
+	margin-top: 0;
+	margin-bottom: 15px;
+	padding: 0;
+	color: $tit-color;
+	font-size: 22px;
+	font-weight: 300;
+
+	@include sm-down {
+		font-size: 18px;
+		font-weight: 600;
+	}
+
+	@include xs-down {
+		font-size: 16px;
+	}
+}
+
+.secret-code {
+	display: flex;
+	flex-wrap: wrap;
+
+	label {
+		flex: 0 0 100%;
+	}
+
+	input {
+		flex: 1 1 auto;
+		width: auto;
+		max-width: none;
+	}
+
+	.btn {
+		margin-left: 10px;
+		flex: 1 1 auto;
+		min-width: 0;
+		max-width: 120px;
+		width: auto;
+		align-self: flex-start;
+		height: 33px;
+		padding: 4px 10px;
+
+		@include xxs-down {
+			flex: 1 1 100%;
+			max-width: none;
+			width: 100%;
+			margin: 10px 0 0 0;
+		}
+	}
+}
+
+.codice-fiscale {
+	display: flex;
+	justify-content: space-between;
+
+	.form-group {
+		flex: 1 1 auto;
+	}
+
+	.btn {
+		margin-left: 10px;
+		flex: 0 1 auto;
+		min-width: 60px;
+		width: auto;
+		align-self: flex-start;
+		margin-top: 24px;
+		height: 33px;
+		padding: 4px 0;
+		font-weight: normal;
+		font-size: 13px;
+		color: $tertiary-color;
+		background: transparent !important;
+	}
+}

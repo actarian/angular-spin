@@ -1,34 +1,12 @@
-<!--
-<section class="promotions">
-	<div class="container">
-		<div class="head">
-			<h2>Le mete migliori per gli amanti dell'arte</h2>
-			<a href="#" class="btn btn--ghost">Visualizza tutte</a>
-		</div>
-		<div class="card-row">
-			<div class="card-col" *ngFor="let promotion of promotions" [routerLink]="['promotion', promotion.id] | route">
-				<a class="card" href="#">
-					<figure class="figure">
-						<img class="img" src="{{promotion.image}}" alt="{{promotion.name}}">
-					</figure>
-					<div class="body">
-						<h3 class="title">{{promotion.name}}</h3>
-					</div>
-				</a>
-			</div>
-		</div>
-	</div>
-</section>
--->
 <!-- Promotions -->
-<section class="promotions" lazy-images>
+<section class="promotions" *ngIf="item">
 	<div class="container">
 		<div class="head">
-			<h2>Le mete migliori per gli amanti dell'arte</h2>
-			<a href="#" class="btn btn--ghost">Visualizza tutte</a>
+			<h2 [innerHtml]="item.title"></h2>
+			<button type="button" class="btn btn--ghost" (click)="limit = 1000;" *ngIf="item.images?.length > limit">Visualizza tutte</button>
 		</div>
-		<div class="card-row">
-			<div class="card-col" *ngFor="let item of items$ | async | slice :0 :3">
+		<div class="card-row" lazy-images>
+			<div class="card-col" *ngFor="let item of items | slice :0 :limit">
 				<a class="card" [routerLink]="[item.slug] | route">
 					<figure class="figure">
 						<img class="img" [attr.data-src]="item.images | image :'Default' :'width=361&height=203&rmode=crop'" alt="{{item.title}}">

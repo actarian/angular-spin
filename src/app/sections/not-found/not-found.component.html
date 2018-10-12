@@ -1,1 +1,28 @@
-<h3>{{ 'app.notFound' | translate }}</h3>
+<div class="not-found-search">
+	<div class="container">
+		<main-search></main-search>
+	</div>
+</div>
+<section id="page">
+	<div class="container">
+		<div class="col-sm-10 block-center">
+			<div class="title">
+				<h1 class="h1">
+					Pagina non trovata
+				</h1>
+				<p>
+					Ci dispiace! Possiamo aiutarti a trovare quello che stavi cercando?
+				</p>
+
+				<ul>
+					<li>
+						<a [routerLink]="'homepage' | slugAsync">Vai alla Homepage</a>
+					</li>
+					<li>
+						<a [routerLink]="'contacts' | slugAsync">Contatti</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</section>

@@ -8,15 +8,17 @@ $tit-color: #062638;
 $tertiary-color: #1677c0;
 $light-color: #fafafa;
 $border-color: #e0e0e0;
+$border-required-color: mix($tertiary-color, darken($border-color, 8%), 20%);
 $alert-color: #c00;
 $star-color: #fcb851;
 $day-available-color: #e0e0e0;
+$highlight-bg: #fffedd;
 
-$rate-excellent: #72b244;
-$rate-good: #72b244;
-$rate-average: #fab424;
-$rate-poor: #f84717;
-$rate-bad: #f84717;
+$rate-excellent: #00b67a;
+$rate-good: #73cf11;
+$rate-average: #ffce00;
+$rate-poor: #ff8622;
+$rate-bad: #ff3722;
 
 //--------------------------------------------------
 // Media Query
@@ -26,6 +28,7 @@ $md-width: 1199px;
 $sm-width: 991px;
 $xs-width: 767px;
 $xxs-width: 575px;
+$xxxs-width: 374px;
 
 @mixin lg-down {
 	@media (max-width: #{$lg-width}) {
@@ -56,6 +59,13 @@ $xxs-width: 575px;
 		@content;
 	}
 }
+
+@mixin xxxs-down {
+	@media (max-width: #{$xxxs-width}) {
+		@content;
+	}
+}
+
 
 @mixin lg-up {
 	@media (min-width: #{$lg-width + 1}) {

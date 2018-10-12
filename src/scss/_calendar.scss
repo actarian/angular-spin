@@ -57,15 +57,14 @@ Calendar
 				&.available {
 					&:before {
 						border: 2px solid rgba(#94b439, .7);
-						;
 						background: #f4f7eb;
 					}
 				}
 
 				&.hurry-up {
 					&:before {
-						border: 2px solid rgba(#f7d436, .7);
-						background: #fefbee;
+						border: 2px solid rgba(#f86c55, .7);
+						background: #fff2f0;
 					}
 				}
 

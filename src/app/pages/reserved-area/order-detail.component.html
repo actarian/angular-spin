@@ -1,99 +1,92 @@
-<h1 class="h1 title">Dettaglio pratica 17/014465</h1>
-
-<div class="order-detail">
-	<div class="order-detail__head">
-		<div class="image">
-			<img class="image-thumb ready" alt="RESIDENCE L'ANCORA" src="https://eurospin-viaggi2.wslabs.it/media/immagini/25839_n_Ancora_Lu%20Bagnu_terrazzo_M.jpg?width=60&amp;height=60&amp;rmode=crop">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		</div>
-		<div class="content">
-			<div class="head">
-				<div class="info">
-					<div class="name"><a href="/residence_lancora"><span>RESIDENCE L'ANCORA</span><span class="stars"><em>*</em><em>*</em><em>*</em></span></a></div>
-					<div class="location"><span class="region">Italia Sardegna</span>&nbsp;<span class="town">Castelsardo SS</span></div>
+<ng-container *ngIf="!item">
+	<h1 class="h1 title">Caricamento pratica</h1>
+</ng-container>
+<ng-container *ngIf="item">
+	<h1 class="h1 title">Dettaglio pratica {{item.bookingFileCode}}
+		<span class="status status-{{item.bookingFileStatus.value}}">{{item.statusShort}}</span>
+	</h1>
+	<div class="order-detail">
+		<div class="order-detail__head">
+			<div class="image">
+				<img class="image-thumb" [src]="hotel.photo + '?width=60&height=60&rmode=crop'" alt="{{hotel.name}}">
+			</div>
+			<div class="content">
+				<div class="head">
+					<div class="info">
+						<div class="name">
+							<a [routerLink]="hotel.id">
+								<span>{{hotel.name}}</span> <span class="stars"><em *ngFor="let star of item?.rating?.split('');" [ngClass]="{ superior: star === 'S' }">{{star}}</em></span>
+							</a>
+						</div>
+						<div class="location">
+							<span class="region">{{hotel.destinationNation}} {{hotel.destinationRegion}}</span>&nbsp;<span class="town">{{hotel.destinationDescription}} {{hotel.destinationProvince}}</span>
+						</div>
+					</div>
 				</div>
 			</div>
-
+		</div>
+		<div class="order-detail__main">
+			<div class="table">
+				<div class="row" *ngIf="hotel.address">
+					<div class="col-sm-6"><strong>Indirizzo:</strong></div>
+					<div class="col-sm-6">{{hotel.address.description}}, {{hotel.address.city}}, {{hotel.address.provinceCode}}, {{hotel.address.cap}}</div>
+				</div>
+				<div class="row" *ngIf="hotel.location">
+					<div class="col-sm-6"><strong>Come raggiungere la struttura:</strong></div>
+					<div class="col-sm-6"><a [href]="'http://www.google.com/maps/place/0,0/@' + hotel.location.longitude + ',' + hotel.location.latitute + ',17z'" target="_blank">Mostra percorso</a></div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6"><strong>Data prenotazione:</strong></div>
+					<div class="col-sm-6">{{item.creationDate | date:'dd/MM/yyyy'}}</div>
+				</div>
+			</div>
+			<h2 class="h2">Dettagli</h2>
+			<div class="table">
+				<div class="row">
+					<div class="col-sm-6"><strong>Codice pratica</strong></div>
+					<div class="col-sm-6">{{item.bookingFileCode}}</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6"><strong>Camera</strong></div>
+					<div class="col-sm-6">3 notti, 1 camera, {{item.paxNumber}} persone</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6"><strong>Trattamento</strong></div>
+					<div class="col-sm-6">{{hotel.accomodation}}</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6"><strong>Arrivo</strong></div>
+					<div class="col-sm-6">{{item.startDate | date:'EEEE dd MMMM yyyy'}}</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6"><strong>Partenza</strong></div>
+					<div class="col-sm-6">{{item.endDate | date:'EEEE dd MMMM yyyy'}}</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6"><strong>Prenotazione effettuata da</strong></div>
+					<div class="col-sm-6">{{item.customerName}} ({{item.customerEmail}})</div>
+				</div>
+			</div>
+			<h2 class="h2">Riepilogo costi</h2>
+			<div class="table table-price" *ngIf="item.bookedServiceList?.length > 0">
+				<div class="row">
+					<div class="col-sm-6"><strong>{{item.bookedServiceList[0].firstDescription}}</strong></div>
+					<div class="col-sm-6 text-right">{{item.bookedServiceList[0].serviceTotalAmountDetail.serviceTotalPrice | price : '€'}}</div>
+				</div>
+				<div class="row head-row">
+					<div class="col-sm-6"><strong>Importo totale</strong></div>
+					<div class="col-sm-6 text-right">{{item.bookedServiceList[0].serviceTotalAmountDetail.serviceTotalPrice | price : '€'}}</div>
+				</div>
+			</div>
+			<div class="inner-text">
+				<p style="text-align:justify">SE HAI CONFERMATO CON<strong> CARTA DI CREDITO/MYBANK/PAYPAL</strong>:</p>
+				<p style="text-align:justify">riceverai email con gli allegati della <strong>conferma di prenotazione</strong>, la fattura e il <strong>voucher da stampare</strong> e presentare al momento del check-in in hotel. Se hai prenotato un pacchetto Tour Operator/traghetto/crociera, i documenti di viaggio saranno spediti via email prima della partenza.</p>
+				<p style="text-align:justify">SE HAI SCELTO LA MODALITA’ DI PAGAMENTO CON <strong>BONIFICO BANCARIO:</strong></p>
+				<p style="text-align:justify">per confermare la tua richiesta di opzione, <strong>effettua il bonifico</strong> e <strong>invia copia della ricevuta </strong>di bonifico a <strong>bonifico@eurospin-viaggi.it</strong> o al fax <strong>045 9598500 entro e non oltre le ore 14.00 del giorno lavorativo successivo</strong> alla prenotazione (per prenotazioni effettuate il venerdì e il sabato, l’invio della ricevuta di bonifico dovrà essere effettuato entro le ore 14.00 del lunedì).</p>
+				<p style="text-align:justify">NOTA IMPORTANTE: in caso di <strong>mancata ricezione della ricevuta di bonifico</strong> nei termini sopra indicati, la prenotazione sarà automaticamente <strong>annullata</strong>.</p>
+				<p style="text-align:justify">Non appena il tuo pagamento sarà contabilizzato, riceverai email con gli allegati della <strong>conferma di prenotazione</strong>, la fattura e il <strong>voucher da stampare</strong> e presentare al momento del check-in in hotel. Se hai prenotato un pacchetto Tour Operator/traghetto/crociera, i documenti di viaggio saranno spediti via email prima della partenza.</p>
+				<p style="text-align:justify">Per ogni informazione o assistenza, puoi contattarci al numero&nbsp;+39 <strong>045 9599</strong> (consulta gli orari del nostro Call Center su www.eurospin-viaggi.it)&nbsp;</p>
+			</div>
 		</div>
 	</div>
-	<div class="order-detail__main">
-		<div class="table">
-			<div class="row">
-				<div class="col-sm-6"><strong>Indirizzo:</strong></div>
-				<div class="col-sm-6">Via Rein 41 - Campo Tures (BZ) 39032</div>
-			</div>
-			<div class="row">
-				<div class="col-sm-6"><strong>Come raggiungere la struttura:</strong></div>
-				<div class="col-sm-6"><a href="http://www.google.com/maps/place/0,0/@0,0,17z" target="_blank">Mostra percorso</a></div>
-			</div>
-			<div class="row">
-				<div class="col-sm-6"><strong>Data prenotazione:</strong></div>
-				<div class="col-sm-6">09/05/2017</div>
-			</div>
-		</div>
-
-		<h2 class="h2">Dettagli</h2>
-		<div class="table">
-			<div class="row">
-				<div class="col-sm-6"><strong>Codice pratica</strong></div>
-				<div class="col-sm-6">17/014465</div>
-			</div>
-			<div class="row">
-				<div class="col-sm-6"><strong>Camera</strong></div>
-				<div class="col-sm-6">3 notti, 1 camera, 3 persone</div>
-			</div>
-			<div class="row">
-				<div class="col-sm-6"><strong>Trattamento</strong></div>
-				<div class="col-sm-6">Mezza pensione</div>
-			</div>
-			<div class="row">
-				<div class="col-sm-6"><strong>Arrivo</strong></div>
-				<div class="col-sm-6">venerdì 07 luglio 2017</div>
-			</div>
-			<div class="row">
-				<div class="col-sm-6"><strong>Partenza</strong></div>
-				<div class="col-sm-6">lunedì 10 luglio 2017</div>
-			</div>
-			<div class="row">
-				<div class="col-sm-6"><strong>Prenotazione effettuata da</strong></div>
-				<div class="col-sm-6">Marano Luca (lucamarano82@gmail.com)</div>
-			</div>
-		</div>
-
-		<h2 class="h2">Riepilogo costi</h2>
-		<div class="table table-price">
-			<div class="row">
-				<div class="col-sm-6"><strong>BACHER-CAMPO TURES -ITA</strong></div>
-				<div class="col-sm-6 text-right">295,00 €</div>
-			</div>
-			<div class="row head-row">
-				<div class="col-sm-6"><strong>Importo totale</strong></div>
-				<div class="col-sm-6 text-right">295,00 €</div>
-			</div>
-		</div>
-
-		<div class="inner-text">
-			<p style="text-align:justify">SE HAI CONFERMATO CON<strong> CARTA DI CREDITO/MYBANK/PAYPAL</strong>:</p>
-			<p style="text-align:justify">riceverai email con gli allegati della <strong>conferma di prenotazione</strong>, la fattura e il <strong>voucher da stampare</strong> e presentare al momento del check-in in hotel. Se hai prenotato un pacchetto Tour Operator/traghetto/crociera, i documenti di viaggio saranno spediti via email prima della partenza.</p>
-			<p style="text-align:justify">SE HAI SCELTO LA MODALITA’ DI PAGAMENTO CON <strong>BONIFICO BANCARIO:</strong></p>
-			<p style="text-align:justify">per confermare la tua richiesta di opzione, <strong>effettua il bonifico</strong> e <strong>invia copia della ricevuta </strong>di bonifico a <strong>bonifico@eurospin-viaggi.it</strong> o al fax <strong>045 9598500 entro e non oltre le ore 14.00 del giorno lavorativo successivo</strong> alla prenotazione (per prenotazioni effettuate il venerdì e il sabato, l’invio della ricevuta di bonifico dovrà essere effettuato entro le ore 14.00 del lunedì).</p>
-			<p style="text-align:justify">NOTA IMPORTANTE: in caso di <strong>mancata ricezione della ricevuta di bonifico</strong> nei termini sopra indicati, la prenotazione sarà automaticamente <strong>annullata</strong>.</p>
-			<p style="text-align:justify">Non appena il tuo pagamento sarà contabilizzato, riceverai email con gli allegati della <strong>conferma di prenotazione</strong>, la fattura e il <strong>voucher da stampare</strong> e presentare al momento del check-in in hotel. Se hai prenotato un pacchetto Tour Operator/traghetto/crociera, i documenti di viaggio saranno spediti via email prima della partenza.</p>
-			<p style="text-align:justify">Per ogni informazione o assistenza, puoi contattarci al numero&nbsp;+39 <strong>045 9599</strong> (consulta gli orari del nostro Call Center su www.eurospin-viaggi.it)&nbsp;</p>
-		</div>
-	</div>
-</div>
+</ng-container>

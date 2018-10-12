@@ -1,6 +1,8 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { first, takeUntil } from 'rxjs/operators';
-import { PageComponent, PageInit, RouteService } from '../../core';
+import { ActivatedRoute } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
+import { DisposableComponent } from '../../core';
+import { OrderService, SearchResult } from '../../models';
 
 @Component({
 	selector: 'order-detail-component',
@@ -9,21 +11,25 @@ import { PageComponent, PageInit, RouteService } from '../../core';
 	encapsulation: ViewEncapsulation.Emulated,
 })
 
-export class OrderDetailComponent extends PageComponent implements PageInit {
+export class OrderDetailComponent extends DisposableComponent {
+
+	item: any;
+	hotel: SearchResult;
 
 	constructor(
-		protected routeService: RouteService
+		private route: ActivatedRoute,
+		private orderService: OrderService,
 	) {
-		super(routeService);
-	}
-
-	PageInit(): void {
-		console.log('OrderDetailComponent.PageInit', this.page);
-		this.routeService.getPageParams().pipe(
-			takeUntil(this.unsubscribe),
-			first()
-		).subscribe(params => {
-			console.log('OrderDetailComponent.params', params);
+		super();
+		const orderYear = this.route.snapshot.params['orderYear'];
+		const orderNum = this.route.snapshot.params['orderNum'];
+		const orderId = `${orderYear}/${orderNum}`;
+		this.orderService.getOrderDetail(orderId).pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(item => {
+			this.item = item;
+			this.hotel = item.serviceDetail;
+			console.log('OrderDetailComponent', orderId, this.item);
 		});
 	}
 

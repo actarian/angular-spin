@@ -1,6 +1,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { first, takeUntil } from 'rxjs/operators';
-import { PageComponent, PageInit, RouteService } from '../../core';
+import { takeUntil } from 'rxjs/operators';
+import { DisposableComponent, RouteService } from '../../core';
+import { Order, OrderService } from '../../models';
 
 @Component({
 	selector: 'order-history-component',
@@ -9,21 +10,24 @@ import { PageComponent, PageInit, RouteService } from '../../core';
 	encapsulation: ViewEncapsulation.Emulated,
 })
 
-export class OrderHistoryComponent extends PageComponent implements PageInit {
+export class OrderHistoryComponent extends DisposableComponent {
+
+	items: Order[];
+	visibleItems: number = 20;
+	busy: boolean = false;
 
 	constructor(
-		protected routeService: RouteService
+		protected routeService: RouteService,
+		private orderService: OrderService,
 	) {
-		super(routeService);
-	}
-
-	PageInit(): void {
-		console.log('OrderHistoryComponent.PageInit', this.page);
-		this.routeService.getPageParams().pipe(
-			takeUntil(this.unsubscribe),
-			first()
-		).subscribe(params => {
-			console.log('OrderHistoryComponent.params', params);
+		super();
+		this.busy = true;
+		this.orderService.getOrders().pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(items => {
+			this.items = items;
+			this.busy = false;
+			console.log('OrderHistoryComponent', this.items);
 		});
 	}
 

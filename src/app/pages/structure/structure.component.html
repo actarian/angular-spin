@@ -1,0 +1,199 @@
+<div class="generic-component">
+	<div class="container">
+		<h1 class="h1 title" [innerHTML]="page.title">-</h1>
+		<div class="abstract" [innerHTML]="page.abstract">-</div>
+		<div class="description" [innerHTML]="page.description">-</div>
+		<br>
+		<ng-container *ngIf="model">
+			<div [hidden]="sent">
+				<h2>Compila i campi con i tuoi dati</h2>
+				<form class="form" [ngClass]="{submitted: structure.submitted}" name="structure" role="form" novalidate autocomplete="off" (ngSubmit)="structure.valid && onSubmit()" #structure="ngForm">
+					<div class="fieldset">
+						<div class="form-group">
+							<label>Tipologia struttura</label>
+							<select class="form-control" name="structureType" required [(ngModel)]="model.tipostruttura" [disabled]="busy" #structureType="ngModel">
+								<option *ngFor="let item of types" [value]="item.id">{{item.value}}</option>
+							</select>
+							<div *ngIf="structureType.invalid && (structure.submitted || structureType.dirty || structureType.touched)" class="alert alert-danger">
+								<div *ngIf="structureType.errors.required">{{ 'errors.required' | translate }}</div>
+							</div>
+						</div>
+						<div class="form-group" [hidden]="model.tipostruttura != 4">
+							<label>Specificare</label>
+							<input placeholder="" type="text" class="form-control" [required]="model.tipostruttura == 4 ? 'required' : null" [(ngModel)]="model.altro" name="altro" #altro="ngModel" autocomplete="altro">
+							<div *ngIf="altro.invalid && (structure.submitted || altro.dirty || altro.touched)" class="alert alert-danger">
+								<div *ngIf="altro.errors.required">{{ 'errors.required' | translate }}</div>
+							</div>
+						</div>
+					</div>
+					<div class="fieldset">
+						<div class="form-group">
+							<label>Nome struttura</label>
+							<input placeholder="Nome struttura" type="text" class="form-control" required [(ngModel)]="model.nomestruttura" name="nomestruttura" #nomestruttura="ngModel" autocomplete="nomestruttura">
+							<div *ngIf="nomestruttura.invalid && (structure.submitted || nomestruttura.dirty || nomestruttura.touched)" class="alert alert-danger">
+								<div *ngIf="nomestruttura.errors.required">{{ 'errors.required' | translate }}</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label>Categoria / Stella</label>
+							<input placeholder="" type="text" class="form-control" required [(ngModel)]="model.categoria" name="categoria" #categoria="ngModel" autocomplete="categoria">
+							<div *ngIf="categoria.invalid && (structure.submitted || categoria.dirty || categoria.touched)" class="alert alert-danger">
+								<div *ngIf="categoria.errors.required">{{ 'errors.required' | translate }}</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label>Indirizzo</label>
+							<input placeholder="" type="text" class="form-control" required [(ngModel)]="model.indirizzo" name="indirizzo" #indirizzo="ngModel" autocomplete="indirizzo">
+							<div *ngIf="indirizzo.invalid && (structure.submitted || indirizzo.dirty || indirizzo.touched)" class="alert alert-danger">
+								<div *ngIf="indirizzo.errors.required">{{ 'errors.required' | translate }}</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label>Località</label>
+							<input placeholder="" type="text" class="form-control" required [(ngModel)]="model.localita" name="localita" #localita="ngModel" autocomplete="localita">
+							<div *ngIf="localita.invalid && (structure.submitted || localita.dirty || localita.touched)" class="alert alert-danger">
+								<div *ngIf="localita.errors.required">{{ 'errors.required' | translate }}</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label>Cap</label>
+							<input placeholder="" type="text" class="form-control" required [(ngModel)]="model.cap" name="cap" #cap="ngModel" autocomplete="cap">
+							<div *ngIf="cap.invalid && (structure.submitted || cap.dirty || cap.touched)" class="alert alert-danger">
+								<div *ngIf="cap.errors.required">{{ 'errors.required' | translate }}</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label>Stato</label>
+							<select class="form-control" name="stato" [(ngModel)]="model.stato" #stato="ngModel" required>
+								<option *ngFor="let nation of nations" [value]="nation.code">{{nation.name}}</option>
+							</select>
+							<div *ngIf="stato.invalid && (structure.submitted || stato.dirty || stato.touched)" class="alert alert-danger">
+								<div *ngIf="stato.errors.required">{{ 'errors.required' | translate }}</div>
+							</div>
+						</div>
+						<div class="form-group" *ngIf="model.stato == 'ITA'">
+							<label>Provincia</label>
+							<select class="form-control" name="provincia" [(ngModel)]="model.provincia" [disabled]="busy" #provincia="ngModel" required>
+								<option *ngFor="let county of counties" [value]="county.id">{{county.value}}</option>
+							</select>
+							<div *ngIf="provincia.invalid && (userData.submitted || provincia.dirty || provincia.touched)" class="alert alert-danger">
+								<div *ngIf="provincia.errors.required">{{ 'errors.required' | translate }}</div>
+							</div>
+						</div>
+						<div class="form-group" *ngIf="model.stato != 'ITA'">
+							<label>Provincia</label>
+							<input placeholder="" type="text" class="form-control" required [(ngModel)]="model.provinciafreetext" name="provinciafreetext" #provinciafreetext="ngModel" autocomplete="provinciafreetext">
+							<div *ngIf="provinciafreetext.invalid && (structure.submitted || provinciafreetext.dirty || provinciafreetext.touched)" class="alert alert-danger">
+								<div *ngIf="provinciafreetext.errors.required">{{ 'errors.required' | translate }}</div>
+							</div>
+						</div>
+					</div>
+					<div class="divline"></div>
+					<div class="fieldset">
+						<div class="form-group">
+							<label>Numero camere o unità totali</label>
+							<input placeholder="" type="number" class="form-control" required [(ngModel)]="model.cameretotali" name="cameretotali" #cameretotali="ngModel" autocomplete="cameretotali">
+							<div *ngIf="cameretotali.invalid && (structure.submitted || cameretotali.dirty || cameretotali.touched)" class="alert alert-danger">
+								<div *ngIf="cameretotali.errors.required">{{ 'errors.required' | translate }}</div>
+							</div>
+						</div>
+					</div>
+					<p>di cui</p>
+					<div class="fieldset">
+						<div class="form-group">
+							<label>Doppie</label>
+							<input placeholder="" type="number" class="form-control" required [(ngModel)]="model.cameredoppie" name="cameredoppie" #cameredoppie="ngModel" autocomplete="cameredoppie">
+							<div *ngIf="cameredoppie.invalid && (structure.submitted || cameredoppie.dirty || cameredoppie.touched)" class="alert alert-danger">
+								<div *ngIf="cameredoppie.errors.required">{{ 'errors.required' | translate }}</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label>Triple</label>
+							<input placeholder="" type="number" class="form-control" required [(ngModel)]="model.cameretriple" name="cameretriple" #cameretriple="ngModel" autocomplete="cameretriple">
+							<div *ngIf="cameretriple.invalid && (structure.submitted || cameretriple.dirty || cameretriple.touched)" class="alert alert-danger">
+								<div *ngIf="cameretriple.errors.required">{{ 'errors.required' | translate }}</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label>Quadruple</label>
+							<input placeholder="" type="number" class="form-control" required [(ngModel)]="model.camerequadruple" name="camerequadruple" #camerequadruple="ngModel" autocomplete="camerequadruple">
+							<div *ngIf="camerequadruple.invalid && (structure.submitted || camerequadruple.dirty || camerequadruple.touched)" class="alert alert-danger">
+								<div *ngIf="camerequadruple.errors.required">{{ 'errors.required' | translate }}</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label>Quintuple</label>
+							<input placeholder="" type="number" class="form-control" required [(ngModel)]="model.camerequintuple" name="camerequintuple" #camerequintuple="ngModel" autocomplete="camerequintuple">
+							<div *ngIf="camerequintuple.invalid && (structure.submitted || camerequintuple.dirty || camerequintuple.touched)" class="alert alert-danger">
+								<div *ngIf="camerequintuple.errors.required">{{ 'errors.required' | translate }}</div>
+							</div>
+						</div>
+					</div>
+					<br>
+					<div class="divline"></div>
+					<h3>Contatti</h3>
+					<div class="fieldset">
+						<div class="form-group">
+							<label>Persona di riferimento</label>
+							<input placeholder="Nome e Cognome" type="text" class="form-control" required [(ngModel)]="model.referente" name="referente" #referente="ngModel" autocomplete="referente">
+							<div *ngIf="referente.invalid && (structure.submitted || referente.dirty || referente.touched)" class="alert alert-danger">
+								<div *ngIf="referente.errors.required">{{ 'errors.required' | translate }}</div>
+							</div>
+						</div>
+						<div class="form-group form-group-errors">
+							<label>Email</label>
+							<input placeholder="Email" type="email" class="form-control" required pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" [(ngModel)]="model.email" name="email" #email="ngModel" autocomplete="email">
+							<div *ngIf="email.invalid && (structure.submitted || email.dirty || email.touched)" class="alert alert-danger">
+								<div *ngIf="email.errors.required">{{ 'errors.required' | translate }}</div>
+								<div *ngIf="email.errors.pattern">{{ 'errors.email' | translate }}</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label>Telefono 1</label>
+							<input placeholder="telefono" type="text" class="form-control" required [(ngModel)]="model.telfisso" name="telfisso" #telfisso="ngModel" autocomplete="telfisso">
+							<div *ngIf="telfisso.invalid && (structure.submitted || telfisso.dirty || telfisso.touched)" class="alert alert-danger">
+								<div *ngIf="telfisso.errors.required">{{ 'errors.required' | translate }}</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label>Telefono 2 <sup>(Opzionale)</sup></label>
+							<input placeholder="telefono" type="text" class="form-control" [(ngModel)]="model.telcell" name="telcell" #telcell="ngModel" autocomplete="telcell">
+						</div>
+						<div class="form-group">
+							<label>Orari e periodo reperibilità</label>
+							<input placeholder="telefono" type="text" class="form-control" required [(ngModel)]="model.orari" name="orari" #orari="ngModel" autocomplete="orari">
+							<div *ngIf="orari.invalid && (structure.submitted || orari.dirty || orari.touched)" class="alert alert-danger">
+								<div *ngIf="orari.errors.required">{{ 'errors.required' | translate }}</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group form-group-errors">
+						<div class="checkbox">
+							<label>
+							<input type="checkbox" class="form-check-input" required [(ngModel)]="model.acceptPrivacyPolicies" name="acceptPrivacyPolicies" #acceptPrivacyPolicies="ngModel">
+							<span>Preso atto dell'<a href="/media/userfiles/files/20180522-Informativa_Contatti-areastrutture.pdf" target="_blank">informativa</a>, acconsento al trattamento dei miei dati personali ai fini dell'invio di proposte commerciali da parte di Eurospin.</span>
+						</label>
+						</div>
+						<div *ngIf="acceptPrivacyPolicies.invalid && (structure.submitted || acceptPrivacyPolicies.dirty || acceptPrivacyPolicies.touched)" class="alert alert-danger">
+							<div *ngIf="acceptPrivacyPolicies.errors.required">{{ 'errors.required' | translate }}</div>
+						</div>
+					</div>
+					<br>
+					<button type="submit" class="btn btn-primary" [ngClass]="{ disabled: submitted, invalid: !structure.valid, 'btn--busy': busy }" title="{{ 'signUp.register' | translate }}">
+						<span>Registrati</span>
+					</button>
+				</form>
+				<div class="alert alert-danger fade show" role="alert" *ngIf="error">
+					<strong>{{error.message || error.statusText}}</strong>
+				</div>
+				<br>
+			</div>
+			<div [hidden]="!sent">
+				<h2>Richiesta inviata!</h2>
+				<p>La richiesta di contatto è stata inviata correttamente.</p>
+				<br>
+			</div>
+		</ng-container>
+	</div>
+</div>
+<section-value-proposition></section-value-proposition>

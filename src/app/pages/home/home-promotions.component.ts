@@ -1,37 +1,35 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { PageIndex } from '../../core';
-import { LandingService, Promotion, PromotionService } from '../../models';
+import { map, takeUntil } from 'rxjs/operators';
+import { DisposableComponent, Page, PageIndex } from '../../core';
+import { LandingService } from '../../models';
 
 @Component({
-	selector: 'section-promotions',
+	selector: 'home-promotions',
 	templateUrl: './home-promotions.component.html',
 	styleUrls: ['./home-promotions.component.scss'],
 	encapsulation: ViewEncapsulation.Emulated,
 })
-
-export class HomePromotionsComponent implements OnInit {
+export class HomePromotionsComponent extends DisposableComponent implements OnInit {
 
 	@Input() type: number;
-	items$: Observable<PageIndex[]>; // type, destination, time
-
-	promotions: Promotion[] = [];
+	limit: number = 3;
+	item: Page;
+	items: PageIndex[]; // type, destination, time
 
 	constructor(
 		private landingService: LandingService,
-		private promotionService: PromotionService,
-	) { }
-
-	ngOnInit() {
-		this.items$ = this.landingService.get().pipe(
-			map(x => x.filter((p: PageIndex) => p.type === this.type))
-		);
-		// this.getPromotions();
+	) {
+		super();
 	}
 
-	getPromotions(): void {
-		this.promotionService.getList().subscribe(x => this.promotions = x.slice(0, 3));
+	ngOnInit() {
+		this.landingService.getLandings().pipe(
+			takeUntil(this.unsubscribe),
+			map(x => x.find((p: Page) => p.type === this.type)),
+		).subscribe(item => {
+			this.item = item;
+			this.items = item ? item.related : [];
+		});
 	}
 
 }

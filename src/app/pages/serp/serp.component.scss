@@ -26,6 +26,7 @@ Serp Search
 
 	@include sm-down {
 		margin-bottom: 20px;
+		z-index: 101;
 	}
 }
 
@@ -265,11 +266,13 @@ Serp Content
 --------------------------------------------------*/
 
 .serp-content {
+	margin-bottom: 60px;
+
 	@include sm-up {
 		.container {
 			display: flex;
+			flex-wrap: wrap;
 			justify-content: space-between;
-			margin-bottom: 60px;
 		}
 	}
 
@@ -350,5 +353,63 @@ List
 				}
 			}
 		}
+	}
+}
+
+
+/*--------------------------------------------------
+NRP
+--------------------------------------------------*/
+.nrp {
+	flex: 1 0 100%;
+	padding: 0 15px;
+
+	@include sm-down {
+		padding: 0;
+	}
+
+	.h1 {
+		color: $tit-color;
+		font-size: 40px;
+		line-height: 1.2;
+		font-weight: 300;
+		margin-bottom: 20px;
+
+		@include xs-down {
+			font-size: 28px;
+			font-weight: normal;
+		}
+	}
+
+	.text {
+		font-size: 18px;
+
+		@include xxs-down {
+			font-size: 16px;
+		}
+
+		a {
+			text-decoration: underline;
+		}
+
+		.ico {
+			fill: $tertiary-color;
+			transform: translate(-2px, 3px);
+			margin-left: 2px;
+		}
+	}
+}
+
+
+.home-lastviews {
+	flex: 1 0 100%;
+	margin-top: 60px;
+	padding: 60px 0 0;
+	border-top: 1px solid $border-color;
+
+	@include sm-down {
+		border-top: none;
+		padding-top: 0;
+		transform: translateX(-15px);
 	}
 }

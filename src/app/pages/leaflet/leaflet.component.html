@@ -1,0 +1,27 @@
+<section class="leaflet">
+	<div class="container" lazy-images>
+		<div class="title">
+			<h1 class="h1">Volantini</h1>
+		</div>
+		<div class="leaflet__box" *ngFor="let item of leaflets; let i = index;">
+			<h2>{{item.title}}</h2>
+			<div class="leaflet__img">
+				<img [attr.data-src]="item.images | image :'Default' :'width=350'" alt="Offerte dal 04/10/2018 al 14/10/2018">
+			</div>
+			<div class="leaflet__content">
+				<h3>{{item.abstract}}</h3>
+				<div class="txt">Scopri e prenota la vacanza tra le {{item.title}}:
+					<ul>
+						<li *ngFor="let taxonomy of item.taxonomies;">{{taxonomy.name}}</li>
+					</ul>
+					<div class="cta">
+						<a [href]="item.files[0].url" class="btn btn--tertiary" target="_blank">Sfoglia il volantino</a>
+						<a [routerLink]="['/volantini', item.id]" class="btn">Visualizza tutte le offerte</a>
+					</div>
+					<div class="support">Hai richieste o esigenze particolari? <br> Chiamaci allo 045 9599 o utilizza il <a [routerLink]="'support' | slugAsync">form contatti</a>.</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section-value-proposition></section-value-proposition>

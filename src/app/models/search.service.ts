@@ -1,10 +1,10 @@
 import { isPlatformBrowser, Location } from '@angular/common';
 import { Inject, Injectable, Injector, PLATFORM_ID } from '@angular/core';
 import { Params, Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
-import { debounceTime, map, tap } from 'rxjs/operators';
-import { EntityService, Option } from '../core/models';
+import { debounceTime, map, switchMap, tap } from 'rxjs/operators';
+import { EntityService, EventDispatcherService, Option } from '../core/models';
 import { RouteService } from '../core/routes';
 import { LocalStorageService, StorageService } from '../core/storage';
 import { CalendarOptions } from './calendar-options';
@@ -12,7 +12,10 @@ import { Destination, DestinationTypes } from './destination';
 import { DestinationService } from './destination.service';
 import { Group, GroupSelectionType, GroupType, Sorting } from './filter';
 import { FilterService } from './filter.service';
+import { GtmService } from './gtm.service';
 import { Duration, durations, MainSearch, SearchResult } from './search';
+
+const QUERY_ENABLED = true;
 
 @Injectable({
 	providedIn: 'root',
@@ -46,8 +49,10 @@ export class SearchService extends EntityService<SearchResult> {
 		private storageService: LocalStorageService,
 		private router: Router,
 		private location: Location,
+		private dispatcher: EventDispatcherService,
 		private destinationService: DestinationService,
 		private filterService: FilterService,
+		private gtm: GtmService,
 	) {
 		super(injector);
 		this.storage = this.storageService.tryGet();
@@ -135,6 +140,24 @@ export class SearchService extends EntityService<SearchResult> {
 		});
 	}
 
+	onDestinationTrySearch(query: string): Observable<Destination> {
+		return this.destinationService.autocomplete(query).pipe(
+			tap(items => this.destinations = items),
+			switchMap(items => {
+				if (items.length) {
+					const exact = items.find(item => item.name.toLowerCase() === query.toLowerCase());
+					if (exact) {
+						return of(exact);
+					} else {
+						items = items.filter(item => item.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+						return of(items.length ? items[0] : null);
+					}
+				}
+				return of(null);
+			})
+		);
+	}
+
 	doStoreDestination(destination: Destination) {
 		if (destination) {
 			const previous: Destination = this.lastDestinations.find(x => x.name === destination.name);
@@ -160,7 +183,11 @@ export class SearchService extends EntityService<SearchResult> {
 			this.router.navigate(segments);
 		} else {
 			const segments = this.routeService.toRoute(['/search']);
-			this.router.navigate(segments, { queryParams: this.queryParams });
+			if (QUERY_ENABLED) {
+				this.router.navigate(segments, { queryParams: this.queryParams });
+			} else {
+				this.router.navigate(segments);
+			}
 		}
 	}
 
@@ -176,40 +203,41 @@ export class SearchService extends EntityService<SearchResult> {
 		this.doSearch();
 	}
 
-	getResults(): Observable<SearchResult[]> {
-		let params = '';
+	getResults(tags?: number[]): Observable<SearchResult[]> {
+		let query = '';
 		if (this.model.destination) {
 			switch (this.model.destination.type) {
-				/*
 				case DestinationTypes.Facility:
-					params = `?name=${this.model.destination.name}`;
+					// query = `?name=${this.model.destination.name}`;
 					break;
 				case DestinationTypes.Country:
-					params = `?destinationNation=${this.model.destination.name}`;
+					// query = `?destinationNation=${this.model.destination.name}`;
 					break;
 				case DestinationTypes.Region:
-					params = `?destinationRegion=${this.model.destination.name}`;
+					// query = `?destinationRegion=${this.model.destination.name}`;
 					break;
 				case DestinationTypes.Destination:
-					params = `?destinationDescription=${this.model.destination.name}`;
+					this.gtm.onSearch('Search', 'Destinazione', this.model.destination.name);
+					// query = `?destinationDescription=${this.model.destination.name}`;
 					break;
 				case DestinationTypes.Category:
-					params = '';
-					// params = `?destinationNation=${this.model.destination.name}`;
+					this.gtm.onSearch('Search', 'Categoria', this.model.destination.name);
+					// query = '';
+					// query = `?destinationNation=${this.model.destination.name}`;
 					break;
-					*/
 				case DestinationTypes.Promotion:
-					params = '';
-					// params = `?destinationNation=${this.model.destination.name}`;
+					query = '';
+					// query = `?destinationNation=${this.model.destination.name}`;
 					this.filterService.onSet(this.model.destination.id, GroupType.Service);
 					break;
 			}
 		}
-		// !!!
-		this.model.duration = null;
-		return this.post('/api/booking/search/in', this.model).pipe(
-			map((x: any) => this.toCamelCase(x)),
-			map((x: any) => x.map(o => SearchResult.newCompatibleSearchResult(o)).filter((x: SearchResult) => {
+		return this.post('/api/booking/search/in', this.model.getPayload(tags)).pipe(
+			// map((x: any) => this.toCamelCase(x)),
+			map((x: any) => {
+				return x ? x.map(o => SearchResult.newCompatibleSearchResult(o)) : [];
+				/*
+				.filter((x: SearchResult) => {
 				if (!this.model.destination) {
 					return true;
 				}
@@ -233,20 +261,31 @@ export class SearchService extends EntityService<SearchResult> {
 						break;
 				}
 				return has;
-			})),
+				})
+				*/
+			}),
+			tap((results: SearchResult[]) => {
+				this.gtm.onImpressions(results);
+				/*
+				this.dispatcher.emit({
+					type: 'onImpressions',
+					data: { results: results, }
+				});
+				*/
+			})
 		);
 	}
 
-	doSearch() {
+	doSearch(tags?: number[]) {
 		this.busy = true;
-		this.getResults().subscribe(x => {
+		this.getResults(tags).subscribe(x => {
 			this.results$.next(x);
 			this.busy = false;
 		});
 	}
 
 	private doSerialize(model: MainSearch, groups: Group[], sorting: Sorting) {
-		if (isPlatformBrowser(this.platformId)) {
+		if (isPlatformBrowser(this.platformId) && QUERY_ENABLED) {
 			// console.log(this.model);
 			const url = this.router.url.split('?')[0];
 			const filters = groups.filter(group => group.selected).map((group) => {
@@ -285,7 +324,7 @@ export class SearchService extends EntityService<SearchResult> {
 		}
 	}
 
-	// rimovibile
+	// !!! rimovibile
 	private beginObserveModel() {
 		// todo check deep comparison // .distinctUntilChanged((a, b) => a.destination === b.destination).
 		this.model$.subscribe(model => {

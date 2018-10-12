@@ -1,26 +1,28 @@
 import { Document } from '../core/models';
-import { Destination } from './destination';
+import { Destination, DestinationTypes } from './destination';
+import { Hotel } from './hotel';
 import { TrustPilot } from './trustPilot';
 
 export class Duration {
 	id: number;
 	name: string;
+	value: number[];
 }
 
 export const durations: Duration[] = [
-	{ id: 1, name: 'Qualsiasi durata' },
-	{ id: 2, name: '1-3 notti' },
-	{ id: 3, name: '4-6 notti' },
-	{ id: 4, name: '7 notti' },
-	{ id: 5, name: '8-13 notti' },
-	{ id: 6, name: '14 notti o più' }
+	{ id: 1, name: 'Qualsiasi durata', value: [1, 21] },
+	{ id: 2, name: '1-3 notti', value: [1, 3] },
+	{ id: 3, name: '4-6 notti', value: [4, 6] },
+	{ id: 4, name: '7 notti', value: [7] },
+	{ id: 5, name: '8-13 notti', value: [8, 13] },
+	{ id: 6, name: '14 notti o più', value: [14, 21] }
 ];
 
 export class MainSearch {
 	query?: string;
 	destination?: Destination;
 	startDate?: Date = new Date();
-	flexibleDates: boolean = false;
+	flexibleDates: boolean = true;
 	duration: Duration = durations[0];
 	adults: number = 2;
 	childs: number = 0;
@@ -31,13 +33,36 @@ export class MainSearch {
 			this.query = options.query || null;
 			this.destination = options.destination as Destination;
 			this.startDate = options.startDate ? new Date(options.startDate) : null;
-			this.flexibleDates = !options.flexibleDates;
+			this.flexibleDates = options.flexibleDates;
 			this.duration = options.duration ? durations.find(x => x.id === options.duration.id) : durations[0];
 			this.adults = options.adults || 2;
 			this.childs = options.childs || 0;
 			this.childrens = options.childrens || [];
 		}
 	}
+
+	static getPayload?(options?: MainSearch): any {
+		return new MainSearch(options).getPayload();
+	}
+
+	getPayload?(tags?: number[]): any {
+		// console.log('MainSearch.getPayload', this.destination);
+		const payload = {
+			adults: this.adults,
+			children: this.childrens.map(ch => ch.age),
+			destinations: (this.destination && this.destination.type === DestinationTypes.Destination) ? [this.destination.code] : [],
+			duration: this.duration.value || durations[0],
+			flexibleDate: this.flexibleDates,
+			from: this.startDate,
+			tags: (this.destination && this.destination.type !== DestinationTypes.Destination) ? [this.destination.id] : []
+		};
+		if (tags) {
+			console.log('MainSearch.getPayload', tags);
+			payload.tags = payload.tags.concat(tags);
+		}
+		return payload;
+	}
+
 }
 
 export class SearchResult implements Document {
@@ -65,7 +90,7 @@ export class SearchResult implements Document {
 	rating?: string; // "****",
 	selected?: boolean = false;
 	slug: string;
-	structureId?: number;
+	structureID?: number;
 	tags: number[];
 	to: string; // "15/06"
 	topDestinationDescription?: string;
@@ -75,7 +100,6 @@ export class SearchResult implements Document {
 	visible?: boolean = true;
 	// compatibility
 	frontEndName?: string;
-	structureID?: number;
 	trustPilot_averageStars?: number;
 	trustPilot_nReviews?: number;
 	url?: string;
@@ -87,17 +111,35 @@ export class SearchResult implements Document {
 	}
 
 	public static newCompatibleSearchResult(options: SearchResult): SearchResult {
-		const searchResult: SearchResult = new SearchResult(options);
-		searchResult.name = options.frontEndName;
-		searchResult.photo = options.photo ? '/media/immagini/' + options.photo : null;
-		searchResult.structureId = options.structureID;
-		searchResult.trustPilot = new TrustPilot({ averageStars: options.trustPilot_averageStars, totalReviews: options.trustPilot_nReviews });
-		// !!!
-		if (searchResult.slug) {
-			searchResult.slug = searchResult.slug.replace('http://eurospin-viaggi2.wslabs.it/', '/');
-			searchResult.slug = searchResult.slug.replace('https://eurospin-viaggi2.wslabs.it/', '/');
-		}
-		return searchResult;
+		const item: SearchResult = new SearchResult(options);
+		item.name = options.frontEndName;
+		item.photo = options.photo && options.photo.indexOf('/media/immagini/') !== 0 ? '/media/immagini/' + options.photo : (options.photo || null);
+		item.trustPilot = new TrustPilot({ averageStars: options.trustPilot_averageStars, totalReviews: options.trustPilot_nReviews });
+		return item;
+	}
+
+	public static newSearchResultFromHotel(hotel: Hotel): SearchResult {
+		const item: SearchResult = new SearchResult();
+		item.id = hotel.id;
+		item.name = hotel.frontEndName;
+		item.rating = hotel.rating;
+		item.trustPilot = hotel.trustPilot;
+		item.destinationDescription = hotel.destinationDescription;
+		item.destinationProvince = hotel.destinationProvince;
+		item.photo = hotel.photo;
+		item.overlayCoverImage = hotel.overlayCoverImage;
+		item.overlayCoverText = hotel.overlayCoverText;
+		item.slug = hotel.slug;
+		item.url = hotel.slug;
+		// x GtmService
+		item.price = hotel.price;
+		item.type = hotel.accomodation;
+		/*
+		item.destinationRegion = hotel.destinationRegion;
+		item.destinationNation = hotel.destinationNation;
+		item.category = hotel.category;
+		*/
+		return item;
 	}
 
 }

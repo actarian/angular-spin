@@ -1,4 +1,4 @@
-<section class="hotel-page right-side" *ngIf="booking.hotel">
+<section class="hotel-page right-side" *ngIf="hotel">
 	<div class="container">
 		<!-- MAIN -->
 		<div class="hotel-main-content">
@@ -6,20 +6,29 @@
 			<div class="hotel-head">
 				<div class="hotel-info">
 					<div class="hotel-name">
-						<span>{{page.title}}</span> <span class="stars"><em *ngFor="let star of booking.hotel.rating?.split('');" [ngClass]="{ superior: star === 'S' }">{{star}}</em></span>
+						<span>{{page.title}}</span> <span class="stars"><em *ngFor="let star of hotel.rating?.split('');" [ngClass]="{ superior: star === 'S' }">{{star}}</em></span>
 					</div>
 					<div class="hotel-location">
-						<span class="hotel-region">{{booking.hotel.location?.avesDstCode}}</span>
+						<span class="hotel-region">{{hotel.location?.avesDstCode}}</span>
 						<!-- <span class="hotel-region">Italia Toscana</span>&nbsp;<span class="hotel-town">Radda in Chianti SI</span> -->
 					</div>
 				</div>
-				<ng-container *ngIf="booking.hotel.trustPilot">
-					<div class="hotel-trust" [trustPilot]="booking.hotel.trustPilot"></div>
+				<ng-container *ngIf="hotel.trustPilot?.totalReviews > 9">
+					<div class="hotel-trust" [trustPilot]="hotel.trustPilot"></div>
 				</ng-container>
-				<button class="add-to-fav" type="button" (click)="wishlist.doToggle(booking.hotel)" [ngClass]="{ active: wishlist.has(booking.hotel) }">
-					<svg class="ico"><use xlink:href="#ico-fav"></use></svg>
+				<button class="add-to-fav" type="button" (click)="wishlist.doToggle(hotel)" [ngClass]="{ active: wishlist.has(hotel) }">
+					<svg class="ico">
+						<use xlink:href="#ico-fav"></use>
+					</svg>
 				</button>
 			</div>
+			<!-- ABSTRACT -->
+			<ng-container *ngIf="page.features">
+				<div class="hotel-abstract">
+					<div [innerHTML]="page.abstract">
+					</div>
+				</div>
+			</ng-container>
 			<!-- SWIPER -->
 			<div class="hotel-gallery swiper-container" [swiper]>
 				<div class="swiper-wrapper" [fancybox]="fancyboxOptions">
@@ -32,64 +41,85 @@
 				<div class="swiper-button swiper-button-prev"></div>
 				<div class="swiper-button swiper-button-next"></div>
 			</div>
-			<!-- DESCRIPTION -->
-			<div class="hotel-desc">
-				<ul class="hotel-list">
-					<li class="hotel-list-item">
-						<svg class="ico">
-							<use xlink:href="#ico-calendar"></use>
-						</svg>
-						<span>{{booking.hotel.abstract}}</span>
-					</li>
-					<li class="hotel-list-item">
-						<svg class="ico">
-							<use xlink:href="#ico-struttura"></use>
-						</svg>
-						<span>{{booking.hotel.accomodation}}</span>
-					</li>
-					<!-- TAGS -->
-					<ng-container *ngIf="page.taxonomies">
-						<li class="hotel-list-item item-{{item.id}} category-{{item.category}}" *ngFor="let item of page.taxonomies | hotelTaxonomy">
-							<svg class="ico">
-								<use xlink:href="#ico-fav"></use>
-							</svg>
-							<span>{{item.name}}</span>
-						</li>
-					</ng-container>
-				</ul>
-				<!-- DESKTOP DESCRIPTION -->
-				<div class="desktop-description">
-					<!-- FEATURES -->
-					<ng-container *ngIf="page.features">
-						<div class="inclusion hotel-desc-group">
-							<div [innerHTML]="page.features[0].description">
-							</div>
+			<!-- DESKTOP DESCRIPTION -->
+			<div class="desktop-description">
+				<div class="hotel-desc">
+					<!-- COLS -->
+					<div class="hotel-description-cols">
+						<div class="hotel-plus">
+							<h3>Servizi ed esperienze incluse</h3>
+							<ul class="hotel-list">
+								<li class="hotel-list-item">
+									<svg class="ico">
+										<use xlink:href="#ico-calendar"></use>
+									</svg>
+									<span>{{hotel.abstract}}</span>
+								</li>
+								<li class="hotel-list-item">
+									<svg class="ico">
+										<use xlink:href="#ico-struttura"></use>
+									</svg>
+									<span>{{hotel.accomodation}}</span>
+								</li>
+								<!-- TAGS -->
+								<ng-container *ngIf="page.taxonomies">
+									<li class="hotel-list-item item-{{item.id}} category-{{item.category}}" *ngFor="let item of page.taxonomies | hotelTaxonomy">
+										<svg class="ico">
+											<use xlink:href="#ico-fav"></use>
+										</svg>
+										<span>{{item.name}}</span>
+									</li>
+								</ng-container>
+							</ul>
 						</div>
-					</ng-container>
-					<ng-container *ngIf="page.features">
-						<div class="readmore-button">
-							<button (click)="readmore = !readmore">
-								<span *ngIf="!readmore">Leggi di più</span>
-								<span *ngIf="readmore">Leggi di meno</span>
-							</button>
-						</div>
-						<div class="readmore-wrap" [ngClass]="{active: readmore}">
-							<div class="inclusion hotel-desc-group">
-								<div class="readmore-accordion" *ngFor="let feature of page.features | hotelFeature">
-									<h2>{{feature.title}}</h2>
-									<div [innerHTML]="feature.description"></div>
+						<!-- Quota comprende e non -->
+						<ng-container *ngIf="page.features">
+							<div class="hotel-inclusive">
+								<div class="" *ngFor="let feature of page.getFeatures(3, [13])">
+									<h3 class="h3">{{feature.title}}</h3>
+									<div class="desc">
+										<div class="">
+											<div [innerHTML]="feature.description"></div>
+										</div>
+									</div>
+								</div>
+								<div class="" *ngFor="let feature of page.getFeatures(3, [14])">
+									<h3 class="h3">{{feature.title}}</h3>
+									<div class="readmore-wrap desc" [ngClass]="{active: feature.readmore}">
+										<div class="readmore-accordion">
+											<div [innerHTML]="feature.description"></div>
+										</div>
+										<div class="readmore-button">
+											<button (click)="feature.readmore = !feature.readmore">
+												<span *ngIf="!feature.readmore">Leggi di più</span>
+												<span *ngIf="feature.readmore">Leggi di meno</span>
+											</button>
+										</div>
+									</div>
 								</div>
 							</div>
-						</div>
-					</ng-container>
+						</ng-container>
+					</div>
+					<!-- TABS -->
+					<div class="hotel-tabs">
+						<p-tabView (onChange)="onTabOpen($event)">
+							<!-- dStructure, Service, Price -->
+							<p-tabPanel [header]="tab.title" *ngFor="let tab of tabs; let i = index;" [selected]="i == 0">
+								<ng-container *ngFor="let item of tab.features; let f = index;">
+									<h3 [innerHTML]="item.title" *ngIf="f > 0"></h3>
+									<div [innerHTML]="item.description"></div>
+								</ng-container>
+							</p-tabPanel>
+						</p-tabView>
+					</div>
 					<!-- LOCATION -->
-					<div class="hotel-mapbox" *ngIf="booking.hotel.location">
+					<div class="hotel-mapbox" *ngIf="hotel.location">
 						<div class="hotel-mapbox--map">
 							<button type="button" (click)="onShowMap()">
 								<svg class="ico" viewBox="0 0 32 32">
 									<use xlink:href="#ico-pin"></use>
 								</svg>
-								<img alt="" src="https://api.mapbox.com/styles/v1/mapbox/streets-v10/static/{{booking.hotel.location.longitude}},{{booking.hotel.location.latitude}},9.0,0,0/300x150@2x?access_token=pk.eyJ1Ijoic3VwYWhmdW5rIiwiYSI6IjE4Zjg1MWMxYzQ3M2RlYTU4OGNlMTc4ODFmOTkyODczIn0.Nusb4DbKb1KnkWWDcZUy-w">
+								<img alt="" src="https://api.mapbox.com/styles/v1/mapbox/streets-v10/static/{{hotel.location.longitude}},{{hotel.location.latitude}},9.0,0,0/300x150@2x?access_token=pk.eyJ1Ijoic3VwYWhmdW5rIiwiYSI6IjE4Zjg1MWMxYzQ3M2RlYTU4OGNlMTc4ODFmOTkyODczIn0.Nusb4DbKb1KnkWWDcZUy-w">
 							</button>
 						</div>
 						<div class="hotel-mapbox--desc">
@@ -105,204 +135,298 @@
 									<svg class="ico ico-pin" viewBox="0 0 32 32">
 										<use xlink:href="#ico-pin"></use>
 									</svg>
-									{{booking.hotel.address.description}}, {{booking.hotel.address.city}}, {{booking.hotel.address.provinceCode}}, {{booking.hotel.address.cap}}
+									{{hotel.address.description}}, {{hotel.address.city}}, {{hotel.address.provinceCode}}, {{hotel.address.cap}}
 								</li>
 								<li>
 									<svg class="ico" viewBox="0 0 32 32">
 										<use xlink:href="#ico-tel"></use>
 									</svg>
-									{{booking.hotel.address.phone}}
+									{{hotel.address.phone}}
 								</li>
 							</ul>
 						</div>
 					</div>
+					<!-- TRUSTPILOT -->
+					<ng-container *ngIf="hotel.trustPilot?.totalReviews > 9">
+						<trustpilot-widget-component [sku]="hotel.structureID"></trustpilot-widget-component>
+					</ng-container>
 				</div>
 			</div>
 		</div>
 		<!-- SIDEBAR -->
-		<div class="hotel-sidebar">
-			<div class="sticky">
-				<div class="sidebar-group">
-					<div class="spinner-input">
-						<strong for="">Adulti</strong>
-						<p-spinner size="10" readonly name="adults" [(ngModel)]="model.adults" [min]="1" [max]="10" (change)="onAdultsChanged()"></p-spinner>
+		<ng-container *ngIf="hotel.active">
+			<form class="hotel-sidebar" name="options" role="form" novalidate autocomplete="off" (ngSubmit)="options.valid && onSubmit()" #options="ngForm">
+				<div class="sticky">
+					<div class="sidebar-group">
+						<div class="spinner-input">
+							<strong>Adulti</strong>
+							<p-spinner size="10" readonly name="adults" [(ngModel)]="model.adults" [min]="1" [max]="10" (onChange)="onAdultsChanged()"></p-spinner>
+						</div>
 					</div>
-				</div>
-				<div class="sidebar-group">
-					<div class="spinner-input">
-						<strong>Bambini</strong>
-						<p-spinner size="10" readonly name="childs" [(ngModel)]="model.childs" [min]="0" [max]="4" (change)="onChildsChanged()"></p-spinner>
-					</div>
-					<div class="child-ages">
-						<div class="child-age" *ngFor="let child of model.childrens; let index = index">
-							<strong>Età bambino {{index}}</strong>
-							<div class="custom-select">
-								<select dir="rtl" name="{{'age' + index}}" [(ngModel)]="child.age">
-									<option *ngFor="let age of search.ages" [ngValue]="age">{{age}}</option>
+					<div class="sidebar-group">
+						<div class="spinner-input">
+							<strong>Bambini</strong>
+							<p-spinner size="10" readonly name="childs" [(ngModel)]="model.childs" [min]="0" [max]="4" (onChange)="onChildsChanged()"></p-spinner>
+						</div>
+						<div class="child-ages">
+							<div class="child-age" *ngFor="let child of model.childrens; let i = index">
+								<strong>Età bambino {{i}}</strong>
+								<div class="custom-select">
+									<select dir="rtl" name="{{'age' + i}}" [(ngModel)]="child.age">
+									<option *ngFor="let age of search.ages" [ngValue]="age" (onChange)="onChildsAgeChanged()">{{age}}</option>
 								</select>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="sidebar-group sidebar-group--calendar" *ngIf="calendar.checkins">
-					<div class="tit">Data di partenza</div>
-					<ng-container *ngIf="calendar.checkins.length === 0">
-						nessuna data disponibile
-					</ng-container>
-					<ng-container *ngIf="calendar.checkins.length > 0">
-						<hotel-datepicker (doSelect)="setCheckIn()" [(ngModel)]="booking.checkIn" [availableDates]="calendar.checkins" [disabled]="busy"></hotel-datepicker>
-					</ng-container>
-				</div>
-				<div class="sidebar-group select-nights" *ngIf="calendar.checkouts">
-					<div class="tit">Numero di notti</div>
-					<ng-container *ngIf="calendar.checkouts.length === 0">
-						nessuna opzione disponibile
-					</ng-container>
-					<ng-container *ngIf="calendar.nights.length > 0">
-						<div class="custom-select">
-							<select name="nights" [(ngModel)]="booking.nights" (change)="onNightsChanged($event.target.value)" [disabled]="busy">
-								<option *ngFor="let value of calendar.nights" [value]="value">{{value}} {{value != 1 ? 'notti' : 'notte'}}</option>
+					<div class="sidebar-group sidebar-group--calendar" *ngIf="calendar.checkins">
+						<div class="tit">Data di partenza</div>
+						<ng-container *ngIf="calendar.checkins.length === 0">
+							nessuna data disponibile
+						</ng-container>
+						<ng-container *ngIf="calendar.checkins.length > 0">
+							<hotel-datepicker name="checkIn" [(ngModel)]="booking.checkIn" [availableDates]="calendar.checkins" [disabled]="busy" (doSelect)="setCheckIn()"></hotel-datepicker>
+						</ng-container>
+					</div>
+					<div class="sidebar-group select-nights" *ngIf="calendar.checkouts">
+						<div class="tit">Data di ritorno</div>
+						<ng-container *ngIf="calendar.checkouts.length === 0">
+							nessuna opzione disponibile
+						</ng-container>
+						<ng-container *ngIf="calendar.nights.length > 0">
+							<div class="custom-select">
+								<select name="nights" [(ngModel)]="booking.nights" (change)="onNightsChanged($event.target.value)" [disabled]="busy">
+								<option *ngFor="let value of calendar.nights" [value]="value">{{getCheckoutDate(value) | date : 'shortDate'}} ({{value}} {{value != 1 ? 'notti' : 'notte'}})</option>
 							</select>
-						</div>
-					</ng-container>
-				</div>
-				<div *ngIf="booking.options">
-					<div class="sidebar-group" *ngIf="booking.options.principals">
-						<div class="tit">Seleziona partenza</div>
-						<div class="radio type-{{item.type}}" *ngFor="let item of booking.options.principals">
-							<label>
-								<input type="radio" name="partenza" value="{{item.code}}" [checked]="item.checked">
+							</div>
+						</ng-container>
+					</div>
+					<div *ngIf="booking.options">
+						<div class="sidebar-group" *ngIf="booking.options.principals?.length">
+							<div class="tit">Seleziona partenza</div>
+							<div class="radio type-{{item.type}}" *ngFor="let item of booking.options.principals; let i = index;">
+								<label>
+								<input type="radio" name="principal" [(ngModel)]="booking.options.principal" value="{{item.code}}" [checked]="item.checked" (change)="onChange()">
 								<span>{{item.name}}</span>
 							</label>
+							</div>
+						</div>
+						<div class="sidebar-group" *ngIf="booking.options.accomodations?.length">
+							<div class="tit">Tipologia di camera</div>
+							<div class="radio type-{{item.type}}" *ngFor="let item of booking.options.accomodations; let i = index;">
+								<label>
+									<input type="radio" name="accomodation" [(ngModel)]="booking.options.accomodation" value="{{item.code}}" (change)="onChange()">
+									<span>{{item.name}} ({{item.price}}€)</span>
+								</label>
+							</div>
+						</div>
+						<div class="sidebar-group" *ngIf="booking.options.supplements?.length">
+							<div class="tit">Supplementi facoltativi</div>
+							<div class="radio type-{{item.type}}" *ngFor="let item of booking.options.supplements; let i = index;">
+								<label>
+									<input type="checkbox" name="supplement{{i}}" [value]="item.checked" [checked]="item.checked" (change)="$event.target.checked ? item.checked = true : item.checked = false">
+									<span>{{item.name}}</span> <small>(+{{item.price}}€)</small>
+								</label>
+							</div>
+						</div>
+						<div class="sidebar-group" *ngIf="booking.options.treatments?.length">
+							<div class="tit">Trattamento</div>
+							<ng-container *ngIf="booking.options.treatments?.length">
+								<div class="radio type-{{item.type}}" *ngFor="let item of booking.options.treatments; let i = index;">
+									<label>
+										<input type="radio" name="treatment" [(ngModel)]="booking.options.treatment" value="{{item.code}}" (change)="onChange()">
+										<span>{{item.name}} ({{item.price}}€)</span>
+									</label>
+								</div>
+							</ng-container>
+							<ng-container *ngIf="hotel.accomodation && !booking.options.treatments?.length">
+								<div class="radio">
+									<label>
+										<input type="radio" name="treatment" [checked]="true">
+										<span>{{hotel.accomodation}}</span>
+									</label>
+								</div>
+							</ng-container>
+						</div>
+						<div class="sidebar-group" *ngIf="booking.options.extraQuotes?.length">
+							<div class="tit">Assicurazione</div>
+							<div class="radio type-{{item.type}}" *ngFor="let item of booking.options.extraQuotes; let i = index;">
+								<label>
+									<input type="checkbox" name="extraQuote{{i}}" [(ngModel)]="item.checked">
+									<span>{{item.name}}</span> <small [innerHTML]="getExtraQuoteDescription(item)"></small> <small [innerHTML]="getExtraQuoteInfo(item)" *ngIf="item.checked"></small>
+								</label>
+							</div>
 						</div>
 					</div>
-					<div class="sidebar-group">
-						<div class="tit">Tipologia di camera</div>
-						<div class="radio type-{{item.type}}" *ngFor="let item of booking.options.accomodations">
-							<label>
-								<input type="radio" name="tipologia-camera" value="{{item.code}}" [checked]="item.checked">
-								<span>{{item.name}} ({{item.price}}€)</span>
-							</label>
+					<div class="sidebar-group--sticky" *ngIf="!busy && booking.options && booking.priceTotal > 0">
+						<div class="sidebar-group">
+							<div class="tit">Totale complessivo</div>
+							<div class="edit-row edit-row--total">
+								<div>Per {{booking.paxTotal}} persone<br> dal {{booking.checkIn | date : 'shortDate'}} al {{booking.checkOut | date : 'shortDate'}}</div>
+								<div class="total-price">{{booking.priceTotal | price : '€'}}</div>
+							</div>
+						</div>
+						<div class="sidebar-cta">
+							<!-- <button type="button" class="btn" [routerLink]="'payment' | slugAsync">Prenota il tuo viaggio</button> -->
+							<!-- <button type="button" class="btn" (click)="onBook($event)" [value]="'payment' | slugAsync">Prenota il tuo viaggio</button> -->
+							<button type="button" class="btn" [ngClass]="{ 'btn--busy': busyBook }" (click)="onBook($event)">
+								<span>Prenota il tuo viaggio</span>
+							</button>
+							<span class="no-extra">(nessun costo aggiuntivo)</span>
 						</div>
 					</div>
-					<div class="sidebar-group">
-						<div class="tit">Trattamento</div>
-						<div class="radio">
-							<label>
-								<input type="radio" name="trattamento" checked>
-								<span>{{booking.hotel.accomodation}}</span>
-							</label>
+					<ng-container *ngIf="busy">
+						<div class="sidebar-group">
+							<div class="loader">Caricamento Offerta <span class="spinner">&nbsp;</span></div>
 						</div>
+					</ng-container>
+				</div>
+			</form>
+		</ng-container>
+		<ng-container *ngIf="!hotel.active">
+			<div class="hotel-sidebar">
+				<div class="expired-offer">
+					<h3 class="h2">Ci dispiace,<br> questa offerta è scaduta.</h3>
+					<button type="button" class="btn" (click)="scrollToVariants()" *ngIf="hotel.relatedSearch?.sameStructure.length > 0">
+						Vedi altre offerte della stessa struttura
+					</button>
+					<button type="button" class="btn" (click)="scrollToFeatures()" *ngIf="hotel.relatedSearch?.suggested.length > 0">
+						Vedi altre offerte selezionate per te
+					</button>
+				</div>
+			</div>
+		</ng-container>
+		<!-- MOBILE DESCRIPTION -->
+		<div class="mobile-description">
+			<div class="hotel-desc">
+				<!-- COLS -->
+				<div class="hotel-description-cols">
+					<div class="hotel-plus">
+						<ul class="hotel-list">
+							<li class="hotel-list-item">
+								<svg class="ico">
+									<use xlink:href="#ico-calendar"></use>
+								</svg>
+								<span>{{hotel.abstract}}</span>
+							</li>
+							<li class="hotel-list-item">
+								<svg class="ico">
+									<use xlink:href="#ico-struttura"></use>
+								</svg>
+								<span>{{hotel.accomodation}}</span>
+							</li>
+							<!-- TAGS -->
+							<ng-container *ngIf="page.taxonomies">
+								<li class="hotel-list-item item-{{item.id}} category-{{item.category}}" *ngFor="let item of page.taxonomies | hotelTaxonomy">
+									<svg class="ico">
+										<use xlink:href="#ico-fav"></use>
+									</svg>
+									<span>{{item.name}}</span>
+								</li>
+							</ng-container>
+						</ul>
 					</div>
-					<div class="sidebar-group">
-						<div class="tit">Assicurazione</div>
-						<div class="radio type-{{item.type}}" *ngFor="let item of booking.options.extraQuotes">
-							<label>
-								<input type="checkbox" name="assicurazione" value="{{item.code}}" [checked]="item.checked">
-								<span>{{item.name}}</span> <small [innerHTML]="item.description"></small>
-							</label>
+					<!-- Quota comprende e non -->
+					<ng-container *ngIf="page.features">
+						<div class="hotel-inclusive">
+							<div class="" *ngFor="let feature of page.getFeatures(3, [13, 14])">
+								<h3 class="h3">{{feature.title}}</h3>
+								<div class="readmore-wrap desc" [ngClass]="{active: readmore}">
+									<div class="readmore-accordion">
+										<div [innerHTML]="feature.description"></div>
+									</div>
+									<div class="readmore-button">
+										<button (click)="readmore = !readmore">
+											<span *ngIf="!readmore">Leggi di più</span>
+											<span *ngIf="readmore">Leggi di meno</span>
+										</button>
+									</div>
+								</div>
+							</div>
 						</div>
+					</ng-container>
+				</div>
+				<!-- TABS/ACCORDION -->
+				<div class="hotel-tabs">
+					<p-accordion (onOpen)="onTabOpen($event)">
+						<!-- dStructure, Service, Price -->
+						<p-accordionTab [header]="tab.title" *ngFor="let tab of tabs; let i = index;" [selected]="i == 0">
+							<ng-container *ngFor="let item of tab.features; let f = index;">
+								<h3 [innerHTML]="item.title" *ngIf="f > 0"></h3>
+								<div [innerHTML]="item.description"></div>
+							</ng-container>
+						</p-accordionTab>
+					</p-accordion>
+				</div>
+				<!-- LOCATION -->
+				<div class="hotel-mapbox" *ngIf="hotel.location">
+					<div class="hotel-mapbox--map">
+						<button type="button" (click)="onShowMap()">
+							<svg class="ico" viewBox="0 0 32 32">
+								<use xlink:href="#ico-pin"></use>
+							</svg>
+							<img alt="" src="https://api.mapbox.com/styles/v1/mapbox/streets-v10/static/{{hotel.location.longitude}},{{hotel.location.latitude}},9.0,0,0/300x150@2x?access_token=pk.eyJ1Ijoic3VwYWhmdW5rIiwiYSI6IjE4Zjg1MWMxYzQ3M2RlYTU4OGNlMTc4ODFmOTkyODczIn0.Nusb4DbKb1KnkWWDcZUy-w">
+						</button>
+					</div>
+					<div class="hotel-mapbox--desc">
+						<div class="h3">Località e contatti</div>
+						<ul>
+							<li>
+								<svg class="ico" viewBox="0 0 32 32">
+									<use xlink:href="#ico-struttura"></use>
+								</svg>
+								{{page.title}}
+							</li>
+							<li>
+								<svg class="ico ico-pin" viewBox="0 0 32 32">
+									<use xlink:href="#ico-pin"></use>
+								</svg>
+								{{hotel.address.description}}, {{hotel.address.city}}, {{hotel.address.provinceCode}}, {{hotel.address.cap}}
+							</li>
+							<li>
+								<svg class="ico" viewBox="0 0 32 32">
+									<use xlink:href="#ico-tel"></use>
+								</svg>
+								{{hotel.address.phone}}
+							</li>
+						</ul>
 					</div>
 				</div>
-				<div class="sidebar-group--sticky" *ngIf="!busy">
-					<div class="sidebar-group">
-						<div class="tit">Totale complessivo</div>
-						<div class="edit-row edit-row--total">
-							<div>Per {{booking.paxTotal}} persone<br> dal {{booking.checkIn | date : 'shortDate'}} al {{booking.checkOut | date : 'shortDate'}}</div>
-							<div class="total-price">{{booking.priceTotal}}€</div>
-						</div>
-					</div>
-					<div class="sidebar-cta">
-						<!-- <button type="button" class="btn" [routerLink]="'payment' | slugAsync">Prenota il tuo viaggio</button> -->
-						<button type="button" class="btn" (click)="onBook($event)" [value]="'payment' | slugAsync">Prenota il tuo viaggio</button>
-						<span class="no-extra">(nessun costo aggiuntivo)</span>
-					</div>
-				</div>
-				<ng-container *ngIf="busy">
-					<div class="sidebar-group">
-						<div class="loader">Caricamento Offerta <span class="spinner">&nbsp;</span></div>
-					</div>
+				<!-- TRUSTPILOT -->
+				<ng-container *ngIf="hotel.trustPilot?.totalReviews > 9">
+					<trustpilot-widget-component [sku]="hotel.structureId"></trustpilot-widget-component>
 				</ng-container>
 			</div>
 		</div>
-		<!-- MOBILE DESCRIPTION -->
-		<div class="mobile-description">
-			<!-- FEATURES -->
-			<ng-container *ngIf="page.features">
-				<div class="inclusion hotel-desc-group">
-					<div [innerHTML]="page.features[0].description">
-					</div>
-				</div>
-			</ng-container>
-			<ng-container *ngIf="page.features">
-				<div class="readmore-button">
-					<button (click)="readmore = !readmore">
-						<span *ngIf="!readmore">Leggi di più</span>
-						<span *ngIf="readmore">Leggi di meno</span>
-					</button>
-				</div>
-				<div class="readmore-wrap" [ngClass]="{active: readmore}">
-					<div class="inclusion hotel-desc-group">
-						<div class="readmore-accordion" *ngFor="let feature of page.features | hotelFeature">
-							<h2>{{feature.title}}</h2>
-							<div [innerHTML]="feature.description"></div>
-						</div>
-					</div>
-				</div>
-			</ng-container>
-			<!-- LOCATION -->
-			<div class="hotel-mapbox" *ngIf="booking.hotel.location">
-				<div class="hotel-mapbox--map">
-					<button type="button" (click)="onShowMap()">
-						<svg class="ico" viewBox="0 0 32 32">
-							<use xlink:href="#ico-pin"></use>
-						</svg>
-						<img alt="" src="https://api.mapbox.com/styles/v1/mapbox/streets-v10/static/{{booking.hotel.location.longitude}},{{booking.hotel.location.latitude}},9.0,0,0/300x150@2x?access_token=pk.eyJ1Ijoic3VwYWhmdW5rIiwiYSI6IjE4Zjg1MWMxYzQ3M2RlYTU4OGNlMTc4ODFmOTkyODczIn0.Nusb4DbKb1KnkWWDcZUy-w">
-					</button>
-				</div>
-				<div class="hotel-mapbox--desc">
-					<div class="h3">Località e contatti</div>
-					<ul>
-						<li>
-							<svg class="ico" viewBox="0 0 32 32">
-								<use xlink:href="#ico-struttura"></use>
-							</svg>
-							{{page.title}}
-						</li>
-						<li>
-							<svg class="ico ico-pin" viewBox="0 0 32 32">
-								<use xlink:href="#ico-pin"></use>
-							</svg>
-							{{booking.hotel.address.description}}, {{booking.hotel.address.city}}, {{booking.hotel.address.provinceCode}}, {{booking.hotel.address.cap}}
-						</li>
-						<li>
-							<svg class="ico" viewBox="0 0 32 32">
-								<use xlink:href="#ico-tel"></use>
-							</svg>
-							{{booking.hotel.address.phone}}
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
 		<!-- TOTAL PRICE MOBILE-->
-		<div class="total-price-mobile" *ngIf="booking.options">
-			<div class="travel-recap">Per {{booking.paxTotal}} persone - dal {{booking.checkIn | date : 'shortDate'}} al {{booking.checkOut | date : 'shortDate'}} - {{booking.hotel.accomodation}}</div>
+		<div class="total-price-mobile" *ngIf="!busy && booking.options && booking.priceTotal > 0">
+			<div class="travel-recap">Per {{booking.paxTotal}} persone - dal {{booking.checkIn | date : 'shortDate'}} al {{booking.checkOut | date : 'shortDate'}} - {{hotel.accomodation}}</div>
 			<div class="total-price-recap">
 				<div class="prices">
 					<div class="price-pp">
 						<span>Prezzo<br>per persona</span>
-						<strong>{{booking.priceTotal / booking.paxTotal}}€</strong>
+						<strong>{{(booking.priceTotal / booking.paxTotal) | price : '€'}}</strong>
 					</div>
 					<div class="price-total">
 						<span>Prezzo<br>Totale</span>
-						<strong>{{booking.priceTotal}}€</strong>
+						<strong>{{booking.priceTotal | price : '€'}}</strong>
 					</div>
 				</div>
 				<div class="recap-cta">
-					<a href="#" class="btn">Prenota subito</a>
+					<button type="button" class="btn" [ngClass]="{ 'btn--busy': busyBook }" (click)="onBook($event)">
+						<span>Prenota subito</span>
+					</button>
 				</div>
 			</div>
 		</div>
 	</div>
+	<!-- HOTEL VARIANTS -->
+	<div #variants>
+		<hotel-variants-component [items]="hotel.relatedSearch?.sameStructure"></hotel-variants-component>
+	</div>
+	<!-- FEATURED HOTELS -->
+	<div #features>
+		<featured-hotels-component [items]="hotel.relatedSearch?.suggested"></featured-hotels-component>
+	</div>
 </section>
+<section-value-proposition></section-value-proposition>

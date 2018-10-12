@@ -1,9 +1,12 @@
 <div class="home-search" [style.background-image]="'url(' + ('img/home/main-cover.jpg' | asset) + ')'">
 	<div class="container">
 		<div class="home-search--head">
-			<div class="tit">Viaggia con tutta la qualità<br> e la garanzia di Eurospin</div>
-			<div class="subtit">Le offerte migliori ai prezzi più bassi</div>
+			<div class="tit" [innerHtml]="'home.title' | labelAsync : 'Viaggia con tutta la qualità<br> e la garanzia di Eurospin'"></div>
+			<div class="subtit" label="home.subTitle" [labelParams]="{ value: 'bassi'}">Le offerte migliori ai prezzi più bassi</div>
 		</div>
 		<main-search (doSearch)="search.onSearch($event)"></main-search>
 	</div>
+</div>
+<div class="home-value-proposition">
+	<section-value-proposition></section-value-proposition>
 </div>

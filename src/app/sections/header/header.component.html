@@ -1,8 +1,10 @@
-<div class="top-header"><img src="assets/img/top.png" alt=""></div>
-<header class="header" [ngClass]="{'nav-active': navToggle}">
+<div class="top-header">
+	<img src="assets/img/top.png" alt="" />
+</div>
+<header class="header" [ngClass]="{'nav-active': navToggle}" (clickOutside)="subnavActive = null">
 	<div class="container">
 		<a [routerLink]="'homepage' | slugAsync" class="logo">
-			<img src="assets/img/logo-eurospin-viaggi.png" alt="Logo Eurospin Viaggi">
+			<img src="assets/img/logo-eurospin-viaggi.png" alt="Logo Eurospin Viaggi" />
 		</a>
 		<div class="desktop-navbar">
 			<ul class="navbar-nav">
@@ -11,21 +13,31 @@
 					<button class="btn--link nav-link" type="button" [ngClass]="{'active': subnavActive == item}" (click)="subnavActive = (subnavActive == item ? null : item)" *ngIf="item.items?.length">{{item.name}}</button>
 				</li>
 			</ul>
-			<div class="navbar-actions" *ngIf="!(userService.user$ | async)">
-				<button type="button" class="btn btn--tertiary" (click)="onSign()">{{ 'header.signIn' | translate }}</button>
-			</div>
-			<div class="navbar-actions" *ngIf="(userService.user$ | async)">
-				<a class="navbar-ico" [routerLink]="['/area_riservata/preferiti']" routerLinkActive="active">
-					<svg class="ico ico-fav">
-						<use xlink:href="#ico-fav"></use>
-					</svg>
-					<span *ngIf="wishlist.count > 0" class="fav-num">{{wishlist.count}}</span>
-				</a>
-				<a class="navbar-ico" [routerLink]="['/area_riservata/i_tuoi_dati']" routerLinkActive="active">
-					<svg class="ico ico-user">
-						<use xlink:href="#ico-user"></use>
-					</svg>
-				</a>
+			<div class="navbar-actions">
+				<ng-container *ngIf="!userService.user">
+					<button type="button" class="btn btn--tertiary" (click)="onSign()">{{ 'header.signIn' | translate }}</button>
+				</ng-container>
+				<ng-container *ngIf="userService.user">
+					<a class="navbar-ico" [routerLink]="['/area_riservata/preferiti']" routerLinkActive="active">
+						<svg class="ico ico-fav">
+							<use xlink:href="#ico-fav"></use>
+						</svg>
+						<span *ngIf="wishlist.count > 0" class="fav-num">{{wishlist.count}}</span>
+					</a>
+					<a class="navbar-ico" [routerLink]="['/area_riservata/i_tuoi_dati']" routerLinkActive="active">
+						<svg class="ico ico-user">
+							<use xlink:href="#ico-user"></use>
+						</svg>
+					</a>
+				</ng-container>
+				<ng-container *ngIf="operatorService.operator">
+					<button class="btn btn--operator" type="button" (click)="onOperatorLogout()">
+						<span>{{operatorService.operator.username}}</span>
+						<svg class="ico ico-close">
+							<use xlink:href="#ico-close"></use>
+						</svg>
+					</button>
+				</ng-container>
 			</div>
 		</div>
 		<div class="mobile-navbar">
@@ -36,28 +48,42 @@
 					</svg><span>Chiama</span>
 				</a>
 			</div>
-			<div class="nav-item" *ngIf="!(userService.user$ | async)">
-				<button type="button" (click)="onSign()">
-					<svg class="ico">
-						<use xlink:href="#ico-user"></use>
-					</svg><span>{{ 'header.signIn' | label }}</span>
-				</button>
-			</div>
-			<div class="nav-item" *ngIf="(userService.user$ | async)">
-				<a [routerLink]="['/area_riservata/preferiti']" routerLinkActive="active">
-					<span *ngIf="wishlist.count > 0" class="fav-num">{{wishlist.count}}</span>
-					<svg class="ico ico-fav">
-						<use xlink:href="#ico-fav"></use>
-					</svg><span>Preferiti</span>
-				</a>
-			</div>
-			<div class="nav-item" *ngIf="(userService.user$ | async)">
-				<a [routerLink]="['/area_riservata/i_tuoi_dati']" routerLinkActive="active">
-					<svg class="ico ico-user">
-						<use xlink:href="#ico-user"></use>
-					</svg><span>Profilo</span>
-				</a>
-			</div>
+			<ng-container *ngIf="!userService.user">
+				<div class="nav-item">
+					<button type="button" (click)="onSign()">
+						<svg class="ico">
+							<use xlink:href="#ico-user"></use>
+						</svg><span>{{ 'header.signIn' | label : 'Accedi' }}</span>
+					</button>
+				</div>
+			</ng-container>
+			<ng-container *ngIf="userService.user">
+				<div class="nav-item">
+					<a [routerLink]="['/area_riservata/preferiti']" routerLinkActive="active">
+						<span *ngIf="wishlist.count > 0" class="fav-num">{{wishlist.count}}</span>
+						<svg class="ico ico-fav">
+							<use xlink:href="#ico-fav"></use>
+						</svg><span>Preferiti</span>
+					</a>
+				</div>
+				<div class="nav-item">
+					<a [routerLink]="['/area_riservata/i_tuoi_dati']" routerLinkActive="active">
+						<svg class="ico ico-user">
+							<use xlink:href="#ico-user"></use>
+						</svg><span>Profilo</span>
+					</a>
+				</div>
+			</ng-container>
+			<ng-container *ngIf="operatorService.operator">
+				<div class="nav-item">
+					<button class="btn btn--operator" type="button" (click)="onOperatorLogout()">
+						<span>{{operatorService.operator.username}}</span>
+						<svg class="ico ico-close">
+							<use xlink:href="#ico-close"></use>
+						</svg>
+					</button>
+				</div>
+			</ng-container>
 			<div class="nav-item">
 				<button class="nav-toggle" (click)="navToggle = !navToggle">
 					<div class="nav-toggle--bars">
@@ -70,18 +96,19 @@
 			</div>
 		</div>
 	</div>
-
 	<ng-container *ngFor="let item of menu; let index = index">
 		<div class="subnav subnav-{{index}}" *ngIf="subnavActive == item && item.items?.length">
 			<button class="subnav-close" (click)="subnavActive = null">
-				<svg class="ico"><use xlink:href="#ico-prev"></use></svg>
+				<svg class="ico">
+					<use xlink:href="#ico-prev"></use>
+				</svg>
 				indietro
 			</button>
 			<div class="container">
 				<ng-container *ngIf="item.items?.length > 3">
 					<div class="subnav-col">
 						<ul>
-							<li *ngFor="let row of item.items"><a [href]="row.slug">{{row.name}}</a></li>
+							<li *ngFor="let row of item.items"><a [routerLink]="row.slug" (click)="subnavActive = null" [innerHTML]="row.name"></a></li>
 						</ul>
 					</div>
 				</ng-container>
@@ -89,12 +116,11 @@
 					<div class="subnav-col" *ngFor="let col of item.items">
 						<h3>{{col.name}}</h3>
 						<ul>
-							<li *ngFor="let row of col.items"><a [href]="row.slug">{{row.name}}</a></li>
+							<li *ngFor="let row of col.items"><a [routerLink]="row.slug" (click)="subnavActive = null" [innerHTML]="row.name"></a></li>
 						</ul>
 					</div>
 				</ng-container>
 			</div>
 		</div>
 	</ng-container>
-
 </header>

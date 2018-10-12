@@ -8,8 +8,9 @@ export class Document implements Entity {
 	slug?: string;
 }
 
-export class DocumentIndex implements Entity {
+export class DocumentIndex {
 	id: number | string;
 	mnemonic?: string;
 	slug?: string;
 }
+

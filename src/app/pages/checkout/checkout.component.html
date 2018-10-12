@@ -1,0 +1,94 @@
+<div class="checkout-page" *ngIf="!cart">
+	Selezionare un'offerta
+</div>
+<div class="checkout-page" *ngIf="cart">
+	<!-- {{cart | json}} -->
+	<!-- Payment Steps -->
+	<div class="checkout-steps">
+		<div class="container">
+			<ng-container *ngFor="let link of ['i_tuoi_dati', 'dati_passeggeri', 'pagamento', null]; let i = index;">
+				<a class="step done" [routerLink]="link" *ngIf="link && step > i"><span>{{i + 1}}</span></a>
+				<div class="step" *ngIf="step <= i" [ngClass]="{ active: step == i }"><span>{{i + 1}}</span></div>
+			</ng-container>
+		</div>
+	</div>
+	<!-- /Payment Steps -->
+	<div class="container">
+		<!-- Riepilogo -->
+		<div class="checkout-hotel-resume">
+			<div class="hotel-info">
+				<div class="hotel-image"><img [src]="hotel.photo + '?width=40height=40&rmode=crop'" alt="{{hotel.name}}" /></div>
+				<div class="hotel-head">
+					<div class="hotel-name">
+						<span>{{hotel.name}}</span> <span class="stars"><em *ngFor="let star of hotel.rating?.split('');" [ngClass]="{ superior: star === 'S' }">{{star}}</em></span>
+					</div>
+					<div class="hotel-location">
+						<span class="hotel-region">{{hotel.location?.avesDstCode}}</span>
+						<!-- <span class="hotel-region">Italia Toscana</span>&nbsp;<span class="hotel-town">Radda in Chianti SI</span> -->
+					</div>
+				</div>
+			</div>
+			<div class="travel-info">
+				<div>
+					<span>Partecipanti</span>
+					<strong><span>{{service?.adults}} adulti</span> <span *ngIf="service?.children?.length"> / {{service?.children?.length}} bambini</span></strong>
+				</div>
+				<div>
+					<span>Durata</span>
+					<strong>{{cart.daysTotal}} notti</strong>
+				</div>
+				<div>
+					<span>Data di partenza</span>
+					<strong>{{cart.checkIn | date : 'shortDate'}}</strong>
+				</div>
+				<div>
+					<span>Data di ritorno</span>
+					<strong>{{cart.checkOut | date : 'shortDate'}}</strong>
+				</div>
+				<div *ngFor="let item of cart.avesServices">
+					<span [ngClass]="{ wide: !item.price }">{{item.description || item.name | titlecase}}</span>
+					<strong *ngIf="item.price">{{item.price | price : '€'}}</strong>
+				</div>
+				<div *ngFor="let item of cart.avesExtraQuotes">
+					<span [ngClass]="{ wide: !item.price }">{{item.description || item.name | titlecase}}</span>
+					<strong *ngIf="item.price">{{item.price | price : '€'}}</strong>
+				</div>
+			</div>
+			<div class="travel-info" *ngIf="cards.length > 0">
+				<div *ngFor="let item of cards">
+					<span>Carta {{item.codeShort}}</span>
+					<strong>-{{item.credits | price : '€'}}</strong>
+				</div>
+			</div>
+			<div class="travel-info" *ngIf="cart.paymentAdvance?.enable">
+				<div>
+					<span>Acconto</span>
+					<strong>-{{cart.paymentAdvance.amount | price : '€'}}</strong>
+				</div>
+				<div>
+					<span>Da pagare</span>
+					<strong>{{cart.paymentAdvance.balance | price : '€'}}</strong>
+				</div>
+			</div>
+			<div class="travel-info" *ngIf="cart.detail.totalAmountDetail.totalAmountBeforeDiscount > cart.detail.totalAmountDetail.totalAmountAfterDiscount">
+				<div>
+					<span>Totale non scontato</span>
+					<strong class="line-through">{{cart.detail.totalAmountDetail.totalAmountBeforeDiscount | price : '€'}}</strong>
+				</div>
+			</div>
+			<div class="total-price">
+				<div>
+					<span>Totale Complessivo</span>
+					<strong>{{cart.detail.totalAmountDetail.totalAmountAfterDiscount | price : '€'}}</strong>
+				</div>
+			</div>
+		</div>
+		<!-- /Riepilogo -->
+		<!-- Payment Container -->
+		<div class="checkout-container">
+			<router-outlet></router-outlet>
+		</div>
+		<!-- /Payment Container -->
+	</div>
+</div>
+<section-value-proposition></section-value-proposition>

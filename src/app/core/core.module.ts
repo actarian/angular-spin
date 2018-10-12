@@ -7,18 +7,20 @@ import { ControlEditableComponent } from '../forms';
 import { AuthService } from './auth';
 import { CoreRouting } from './core.routing';
 import { DisposableComponent } from './disposable';
-import { ControlComponent, ControlService, FormService, MatchValidator } from './forms';
+import { ControlComponent, ControlService, ExistsValidator, FormService, MatchValidator } from './forms';
 import { HighlightPipe } from './highlight';
 import { HttpResponseInterceptor } from './http';
 import { JsonFormatterComponent } from './json-formatter';
-import { CustomMissingTranslationHandler, LabelPipe, LabelService } from './labels';
+import { CustomMissingTranslationHandler, LabelAsyncPipe, LabelDirective, LabelPipe, LabelService } from './labels';
 import { Logger, LoggerComponent } from './logger';
+import { EventDispatcherService } from './models/event-dispatcher.service';
 import { MenuService } from './models/menu.service';
 import { OnceService } from './once';
-import { PageComponent, PageOutletComponent, Pages, PageService } from './pages';
-import { FacebookService, GoogleService, MapboxService } from './plugins';
-import { GoogleTagManagerComponent } from './plugins/google/google-tag-manager.component';
-import { AssetPipe, CustomAsyncPipe, ImagePipe, PublicPipe, RoutePipe, SegmentPipe, SlugAsyncPipe, SlugPipe } from './routes';
+import { PageComponent, PageGuard, PageNotFoundComponent, PageOutletComponent, Pages, PageService, StaticGuard } from './pages';
+import { AssetPipe, CustomAsyncPipe, ImagePipe, PublicPipe, SegmentPipe } from './pipes';
+import { FacebookService, GoogleService, GoogleTagManagerComponent, GoogleTagManagerService, MapboxService, PayPalService, PayPalWidgetComponent, TrustPilotService, TrustPilotWidgetComponent } from './plugins';
+import { RoutePipe } from './routes';
+import { SlugAsyncPipe, SlugPipe } from './slugs';
 import { CookieStorageService, LocalStorageService, SessionStorageService, StorageService } from './storage';
 import { SafeUrlPipe, TrustPipe } from './trust';
 import { ClickOutsideDirective, FancyboxDirective, LazyImagesDirective } from './ui';
@@ -38,15 +40,19 @@ import { ModalContainerComponent, ModalService, ModalViewComponent } from './ui/
 		CoreRouting,
 	],
 	declarations: [
-		PageOutletComponent, PageComponent, DisposableComponent,
-		LabelPipe, AssetPipe, CustomAsyncPipe, ImagePipe, HighlightPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe, SlugAsyncPipe, MatchValidator, TrustPipe, SafeUrlPipe,
-		ControlComponent, JsonFormatterComponent,
-		ModalContainerComponent, ModalViewComponent, LoggerComponent, FancyboxDirective, ClickOutsideDirective, LazyImagesDirective, ControlEditableComponent, GoogleTagManagerComponent
+		PageOutletComponent, PageComponent, PageNotFoundComponent, DisposableComponent,
+		AssetPipe, CustomAsyncPipe, ImagePipe, HighlightPipe, LabelAsyncPipe, LabelPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe, SlugAsyncPipe, ExistsValidator, MatchValidator, TrustPipe, SafeUrlPipe,
+		ControlComponent, ControlEditableComponent, JsonFormatterComponent, LoggerComponent,
+		ModalContainerComponent, ModalViewComponent,
+		GoogleTagManagerComponent, PayPalWidgetComponent, TrustPilotWidgetComponent,
+		ClickOutsideDirective, FancyboxDirective, LabelDirective, LazyImagesDirective,
 	],
 	exports: [
-		TranslatePipe, LabelPipe, AssetPipe, CustomAsyncPipe, ImagePipe, HighlightPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe, SlugAsyncPipe, MatchValidator, TrustPipe, SafeUrlPipe,
-		ControlComponent, JsonFormatterComponent,
-		ModalContainerComponent, ModalViewComponent, LoggerComponent, FancyboxDirective, ClickOutsideDirective, LazyImagesDirective, ControlEditableComponent, GoogleTagManagerComponent
+		TranslatePipe, AssetPipe, CustomAsyncPipe, ImagePipe, HighlightPipe, LabelAsyncPipe, LabelPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe, SlugAsyncPipe, ExistsValidator, MatchValidator, TrustPipe, SafeUrlPipe,
+		ControlComponent, ControlEditableComponent, JsonFormatterComponent, LoggerComponent,
+		GoogleTagManagerComponent, PayPalWidgetComponent, TrustPilotWidgetComponent,
+		ModalContainerComponent, ModalViewComponent,
+		ClickOutsideDirective, FancyboxDirective, LabelDirective, LazyImagesDirective,
 	],
 	providers: [
 		{ provide: HTTP_INTERCEPTORS, useClass: HttpResponseInterceptor, multi: true },
@@ -57,8 +63,11 @@ import { ModalContainerComponent, ModalService, ModalViewComponent } from './ui/
 		SessionStorageService,
 		StorageService,
 		FacebookService,
-		MapboxService,
 		GoogleService,
+		GoogleTagManagerService,
+		MapboxService,
+		PayPalService,
+		TrustPilotService,
 		Logger,
 		OnceService,
 		PageService,
@@ -66,8 +75,10 @@ import { ModalContainerComponent, ModalService, ModalViewComponent } from './ui/
 		FormService,
 		ModalService,
 		MenuService,
+		EventDispatcherService,
+		PageGuard, StaticGuard,
 		// pipes
-		TranslatePipe, LabelPipe, AssetPipe, CustomAsyncPipe, ImagePipe, HighlightPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe, SlugAsyncPipe, MatchValidator, TrustPipe, SafeUrlPipe,
+		TranslatePipe, LabelPipe, AssetPipe, CustomAsyncPipe, ImagePipe, HighlightPipe, PublicPipe, RoutePipe, SegmentPipe, SlugPipe, SlugAsyncPipe, ExistsValidator, MatchValidator, TrustPipe, SafeUrlPipe,
 	],
 })
 

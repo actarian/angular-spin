@@ -20,7 +20,7 @@ Landing Search
 	&:before {
 		content: '';
 		position: absolute;
-		background: rgba(0, 35, 62, 0.55);
+		background: rgba(0, 35, 62, 0.5);
 		mix-blend-mode: multiply;
 		top: 0;
 		left: 0;
@@ -43,6 +43,7 @@ Landing Search
 
 	@include xs-down {
 		height: auto;
+		background: #fff;
 	}
 
 	@include xxs-down {
@@ -137,6 +138,51 @@ Landing Search
 
 			p:last-child {
 				margin-bottom: 0;
+			}
+		}
+	}
+}
+
+.readmore-button {
+	display: none;
+}
+
+@include xxs-down {
+	.readmore-wrap {
+		&.active {
+			.readmore-accordion {
+				&.active {
+					height: auto;
+					overflow: none;
+
+					&:before {
+						display: none;
+					}
+				}
+			}
+		}
+
+		.readmore-accordion {
+			&.active {
+				position: relative;
+				z-index: 1;
+				overflow: hidden;
+				height: 100px;
+
+				&:before {
+					content: '';
+					width: 100%;
+					height: 50px;
+					background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+					position: absolute;
+					bottom: 0;
+					left: 0;
+				}
+
+				&+.readmore-button {
+					margin-top: 7px;
+					display: block;
+				}
 			}
 		}
 	}

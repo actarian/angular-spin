@@ -1,0 +1,89 @@
+<div class="generic-component">
+	<div class="container">
+		<h1 class="h1 title" [innerHTML]="page.title">-</h1>
+		<div class="abstract" [innerHTML]="page.abstract">-</div>
+		<div class="description" [innerHTML]="page.description">-</div>
+		<!-- -->
+		<div [hidden]="sent">
+			<h2>Compila i campi con i tuoi dati</h2>
+			<form class="form" [ngClass]="{submitted: contact.submitted}" name="contact" role="form" novalidate autocomplete="off" (ngSubmit)="contact.valid && onSubmit()" #contact="ngForm">
+				<div class="fieldset">
+					<div class="form-group">
+						<label>Numero pratica</label>
+						<input placeholder="numero pratica" type="text" class="form-control" [required]="isMandatory(model.type) ? 'required' : null" [(ngModel)]="model.bookFileCode" name="bookFileCode" #bookFileCode="ngModel" autocomplete="bookFileCode">
+						<div *ngIf="bookFileCode.invalid && (contact.submitted || bookFileCode.dirty || bookFileCode.touched)" class="alert alert-danger">
+							<div *ngIf="bookFileCode.errors.required">{{ 'errors.required' | translate }}</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label>Tipologia richiesta</label>
+						<select class="form-control" name="requestType" required [(ngModel)]="model.type" [disabled]="busy" #requestType="ngModel">
+							<option *ngFor="let item of requestTypes" [value]="item.id">{{item.name}}</option>
+						</select>
+						<div *ngIf="requestType.invalid && (contact.submitted || requestType.dirty || requestType.touched)" class="alert alert-danger">
+							<div *ngIf="requestType.errors.required">{{ 'errors.required' | translate }}</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label>{{ 'signUp.firstName' | translate }}</label>
+						<input placeholder="{{ 'signUp.firstName' | translate }}" type="text" class="form-control" required [(ngModel)]="model.firstName" name="firstName" #firstName="ngModel" autocomplete="firstName">
+						<div *ngIf="firstName.invalid && (contact.submitted || firstName.dirty || firstName.touched)" class="alert alert-danger">
+							<div *ngIf="firstName.errors.required">{{ 'errors.required' | translate }}</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label>{{ 'signUp.lastName' | translate }}</label>
+						<input placeholder="{{ 'signUp.lastName' | translate }}" type="text" class="form-control" required [(ngModel)]="model.lastName" name="lastName" #lastName="ngModel" autocomplete="lastName">
+						<div *ngIf="lastName.invalid && (contact.submitted || lastName.dirty || lastName.touched)" class="alert alert-danger">
+							<div *ngIf="lastName.errors.required">{{ 'errors.required' | translate }}</div>
+						</div>
+					</div>
+					<div class="form-group form-group-errors">
+						<label>{{ 'signUp.email' | translate }}</label>
+						<input placeholder="{{ 'signUp.email' | translate }}" type="email" class="form-control" required pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" [(ngModel)]="model.email" name="email" #email="ngModel" autocomplete="email">
+						<div *ngIf="email.invalid && (contact.submitted || email.dirty || email.touched)" class="alert alert-danger">
+							<div *ngIf="email.errors.required">{{ 'errors.required' | translate }}</div>
+							<div *ngIf="email.errors.pattern">{{ 'errors.email' | translate }}</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label>Telefono</label>
+						<input placeholder="telefono" type="text" class="form-control" [(ngModel)]="model.phone" name="phone" #phone="ngModel" autocomplete="phone">
+					</div>
+					<div class="form-group">
+						<label>Messaggio</label>
+						<input placeholder="Messaggio" type="textarea" class="form-control" required [(ngModel)]="model.message" name="message" #message="ngModel" autocomplete="message">
+						<div *ngIf="message.invalid && (contact.submitted || message.dirty || message.touched)" class="alert alert-danger">
+							<div *ngIf="message.errors.required">{{ 'errors.required' | translate }}</div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group form-group-errors">
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" class="form-check-input" required [(ngModel)]="model.privacy" name="privacy" #privacy="ngModel">
+							<span>Preso atto dell'<a href="/media/userfiles/files/20180522-Informativa_Contatti.pdf" target="_blank">informativa</a>, acconsento al trattamento dei miei dati personali ai fini dell'invio di proposte commerciali da parte di Eurospin.</span>
+						</label>
+					</div>
+					<div *ngIf="privacy.invalid && (contact.submitted || privacy.dirty || privacy.touched)" class="alert alert-danger">
+						<div *ngIf="privacy.errors.required">{{ 'errors.required' | translate }}</div>
+					</div>
+				</div>
+				<br>
+				<button type="submit" class="btn btn-primary" [ngClass]="{ disabled: submitted, invalid: !contact.valid, 'btn--busy': busy }" title="{{ 'signUp.register' | translate }}">
+					<span>Invia</span>
+				</button>
+			</form>
+			<div class="alert alert-danger fade show" role="alert" *ngIf="error">
+				<strong>{{error.message || error.statusText}}</strong>
+			</div>
+		</div>
+		<div [hidden]="!sent">
+			<h2>Richiesta inviata!</h2>
+			<p>La richiesta di contatto è stata inviata correttamente.</p>
+			<br>
+		</div>
+		<!-- -->
+	</div>
+</div>
+<section-value-proposition></section-value-proposition>

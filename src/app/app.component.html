@@ -1,13 +1,18 @@
 <google-tag-manager></google-tag-manager>
 <div class="wrapper">
+	<section-shop-reminder></section-shop-reminder>
 	<section-header></section-header>
 	<app-logger></app-logger>
 	<router-outlet></router-outlet>
-	<section-value-proposition></section-value-proposition>
 	<section-footer></section-footer>
 	<section-svg></section-svg>
 </div>
 <div *ngIf="!cookieAccepted" class="cookie-bar">
-	Questo sito web utilizza cookie di profilazione, al fine di inviare messaggi pubblicitari in linea con le preferenze manifestate nell'ambito della navigazione in rete ed installa cookies di terze parti. La prosecuzione della navigazione, compreso lo scroll ed il click su elementi del sito, equivale a consenso. Per maggiori informazioni consulta l’<a [routerLink]="'cookie-policy' | slugAsync">informativa cookies completa</a> <button (click)="acceptCookie();">Chiudi</button>
+	<div class="container">
+		<div class="cookie-bar-wrap">
+			Questo sito web utilizza cookie di profilazione, al fine di inviare messaggi pubblicitari in linea con le preferenze manifestate nell'ambito della navigazione in rete ed installa cookies di terze parti. La prosecuzione della navigazione, compreso lo scroll ed il click su elementi del sito, equivale a consenso. Per maggiori informazioni consulta l’<a [routerLink]="'cookie-policy' | slugAsync">informativa cookies completa</a> <button type="button" (click)="acceptCookie();" title="Accetto i cookies">Chiudi</button>
+		</div>
+	</div>
 </div>
 <modal-container-component></modal-container-component>
+<loading-transition></loading-transition>

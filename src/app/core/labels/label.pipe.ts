@@ -1,6 +1,3 @@
-
-
-
 import { ChangeDetectorRef, Injectable, Pipe, PipeTransform } from '@angular/core';
 import { Label } from './label';
 import { LabelService } from './label.service';
@@ -24,10 +21,10 @@ export class LabelPipe implements PipeTransform {
 		);
 	}
 
-	public transform(key: string, params?: any): string {
+	public transform(key: string, text?: string, params?: any): string {
 		// console.log(key, params);
 		// return WrappedValue.wrap(this.val);
-		const label = this.labelService.getLabel(key, params);
+		const label = this.labelService.getLabel(key, text, params);
 		// console.log('label', label, this.labelService.cache);
 		return label;
 	}

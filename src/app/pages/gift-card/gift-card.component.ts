@@ -1,6 +1,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { first, takeUntil } from 'rxjs/operators';
+import { finalize, first, takeUntil } from 'rxjs/operators';
 import { PageComponent, PageInit, RouteService } from '../../core';
+import { GiftCard, GiftCardService, GiftCardState } from '../../models';
 
 @Component({
 	selector: 'gift-card-component',
@@ -31,12 +32,16 @@ export class GiftCardComponent extends PageComponent implements PageInit {
 		},
 	};
 
-	card: any = null;
+	card: GiftCard;
+	cardState: any = GiftCardState;
+	cardError: any;
+	model: any = {};
+	busy: boolean = false;
 	success: boolean = false;
-	error: boolean = false;
 
 	constructor(
-		protected routeService: RouteService
+		protected routeService: RouteService,
+		private giftCardService: GiftCardService,
 	) {
 		super(routeService);
 	}
@@ -49,6 +54,26 @@ export class GiftCardComponent extends PageComponent implements PageInit {
 		).subscribe(params => {
 			console.log('GiftCardComponent.params', params);
 		});
+	}
+
+	onGiftCardCheck() {
+		this.cardError = null;
+		this.busy = true;
+		this.giftCardService.checkCard(this.model.code + this.model.secret).pipe(
+			first(),
+			finalize(() => this.busy = false),
+		).subscribe(
+			card => {
+				console.log('checkCard', card);
+				this.card = card;
+			},
+			error => this.cardError = error
+		);
+	}
+
+	scrollToElementRef(nativeElement: HTMLElement) {
+		console.log(nativeElement);
+		nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' });
 	}
 
 }

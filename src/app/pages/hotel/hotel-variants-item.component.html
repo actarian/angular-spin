@@ -1,0 +1,56 @@
+<div class="hotel-item">
+	<!-- Hotel Content -->
+	<div class="content">
+		<div class="desc">
+			<ul class="list">
+				<li class="list-item">
+					<svg class="ico">
+						<use xlink:href="#ico-calendar"></use>
+					</svg>
+					<span>{{item.abstract}}</span>
+				</li>
+				<li class="list-item">
+					<svg class="ico">
+						<use xlink:href="#ico-struttura"></use>
+					</svg>
+					<span>{{item.accomodation}}</span>
+				</li>
+			</ul>
+			<div class="special-msg" *ngIf="item.earlyBookingText">
+				<!-- <strong>20%</strong> PRENOTA PRIMA -->
+				{{item.earlyBookingText}}
+			</div>
+		</div>
+	</div>
+	<!-- /Hotel Content -->
+	<!-- Hotel Action -->
+	<div class="action">
+		<button type="button" class="add-to-fav" (click)="wishlist.doToggle(item)" [ngClass]="{ active: wishlist.has(item) }">
+			<svg class="ico">
+				<use xlink:href="#ico-fav"></use>
+			</svg>
+			<span *ngIf="!wishlist.has(item)">Salva</span>
+			<span *ngIf="wishlist.has(item)">Rimuovi</span>
+		</button>
+		<!--
+		<div class="special-msg">
+			<strong>20%</strong> PRENOTA PRIMA {{item.earlyBookingText}}
+		</div>
+		-->
+		<div class="summary">
+			<div class="price">
+				<span class="desc">Da</span>
+				<span class="single-price"><span class="value">{{item.price}}</span><span class="symbol">€</span></span>
+				<span class="desc">Prezzo per persona</span>
+			</div>
+			<div class="total-price">
+				<span class="desc">Prezzo totale</span>
+				<span class="total-price"><span class="value">{{item.totalPrice}}</span><span class="symbol">€</span></span>
+			</div>
+		</div>
+		<div class="cta">
+			<a class="btn" [routerLink]="[item.slug] | route" (click)="onBeforeNav()">Scopri offerta</a>
+		</div>
+	</div>
+	<!-- /Hotel Action -->
+</div>

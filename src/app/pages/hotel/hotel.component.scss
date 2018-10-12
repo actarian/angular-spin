@@ -236,7 +236,7 @@ Hotel Sidebar
 		background: #fff;
 		border-top: 1px solid #e0e0e0;
 		margin-top: 2px;
-		background: #fffedd;
+		background: $highlight-bg;
 		margin-left: -10px;
 		margin-right: -10px;
 		padding-left: 12px;
@@ -308,6 +308,34 @@ Hotel Sidebar
 }
 
 
+.expired-offer {
+	padding: 15px;
+	background: #fafafa;
+
+	.h2 {
+		font-size: 26px;
+		line-height: 1.2;
+		color: $tit-color;
+		margin-bottom: 10px;
+		font-weight: 100;
+
+		@include xs-down {
+			font-size: 16px;
+			font-weight: bold;
+			margin-bottom: 5px;
+		}
+	}
+
+	.btn {
+		margin-right: 4px;
+	}
+
+	.btn+.btn {
+		margin-top: 10px;
+	}
+}
+
+
 .total-price-mobile {
 	position: sticky;
 	bottom: 0;
@@ -315,7 +343,7 @@ Hotel Sidebar
 	background: #fff;
 	border-top: 1px solid #e0e0e0;
 	margin-top: -1px;
-	background: #fffedd;
+	background: $highlight-bg;
 	padding: 10px 15px 8px;
 	font-size: 11px;
 	line-height: 1.2;
@@ -506,6 +534,15 @@ Hotel Head
 
 
 /*--------------------------------------------------
+Hotel Abstract
+--------------------------------------------------*/
+.hotel-abstract {
+	margin: 15px 0 15px;
+	padding: 10px 0 0;
+	border-top: 1px solid $border-color;
+}
+
+/*--------------------------------------------------
 Hotel Gallery
 --------------------------------------------------*/
 
@@ -540,9 +577,6 @@ Hotel Desc
 		display: block;
 	}
 
-	.readmore-wrap {
-		padding-top: 20px;
-	}
 }
 
 .hotel-desc {
@@ -566,6 +600,12 @@ Hotel Desc
 		}
 	}
 
+	h3 {
+		text-transform: uppercase;
+		font-size: 14px;
+		margin-bottom: 8px;
+		color: $tertiary-color;
+	}
 
 	.hotel-list {
 		margin: 0;
@@ -621,58 +661,6 @@ Hotel Desc
 	}
 }
 
-
-.readmore-accordion {
-	margin-bottom: 30px;
-
-	@include sm-down {
-		margin-bottom: 20px;
-	}
-
-	&__wrapper {
-		overflow: hidden;
-		position: relative;
-
-		&:after {
-			content: '';
-			position: absolute;
-			width: 100%;
-			height: 40px;
-			left: 0;
-			bottom: 0;
-			background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
-			z-index: 1;
-			transition: opacity .4s;
-			pointer-events: none;
-
-			@include xxs-down {
-				height: 30px;
-			}
-		}
-
-		&.open,
-		&.inactive {
-			&:after {
-				opacity: 0;
-			}
-		}
-	}
-
-	&__toggler {
-		display: block;
-
-		span {
-			margin-top: -3px;
-			display: none;
-
-			&:first-of-type {
-				display: block;
-			}
-		}
-	}
-
-}
-
 .hotel-page {
 	.hotel-head {
 		.add-to-fav {
@@ -682,15 +670,45 @@ Hotel Desc
 	}
 }
 
-.readmore-wrap {
-	display: none;
+.hotel-description-cols {
+	display: flex;
+	flex-wrap: wrap;
 
-	&.active {
-		display: block;
+	.hotel-plus {
+		flex: 0 0 50%;
+		max-width: 50%;
+		padding-right: 20px;
+		border-right: 1px solid $border-color;
+
+		@include sm-down {
+			flex: 0 0 100%;
+			max-width: none;
+			padding-bottom: 20px;
+			border-right: 0;
+		}
 	}
 
-	@media print {
-		display: block !important;
+	.hotel-inclusive {
+		flex: 0 0 50%;
+		max-width: 50%;
+		padding: 0 0 0 20px;
+		font-size: 12px;
+
+		@include sm-down {
+			flex: 0 0 100%;
+			max-width: none;
+			padding-left: 0;
+		}
+
+
+	}
+}
+
+.hotel-tabs {
+	margin: 40px 0 0;
+
+	@include xs-down {
+		margin: 20px 0 0;
 	}
 }
 
@@ -703,6 +721,8 @@ Hotel Desc
 
 	@include xs-down {
 		margin-bottom: 0;
+		border-top: none;
+		padding-top: 0;
 	}
 
 	&--map {
@@ -900,5 +920,62 @@ $spinner-size: 2.5em;
 
 	40% {
 		box-shadow: 0 $spinner-size 0 0;
+	}
+}
+
+
+/*--------------------------------------------------
+Readmore
+--------------------------------------------------*/
+.readmore-button {
+	display: none;
+}
+
+.readmore-wrap {
+	&.active {
+		.readmore-accordion {
+			&.active {
+				height: auto;
+				overflow: none;
+
+				&:before {
+					display: none;
+				}
+			}
+		}
+	}
+
+	.readmore-accordion {
+		&.active {
+			position: relative;
+			z-index: 1;
+			overflow: hidden;
+			height: 44px;
+
+			@media print {
+				height: auto;
+				overflow: visible;
+			}
+
+			&:before {
+				content: '';
+				width: 100%;
+				height: 40px;
+				background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+				position: absolute;
+				bottom: 0;
+				left: 0;
+
+				@media print {
+					display: none;
+				}
+			}
+
+			&+.readmore-button {
+				margin-top: 0px;
+				display: block;
+				margin-bottom: 15px;
+			}
+		}
 	}
 }

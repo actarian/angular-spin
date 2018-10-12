@@ -1,0 +1,52 @@
+@import "~scss/variables";
+
+/*--------------------------------------------------
+Tabs
+--------------------------------------------------*/
+ul.ui-tabview-nav {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: flex;
+	flex-direction: row;
+	border-bottom: 1px solid $border-color;
+
+	li {
+		flex: 1 1 auto;
+		margin-bottom: -1px;
+
+		a {
+			display: block;
+			text-align: center;
+			background: transparent;
+			text-decoration: none;
+			text-transform: uppercase;
+			padding: 10px;
+			border: 1px solid transparent;
+			font-size: 12px;
+			color: $text-color;
+
+			&:hover {
+				color: $tit-color;
+			}
+		}
+
+		&.ui-state-active {
+			a {
+				border: 1px solid $border-color;
+				border-bottom: 1px solid #fff;
+				background: transparent;
+				color: $tit-color;
+			}
+		}
+	}
+}
+
+.ui-tabview-panel {
+	padding: 15px 0;
+	font-size: 14px;
+
+	&.ui-helper-hidden {
+		display: none
+	}
+}

@@ -23,7 +23,7 @@ export const hotel: Hotel[] = [{
 	created: '2018-05-12T03:00:01.553',
 	destinationDescription: 'Vieste',
 	destinationProvince: 'FG',
-	eSType: 'HOTEL',
+	esType: 'HOTEL',
 	excludeFeed: false,
 	from: '2018-05-25T00:00:00',
 	frontEndName: 'VILLAGGIO ELISENA',
@@ -51,21 +51,21 @@ export const hotel: Hotel[] = [{
 	},
 	structureID: 1364225351,
 	tags: [{
-		id: 109, category: 0, name: 'Last Second', abstract: '', slug: 'viaggi_last_second'
+		id: 109, category: 0, name: 'Last Second', abstract: '', slug: 'destinazioni/last-second'
 	}, {
-		id: 1, category: 0, name: 'Mare Italia', abstract: '', slug: 'viaggi_mare_italia'
+		id: 1, category: 0, name: 'Mare Italia', abstract: '', slug: 'destinazioni/mare-italia'
 	}, {
-		id: 8, category: 1, name: 'Bimbo gratis', abstract: '', slug: 'viaggi_bimbo_gratis'
+		id: 8, category: 1, name: 'Bimbo gratis', abstract: '', slug: 'destinazioni/bimbo-gratis'
 	}, {
-		id: 9, category: 1, name: 'Amici 4 zampe', abstract: '', slug: 'viaggi_amici_4_zampe'
+		id: 9, category: 1, name: 'Amici 4 zampe', abstract: '', slug: 'destinazioni/amici-4-zampe'
 	}, {
-		id: 24, category: 2, name: 'Puglia', abstract: 'Puglia', slug: 'viaggi_in_puglia'
+		id: 24, category: 2, name: 'Puglia', abstract: 'Puglia', slug: 'destinazioni/puglia'
 	}, {
 		id: 38, category: -1, name: 'Servizio spiaggia', abstract: 'Servizio spiaggia', slug: ''
 	}, {
-		id: 76, category: 0, name: 'Residence & Appartamenti', abstract: '', slug: 'vacanze_residence_appartamenti'
+		id: 76, category: 0, name: 'Residence & Appartamenti', abstract: '', slug: 'destinazioni/vacanze-residence-appartamenti'
 	}, {
-		id: 83, category: 5, name: 'Gargano', abstract: '', slug: 'viaggi_gargano'
+		id: 83, category: 5, name: 'Gargano', abstract: '', slug: 'destinazioni/gargano'
 	}],
 	to: '2018-09-16T00:00:00',
 	trustPilot: {

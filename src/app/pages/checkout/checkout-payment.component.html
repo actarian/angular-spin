@@ -1,0 +1,178 @@
+<div class="checkout-step-3">
+	<h2 class="h1">Hai una carta regalo?</h2>
+	<p>Aggiungi la carta regalo inserendo il codice utilizzo e il codice segreto (zona da grattare) presenti sul rtro della carta</p>
+	<form class="form" [ngClass]="{ submitted: giftCard.submitted }" name="giftCard" role="form" novalidate autocomplete="off" (ngSubmit)="giftCard.valid && onGiftCardCheck()" #giftCard="ngForm">
+		<div class="fieldset">
+			<div class="form-group">
+				<label>Codice utilizzo (7 cifre)</label>
+				<input placeholder="Codice utilizzo" type="text" class="form-control" required pattern="[0-9]{7}" [(ngModel)]="modelCard.code" name="code" #code="ngModel" autocomplete="code">
+				<div *ngIf="code.invalid && (giftCard.submitted || code.dirty || code.touched)" class="alert alert-danger">
+					<div *ngIf="code.errors.required">{{ 'errors.required' | translate }}</div>
+					<div *ngIf="code.errors.pattern">inserire un codice numerico a 7 cifre</div>
+				</div>
+			</div>
+			<div class="form-group secret-code">
+				<label>Codice segreto (4 cifre)</label>
+				<input placeholder="Codice segreto" type="password" class="form-control" required pattern="[0-9]{4}" [(ngModel)]="modelCard.secret" name="secret" #secret="ngModel" autocomplete="secret">
+				<div *ngIf="secret.invalid && (giftCard.submitted || secret.dirty || secret.touched)" class="alert alert-danger">
+					<div *ngIf="secret.errors.required">{{ 'errors.required' | translate }}</div>
+					<div *ngIf="secret.errors.pattern">inserire un codice numerico a 4 cifre</div>
+				</div>
+				<button type="submit" class="btn btn--tertiary" [ngClass]="{ 'btn--busy': busyGiftCard }" title="Aggiungi">
+					<span>Aggiungi</span>
+				</button>
+			</div>
+		</div>
+		<div class="row table-regalo" *ngIf="model.giftCards?.length > 0">
+			<div class="col-sm-12">
+				<div class="wrap-table-regalo">
+					<table style="width:100%">
+						<tr>
+							<th>Credito</th>
+							<th>Data attivazione</th>
+							<th>Data scadenza</th>
+							<th>Stato</th>
+							<th></th>
+						</tr>
+						<tr *ngFor="let card of model.giftCards">
+							<td>{{card?.credits}}<sup>€</sup></td>
+							<td [innerHtml]="card.activation | date:'dd/MM/yyyy'"></td>
+							<td [innerHtml]="card.expire | date:'dd/MM/yyyy'"></td>
+							<td [title]="card.stateLong">
+								<span [innerHtml]="card.stateShort"></span>
+							</td>
+							<td><button type="button" class="btn btn-primary" (click)="onGiftCardRemove(card)">rimuovi</button></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="form-group form-group-errors" *ngIf="cardError">
+			<div class="alert alert-danger">
+				<span *ngIf="cardError.status == 404">codice non valido</span>
+				<span *ngIf="cardError.status == 410">La carta è scaduta</span>
+				<span *ngIf="cardError.status != 404 && cardError.status != 410" [innerHtml]="cardError.statusText"></span>
+			</div>
+		</div>
+	</form>
+	<form class="form" [ngClass]="{ submitted: payment.submitted }" name="payment" role="form" novalidate autocomplete="off" (ngSubmit)="payment.valid && onPayment()" #payment="ngForm">
+		<br>
+		<h2 class="h2">Pagamento</h2>
+		<p>Proteggiamo i tuoi acquisti <img src="assets/img/sicurezza.png" class="card-security" alt="Verified By Visa, Mastercard Security Code"></p>
+		<br>
+		<!-- PAY IN ADVANCE -->
+		<ng-container *ngIf="model.paymentAdvance">
+			<div class="fieldset">
+				<h4 class="h4">Scegli se pagare ora un acconto (facoltativo)</h4>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" class="form-control" name="paymentAdvanceEnable" required [(ngModel)]="model.paymentAdvance.enable" />
+						<span>Acconto di {{model.paymentAdvance.amount | price : '€'}}. Saldo di {{model.paymentAdvance.balance | price : '€'}} da pagare entro il {{model.paymentAdvance.dueDateTime | date : 'dd/MM/yyyy'}}</span>
+					</label>
+				</div>
+			</div>
+			<div class="fieldset">
+				<div class="form-group" *ngIf="model.detail.totalAmountDetail.totalAmountBeforeDiscount != model.detail.totalAmountDetail.totalAmountAfterDiscount">
+					<label>Totale</label>
+					<div class="form-value">
+						<span class="price" [innerHtml]="model.detail.totalAmountDetail.totalAmountBeforeDiscount | price : '€'"></span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label>Totale</label>
+					<div class="form-value">
+						<span class="price" [innerHtml]="model.detail.totalAmountDetail.totalAmountAfterDiscount | price : '€'"></span>
+					</div>
+				</div>
+				<div class="form-group" *ngIf="model.paymentAdvance?.enable">
+					<label>Acconto</label>
+					<div class="form-value">
+						<span class="price" [innerHtml]="model.paymentAdvance.amount | price : '€'"></span>
+					</div>
+				</div>
+				<div class="form-group" *ngIf="model.paymentPaidAmount > 0">
+					<label>Da pagare</label>
+					<div class="form-value">
+						<span class="price" [innerHtml]="model.paymentAdvance.balance | price : '€'"></span>
+					</div>
+				</div>
+			</div>
+		</ng-container>
+		<!-- PAY IN ADVANCE -->
+		<h4>Seleziona la modalità di pagamento.</h4>
+		<div class="form-checkout">
+			<div class="form-group" *ngIf="hasPaymentType(paymentType.CreditTransfer)">
+				<div class="radio">
+					<label>
+						<input class="form-control" name="paymentMethod" [(ngModel)]="model.paymentMethod" required type="radio" [value]="paymentType.CreditTransfer" />
+						<span>Bonifico bancario</span>
+					</label>
+				</div>
+			</div>
+			<div class="form-group" *ngIf="hasPaymentType(paymentType.PayPal)">
+				<div class="radio">
+					<label>
+						<input class="form-control" name="paymentMethod" [(ngModel)]="model.paymentMethod" required type="radio" [value]="paymentType.PayPal" />
+						<span>PayPal * <img src="/assets/img/payment-paypal.png" alt="PayPal"></span>
+					</label>
+				</div>
+			</div>
+			<div class="form-group" *ngIf="hasPaymentType(paymentType.CreditCard)">
+				<div class="radio">
+					<label>
+						<input class="form-control" name="paymentMethod" [(ngModel)]="model.paymentMethod" required type="radio" [value]="paymentType.CreditCard" />
+						<span>Carta di credito <img src="/assets/img/payment-carte.png" alt="Carte di credito"></span>
+					</label>
+				</div>
+			</div>
+			<div class="form-group" *ngIf="hasPaymentType(paymentType.MyBank)">
+				<div class="radio">
+					<label>
+						<input class="form-control" name="paymentMethod" [(ngModel)]="model.paymentMethod" required type="radio" [value]="paymentType.MyBank" />
+						<span>MyBank * <img src="/assets/img/payment-mybank.png" alt="MyBank"></span>
+					</label>
+				</div>
+			</div>
+			<div class="info-group">
+				<strong>*IMPORTANTE</strong> <span>in caso di pagamento rateale (acconto e saldo), si informa che il saldo deve essere pagato solo con bonifico bancario e/o carta di credito contattando il nostro Call Center. Non è possibile effettuare il saldo tramite Paypal e MyBank.</span>
+			</div>
+			<div class="info-group">
+				<strong>Acquisti sicuri</strong> <span>questo sito garantisce la cifratura dei dati in transito tramite tecnologia SSL (Secure Sockets Layer), che permette di stabilire una connessione protetta e garantisce la massima riservatezza dei dati.</span>
+			</div>
+		</div>
+		<div class="fieldset" *ngIf="false">
+			<div class="form-group">
+				<label>Note per la struttura</label>
+				<input placeholder="Note per la struttura" type="textarea" class="form-control" [(ngModel)]="model.notes" name="notes" #notes="ngModel" autocomplete="notes">
+			</div>
+		</div>
+		<br>
+		<div class="fieldset">
+			<div class="form-group form-group--full">
+				<h4 class="h4">Condizioni Generali</h4>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" class="form-check-input" [(ngModel)]="model.condizioni" name="condizioni" #condizioni="ngModel">
+						<span>Dichiaro di aver letto ed accettato tutti i punti delle condizioni generali del <a href="/media/userfiles/files/CONDIZIONI_GENERALI_DI_VENDITA.pdf" target="_blank">contratto di vendita</a>.</span>
+					</label>
+				</div>
+				<div *ngIf="condizioni.invalid && (payment.submitted || condizioni.dirty || condizioni.touched)" class="alert alert-danger">
+					<div *ngIf="condizioni.errors.required">{{ 'errors.required' | translate }}</div>
+				</div>
+			</div>
+		</div>
+		<!-- ERROR -->
+		<div class="form-group form-group-errors" *ngIf="error">
+			<div class="alert alert-danger" [innerHtml]="error"></div>
+		</div>
+		<!-- ERROR -->
+		<!-- CHECKOUT CTA -->
+		<button type="submit" class="btn" [ngClass]="{ 'btn--busy': busy }">
+			<span>Acquista</span>
+		</button>
+		<!-- PAYPAL BUTTON -->
+		<ng-container *ngIf="false">
+			<paypal-widget-component [paypalOptions]="paypalOptions"></paypal-widget-component>
+		</ng-container>
+	</form>
+</div>

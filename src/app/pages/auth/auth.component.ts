@@ -3,7 +3,7 @@ import { switchMap, takeUntil, tap } from 'rxjs/operators';
 import { DisposableComponent } from '../../core/disposable';
 import { FacebookService, FacebookUser, GoogleService, GoogleUser } from '../../core/plugins';
 import { ModalCompleteEvent, ModalService } from '../../core/ui/modal';
-import { UserAuth } from '../../models/user';
+import { User } from '../../models/user';
 import { UserService } from '../../models/user.service';
 import { AuthSignInComponent } from './auth-sign-in.component';
 import { AuthSignUpComponent } from './auth-sign-up.component';
@@ -49,7 +49,7 @@ export class AuthComponent extends DisposableComponent implements OnInit {
 			switchMap(me => this.userService.tryFacebook(me)),
 		).subscribe(user => {
 			if (user) {
-				this.onAuth(user[0]);
+				this.onAuth(user);
 			} else {
 				this.onSignUp({ facebook: this.facebookMe });
 			}
@@ -66,7 +66,7 @@ export class AuthComponent extends DisposableComponent implements OnInit {
 			switchMap(me => this.userService.tryGoogle(me)),
 		).subscribe(user => {
 			if (user) {
-				this.onAuth(user[0]);
+				this.onAuth(user);
 			} else {
 				this.onSignUp({ google: this.googleMe });
 			}
@@ -75,7 +75,7 @@ export class AuthComponent extends DisposableComponent implements OnInit {
 		});
 	}
 
-	onAuth(user: UserAuth) {
+	onAuth(user: User) {
 		this.modalService.complete(null, user);
 	}
 

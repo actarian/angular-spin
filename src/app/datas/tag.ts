@@ -48,49 +48,49 @@ export const tag: Tag[] = [{
 	icon: null,
 	id: 1,
 	name: 'Mare Italia',
-	slug: 'viaggi_mare_italia'
+	slug: 'destinazioni/mare-italia'
 }, {
 	abstract: '',
 	category: 0,
 	icon: null,
 	id: 3,
 	name: 'Sardegna + traghetto',
-	slug: 'viaggi_sardegna_traghetto'
+	slug: 'destinazioni/sardegna-traghetto'
 }, {
 	abstract: '',
 	category: 0,
 	icon: null,
 	id: 4,
 	name: 'Montagna',
-	slug: 'viaggi_in_montagna'
+	slug: 'destinazioni/montagna'
 }, {
 	abstract: '',
 	category: 0,
 	icon: null,
 	id: 5,
 	name: 'Crociere',
-	slug: 'viaggi_in_crociera'
+	slug: 'destinazioni/crociera'
 }, {
 	abstract: '',
 	category: 0,
 	icon: null,
 	id: 42,
 	name: 'Terme & benessere',
-	slug: 'viaggi_terme_benessere'
+	slug: 'destinazioni/terme-benessere'
 }, {
 	abstract: '',
 	category: 0,
 	icon: null,
 	id: 40,
 	name: 'Lago',
-	slug: 'viaggi_lago'
+	slug: 'destinazioni/lago'
 }, {
 	abstract: '',
 	category: 0,
 	icon: null,
 	id: 75,
 	name: 'Campagna',
-	slug: 'viaggi_campagna'
+	slug: 'destinazioni/campagna'
 }, {
 	abstract: '',
 	category: 0,
@@ -104,14 +104,14 @@ export const tag: Tag[] = [{
 	icon: null,
 	id: 2,
 	name: 'Mare estero',
-	slug: 'viaggi_mare_estero'
+	slug: 'destinazioni/mare-estero'
 }, {
 	abstract: '',
 	category: 0,
 	icon: null,
 	id: 41,
 	name: 'Città',
-	slug: 'viaggi_in_città'
+	slug: 'destinazioni/città'
 }, {
 	abstract: '',
 	category: 0,
@@ -125,7 +125,7 @@ export const tag: Tag[] = [{
 	icon: null,
 	id: 44,
 	name: 'Tour',
-	slug: 'viaggi_tour_organizzati'
+	slug: 'destinazioni/tour-organizzati'
 }, {
 	abstract: '',
 	category: 1,
@@ -139,210 +139,210 @@ export const tag: Tag[] = [{
 	icon: '104_8_ico-bimbigratis.png',
 	id: 8,
 	name: 'Bimbo gratis',
-	slug: 'viaggi_bimbo_gratis'
+	slug: 'destinazioni/bimbo-gratis'
 }, {
 	abstract: '',
 	category: 1,
 	icon: '104_9_ico-amici4zampe.png',
 	id: 9,
 	name: 'Amici 4 zampe',
-	slug: 'viaggi_amici_4_zampe'
+	slug: 'destinazioni/amici-4-zampe'
 }, {
 	abstract: '',
 	category: 1,
 	icon: '',
 	id: 11,
 	name: 'Prenota prima',
-	slug: 'viaggi_prenota_prima'
+	slug: 'destinazioni/prenota-prima'
 }, {
 	abstract: '',
 	category: 1,
 	icon: '104_56_ico-last-minute.png',
 	id: 56,
 	name: 'Last minute',
-	slug: 'viaggi_last_minute'
+	slug: 'destinazioni/last-minute'
 }, {
 	abstract: 'Abruzzo',
 	category: 2,
 	icon: null,
 	id: 12,
 	name: 'Abruzzo',
-	slug: 'viaggi_in_abruzzo'
+	slug: 'destinazioni/abruzzo'
 }, {
 	abstract: 'Basilicata',
 	category: 2,
 	icon: null,
 	id: 14,
 	name: 'Basilicata',
-	slug: 'viaggi_in_basilicata'
+	slug: 'destinazioni/basilicata'
 }, {
 	abstract: 'Calabria',
 	category: 2,
 	icon: null,
 	id: 15,
 	name: 'Calabria',
-	slug: 'viaggi_in_calabria'
+	slug: 'destinazioni/calabria'
 }, {
 	abstract: 'Campania',
 	category: 2,
 	icon: null,
 	id: 16,
 	name: 'Campania',
-	slug: 'viaggi_in_campania'
+	slug: 'destinazioni/campania'
 }, {
 	abstract: 'Emilia Romagna',
 	category: 2,
 	icon: null,
 	id: 17,
 	name: 'Emilia Romagna',
-	slug: 'viaggi_emilia_romagna'
+	slug: 'destinazioni/emilia-romagna'
 }, {
 	abstract: 'Friuli Venezia Giulia',
 	category: 2,
 	icon: null,
 	id: 18,
 	name: 'Friuli Venezia Giulia',
-	slug: 'viaggi_friuli_venezia_giulia'
+	slug: 'destinazioni/friuli-venezia-giulia'
 }, {
 	abstract: 'Lazio',
 	category: 2,
 	icon: null,
 	id: 19,
 	name: 'Lazio',
-	slug: 'viaggi_in_lazio'
+	slug: 'destinazioni/lazio'
 }, {
 	abstract: 'Liguria',
 	category: 2,
 	icon: null,
 	id: 20,
 	name: 'Liguria',
-	slug: 'viaggi_in_liguria'
+	slug: 'destinazioni/liguria'
 }, {
 	abstract: 'Lombardia',
 	category: 2,
 	icon: null,
 	id: 21,
 	name: 'Lombardia',
-	slug: 'viaggi_in_lombardia'
+	slug: 'destinazioni/lombardia'
 }, {
 	abstract: 'Marche',
 	category: 2,
 	icon: null,
 	id: 22,
 	name: 'Marche',
-	slug: 'viaggi_marche'
+	slug: 'destinazioni/marche'
 }, {
 	abstract: 'Molise',
 	category: 2,
 	icon: null,
 	id: 47,
 	name: 'Molise',
-	slug: 'viaggi_in_molise'
+	slug: 'destinazioni/molise'
 }, {
 	abstract: 'Piemonte',
 	category: 2,
 	icon: null,
 	id: 23,
 	name: 'Piemonte',
-	slug: 'viaggi_in_piemonte'
+	slug: 'destinazioni/piemonte'
 }, {
 	abstract: 'Puglia',
 	category: 2,
 	icon: null,
 	id: 24,
 	name: 'Puglia',
-	slug: 'viaggi_in_puglia'
+	slug: 'destinazioni/puglia'
 }, {
 	abstract: 'Sardegna',
 	category: 2,
 	icon: null,
 	id: 25,
 	name: 'Sardegna',
-	slug: 'viaggi_in_sardegna'
+	slug: 'destinazioni/sardegna'
 }, {
 	abstract: 'Sicilia',
 	category: 2,
 	icon: null,
 	id: 26,
 	name: 'Sicilia',
-	slug: 'viaggi_in_sicilia'
+	slug: 'destinazioni/sicilia'
 }, {
 	abstract: 'Toscana',
 	category: 2,
 	icon: null,
 	id: 27,
 	name: 'Toscana',
-	slug: 'viaggi_in_toscana'
+	slug: 'destinazioni/toscana'
 }, {
 	abstract: 'Trentino Alto Adige',
 	category: 2,
 	icon: null,
 	id: 28,
 	name: 'Trentino Alto Adige',
-	slug: 'viaggi_trentino_alto_adige'
+	slug: 'destinazioni/trentino-alto-adige'
 }, {
 	abstract: 'Umbria',
 	category: 2,
 	icon: null,
 	id: 48,
 	name: 'Umbria',
-	slug: 'viaggi_in_umbria'
+	slug: 'destinazioni/umbria'
 }, {
 	abstract: 'Valle d\'Aosta',
 	category: 2,
 	icon: null,
 	id: 29,
 	name: 'Valle d\'Aosta',
-	slug: 'viaggi_valle_aosta'
+	slug: 'destinazioni/valle-aosta'
 }, {
 	abstract: 'Veneto',
 	category: 2,
 	icon: null,
 	id: 30,
 	name: 'Veneto',
-	slug: 'viaggi_in_veneto'
+	slug: 'destinazioni/veneto'
 }, {
 	abstract: 'Egitto',
 	category: 3,
 	icon: null,
 	id: 32,
 	name: 'Egitto',
-	slug: 'viaggi_in_egitto'
+	slug: 'destinazioni/egitto'
 }, {
 	abstract: 'Francia',
 	category: 3,
 	icon: null,
 	id: 49,
 	name: 'Francia',
-	slug: 'viaggi_in_francia'
+	slug: 'destinazioni/francia'
 }, {
 	abstract: 'Kenya',
 	category: 3,
 	icon: null,
 	id: 51,
 	name: 'Kenya',
-	slug: 'viaggi_in_kenya'
+	slug: 'destinazioni/kenya'
 }, {
 	abstract: 'Ungheria',
 	category: 3,
 	icon: null,
 	id: 67,
 	name: 'Ungheria',
-	slug: 'viaggi_in_ungheria'
+	slug: 'destinazioni/ungheria'
 }, {
 	abstract: 'Mediterraneo Occidentale',
 	category: 3,
 	icon: null,
 	id: 68,
 	name: 'Mediterraneo Occidentale',
-	slug: 'viaggi_mediterraneo_occidentale'
+	slug: 'destinazioni/mediterraneo-occidentale'
 }, {
 	abstract: 'Mediterraneo Orientale',
 	category: 3,
 	icon: null,
 	id: 69,
 	name: 'Mediterraneo Orientale',
-	slug: 'viaggi_mediterraneo_orientale'
+	slug: 'destinazioni/mediterraneo-orientale'
 }, {
 	abstract: 'Svizzera',
 	category: 3,
@@ -363,54 +363,54 @@ export const tag: Tag[] = [{
 	icon: null,
 	id: 59,
 	name: 'Cuba',
-	slug: 'viaggi_a_cuba'
+	slug: 'destinazioni/a-cuba'
 }, {
 	abstract: '',
 	category: 3,
 	icon: null,
 	id: 13,
 	name: 'Austria',
-	slug: 'viaggi_in_austria'
+	slug: 'destinazioni/austria'
 }, {
 	abstract: 'Croazia',
 	category: 3,
 	icon: null,
 	id: 57,
 	name: 'Croazia',
-	slug: 'viaggi_in_croazia'
+	slug: 'destinazioni/croazia'
 }, {
 	abstract: 'Grecia',
 	category: 3,
 	icon: null,
 	id: 34,
 	name: 'Grecia',
-	slug: 'viaggi_in_grecia'
+	slug: 'destinazioni/grecia'
 }, {
 	abstract: 'Messico',
 	category: 3,
 	icon: null,
 	id: 35,
 	name: 'Messico',
-	slug: 'viaggi_in_messico'
+	slug: 'destinazioni/messico'
 }, {
 	abstract: 'Slovenia',
 	category: 3,
 	icon: null,
 	id: 53,
 	name: 'Slovenia',
-	slug: 'viaggi_in_slovenia'
+	slug: 'destinazioni/slovenia'
 }, {
 	abstract: 'Spagna',
 	category: 3,
 	icon: null,
 	id: 33,
 	name: 'Spagna',
-	slug: 'viaggi_in_spagna'
+	slug: 'destinazioni/spagna'
 }, {
 	abstract: 'Tanzania',
 	category: 3,
 	icon: null,
 	id: 50,
 	name: 'Tanzania',
-	slug: 'viaggi_zanzibar'
+	slug: 'destinazioni/zanzibar'
 }];

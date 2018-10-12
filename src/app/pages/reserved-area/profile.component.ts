@@ -1,83 +1,14 @@
-import { DatePipe } from '@angular/common';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnInit, PLATFORM_ID, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { takeUntil } from 'rxjs/operators';
+import { CodiceFiscale } from 'codice-fiscale-js';
+import { finalize, takeUntil } from 'rxjs/operators';
+import { Entity } from '../../core';
 import { DisposableComponent } from '../../core/disposable';
 import { DataService, Nation } from '../../models/data.service';
 import { User } from '../../models/user';
 import { UserService } from '../../models/user.service';
 
-export class BirthDateOptions {
-	value: number;
-	name: string;
-}
-
-export class BirthDate {
-
-	_year: number;
-	_month: number;
-	_day: number;
-
-	years: BirthDateOptions[];
-	months: BirthDateOptions[];
-	days: BirthDateOptions[];
-
-	date: Date;
-
-	constructor(
-		private datePipe: DatePipe,
-	) {
-		this.setDate();
-	}
-
-	get year(): number {
-		return this._year;
-	}
-
-	set year(n: number) {
-		this._year = Number(n || 1970);
-		this.month = this._month || 0;
-	}
-
-	get month(): number {
-		return this._month;
-	}
-
-	set month(n: number) {
-		this._month = Number(n || 0);
-		const count: number = new Date(this._year, this._month + 1, 0).getDate();
-		this.days = new Array(count).fill(0).map((x, i: number) => {
-			return { value: i + 1, name: (i + 1).toString() };
-		});
-		this.day = this._day || 1;
-	}
-
-	get day(): number {
-		return this._day;
-	}
-
-	set day(n: number) {
-		this._day = Number(n || 1);
-		this.date = new Date(this._year, this._month, this._day);
-	}
-
-	setDate(date?: Date) {
-		date = date ? new Date(date) : null;
-		const today: Date = new Date();
-		const count: number = 100;
-		const from: number = today.getFullYear() - count;
-		this.years = new Array(count).fill(0).map((x, i: number) => {
-			return { value: from + i, name: (from + i).toString() };
-		});
-		this._year = date ? date.getFullYear() : today.getFullYear() - 20;
-		this.months = new Array(12).fill(0).map((x, i: number) => {
-			const month: Date = new Date(this._year, i, 1);
-			return { value: i, name: this.datePipe.transform(month, 'MMM') };
-		});
-		this.month = date ? date.getMonth() : 0;
-	}
-
-}
 
 @Component({
 	selector: 'profile-component',
@@ -89,61 +20,116 @@ export class BirthDate {
 export class ProfileComponent extends DisposableComponent implements OnInit {
 
 	nations: Nation[];
-	birth: BirthDate;
-
+	counties: Entity[];
 	user: User;
 	model: any = {};
+	calculatedFiscalCode: string;
 
 	busy: boolean = false;
 
 	constructor(
+		@Inject(PLATFORM_ID) private platformId: string,
 		private route: ActivatedRoute,
 		private dataService: DataService,
 		private userService: UserService,
-		private datePipe: DatePipe,
 	) {
 		super();
 	}
 
 	ngOnInit() {
-		this.user = this.route.snapshot.data['user'];
-		Object.assign(this.model, this.user);
-		this.dataService.nations().pipe(
+		this.dataService.nationsAndCounties().pipe(
 			takeUntil(this.unsubscribe)
-		).subscribe(nations => {
-			this.nations = nations;
-			const italy: Nation = nations.find(x => x.code === 'ITA');
-			this.model.country = this.model.country || italy;
-			this.model.birthCountry = this.model.birthCountry || italy;
-			this.model.gender = this.model.gender || 'M';
+		).subscribe(data => {
+			this.nations = data.nations;
+			this.counties = data.counties;
+			this.setUser(this.route.snapshot.data['user']);
 		});
-		this.birth = new BirthDate(this.datePipe);
+	}
+
+	getDefaultCountry(code: string): string {
+		return code ? this.nations.map(x => x.code).find(x => x === code) : 'ITA';
+	}
+
+	setUser(user: User) {
+		this.user = user;
+		Object.assign(this.model, this.user);
+		const italy: Nation = this.nations.find(x => x.code === 'ITA');
+		this.model.stateCode = this.getDefaultCountry(this.model.stateCode);
+		this.model.nationality = this.getDefaultCountry(this.model.nationality);
+		this.model.gender = this.model.gender || 'M';
+		console.log('PofileComponent.setUser', this.user, this.model);
+	}
+
+	onSubmit() {
+		this.busy = true;
+		this.userService.edit(this.model).pipe(
+			takeUntil(this.unsubscribe),
+			finalize(() => this.busy = false),
+		).subscribe(
+			user => this.setUser(user),
+			error => console.log(error)
+		);
+	}
+
+	onNameChanged() {
+		console.log('ProfileComponent.onNameChanged', this.model.firstName, this.model.lastName);
+		this.doCalcFiscalCode();
+	}
+
+	onProvinceChanged() {
+		console.log('ProfileComponent.onProvinceChanged', this.model.countyCode);
 	}
 
 	onCountryChanged() {
-		console.log('ProfileComponent.onCountryChanged', this.model.country);
+		console.log('ProfileComponent.onCountryChanged', this.model.stateCode);
 	}
 
-	onBirthCountryChanged() {
-		console.log('ProfileComponent.onCountryChanged', this.model.birthCountry);
+	onNationalityChanged() {
+		console.log('ProfileComponent.onNationalityChanged', this.model.nationality);
 	}
 
-	onBirthDateChanged() {
-		this.model.birthDate = this.birth.date;
-		console.log('ProfileComponent.onBirthDateChanged', this.datePipe.transform(this.model.birthDate, 'yyyy-MM-dd'));
+	onBirthCityChanged() {
+		console.log('ProfileComponent.onBirthCityChanged', this.model.birthCity);
+		this.doCalcFiscalCode();
+	}
+
+	onBirthCountyChanged() {
+		console.log('ProfileComponent.onBirthCountyChanged', this.model.birthCounty);
+	}
+
+	onInputDateChanged(date: Date) {
+		console.log('ProfileComponent.onInputDateChanged', date);
+		this.doCalcFiscalCode();
 	}
 
 	onGenderChanged() {
 		console.log('ProfileComponent.onGenderChanged', this.model.gender);
+		this.doCalcFiscalCode();
 	}
 
-	onSubmit() {
-		this.userService.update(this.model).pipe(
-			takeUntil(this.unsubscribe)
-		).subscribe(user => {
-			this.user = user;
-			Object.assign(this.model, this.user);
-		});
+	doCalcFiscalCode() {
+		if (isPlatformBrowser(this.platformId)) {
+			// console.log('ProfileComponent.doCalcFiscalCode', this.model.fiscalCode, this.calculatedFiscalCode);
+			if ((!this.model.fiscalCode || this.model.fiscalCode === this.calculatedFiscalCode) &&
+				this.model.firstName && this.model.lastName && this.model.gender && this.model.birthCity
+			) {
+				const fiscalCode: any = new CodiceFiscale({
+					name: this.model.firstName,
+					surname: this.model.lastName,
+					gender: this.model.gender,
+					day: this.model.birthDate ? new Date(this.model.birthDate).getDate() : 1,
+					month: this.model.birthDate ? new Date(this.model.birthDate).getMonth() + 1 : 1,
+					year: this.model.birthDate ? new Date(this.model.birthDate).getFullYear() : 1970,
+					birthplace: this.model.birthCity,
+					// birthplaceProvincia: string // Optional
+				});
+				console.log('ProfileComponent.doCalcFiscalCode', fiscalCode);
+				if (fiscalCode) {
+					this.model.fiscalCode = fiscalCode.code;
+					this.calculatedFiscalCode = fiscalCode.code;
+				}
+			}
+		}
 	}
 
 }

@@ -14,7 +14,7 @@
 		"build:production": "ng build server --prod --output-hashing=media --verbose",
 		"build:docs": "ng build docs --configuration=docs --base-href /angular-spin/ --deploy-url /angular-spin/",
 		"dependency:fix": "node -e \"require('./npm/replace.js')('./dist/server/main.js', new RegExp('angular-in.memory-web-api(.[^\\\"]*)', 'gm'), 'angular-in-memory-web-api')\"",
-		"debug:server": "node -e \"console.log('response', require('./dist/server/main.js').default((e, result) => console.log('error', e, 'result', result !== null), '/it/', {}, 'http://eurospin-viaggi2.wslabs.it/', '/it/', { originalHtml: '<app-component></app-component>' }))\""
+		"debug:server": "node -e \"require('./npm/debug.js')(require('./dist/server/main.js').default, ['/', {}, 'https://eurospin-viaggi2.wslabs.it/', '/', { originalHtml: '<app-component></app-component>' }])\""
 	},
 	"private": true,
 	"dependencies": {
@@ -29,6 +29,7 @@
 		"@angular/platform-server": "6.0.9",
 		"@angular/pwa": "^0.7.5",
 		"@angular/router": "6.0.9",
+		"@angular/service-worker": "6.0.9",
 		"@fancyapps/fancybox": "^3.3.5",
 		"@nguniversal/aspnetcore-engine": "6.0.0",
 		"@nguniversal/common": "6.0.0",
@@ -38,6 +39,7 @@
 		"angular-in-memory-web-api": "~0.6.0",
 		"aspnet-prerendering": "^3.0.1",
 		"bootstrap": "^4.1.1",
+		"codice-fiscale-js": "^2.0.0",
 		"core-js": "^2.4.1",
 		"intersection-observer": "^0.5.0",
 		"jquery": "^3.3.1",
@@ -50,8 +52,7 @@
 		"rxjs": "^6.2.1",
 		"rxjs-compat": "^6.2.1",
 		"supercluster": "^4.0.1",
-		"zone.js": "^0.8.26",
-		"@angular/service-worker": "6.0.9"
+		"zone.js": "^0.8.26"
 	},
 	"devDependencies": {
 		"@angular-devkit/build-angular": "~0.6.0",

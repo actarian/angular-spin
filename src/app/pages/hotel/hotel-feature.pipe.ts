@@ -1,5 +1,6 @@
 import { Injectable, Pipe, PipeTransform } from '@angular/core';
-import { Feature, FeatureType } from '../../core/models/feature';
+import { Feature } from '../../core/models/feature';
+import { FeatureType } from '../../models/feature';
 
 @Pipe({
 	name: 'hotelFeature'

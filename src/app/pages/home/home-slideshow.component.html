@@ -1,0 +1,30 @@
+<!-- Home Slideshow -->
+<section class="home-slideshow" *ngIf="item" lazy-images>
+	<div class="home-slideshow-gallery swiper-container" [swiper]="config" (init)="onSwiperLoaded($event)">
+		<div class="swiper-wrapper">
+			<div class="swiper-slide" *ngFor="let item of items | slice :0 :limit">
+				<figure class="figure">
+					<img class="img" [attr.data-src]="item.images | image :'Default' :'width=1600&height=640&rmode=crop'" alt="{{item.title}}" />
+				</figure>
+				<div class="body">
+					<a [routerLink]="[item.slug] | route">
+						<h3 class="title">{{item.title}}</h3>
+						<div class="abstract">{{item.abstract}}</div>
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="swiper-button swiper-button-prev">
+			<svg>
+				<use xlink:href="#home-slideshow-arrow"></use>
+			</svg>
+		</div>
+		<div class="swiper-button swiper-button-next">
+			<svg>
+				<use xlink:href="#home-slideshow-arrow"></use>
+			</svg>
+		</div>
+		<div class="swiper-pagination"></div>
+	</div>
+</section>
+<!-- /Home Slideshow -->

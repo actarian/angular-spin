@@ -12,33 +12,32 @@
 		<b>Password</b><br>
 	</ng-container>
 </ng-container>
-
 <div class="form-group" [formGroup]="form">
 	<div [ngSwitch]="control.schema">
 		<div *ngSwitchCase="'checkbox'" class="form-group">
 			<!-- CHECKBOX -->
 			<div class="checkbox">
 				<label>
-						<input type="checkbox" class="form-check-input" [id]="control.key" [formControlName]="control.key">
-						<span>{{ control.label | translate }}</span>
+					<input type="checkbox" class="form-check-input" [id]="control.key" [formControlName]="control.key">
+					<span>{{ control.label | translate }}</span>
 				</label>
 			</div>
 		</div>
 		<div *ngSwitchCase="'email'">
 			<!-- EMAIL -->
 			<label [attr.for]="control.key">{{ control.label | translate }}</label>
-			<input class="form-control" [id]="control.key" [formControlName]="control.key" [type]="control.type" placeholder="{{ control.placeholder | translate }}">
+			<input placeholder="{{ control.placeholder | translate }}" class="form-control" [id]="control.key" [formControlName]="control.key" [type]="control.type">
 		</div>
 		<div *ngSwitchCase="'number'">
 			<!-- NUMBER -->
 			<label [attr.for]="control.key">{{ control.label | translate }}</label>
-			<input class="form-control" [id]="control.key" [type]="control.type" placeholder="{{ control.placeholder | translate }}" [attr.step]="control.step" (input)="onInput($event)" (focus)="onFocus($event)" (blur)="onBlur($event)" [value]="getFormattedValue()">
+			<input placeholder="{{ control.placeholder | translate }}" class="form-control" [id]="control.key" [type]="control.type" [attr.step]="control.step" (input)="onInput($event)" (focus)="onFocus($event)" (blur)="onBlur($event)" [value]="getFormattedValue()">
 		</div>
 		<div *ngSwitchCase="'password'">
 			<!-- PASSWORD -->
 			<label [attr.for]="control.key">{{ control.label | translate }}</label>
 			<div class="input-group">
-				<input class="form-control" [id]="control.key" [formControlName]="control.key" [type]="control.type" placeholder="{{ control.placeholder | translate }}" #password>
+				<input placeholder="{{ control.placeholder | translate }}" class="form-control" [id]="control.key" [formControlName]="control.key" [type]="control.type" #password>
 				<div class="input-group-append" *ngIf="control.type === 'password'">
 					<div class="input-group-text">
 						<input type="checkbox" [attr.aria-label]="control.label | translate" (input)="password.type = reveal.checked ? 'text' : control.type" #password>
@@ -65,7 +64,7 @@
 		<div *ngSwitchCase="'text'">
 			<!-- TEXT -->
 			<label [attr.for]="control.key">{{ control.label | translate }}</label>
-			<input class="form-control" [id]="control.key" [formControlName]="control.key" [type]="control.type" placeholder="{{ control.placeholder | translate }}">
+			<input placeholder="{{ control.placeholder | translate }}" class="form-control" [id]="control.key" [formControlName]="control.key" [type]="control.type">
 		</div>
 	</div>
 	<div *ngIf="controlRef.invalid && (controlRef.dirty || controlRef.touched)" class="alert alert-danger">
