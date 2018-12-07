@@ -21,7 +21,7 @@ export const durations: Duration[] = [
 export class MainSearch {
 	query?: string;
 	destination?: Destination;
-	startDate?: Date = new Date();
+	startDate?: Date;
 	flexibleDates: boolean = true;
 	duration: Duration = durations[0];
 	adults: number = 2;
@@ -57,7 +57,7 @@ export class MainSearch {
 			tags: (this.destination && this.destination.type !== DestinationTypes.Destination) ? [this.destination.id] : []
 		};
 		if (tags) {
-			console.log('MainSearch.getPayload', tags);
+			// console.log('MainSearch.getPayload', tags);
 			payload.tags = payload.tags.concat(tags);
 		}
 		return payload;
@@ -121,7 +121,7 @@ export class SearchResult implements Document {
 	public static newSearchResultFromHotel(hotel: Hotel): SearchResult {
 		const item: SearchResult = new SearchResult();
 		item.id = hotel.id;
-		item.name = hotel.frontEndName;
+		item.frontEndName = hotel.frontEndName;
 		item.rating = hotel.rating;
 		item.trustPilot = hotel.trustPilot;
 		item.destinationDescription = hotel.destinationDescription;
@@ -133,7 +133,11 @@ export class SearchResult implements Document {
 		item.url = hotel.slug;
 		// x GtmService
 		item.price = hotel.price;
-		item.type = hotel.accomodation;
+		item.type = hotel.esType;
+		item.accomodation = hotel.accomodation;
+		item.destinationRegion = hotel.destinationRegion;
+		item.destinationNation = hotel.destinationNation;
+		item.category = hotel.category;
 		/*
 		item.destinationRegion = hotel.destinationRegion;
 		item.destinationNation = hotel.destinationNation;

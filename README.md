@@ -11,10 +11,13 @@
 
 ## Executing
 
-* `ng serve --open` apre il browser in modalità development
-* `ng serve --prod --open` apre il browser in modalità production con aot e minification
-* `ng build --prod` compila la dist in modalità production con aot e minification
-* `npm run docs` compila la cartella docs
+* `ng serve --open` run the app in development mode
+* `npm run build:development` compiles /dist/development/browser and /dist/development/server for development environment (wslabs)
+* `npm run build:staging` compiles /dist/staging/browser and /dist/staging/server for stage environment
+* `npm run build:production` compiles /dist/production/browser and /dist/production/server for production environment (www)
+* `npm run build:docs` compiles /docs for github website
+* `npm run debug:server` run a test on /dist/development/server/main.js (wslabs)
+* `ng serve --prod --open` run the app in production mode with aot and minification
 -----------------
 
 ## Demo

@@ -24,7 +24,7 @@
 				<div *ngIf="lastName.errors.required">{{ 'errors.required' | translate }}</div>
 			</div>
 		</div>
-		<div class="form-group form-group-errors">
+		<div class="form-group form-group--errors">
 			<label>{{ 'signUp.email' | translate }}</label>
 			<input placeholder="{{ 'signUp.email' | translate }}" type="email" class="form-control" required pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" [(ngModel)]="model.email" name="email" #email="ngModel" autocomplete="email" [exists]="exists$"><!-- match="emailConfirm" reverse="true" -->
 			<div *ngIf="email.invalid && (signUp.submitted || email.dirty || email.touched)" class="alert alert-danger">
@@ -60,14 +60,17 @@
 			</div>
 		</div>
 		<div class="form-group">
-
 		</div>
-		<div class="form-group form-group-errors">
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" class="form-check-input" required [(ngModel)]="model.acceptPrivacyPolicies" name="acceptPrivacyPolicies" #acceptPrivacyPolicies="ngModel">
-					<span>Preso atto dell’<a href="/media/userfiles/files/20180522-Informativa_Newsletter.pdf" target="_blank">informativa</a>, accetto al trattamento dei miei dati personali ai fini dell’invio di proposte comerciali da parte di Eurospin</span>
-				</label>
+		<div class="form-group form-group--errors">
+			<h4><a href="/media/userfiles/files/20180522-Informativa_registrazione.pdf" target="_blank">Informativa Privacy</a></h4>
+			<div class="radio">
+				<input type="hidden" [(ngModel)]="model.acceptPrivacyPolicies" required name="acceptPrivacyPolicies" #acceptPrivacyPolicies="ngModel">
+				<span class="form-label">Preso atto dell'informativa,</span>
+				<div class="label-group">
+					<label><input type="radio" class="form-control" name="acceptPrivacyPolicies" [(ngModel)]="model.acceptPrivacyPolicies" [value]="true"><span>acconsento</span></label>
+					<label><input type="radio" class="form-control" name="acceptPrivacyPolicies" [(ngModel)]="model.acceptPrivacyPolicies" [value]="false"><span>non acconsento</span></label>
+				</div>
+				<span class="form-label">al trattamento dei miei dati personali ai fini dell’invio di proposte commerciali da parte di Eurospin.</span>
 			</div>
 			<div *ngIf="acceptPrivacyPolicies.invalid && (signUp.submitted || acceptPrivacyPolicies.dirty || acceptPrivacyPolicies.touched)" class="alert alert-danger">
 				<div *ngIf="acceptPrivacyPolicies.errors.required">{{ 'errors.required' | translate }}</div>
@@ -79,7 +82,10 @@
 		</button>
 	</form>
 	<div class="alert alert-danger fade show" role="alert" *ngIf="error">
-		<strong>{{error.message || error.statusText}}</strong>
+		<ng-container [ngSwitch]="error.status">
+			<strong *ngSwitchCase="409">La mail fornita è già in utilizzo</strong>
+			<strong *ngSwitchDefault>Errore</strong>
+		</ng-container>
 	</div>
 </div>
 <div class="small-container" [hidden]="!user">

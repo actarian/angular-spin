@@ -1,4 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
+import { PageComponent, RouteService } from '../../core';
+import { SearchService } from '../../models';
 
 @Component({
 	selector: 'view-not-found',
@@ -6,5 +8,13 @@ import { Component, ViewEncapsulation } from '@angular/core';
 	styleUrls: ['./not-found.component.scss'],
 	encapsulation: ViewEncapsulation.Emulated,
 })
+export class NotFoundComponent extends PageComponent {
 
-export class NotFoundComponent { }
+	constructor(
+		protected routeService: RouteService,
+		public search: SearchService,
+	) {
+		super(routeService);
+	}
+
+}

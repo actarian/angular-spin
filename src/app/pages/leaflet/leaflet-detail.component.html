@@ -1,0 +1,19 @@
+<section class="leaflet-detail">
+	<div class="container">
+		<h1 class="h1 title" [innerHTML]="page.title">-</h1>
+		<div class="abstract" [innerHTML]="page.abstract">-</div>
+		<div class="description" [innerHTML]="page.description">-</div>
+		<br>
+		<div class="card-row" lazy-images>
+			<ng-container *ngFor="let item of promotions; let i = index;">
+				<ng-container *ngIf="i < visibleItems">
+					<div class="card-col">
+						<leaflet-item [item]="item" [index]="i"></leaflet-item>
+					</div>
+				</ng-container>
+			</ng-container>
+		</div>
+		<button type="button" class="btn" *ngIf="promotions.length > visibleItems" (click)="visibleItems = visibleItems + 12">carica altri</button>
+	</div>
+</section>
+<section-value-proposition></section-value-proposition>

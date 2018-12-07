@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnInit, PLATFORM_ID, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, Inject, PLATFORM_ID, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { first, mergeMap } from 'rxjs/operators';
 import { DisposableComponent } from '../../core';
@@ -12,7 +12,7 @@ import { Cart, CartService, User } from '../../models';
 	encapsulation: ViewEncapsulation.Emulated,
 })
 
-export class CheckoutCanceledComponent extends DisposableComponent implements OnInit {
+export class CheckoutCanceledComponent extends DisposableComponent implements AfterViewInit {
 
 	cart: Cart;
 	user: User;
@@ -28,7 +28,7 @@ export class CheckoutCanceledComponent extends DisposableComponent implements On
 		super();
 	}
 
-	ngOnInit() {
+	ngAfterViewInit() {
 		this.cart = this.route.snapshot.data['cart'];
 		this.user = this.route.snapshot.data['user'];
 		if (isPlatformBrowser(this.platformId)) {

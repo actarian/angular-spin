@@ -11,7 +11,7 @@
 				"build": {
 					"builder": "@angular-devkit/build-angular:browser",
 					"options": {
-						"outputPath": "dist/browser",
+						"outputPath": "dist/development/browser",
 						"index": "src/index.html",
 						"main": "src/main.browser.ts",
 						"tsConfig": "src/tsconfig.app.json",
@@ -26,6 +26,7 @@
 							"src/styles.scss"
 						],
 						"scripts": [
+							{ "input": "./node_modules/marked/lib/marked.js", "lazy": false },
 							{ "input": "./node_modules/jquery/dist/jquery.js", "lazy": false },
 							{ "input": "./node_modules/@fancyapps/fancybox/dist/jquery.fancybox.js", "lazy": false },
 							{ "input": "./node_modules/mapbox-gl/dist/mapbox-gl.js", "lazy": false },
@@ -33,22 +34,21 @@
 						]
 					},
 					"configurations": {
-						"server": {
-							"optimization": true,
-							"outputHashing": "media",
-							"sourceMap": false,
+						"development": {
+							"outputPath": "dist/development/browser",
+							"optimization": false,
+							"outputHashing": "all",
+							"sourceMap": true,
 							"extractCss": true,
 							"namedChunks": false,
-							"aot": true,
-							"extractLicenses": true,
+							"aot": false,
+							"extractLicenses": false,
 							"vendorChunk": false,
-							"buildOptimizer": true,
-							"fileReplacements": [{
-								"replace": "src/environments/environment.ts",
-								"with": "src/environments/environment.server.ts"
-							}]
+							"buildOptimizer": false,
+							"serviceWorker": true
 						},
-						"production": {
+						"staging": {
+							"outputPath": "dist/staging/browser",
 							"optimization": true,
 							"outputHashing": "all",
 							"sourceMap": false,
@@ -60,9 +60,45 @@
 							"buildOptimizer": true,
 							"fileReplacements": [{
 								"replace": "src/environments/environment.ts",
-								"with": "src/environments/environment.prod.ts"
+								"with": "src/environments/environment.staging.ts"
 							}],
 							"serviceWorker": true
+						},
+						"production": {
+							"outputPath": "dist/production/browser",
+							"optimization": true,
+							"outputHashing": "all",
+							"sourceMap": false,
+							"extractCss": true,
+							"namedChunks": false,
+							"aot": true,
+							"extractLicenses": true,
+							"vendorChunk": false,
+							"buildOptimizer": true,
+							"fileReplacements": [{
+								"replace": "src/environments/environment.ts",
+								"with": "src/environments/environment.production.ts"
+							}],
+							"serviceWorker": true
+						},
+						"docs": {
+							"baseHref": "/angular-spin/",
+							"deployUrl": "/angular-spin/",
+							"outputPath": "docs",
+							"optimization": false,
+							"outputHashing": "all",
+							"sourceMap": false,
+							"extractCss": true,
+							"namedChunks": false,
+							"aot": false,
+							"extractLicenses": true,
+							"vendorChunk": false,
+							"buildOptimizer": false,
+							"fileReplacements": [{
+								"replace": "src/environments/environment.ts",
+								"with": "src/environments/environment.docs.ts"
+							}],
+							"serviceWorker": false
 						}
 					}
 				},
@@ -125,13 +161,23 @@
 				"build": {
 					"builder": "@angular-devkit/build-angular:server",
 					"options": {
-						"outputPath": "dist/server",
+						"outputPath": "dist/development/server",
 						"main": "src/main.server.ts",
 						"tsConfig": "src/tsconfig.server.json",
 						"bundleDependencies": "none"
 					},
 					"configurations": {
-						"production": {
+						"development": {
+							"outputPath": "dist/development/server",
+							"optimization": true,
+							"outputHashing": "media",
+							"sourceMap": false,
+							"namedChunks": false,
+							"extractLicenses": true,
+							"vendorChunk": false
+						},
+						"staging": {
+							"outputPath": "dist/staging/server",
 							"optimization": true,
 							"outputHashing": "media",
 							"sourceMap": false,
@@ -140,92 +186,22 @@
 							"vendorChunk": false,
 							"fileReplacements": [{
 								"replace": "src/environments/environment.ts",
-								"with": "src/environments/environment.prod.ts"
+								"with": "src/environments/environment.staging.ts"
 							}]
-						}
-					}
-				},
-				"lint": {
-					"builder": "@angular-devkit/build-angular:tslint",
-					"options": {
-						"tsConfig": [
-							"src/tsconfig.app.json",
-							"src/tsconfig.spec.json"
-						],
-						"exclude": [
-							"**/node_modules/**"
-						]
-					}
-				}
-			}
-		},
-		"docs": {
-			"root": "",
-			"sourceRoot": "src",
-			"projectType": "application",
-			"architect": {
-				"build": {
-					"builder": "@angular-devkit/build-angular:browser",
-					"options": {
-						"outputPath": "docs",
-						"index": "src/index.html",
-						"main": "src/main.browser.ts",
-						"tsConfig": "src/tsconfig.app.json",
-						"polyfills": "src/polyfills.ts",
-						"assets": [
-							"src/assets",
-							"src/favicon.ico"
-						],
-						"extractCss": true,
-						"styles": [
-							"src/styles.scss"
-						],
-						"scripts": [
-							{ "input": "./node_modules/jquery/dist/jquery.js", "lazy": false },
-							{ "input": "./node_modules/@fancyapps/fancybox/dist/jquery.fancybox.js", "lazy": false },
-							{ "input": "./node_modules/mapbox-gl/dist/mapbox-gl.js", "lazy": false },
-							{ "input": "./node_modules/json-formatter-js/dist/json-formatter.js", "lazy": true }
-						]
-					},
-					"configurations": {
-						"docs": {
+						},
+						"production": {
+							"outputPath": "dist/production/server",
 							"optimization": true,
-							"outputHashing": "all",
+							"outputHashing": "media",
 							"sourceMap": false,
-							"extractCss": true,
 							"namedChunks": false,
-							"aot": true,
 							"extractLicenses": true,
 							"vendorChunk": false,
-							"buildOptimizer": true,
 							"fileReplacements": [{
 								"replace": "src/environments/environment.ts",
-								"with": "src/environments/environment.docs.ts"
+								"with": "src/environments/environment.production.ts"
 							}]
 						}
-					}
-				},
-				"extract-i18n": {
-					"builder": "@angular-devkit/build-angular:extract-i18n",
-					"options": {
-						"browserTarget": "docs:build"
-					}
-				},
-				"test": {
-					"builder": "@angular-devkit/build-angular:karma",
-					"options": {
-						"main": "src/test.ts",
-						"karmaConfig": "./karma.conf.js",
-						"polyfills": "src/polyfills.ts",
-						"tsConfig": "src/tsconfig.spec.json",
-						"scripts": [],
-						"styles": [
-							"src/styles.scss"
-						],
-						"assets": [
-							"src/assets",
-							"src/favicon.ico"
-						]
 					}
 				},
 				"lint": {

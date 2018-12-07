@@ -86,8 +86,12 @@ export class CartService extends IdentityService<Identity> {
 		);
 	}
 
-	removeFromCart(): void {
-		this.cart = null;
+	removeFromCart(): Observable<any> {
+		return this.delete(`/api/booking/cart`).pipe(
+			tap(response => {
+				this.cart = null;
+			})
+		);
 	}
 
 	updateCart(payload: Cart): Observable<Cart> {
@@ -112,7 +116,7 @@ export class CartService extends IdentityService<Identity> {
 			}),
 			tap(cart => {
 				this.giftCardService.cards$.next([]);
-				this.removeFromCart();
+				// this.removeFromCart();
 			}),
 		);
 		*/
@@ -140,7 +144,7 @@ export class CartService extends IdentityService<Identity> {
 	}
 
 	completeUnicredit(type: string, paymentId: string, result: string, amount: number, advance: number, ad: string, bfid: string, ccode: string, supplier: string) {
-		return this.post(`/api/payment/unicredit?type=${type}&paymentId=${paymentId}&result=${result}&amount=${amount}&advance=${advance}&ad=${ad}&bfid=${bfid}&ccode=${ccode}&supplier=${supplier}`).pipe(
+		return this.get(`/api/payment/unicredit?type=${type}&paymentId=${paymentId}&result=${result}&amount=${amount}&advance=${advance}&ad=${ad}&bfid=${bfid}&ccode=${ccode}&supplier=${supplier}`).pipe(
 			tap((x: any) => console.log(x)),
 		);
 	}

@@ -63,23 +63,34 @@
 			</div>
 			<br>
 			<div class="fieldset">
-				<div class="form-group form-group--full">
-					<h4>Informativa Privacy</h4>
-					<div class="checkbox">
-						<label>
-							<input type="hidden" [(ngModel)]="model.advertising" name="advertising" [value]="model.privacy">
-							<!-- // advertising -->
-							<input type="checkbox" class="form-check-input" [(ngModel)]="model.privacy" name="privacy" #privacy="ngModel">
-							<span>Preso atto dell’<a href="/media/userfiles/files/20180522-Informativa_Newsletter.pdf" target="_blank">informativa</a>, accetto al trattamento dei miei dati personali ai fini dell’invio di proposte comerciali da parte di Eurospin</span>
-						</label>
+				<div class="form-group form-group--errors form-group--full">
+					<h4><a href="/media/userfiles/files/20181001-InformativaClienti.pdf" target="_blank">Informativa Privacy</a></h4>
+					<div class="radio">
+						<input type="hidden" [(ngModel)]="model.advertising" name="advertising" [value]="model.privacy">
+						<input type="hidden" [(ngModel)]="model.privacy" required name="privacy" #privacy="ngModel">
+						<span class="form-label">Preso atto dell'informativa,</span>
+						<div class="label-group">
+							<label><input type="radio" class="form-control" name="privacy" [(ngModel)]="model.privacy" [value]="true"><span>acconsento</span></label>
+							<label><input type="radio" class="form-control" name="privacy" [(ngModel)]="model.privacy" [value]="false"><span>non acconsento</span></label>
+						</div>
+						<span class="form-label">al trattamento dei miei dati personali ai fini dell’invio di proposte commerciali da parte di Eurospin.</span>
 					</div>
 					<div *ngIf="privacy.invalid && (signUp.submitted || privacy.dirty || privacy.touched)" class="alert alert-danger">
 						<div *ngIf="privacy.errors.required">{{ 'errors.required' | translate }}</div>
 					</div>
 				</div>
-				<br />
-				<button type="submit" class="btn" [ngClass]="{ 'btn--busy': busy }" title="Prosegui">
-					<span>Prosegui</span>
+			</div>
+			<div class="fieldset">
+				<div class="alert alert-danger fade show" role="alert" *ngIf="error">
+					<ng-container [ngSwitch]="error.status">
+						<strong *ngSwitchCase="409">La mail fornita è già in utilizzo</strong>
+						<strong *ngSwitchDefault>Errore</strong>
+					</ng-container>
+				</div>
+			</div>
+			<div class="fieldset">
+				<button type="submit" class="btn" [ngClass]="{ 'btn--busy': busy }" title="Procedi">
+					<span>Procedi</span>
 				</button>
 			</div>
 		</form>
@@ -186,7 +197,8 @@
 						-->
 						<div class="form-group">
 							<label>Luogo di nascita</label>
-							<input placeholder="Luogo di nascita" type="text" class="form-control" required [(ngModel)]="model.birthCity" name="birthCity" #birthCity="ngModel" autocomplete="birthCity" (change)="onBirthCityChanged()">
+							<!-- <input placeholder="Luogo di nascita" type="text" class="form-control" required [(ngModel)]="model.birthCity" name="birthCity" #birthCity="ngModel" autocomplete="birthCity" (change)="onBirthCityChanged()"> -->
+							<autocomplete-component placeholder="Luogo di nascita" name="birthCity" [(ngModel)]="model.birthCity" [provider]="birthPlaceProvider" [height]="35" (selectItem)="onBirthCityChanged($event)" (cancel)="onBirthCityChanged($event)" #birthCity></autocomplete-component>
 							<div *ngIf="birthCity.invalid && (userData.submitted || birthCity.dirty || birthCity.touched)" class="alert alert-danger">
 								<div *ngIf="birthCity.errors.required">{{ 'errors.required' | translate }}</div>
 							</div>
@@ -211,8 +223,11 @@
 						</div>
 						<div class="form-group">
 							<label>Codice fiscale</label>
-							<input placeholder="Codice fiscale" type="text" class="form-control" required [(ngModel)]="model.fiscalCode" name="fiscalCode" #fiscalCode="ngModel" autocomplete="fiscalCode">
+							<input placeholder="Codice fiscale" type="text" class="form-control" required pattern="^(?:(?:[B-DF-HJ-NP-TV-Z]|[AEIOU])[AEIOU][AEIOUX]|[B-DF-HJ-NP-TV-Z]{2}[A-Z]){2}[\dLMNP-V]{2}(?:[A-EHLMPR-T](?:[04LQ][1-9MNP-V]|[1256LMRS][\dLMNP-V])|[DHPS][37PT][0L]|[ACELMRT][37PT][01LM])(?:[A-MZ][1-9MNP-V][\dLMNP-V]{2}|[A-M][0L](?:[1-9MNP-V][\dLMNP-V]|[0L][1-9MNP-V]))[A-Z]$" [(ngModel)]="model.fiscalCode" name="fiscalCode" #fiscalCode="ngModel" autocomplete="fiscalCode">
+							<!-- pattern="^(?:(?:[B-DF-HJ-NP-TV-Z]|[AEIOU])[AEIOU][AEIOUX]|[B-DF-HJ-NP-TV-Z]{2}[A-Z]){2}[\dLMNP-V]{2}(?:[A-EHLMPR-T](?:[04LQ][1-9MNP-V]|[1256LMRS][\dLMNP-V])|[DHPS][37PT][0L]|[ACELMRT][37PT][01LM])(?:[A-MZ][1-9MNP-V][\dLMNP-V]{2}|[A-M][0L](?:[1-9MNP-V][\dLMNP-V]|[0L][1-9MNP-V]))[A-Z]$" -->
+							<!-- pattern="^[a-zA-Z]{6}[0-9]{2}[a-zA-Z][0-9]{2}[a-zA-Z][0-9]{3}[a-zA-Z]$" -->
 							<div *ngIf="fiscalCode.invalid && (userData.submitted || fiscalCode.dirty || fiscalCode.touched)" class="alert alert-danger">
+								<div *ngIf="fiscalCode.errors.pattern">codice non valido</div>
 								<div *ngIf="fiscalCode.errors.required">{{ 'errors.required' | translate }}</div>
 							</div>
 						</div>

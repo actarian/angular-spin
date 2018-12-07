@@ -47,7 +47,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="form-group form-group-errors" *ngIf="cardError">
+		<div class="form-group form-group--errors" *ngIf="cardError">
 			<div class="alert alert-danger">
 				<span *ngIf="cardError.status == 404">codice non valido</span>
 				<span *ngIf="cardError.status == 410">La carta è scaduta</span>
@@ -143,17 +143,17 @@
 		<div class="fieldset" *ngIf="false">
 			<div class="form-group">
 				<label>Note per la struttura</label>
-				<input placeholder="Note per la struttura" type="textarea" class="form-control" [(ngModel)]="model.notes" name="notes" #notes="ngModel" autocomplete="notes">
+				<textarea placeholder="Note per la struttura" rows="5" class="form-control" [(ngModel)]="model.notes" name="notes" #notes="ngModel" autocomplete="notes"></textarea>
 			</div>
 		</div>
 		<br>
 		<div class="fieldset">
 			<div class="form-group form-group--full">
-				<h4 class="h4">Condizioni Generali</h4>
+				<h4 class="h4"><a href="/media/userfiles/files/CONDIZIONI_GENERALI_DI_VENDITA.pdf" target="_blank">Condizioni Generali</a></h4>
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" class="form-check-input" [(ngModel)]="model.condizioni" name="condizioni" #condizioni="ngModel">
-						<span>Dichiaro di aver letto ed accettato tutti i punti delle condizioni generali del <a href="/media/userfiles/files/CONDIZIONI_GENERALI_DI_VENDITA.pdf" target="_blank">contratto di vendita</a>.</span>
+						<input type="checkbox" class="form-check-input" [(ngModel)]="model.condizioni" required name="condizioni" #condizioni="ngModel">
+						<span>Dichiaro di aver letto ed accettato tutti i punti delle condizioni generali del contratto di vendita.</span>
 					</label>
 				</div>
 				<div *ngIf="condizioni.invalid && (payment.submitted || condizioni.dirty || condizioni.touched)" class="alert alert-danger">
@@ -161,15 +161,38 @@
 				</div>
 			</div>
 		</div>
+		<br>
+		<div class="fieldset">
+			<div class="form-group form-group--errors form-group--full">
+				<h4><a href="/media/userfiles/files/20181001-InformativaClienti.pdf" target="_blank">Informativa Privacy</a></h4>
+				<div class="radio">
+					<input type="hidden" [(ngModel)]="model.privacy" required name="privacy" #privacy="ngModel">
+					<span class="form-label">Preso atto dell'informativa,</span>
+					<div class="label-group">
+						<label><input type="radio" class="form-control" name="privacy" [(ngModel)]="model.privacy" [value]="true"><span>acconsento</span></label>
+						<label><input type="radio" class="form-control" name="privacy" [(ngModel)]="model.privacy" [value]="null"><span>non acconsento</span></label>
+					</div>
+					<span class="form-label">al trattamento dei miei dati personali ai fini dell’invio di proposte commerciali da parte di Eurospin.</span>
+				</div>
+				<div *ngIf="privacy.invalid && (payment.submitted || privacy.dirty || privacy.touched)" class="alert alert-danger">
+					<div *ngIf="privacy.errors.required">{{ 'errors.required' | translate }}</div>
+				</div>
+			</div>
+		</div>
 		<!-- ERROR -->
-		<div class="form-group form-group-errors" *ngIf="error">
+		<div class="form-group form-group--errors" *ngIf="error">
 			<div class="alert alert-danger" [innerHtml]="error"></div>
 		</div>
 		<!-- ERROR -->
 		<!-- CHECKOUT CTA -->
-		<button type="submit" class="btn" [ngClass]="{ 'btn--busy': busy }">
-			<span>Acquista</span>
-		</button>
+		<div class="action-bar">
+			<button type="button" class="btn btn--dimmed" (click)="onPrevStep()" title="Indietro">
+				<span>Indietro</span>
+			</button>
+			<button type="submit" class="btn" [ngClass]="{ 'btn--busy': busy }">
+				<span>Acquista</span>
+			</button>
+		</div>
 		<!-- PAYPAL BUTTON -->
 		<ng-container *ngIf="false">
 			<paypal-widget-component [paypalOptions]="paypalOptions"></paypal-widget-component>

@@ -1,11 +1,32 @@
 @import "~scss/variables";
 
+.p-accordion {
+	display: block;
+	border-top: 1px solid #e0e0e0;
+}
+
+.btn-reset {
+	display: block;
+	width: 100%;
+	text-align: right;
+	font-size: 0.8;
+
+	&[disabled] {
+		opacity: 0.5;
+		pointer-events: none;
+	}
+
+	@include sm-down {
+		display: none;
+	}
+}
 
 /*--------------------------------------------------
 List
 --------------------------------------------------*/
 
 .list {
+
 	li {
 		padding: 12px 15px;
 		border-bottom: 1px solid $border-color;
@@ -17,13 +38,21 @@ List
 			font-size: 12px;
 
 			&>span {
-				display: flex;
-				justify-content: space-between;
+				display: block;
 
 				em {
 					font-style: normal;
 					font-size: 11px;
 					margin-top: 1px;
+					float: right;
+				}
+
+
+			}
+
+			span.stars {
+				em {
+					float: none !important;
 				}
 			}
 		}

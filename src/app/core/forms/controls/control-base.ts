@@ -35,6 +35,7 @@ export class ControlBase<T> {
 
 	static uid: number = 0;
 
+	private _originalValue: T;
 	value: T;
 	key: string;
 	//
@@ -64,6 +65,7 @@ export class ControlBase<T> {
 	format: string;
 
 	constructor(options: ControlBaseOptions<T> = {}) {
+		this._originalValue = options.value;
 		this.value = options.value;
 		this.key = options.key;
 		//

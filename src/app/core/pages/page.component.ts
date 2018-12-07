@@ -21,6 +21,7 @@ export class PageComponent extends DisposableComponent {
 
 	@Input() page: Page;
 	@Input() params: Observable<Params>;
+	@Input() queryParams: Observable<Params>;
 
 	constructor(
 		protected routeService: RouteService,
@@ -29,11 +30,12 @@ export class PageComponent extends DisposableComponent {
 		this.scrollToTop();
 	}
 
+	// !!! Scroll to top on page change
 	private scrollToTop(): void {
-		// scroll to top on page change
-		// dependancy manually activated
+		// !!! PLATFORM_ID dependancy manually activated
 		const platformId: string = RouteService.injector.get(PLATFORM_ID) as string;
 		if (isPlatformBrowser(platformId)) {
+			// !!! Router dependancy manually activated
 			const router = RouteService.injector.get(Router);
 			router.events.subscribe((e) => {
 				if (!(e instanceof NavigationEnd)) {

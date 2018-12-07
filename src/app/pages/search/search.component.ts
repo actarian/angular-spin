@@ -17,11 +17,11 @@ export class SearchComponent extends PageComponent {
 		public search: SearchService,
 	) {
 		super(routeService);
-		this.routeService.getPageParams().pipe(
+		this.search.getPageParams().pipe(
 			takeUntil(this.unsubscribe),
 			first()
 		).subscribe(params => {
-			console.log('SearchComponent.queryParams', params);
+			// console.log('SearchComponent.queryParams', params);
 			this.search.setParams(params);
 			this.search.doSearch();
 			this.search.connect().pipe(

@@ -113,26 +113,32 @@ export class CheckoutPaymentComponent extends DisposableComponent implements OnI
 		);
 	}
 
+	onPrevStep(): void {
+		this.router.navigate(['../dati_passeggeri'], { relativeTo: this.route });
+	}
+
 	onPayment(): void {
 		this.error = null;
 		this.busy = true;
-		this.gtm.onReservationClick(this.model, this.model.serviceDetail);
 		this.cartService.reserveCart(this.model).pipe(
 			takeUntil(this.unsubscribe),
-			finalize(() => this.busy = false),
+			// finalize(() => this.busy = false),
 		).subscribe(
 			cart => {
 				console.log('CheckoutPaymentComponent.onPayment.success', cart);
+				this.gtm.onReservationClick(cart, cart.serviceDetail);
 				if (cart.payment.url) {
 					window.location.href = cart.payment.url;
 				} else if (this.model.paymentMethod === CartPaymentType.CreditTransfer) {
 					// this.router.navigate([`../completato?id=${cart.detail.bookingFileCode}`], { relativeTo: this.route });
 					window.location.href = `/cassa/completato?id=${cart.detail.bookingFileCode}`;
 				} else {
+					this.busy = false;
 					this.error = 'Errore sconosciuto';
 				}
 			},
 			error => {
+				this.busy = false;
 				this.error = error;
 				console.log('CheckoutPaymentComponent.onPayment.error', error);
 			}

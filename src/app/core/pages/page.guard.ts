@@ -13,7 +13,6 @@ export class PageGuard implements CanActivate, CanDeactivate<any> {
 
 	private match(route: ActivatedRouteSnapshot): boolean {
 		const lastPath = route.url.length ? route.url[route.url.length - 1].path : '';
-		// console.log('PageGuard.CanActivate', e, lastPath);
 		const pattern = /\.([0-9a-z]+)(?:[\?#]|$)/i;
 		const match = (lastPath).match(pattern);
 		if (match !== null) {

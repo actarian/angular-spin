@@ -29,7 +29,7 @@ export class CheckoutComponent extends DisposableComponent implements OnInit {
 		private gtm: GtmService,
 	) {
 		super();
-		this.pageService.getPageBySlug('/cassa').pipe(
+		this.pageService.getPageBySlug('cassa').pipe(
 			first()
 		).subscribe(page => {
 			console.log('CheckoutComponent', page);

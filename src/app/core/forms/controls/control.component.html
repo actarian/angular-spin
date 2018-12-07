@@ -58,8 +58,13 @@
 			<!-- SELECT -->
 			<label [attr.for]="control.key">{{ control.label | translate }}</label>
 			<select class="form-control" [id]="control.key" [formControlName]="control.key">
-      			<option *ngFor="let opt of control.options" [value]="opt.key">{{opt.value}}</option>
+				<option *ngFor="let opt of control.options" [value]="opt.key">{{opt.value}}</option>
 			</select>
+		</div>
+		<div *ngSwitchCase="'markdown'">
+			<!-- MARKDOWN -->
+			<label [attr.for]="control.key">{{ control.label | translate }}</label>
+			<textarea placeholder="{{ control.placeholder | translate }}" class="form-control" [id]="control.key" [formControlName]="control.key" rows="4"></textarea>
 		</div>
 		<div *ngSwitchCase="'text'">
 			<!-- TEXT -->

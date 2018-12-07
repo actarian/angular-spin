@@ -1,0 +1,9 @@
+<div class="breadcrumb">
+	<div class="container">
+		<ul>
+			<!-- <li><a [routerLink]="'homepage' | slugAsync">Home</a></li> -->
+			<li *ngFor="let item of items"><a [routerLink]="item.slug" routerLinkActive="active" [innerHTML]="item.name"></a></li>
+			<li *ngIf="destinationDescription">{{destinationDescription}}</li>
+		</ul>
+	</div>
+</div>

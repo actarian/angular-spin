@@ -10,6 +10,7 @@ Hotel Trust
 	text-transform: uppercase;
 	margin-top: 3px;
 	display: block;
+	white-space: nowrap;
 
 	@include xs-down {
 		text-align: left;
@@ -36,6 +37,7 @@ Hotel Trust
 		.number {
 			background-color: $rate-excellent;
 		}
+
 		.text {
 			color: $rate-excellent;
 		}
@@ -45,6 +47,7 @@ Hotel Trust
 		.number {
 			background-color: $rate-good;
 		}
+
 		.text {
 			color: $rate-good;
 		}
@@ -54,6 +57,7 @@ Hotel Trust
 		.number {
 			background-color: $rate-average;
 		}
+
 		.text {
 			color: $rate-average;
 		}
@@ -63,6 +67,7 @@ Hotel Trust
 		.number {
 			background-color: $rate-poor;
 		}
+
 		.text {
 			color: $rate-poor;
 		}
@@ -72,6 +77,7 @@ Hotel Trust
 		.number {
 			background-color: $rate-bad;
 		}
+
 		.text {
 			color: $rate-bad;
 		}
@@ -83,8 +89,9 @@ Hotel Trust
 
 	.hotel-item & {
 		text-align: right; // margin-top: 3px;
+
 		.text {
-			display: block;
+			display: inline-block;
 
 			@include xs-down {
 				display: inline-block;

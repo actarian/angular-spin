@@ -3,20 +3,27 @@ import { Option } from '../core/models';
 export enum SerpViewTypes {
 	List = 0,
 	Map = 1,
+	Order = 2,
+	Filter = 3,
+	MainSearch = 4,
 }
 
 export enum GroupType {
-	Tipology = 0,
-	Destination = 1,
-	Service = 2,
-	Treatment = 3,
-	Rating = 4
+	Promotion = 0, // Promozioni e sconti  4
+	Destination = 1, // Destinazioni Italia / Estero
+	Touristic = 2, // Aree turistiche 5
+	Province = 3, // Province 9
+	Tipology = 4, // Categoria
+	Rating = 5, // Stelle
+	Treatment = 6, // Trattamento
+	Service = 7, // Servizi (6,1)
+	Accomodation = 8, // Sistemazione (7)
+	Plus = 9, // Plus ???
 }
 
 export enum GroupSelectionType {
 	And = 0,
 	Or = 1,
-	Multiple = 2
 }
 
 export class Group {
@@ -43,29 +50,6 @@ export class Group {
 	match?(result: any, option: Option) {
 		return true;
 	}
-	/*
-	clear?() {
-		this.matches = {};
-		this.selected = this.items.find(option => option.selected) !== undefined;
-		this.items.forEach(option => option.count = 0);
-	}
-	filter?(result: any) {
-		let visible = true;
-		this.matches[result.id] = false;
-		this.items.forEach(option => {
-			if (option.selected) {
-				let match = this.match(result, option);
-				if (this.selectionType === GroupSelectionType.Multiple) {
-					match = match || this.matches[result.id];
-				}
-				if (match) {
-					this.matches[result.id] = true;
-				}
-				visible = visible && match;
-			}
-		});
-	}
-	*/
 }
 
 export class Treatment extends Option { }
@@ -102,6 +86,12 @@ export const treatments: Treatment[] = [{
 	id: 16, name: 'Mezza pensione / All Inclusive'
 }, {
 	id: 17, name: 'Mezza pensione + Open Bar'
+}, {
+	id: 18, name: 'Mezza pensione con bevande + lunch box'
+}, {
+	id: 19, name: 'Mezza pensione con bevande + light lunch'
+}, {
+	id: 20, name: 'Hard All Inclusive'
 }];
 
 export class Rating extends Option { }

@@ -9,5 +9,6 @@ export const slug: DocumentIndex[] = [
 	{ mnemonic: 'gift-card', id: 33, slug: '/carta_regalo' },
 	{ mnemonic: 'how-it-works', id: 2217, slug: '/come_funziona' },
 	{ mnemonic: 'terms', id: 2218, slug: '/condizioni_di_vendita' },
-	{ mnemonic: 'contacts', id: 2286, slug: '/contatti' }
+	{ mnemonic: 'contacts', id: 2286, slug: '/contatti' },
+	{ mnemonic: 'newsletter', id: 15, slug: '/newsletter' }
 ];

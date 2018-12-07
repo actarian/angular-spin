@@ -43,13 +43,14 @@ export class BookingAccomodation {
 }
 
 export class BookingAccomodationDetail {
+	acceptText?: string;
+	acceptTitle?: string;
 	code?: string;
+	country?: string;
+	policy?: string;
 	rate?: number;
 	xPaxAmount?: number;
 	xPaxTax?: number;
-	acceptTitle?: string;
-	acceptText?: string;
-	country?: string;
 }
 
 export class BookingExtraQuote extends BookingAccomodation {
@@ -78,9 +79,11 @@ export class BookingOptions {
 	constructor(options?: any) {
 		if (options) {
 			// radio required
-			this.accomodations = options.accomodations || options.accomodation;
-			this.extraQuotes = options.extraQuotes;
-			this.principals = options.principals || options.principal;
+			this.principals = options.principals || []; // options.principal;
+			this.accomodations = options.accomodations || []; // options.accomodation;
+			this.extraQuotes = options.extraQuotes || [];
+			this.supplements = options.supplements || [];
+			this.treatments = options.treatments || [];
 		}
 		if (this.principals && this.principals.length) {
 			// radio required
@@ -91,11 +94,6 @@ export class BookingOptions {
 			// radio required
 			this.accomodations[0].checked = true;
 			this.accomodation = this.accomodations[0].code;
-		}
-		if (this.supplements && this.supplements.length) {
-			// radio required
-			this.supplements[0].checked = true;
-			this.supplement = this.supplements[0].code;
 		}
 		if (this.treatments && this.treatments.length) {
 			// radio required
@@ -200,6 +198,9 @@ export class Booking {
 			}
 			if (this.options.principals) {
 				this.options.principals.forEach(e => total += (e.checked ? e.price : 0));
+			}
+			if (this.options.supplements) {
+				this.options.supplements.forEach(e => total += (e.checked ? e.price : 0));
 			}
 			if (this.options.treatments) {
 				this.options.treatments.forEach(e => total += (e.checked ? e.price : 0));

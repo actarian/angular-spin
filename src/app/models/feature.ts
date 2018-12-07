@@ -45,6 +45,15 @@ export enum FeatureEnum {
 export enum FeatureType {
 	Description = 2,
 	Quote = 3,
+	GenericServices = 1011, // Servizi Generali
+	WelcomeServices = 1012, // Servizi di Accoglienza
+	Restaurants = 1013, // Servizi di ristorazione
+	Activities = 1014, // Attività
+	Accessibility = 1015, // Accessibilità per disabili
+	Beach = 1016, // Servizi di spiaggia
+	Wellness = 1017, // Piscina & Servizi benessere
+	Accomodation = 1018, // Sistemazione
+	Discount = 1020 // Promozioni e sconti
 }
 
 

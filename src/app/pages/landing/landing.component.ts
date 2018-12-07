@@ -39,43 +39,58 @@ export class LandingComponent extends PageComponent implements PageInit, AfterVi
 	}
 
 	PageInit(): void {
+		// console.log('LandingComponent.PageInit');
 		const taxonomy: Taxonomy = this.page.taxonomies && this.page.taxonomies.length ? this.page.taxonomies[0] : null;
-		this.routeService.getPageParams().pipe(
+		this.search.getPageParams().pipe(
 			takeUntil(this.unsubscribe),
 			first()
 		).subscribe(params => {
+			// console.log('LandingComponent.queryParams', params);
 			params.search = params.search || new MainSearch();
 			params.search.destination = null;
 			params.filters = params.filters || [];
 			if (taxonomy) {
 				switch (taxonomy.type) {
-					case TaxonomyType.Country:
-					case TaxonomyType.Region:
-					case TaxonomyType.Destination:
-						params.search.destination = taxonomy;
-						break;
 					case TaxonomyType.Category:
+						params.search.destination = taxonomy;
 						params.filters = [{ type: GroupType.Tipology, id: taxonomy.id, unique: true }];
 						break;
 					case TaxonomyType.Promotion:
-						// params.filters = [{ type: taxonomy.type, items: [{ id: taxonomy.id }] }];
+						params.search.destination = taxonomy;
 						params.filters = [{ type: GroupType.Service, id: taxonomy.id, unique: true }];
 						break;
-					case TaxonomyType.Special:
-						console.log('SPECIAL');
+					case TaxonomyType.Country:
+					case TaxonomyType.Region:
+					case TaxonomyType.Touristic:
+					case TaxonomyType.Province:
+					case TaxonomyType.Destination:
+					case TaxonomyType.Hotel:
+						params.search.destination = taxonomy;
 						break;
 				}
 			}
 			const tags = params.filters.filter(x => x.type === GroupType.Tipology).map(x => x.id);
-			console.log('LandingComponent.taxonomy', tags);
+			// console.log('LandingComponent.taxonomy', tags);
 			this.search.setParams(params);
-			this.search.doSearch(tags);
+			this.search.doSearch(tags, true);
 			this.search.connect().pipe(
 				takeUntil(this.unsubscribe),
 			).subscribe(results => {
-				// console.log('SerpComponent.results', results);
+				// console.log('LandingComponent.results', results);
 			});
 		});
+		/*
+		Paolo Zupin (email 30/11/2018)
+		SearchType				Search; Filter, Menu
+		searchTypology			[Search]   “Regione”; “Paese”; “Struttura”; “Promozione”; “Categoria”; “Località” “Nessuna” ; “Provincia”
+								[Filter]   “Regione”; “Paese”; “Promozione”; “Categoria”; “Provincia” “Trattamento” “Stelle”
+								[Menu]     “Regione”; “Paese”; “Categoria”
+		searchTerm				'Abruzzo' 'Bimbo Gratis' 'Terme & Benessere etc...
+		dateFrom				‘01-01-2018’
+		travelTime				‘Qualsiasi durata’; ‘1-3 notti’; ‘4-6 notti’; ‘7 notti’; ‘8-13 notti’; ‘14 o più notti’.
+		pax						(adulti + bambini)
+		chld					Numero bambini
+		*/
 	}
 
 }

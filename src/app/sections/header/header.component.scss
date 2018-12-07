@@ -67,6 +67,7 @@ Header
 
 	.logo {
 		flex: 0 0 89px;
+		max-width: 89px;
 
 		img {
 			width: 89px;
@@ -81,6 +82,7 @@ Header
 
 	.desktop-navbar {
 		flex: 1 1 auto;
+		max-width: none;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -185,6 +187,27 @@ Header
 				}
 			}
 
+			.call-center {
+				margin-right: 15px;
+
+				@include sm-down {
+					display: none;
+				}
+
+				.ico {
+					width: 27px;
+					height: 27px;
+					fill: $tertiary-color;
+					transform: translate(2px, 7px) scale(.9) rotate(9deg);
+				}
+
+				strong {
+					font-size: 12px;
+					transform: translateY(-2px);
+					display: inline-block;
+				}
+			}
+
 			.btn--operator {
 				margin-left: 10px;
 			}
@@ -213,13 +236,14 @@ Header
 					border-radius: 50%;
 					display: inline-block;
 					font-size: 8px;
-					padding: 1px 3px;
 					text-align: center;
 					min-width: 15px;
 					position: absolute;
 					right: -1px;
 					top: 0;
 					z-index: 1;
+					padding: 2px 1px 0 1px;
+					text-indent: 1.5px;
 				}
 
 				.ico-user {
@@ -234,6 +258,7 @@ Header
 		.btn {
 			padding-top: 6px;
 			padding-bottom: 6px;
+			transform: translateY(-2px);
 		}
 	}
 
@@ -295,15 +320,15 @@ Header
 				border-radius: 50%;
 				display: inline-block;
 				font-size: 8px;
-				padding: 1px 3px;
 				text-align: center;
 				min-width: 15px;
 				position: absolute;
-				right: 7px;
 				top: 0;
 				z-index: 1;
-				margin-top: 0;
-				line-height: inherit;
+				padding: 4px 0 2px;
+				text-indent: 1px;
+				right: 7px;
+				top: -6px;
 			}
 
 			.nav-toggle {
@@ -385,6 +410,7 @@ Subnav
 		width: calc(100% - 60px);
 		opacity: 1;
 		animation: none;
+		background: #fff;
 
 		.nav-active & {
 			display: block;
@@ -403,6 +429,7 @@ Subnav
 		display: none;
 
 		@include sm-down {
+			position: relative;
 			position: sticky;
 			top: 0;
 			display: block;
@@ -432,6 +459,7 @@ Subnav
 
 	.subnav-col {
 		flex: 0 0 33.333%;
+		max-width: 33.3333%;
 		padding: 20px 20px;
 		border-right: 1px solid rgba(255, 255, 255, .2);
 
@@ -441,12 +469,14 @@ Subnav
 
 		@include sm-down {
 			flex: 0 0 50%;
+			max-width: 50%;
 			border: none;
 			padding: 0;
 		}
 
 		@include xs-down {
 			flex: 0 0 100%;
+			max-width: none;
 		}
 
 
@@ -480,7 +510,13 @@ Subnav
 			li {
 				font-size: 13px;
 				flex: 0 0 50%;
+				max-width: 50%;
 				line-height: 1.2;
+
+				@include md-down {
+					flex: 0 0 100%;
+					max-width: none;
+				}
 
 				a {
 					position: relative;
@@ -538,6 +574,7 @@ Subnav
 
 			.subnav-col {
 				flex: 0 0 46%;
+				max-width: 46%;
 
 				ul {
 					display: flex;
@@ -555,6 +592,7 @@ Subnav
 
 			.subnav-col {
 				flex: 0 0 65.5%;
+				max-width: 65.5%;
 
 				ul {
 					display: block;

@@ -1,15 +1,18 @@
 import { isPlatformBrowser } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, Inject, OnInit, PLATFORM_ID, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, Inject, NgZone, OnInit, PLATFORM_ID, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, first, map, takeUntil } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 import { ModalCloseEvent, ModalCompleteEvent, ModalEvent, ModalService, RouteService } from '../../core';
 import { PageComponent } from '../../core/pages';
-import { BookingService, Cart, GtmService, Hotel, LastViewsService, MainSearch, SearchResult, SearchService } from '../../models';
+import { BookingService, Cart, GtmService, Hotel, HotelType, LastViewsService, MainSearch, SearchResult, SearchService, Tag, TagService, TrustPilotMinimumReviews } from '../../models';
 import { Booking, BookingAvailability, BookingCalendar, BookingExtraQuote, BookingOptions } from '../../models/booking';
 import { CartService } from '../../models/cart.service';
 import { FeatureEnum, FeatureType } from '../../models/feature';
 import { WishlistService } from '../../models/wishlist.service';
+import { DialogComponent } from '../../sections/dialog/dialog.component';
+import { LoadingType } from '../../sections/loading/loading.component';
 import { HotelMapComponent } from './hotel-map.component';
 
 const FANCYBOX: any = {
@@ -39,7 +42,11 @@ const FANCYBOX: any = {
 	encapsulation: ViewEncapsulation.Emulated,
 })
 
-export class HotelComponent extends PageComponent implements OnInit, AfterViewInit {
+export class HotelComponent extends PageComponent implements OnInit, AfterViewInit, AfterViewChecked {
+
+	showTrustPilot: boolean = true;
+	showMapBox: boolean = true;
+	mapBoxAccessToken: string = environment.plugins.mapbox.accessToken;
 
 	fancyboxOptions: any = FANCYBOX;
 	model: MainSearch;
@@ -49,18 +56,23 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 	calendar: BookingCalendar = new BookingCalendar();
 	busy: boolean = false;
 	busyBook: boolean = false;
+	minimumReviews: number = TrustPilotMinimumReviews;
+	loadingTypes: any = LoadingType;
+	featureTypes: any = FeatureType;
+	hotelTypes: any = HotelType;
+	tagList: Tag[];
 
 	@ViewChild('variants') public variants: ElementRef;
 	@ViewChild('features') public features: ElementRef;
 
 	constructor(
 		@Inject(PLATFORM_ID) private platformId: string,
-		// private zone: NgZone,
 		protected routeService: RouteService,
+		private zone: NgZone,
 		private router: Router,
-		// private dispatcher: EventDispatcherService,
 		public search: SearchService,
 		public wishlist: WishlistService,
+		private tagService: TagService,
 		private lastViews: LastViewsService,
 		private bookingService: BookingService,
 		private cartService: CartService,
@@ -84,7 +96,6 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 
 	ngOnInit() {
 		this.getHotel();
-
 	}
 
 	ngAfterViewInit() {
@@ -100,9 +111,7 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 			first(),
 		).subscribe((hotel: Hotel) => {
 			this.hotel = hotel;
-			this.tabs = this.getTabs();
 			const searchResult: SearchResult = SearchResult.newSearchResultFromHotel(hotel);
-			this.lastViews.doAdd(searchResult);
 			this.gtm.onProductDetail(searchResult);
 			/*
 			this.dispatcher.emit({
@@ -110,50 +119,74 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 				data: { searchResult: searchResult, }
 			});
 			*/
-			setTimeout(() => {
-				this.readMore();
-			}, 0);
+			this.lastViews.doAdd(searchResult);
+			this.tabs = this.getTabs();
+			const ids: (string | number)[] = this.hotel.tagList ? this.hotel.tagList.map(x => x.id) : [];
+			this.tagService.getTagsByIds(ids).pipe(
+				first(),
+			).subscribe(tags => {
+				this.tagList = tags;
+			});
+		});
+	}
+
+	ngAfterViewChecked(): void {
+		this.zone.runOutsideAngular(() => {
+			this.readMore();
+			this.dispatchResize();
 		});
 	}
 
 	getTabs(): any[] {
-		const tabs = [{
-			title: 'Offerta',
+		const offertTab = {
+			title: 'Descrizione',
 			features: this.page.getFeatures(FeatureType.Description, [
 				FeatureEnum.Structure,
-				FeatureEnum.AdditionalText,
-				FeatureEnum.Accomodation,
-				FeatureEnum.Rooms,
 				FeatureEnum.TravelShip,
-				FeatureEnum.TravelFligth,
-				FeatureEnum.TravelCabin,
-				FeatureEnum.TravelItinerary,
-				FeatureEnum.TravelDetail,
-				FeatureEnum.TravelService,
-				FeatureEnum.TravelInfos,
-				FeatureEnum.TravelDocuments
+				FeatureEnum.Rooms,
+				FeatureEnum.Accomodation,
+				FeatureEnum.Beach,
+				FeatureEnum.Sport,
+				FeatureEnum.AdditionalText, // temporaneo per schede vecchie
 			])
-		}, {
+		};
+		const serviceTab = {
 			title: 'Servizi',
 			features: this.page.getFeatures(FeatureType.Description, [
 				FeatureEnum.Service,
-				FeatureEnum.PetFriendly,
-				FeatureEnum.Beach,
-				FeatureEnum.Sport,
-				FeatureEnum.BusService
-			])
-		}, {
+				FeatureEnum.PetFriendly // temporaneo per schede vecchie
+			]),
+		};
+		const itineraryTab = {
+			title: 'Itinerario',
+			features: this.page.getFeatures(FeatureType.Description, [
+				FeatureEnum.TravelItinerary,
+				FeatureEnum.TravelCabin,
+
+				FeatureEnum.TravelDocuments
+			]),
+		};
+		const detailTab = {
 			title: 'Dettaglio periodi e prezzi',
 			features: this.page.getFeatures(FeatureType.Description, [
-				FeatureEnum.Price,
+				FeatureEnum.Price, // dettaglio periodi e prezzi (tabella prezzi?)
 				FeatureEnum.SpecialOffers,
-				FeatureEnum.Discounts,
-				FeatureEnum.CheckInOutTime,
-				FeatureEnum.CarInsurance,
-				FeatureEnum.CarInsuranceInfo
+				FeatureEnum.TravelDetail,
+				FeatureEnum.TravelService, // servizi a bordo da definire posizione
+				FeatureEnum.TravelFligth,
+				FeatureEnum.CheckInOutTime, // temporaneo per schede vecchie
+				FeatureEnum.BusService,
+				FeatureEnum.TravelInfos,
+				FeatureEnum.CarInsurance, // assicurazioni vanno mantenute?
+				FeatureEnum.CarInsuranceInfo // assicurazioni vanno mantenute?
+			]),
+			quotes: this.page.getFeatures(FeatureType.Quote, [
+				FeatureEnum.Discounts
 			])
-		}];
-		console.log('tabs', tabs);
+		};
+		const tabs = this.hotel.esType === HotelType.Cruise ? [offertTab, itineraryTab, detailTab] : [offertTab, serviceTab, detailTab];
+
+		// console.log('tabs', tabs);
 		return tabs;
 		// Structure, Service, Price
 		/*
@@ -165,7 +198,7 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 	}
 
 	onTabOpen(event: any) {
-		console.log('HotelComponent.onTabOpen', event);
+		// console.log('HotelComponent.onTabOpen', event);
 		const tabType: string = ['Struttura', 'Servizi', 'Partenze'][event.index];
 		this.gtm.onTab(tabType);
 		/*
@@ -203,7 +236,7 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 		this.booking.checkIn = checkIn;
 		this.booking.checkOut = null;
 		this.booking.options = null;
-		this.gtm.onCheckIn(this.booking);
+		// this.gtm.onCheckIn(this.booking);
 		/*
 		this.dispatcher.emit({
 			type: 'onCheckIn',
@@ -227,7 +260,7 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 	getBookingOptions(checkOut: Date): Observable<BookingOptions> {
 		this.booking.checkOut = checkOut;
 		this.booking.options = null;
-		this.gtm.onCheckOut(this.booking);
+		// this.gtm.onCheckOut(this.booking);
 		/*
 		this.dispatcher.emit({
 			type: 'onCheckOut',
@@ -396,6 +429,22 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 		return description.length > 1 ? description[1] : '';
 	}
 
+	showExtraQuoteInfo(item: BookingExtraQuote): void {
+		console.log('showExtraQuoteInfo', item);
+		this.modalService.open({
+			component: DialogComponent, data: {
+				title: item.detail.acceptTitle,
+				description: item.detail.policy,
+			}
+		}).pipe(
+			first()
+		).subscribe(e => {
+			if (e instanceof ModalCompleteEvent) {
+				console.log('signed');
+			}
+		});
+	}
+
 	onChange() {
 		console.log('HotelComponent.onChange');
 	}
@@ -407,23 +456,39 @@ export class HotelComponent extends PageComponent implements OnInit, AfterViewIn
 	}
 
 	scrollToVariants() {
-		this.variants.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' });
+		this.zone.runOutsideAngular(() => {
+			this.variants.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' });
+		});
 	}
 
 	scrollToFeatures() {
-		this.features.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' });
+		this.zone.runOutsideAngular(() => {
+			this.features.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' });
+		});
 	}
 
 	readMore() {
 		if (isPlatformBrowser(this.platformId)) {
 			const Accordions = Array.from(document.querySelectorAll('.readmore-wrap'));
-			console.log(Accordions);
 			Accordions.forEach(e => {
 				const accordion = e.querySelector('.readmore-accordion') as HTMLElement;
 				if (accordion.offsetHeight > 48) {
 					accordion.classList.add('active');
 				}
 			});
+		}
+	}
+
+	dispatchResize() {
+		if (isPlatformBrowser(this.platformId)) {
+			let event;
+			if (typeof window['Event'] === 'function') {
+				event = new Event('resize');
+			} else {
+				event = window.document.createEvent('UIEvents');
+				event.initUIEvent('resize', true, false, window, 0);
+			}
+			window.dispatchEvent(event);
 		}
 	}
 

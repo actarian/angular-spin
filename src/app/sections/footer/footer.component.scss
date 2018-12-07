@@ -29,7 +29,7 @@
 			@include xs-down {
 				padding: 15px;
 				flex: 0 0 100% !important;
-				max-width: none !important;
+				max-width: 100% !important;
 			}
 		}
 	}
@@ -87,8 +87,9 @@
 
 		input {
 			flex: 1 0 auto;
+			max-width: calc(100% - 72px);
 			border: none;
-			background: #fff;
+			background-color: #fff !important;
 			padding: 5px 10px;
 		}
 	}
@@ -96,7 +97,6 @@
 	&-seguici {
 		flex: 0 0 16.66%;
 		max-width: 16.66%;
-
 
 		@include md-down {
 			flex: 0 0 33.33%;
@@ -177,6 +177,10 @@
 
 		.btn {
 			margin-left: 6px;
+
+			@media (width: 768px) {
+				margin-left: 0;
+			}
 
 			@include xxs-down {
 				display: block;
@@ -261,7 +265,7 @@
 
 		@include md-down {
 			flex: 0 0 100%;
-			max-width: none;
+			max-width: 100%;
 		}
 
 		@include sm-down {

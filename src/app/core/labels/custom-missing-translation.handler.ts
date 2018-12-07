@@ -6,7 +6,8 @@ import { MissingTranslationHandler, MissingTranslationHandlerParams } from '@ngx
 })
 export class CustomMissingTranslationHandler implements MissingTranslationHandler {
 	handle(params: MissingTranslationHandlerParams) {
-		// console.log('CustomMissingTranslationHandler', params);
-		return `{${params.key}}`;
+		// !!! console.log('CustomMissingTranslationHandler', params);
+		return params.key;
+		// return `{${params.key}}`;
 	}
 }

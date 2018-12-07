@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { map, takeUntil } from 'rxjs/operators';
 import { DisposableComponent, Page, PageIndex } from '../../core';
-import { Category, LandingService } from '../../models';
+import { LandingService } from '../../models';
 
 @Component({
 	selector: 'home-categories',
@@ -15,8 +15,6 @@ export class HomeCategoriesComponent extends DisposableComponent implements OnIn
 	limit: number = 6;
 	item: Page;
 	items: PageIndex[]; // type, destination, time
-
-	categories: Category[] = [];
 
 	constructor(
 		private landingService: LandingService,

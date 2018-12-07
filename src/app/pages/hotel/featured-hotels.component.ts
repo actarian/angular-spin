@@ -1,7 +1,6 @@
-import { Component, ViewEncapsulation, Input } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { DisposableComponent } from '../../core';
-import { SearchResult, WishlistService } from '../../models';
+import { GtmService, SearchResult } from '../../models';
 
 @Component({
 	selector: 'featured-hotels-component',
@@ -10,8 +9,21 @@ import { SearchResult, WishlistService } from '../../models';
 	encapsulation: ViewEncapsulation.Emulated,
 })
 
-export class FeaturedHotelsComponent extends DisposableComponent {
+export class FeaturedHotelsComponent extends DisposableComponent implements OnInit {
 
 	@Input() items: SearchResult[];
 	visibleItems: number = 4;
+
+	constructor(
+		private gtm: GtmService,
+	) {
+		super();
+	}
+
+	ngOnInit() {
+		if (this.items.length) {
+			this.gtm.onImpressions(this.items, 'Related Results');
+		}
+	}
+
 }

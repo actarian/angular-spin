@@ -16,7 +16,7 @@
 					</ul>
 					<div class="cta">
 						<a [href]="item.files[0].url" class="btn btn--tertiary" target="_blank">Sfoglia il volantino</a>
-						<a [routerLink]="['/volantini', item.id]" class="btn">Visualizza tutte le offerte</a>
+						<a [routerLink]="[item.slug] | route" class="btn">Visualizza tutte le offerte</a>
 					</div>
 					<div class="support">Hai richieste o esigenze particolari? <br> Chiamaci allo 045 9599 o utilizza il <a [routerLink]="'support' | slugAsync">form contatti</a>.</div>
 				</div>

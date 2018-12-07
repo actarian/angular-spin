@@ -1,0 +1,234 @@
+<div class="survey-component">
+	<div class="container">
+
+		<div class="loader" *ngIf="sent">
+			<h2 class="h2">Grazie per averci inviato la tua valutazione</h2>
+			<p>Ora puoi valutarci anche su Trustpilot, la piattaforma di recensioni</p>
+			<loading-component title="Ti stiamo collegando a trustpilot" [type]="loadingTypes.Button"></loading-component>
+		</div>
+
+		<div class="loader" *ngIf="filled">
+			<h2 class="h2">Grazie per averci inviato la tua valutazione</h2>
+			<p>Questa struttura è stata già valutata.</p>
+			<div class="cta">
+				<a [routerLink]="'homepage' | slugAsync" class="btn btn-primary">Torna alla home</a>
+			</div>
+		</div>
+
+		<div class="loader" *ngIf="!model && !filled">
+			<loading-component title="Caricamento" [type]="loadingTypes.Spinner"></loading-component>
+		</div>
+
+		<div [hidden]="sent" *ngIf="model">
+			<h1 class="h1 title">Grazie per aver viaggiato con noi</h1>
+			<div class="abstract"><strong>Gentile {{name}},</strong>
+				dopo essere ritornato dal tuo viaggio, ti chiediamo gentilmente di compilare il seguente questionario perché grazie alle tue risposte potremmo migliorare i nostri servizi rispetto alle tue esigenze.</div>
+			<div class="description"></div>
+			<form class="form" [ngClass]="{submitted: survey.submitted}" name="survey" role="form" novalidate autocomplete="off" (ngSubmit)="survey.valid && onSubmit()" #survey="ngForm">
+				<div class="form__primary">
+					<div class="fieldset">
+						<div class="form-group">
+							<div class="tit">1. Come valuti la procedura di prenotazione sul sito e/o l'assistenza telefonica?
+							</div>
+							<div class="radio-group--align-left">
+								<div class="radio-group__hint">
+									<span>Scarso</span>
+									<span>Ottimo</span>
+								</div>
+								<div class="radio" *ngFor="let item of feedback.support;">
+									<label>
+										<input type="radio" name="assistenza" [(ngModel)]="model.assistenza" [value]="item" required>
+										<span>{{item}}</span>
+									</label>
+								</div>
+								<!--
+								<input type="hidden" name="assistenza" [(ngModel)]="model.assistenza" #assistenza="ngModel" required>
+								<div *ngIf="assistenza.invalid && (survey.submitted || assistenza.dirty || assistenza.touched)" class="alert alert-danger">
+									<div *ngIf="assistenza.errors.required">{{ 'errors.required' | translate }}</div>
+								</div>
+								-->
+							</div>
+						</div>
+					</div>
+					<div class="fieldset">
+						<div class="form-group">
+							<div class="tit">
+								2. Come sei venuto a conoscenza della nostra offerta?
+							</div>
+							<div class="radio-group">
+								<div class="radio" *ngFor="let item of data.source;">
+									<label>
+										<input type="radio" name="fonte" [(ngModel)]="model.fonte" [value]="item.id" required>
+										<span>{{item.value}}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="fieldset">
+						<div class="form-group">
+							<div class="tit">
+								3. Tipologia di viaggio effettuato
+							</div>
+							<div class="radio-group">
+								<div class="radio" *ngFor="let item of data.type;">
+									<label>
+										<input type="radio" name="tipologia" [(ngModel)]="model.tipologia" [value]="item.id" required>
+										<span>{{item.value}}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="fieldset">
+						<div class="form-group">
+							<div class="tit">
+								4. Hai viaggiato con un animale?
+							</div>
+							<div class="radio-group--align-left">
+								<div class="radio" name="animali" *ngFor="let item of feedback.pets;">
+									<label>
+										<input type="radio" name="animali" [(ngModel)]="model.animali" [value]="item" required>
+										<span *ngIf="item">Sì</span>
+										<span *ngIf="!item">No</span>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="form__secondary">
+					<h2 class="h2">Valuta la struttura {{response.service.frontEndName}}</h2>
+					<div class="fieldset">
+						<div class="form-group">
+							<div class="tit">Posizione</div>
+							<div class="radio-group--align-left">
+								<div class="radio-group__hint">
+									<span>Scarso</span>
+									<span>Ottimo</span>
+								</div>
+								<div class="radio" name="position" *ngFor="let item of feedback.position;">
+									<label>
+										<input type="radio" name="position" [(ngModel)]="model.posizione" [value]="item" (change)="onChange()" required>
+										<span *ngIf="item == 0">non applicabile</span>
+										<span *ngIf="item != 0">{{item}}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="fieldset">
+						<div class="form-group">
+							<div class=" tit">Staff</div>
+							<div class="radio-group--align-left">
+								<div class="radio" name="staff" *ngFor="let item of feedback.staff;">
+									<label>
+										<input type="radio" name="staff" [(ngModel)]="model.staff" [value]="item" (change)="onChange()" required>
+										<span>{{item}}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="fieldset">
+						<div class="form-group">
+							<div class="tit">Servizi</div>
+							<div class="radio-group--align-left">
+								<div class="radio" name="servizi" *ngFor="let item of feedback.services;">
+									<label>
+										<input type="radio" name="servizi" [(ngModel)]="model.servizi" [value]="item" (change)="onChange()" required>
+										<span *ngIf="item == 0">non applicabile</span>
+										<span *ngIf="item != 0">{{item}}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="fieldset">
+						<div class="form-group">
+							<div class="tit">Ristorazione</div>
+							<div class="radio-group--align-left">
+								<div class="radio" name="ristorazione" *ngFor="let item of feedback.restaurant;">
+									<label>
+										<input type="radio" name="ristorazione" [(ngModel)]="model.ristorazione" [value]="item" (change)="onChange()" required>
+										<span *ngIf="item == 0">non applicabile</span>
+										<span *ngIf="item != 0">{{item}}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="fieldset">
+						<div class="form-group">
+							<div class="tit">Pulizia</div>
+							<div class="radio-group--align-left">
+								<div class="radio" name="pulizia" *ngFor="let item of feedback.clean;">
+									<label>
+										<input type="radio" name="pulizia" [(ngModel)]="model.pulizia" [value]="item" (change)="onChange()" required>
+										<span>{{item}}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="fieldset">
+						<div class="form-group">
+							<div class="tit">Camera</div>
+							<div class="radio-group--align-left">
+								<div class="radio" name="camera" *ngFor="let item of feedback.room;">
+									<label>
+										<input type="radio" name="camera" [(ngModel)]="model.camera" [value]="item" (change)="onChange()" required>
+										<span>{{item}}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="fieldset">
+						<div class="form-group">
+							<div class="tit">Rapporto qualità/prezzo</div>
+							<div class="radio-group--align-left">
+								<div class="radio" name="qualitaPrezzo" *ngFor="let item of feedback.report;">
+									<label>
+										<input type="radio" name="qualitaPrezzo" [(ngModel)]="model.qualitaPrezzo" [value]="item" (change)="onChange()" required>
+										<span>{{item}}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="fieldset">
+						<div class="form-group">
+							<div class="tit">Area benessere</div>
+							<div class="radio-group--align-left">
+								<div class="radio" name="areaBenessere" *ngFor="let item of feedback.wellness;">
+									<label>
+										<input type="radio" name="areaBenessere" [(ngModel)]="model.areaBenessere" [value]="item" (change)="onChange()" required>
+										<span *ngIf="item == 0">non applicabile</span>
+										<span *ngIf="item != 0">{{item}}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- -->
+				<div class="form__average" *ngIf="rating !== 0">
+					<div class="average__label">Voto medio struttura: </div>
+					<div class="average__value">{{rating | number : '1.0-2'}}</div>
+				</div>
+				<div class="form__submit">
+					<button type="submit" class="btn btn-primary" [ngClass]="{ disabled: submitted, invalid: survey.invalid, 'btn--busy': busy }" title="{{ 'signUp.register' | translate }}">
+						<span>Invia la tua valutazione</span>
+					</button>
+				</div>
+			</form>
+			<div class="alert alert-danger fade show" role="alert" *ngIf="error">
+				<strong>{{error.message || error.statusText}}</strong>
+			</div>
+		</div>
+
+	</div>
+
+</div>
+<section-value-proposition></section-value-proposition>

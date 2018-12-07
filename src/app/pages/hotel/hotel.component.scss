@@ -33,10 +33,9 @@ Hotel Page
 /*--------------------------------------------------
 Hotel Sidebar
 --------------------------------------------------*/
-
 .hotel-sidebar {
-	width: 320px;
 	flex: 0 0 320px;
+	width: 320px;
 	display: block;
 	padding: 0 30px 0 15px;
 	z-index: 10;
@@ -210,6 +209,17 @@ Hotel Sidebar
 				}
 			}
 		}
+
+		&__secondary {
+			padding: 5px 0;
+			margin-bottom: 10px;
+			border-bottom: 1px solid $border-color;
+
+			.btn {
+				margin: 10px 0;
+			}
+
+		}
 	}
 
 	.select-nights {
@@ -230,6 +240,7 @@ Hotel Sidebar
 	}
 
 	.sidebar-group--sticky {
+		position: relative;
 		position: sticky;
 		bottom: 0;
 		z-index: 10;
@@ -270,6 +281,12 @@ Hotel Sidebar
 			width: 100%;
 			padding: 14px;
 			text-align: center;
+			transition: opacity ease-in-out 350ms;
+
+			&:disabled {
+				opacity: 0.6;
+				pointer-events: none;
+			}
 		}
 
 		.no-extra {
@@ -279,30 +296,6 @@ Hotel Sidebar
 			font-size: 11px;
 			margin-left: 10px;
 		}
-	}
-
-	.loader {
-		display: block;
-		position: relative;
-		width: 100%;
-		padding: 14px;
-		text-align: center;
-		color: #fff;
-		text-transform: uppercase;
-		font-weight: 600;
-
-		background: linear-gradient(229deg, #f47c22, #1677c0);
-		background-size: 400% 400%;
-
-		animation: loading 5s ease infinite;
-
-		.spinner {
-			position: absolute;
-			right: 25px;
-			top: 50%;
-			transform: translateY(-50%);
-		}
-
 	}
 
 }
@@ -337,6 +330,7 @@ Hotel Sidebar
 
 
 .total-price-mobile {
+	position: relative;
 	position: sticky;
 	bottom: 0;
 	z-index: 10;
@@ -392,12 +386,14 @@ Hotel Sidebar
 	.prices {
 		width: 50%;
 		flex: 1 1 50%;
+		max-width: 50%;
 		display: flex;
 		justify-content: space-between;
 
 		&>div {
 			width: 50%;
 			flex: 1 0 50%;
+			max-width: 50%;
 			padding-right: 10px;
 
 			span {
@@ -419,6 +415,7 @@ Hotel Sidebar
 	.recap-cta {
 		width: 50%;
 		flex: 1 1 50%;
+		max-width: 50%;
 
 		.btn {
 			width: 100%;
@@ -426,36 +423,44 @@ Hotel Sidebar
 			padding-bottom: 11px;
 			text-align: center;
 			font-size: 13px;
+			transition: opacity ease-in-out 350ms;
+
+			&:disabled {
+				opacity: 0.6;
+				pointer-events: none;
+			}
 		}
 	}
 }
 
-
 /*--------------------------------------------------
 Hotel Main Content
 --------------------------------------------------*/
-
 .hotel-main-content {
 	padding: 0 15px;
-	flex: 0 1 calc(100% - 350px);
-	max-width: calc(100% - 350px);
+	flex: 0 0 100%;
+	max-width: calc(100% - 375px);
+
+	@include sm-down {
+		flex: 0 1 100%;
+		width: calc(100% - 375px);
+		max-width: 100%;
+	}
 
 	@include xs-down {
 		flex: 0 0 100%;
-		max-width: 100%;
+		width: 100%;
 	}
 
 	@media print {
 		flex: 0 0 100%;
-		max-width: 100%;
+		width: 100%;
 	}
 }
-
 
 /*--------------------------------------------------
 Hotel Head
 --------------------------------------------------*/
-
 .hotel-head {
 	padding-right: 40px;
 	position: relative;
@@ -532,22 +537,24 @@ Hotel Head
 	}
 }
 
-
 /*--------------------------------------------------
 Hotel Abstract
 --------------------------------------------------*/
 .hotel-abstract {
 	margin: 15px 0 15px;
-	padding: 10px 0 0;
+	padding: 25px 0 10px 0;
 	border-top: 1px solid $border-color;
 }
 
 /*--------------------------------------------------
 Hotel Gallery
 --------------------------------------------------*/
-
 .hotel-gallery {
-	margin-top: 15px;
+	overflow: hidden;
+
+	@include sm-down {
+		margin-top: 15px;
+	}
 
 	@include xxs-down {
 		margin-left: -15px;
@@ -556,11 +563,9 @@ Hotel Gallery
 	}
 }
 
-
 /*--------------------------------------------------
 Hotel Desc
 --------------------------------------------------*/
-
 .desktop-description {
 	display: block;
 
@@ -683,6 +688,7 @@ Hotel Desc
 		@include sm-down {
 			flex: 0 0 100%;
 			max-width: none;
+			width: 100%;
 			padding-bottom: 20px;
 			border-right: 0;
 		}
@@ -696,7 +702,8 @@ Hotel Desc
 
 		@include sm-down {
 			flex: 0 0 100%;
-			max-width: none;
+			max-width: 100%;
+			width: 100%;
 			padding-left: 0;
 		}
 
@@ -727,16 +734,16 @@ Hotel Desc
 
 	&--map {
 		flex: 0 0 36%;
-		max-width: 36%;
+		width: 36%;
 
 		@include sm-down {
 			flex: 0 0 50%;
-			max-width: 50%;
+			width: 50%;
 		}
 
 		@include xxs-down {
 			flex: 0 0 100%;
-			max-width: none;
+			width: 100%;
 			margin-bottom: 10px;
 		}
 
@@ -744,12 +751,19 @@ Hotel Desc
 			display: block;
 			overflow: hidden;
 			height: 0;
+			width: 100%;
 			padding-bottom: 42%;
 			position: relative;
 			z-index: 1;
 
 			img {
-				max-width: 100%;
+				position: absolute;
+				z-index: 0;
+				top: 50%;
+				left: 50%;
+				width: 100%;
+				height: auto;
+				transform: translate(-50%, -50%);
 			}
 
 			.ico {
@@ -770,17 +784,16 @@ Hotel Desc
 	&--desc {
 		flex: 1 0 64%;
 		max-width: 64%;
-		padding: 0 10px 0 20px;
 		align-items: flex-start;
 
 		@include sm-down {
 			flex: 0 0 50%;
-			max-width: 50%;
+			width: 50%;
 		}
 
 		@include xxs-down {
 			flex: 0 0 100%;
-			max-width: none;
+			width: 100%;
 			padding: 10px 10px 10px 0;
 		}
 
@@ -829,100 +842,11 @@ Hotel Desc
 			}
 		}
 	}
-}
 
-@-webkit-keyframes loading {
-	0% {
-		background-position: 0% 50%
-	}
-
-	50% {
-		background-position: 100% 51%
-	}
-
-	100% {
-		background-position: 0% 50%
+	.hotel-mapbox--map+.hotel-mapbox--desc {
+		padding: 0 10px 0 20px;
 	}
 }
-
-@keyframes loading {
-	0% {
-		background-position: 0% 50%
-	}
-
-	50% {
-		background-position: 100% 51%
-	}
-
-	100% {
-		background-position: 0% 50%
-	}
-}
-
-$spinner-size: 2.5em;
-
-.spinner {
-	font-size: 2px;
-	display: inline-block;
-	position: relative;
-	color: #ffffff;
-	margin: $spinner-size * -1 auto auto auto;
-	text-indent: -9999em;
-	transform: translateZ(0);
-	animation-delay: -0.16s;
-
-	&,
-	&:before,
-	&:after {
-		border-radius: 50%;
-		width: $spinner-size;
-		height: $spinner-size;
-		animation-fill-mode: both;
-		animation: spinner 1.8s infinite ease-in-out;
-	}
-
-	&:before,
-	&:after {
-		content: '';
-		position: absolute;
-	}
-
-	&:before {
-		left: $spinner-size * -1.5;
-		animation-delay: -0.32s;
-	}
-
-	&:after {
-		left: $spinner-size * 1.5;
-	}
-}
-
-@-webkit-keyframes spinner {
-
-	0%,
-	80%,
-	100% {
-		box-shadow: 0 $spinner-size 0 $spinner-size * -0.5;
-	}
-
-	40% {
-		box-shadow: 0 $spinner-size 0 0;
-	}
-}
-
-@keyframes spinner {
-
-	0%,
-	80%,
-	100% {
-		box-shadow: 0 $spinner-size 0 $spinner-size * -0.5;
-	}
-
-	40% {
-		box-shadow: 0 $spinner-size 0 0;
-	}
-}
-
 
 /*--------------------------------------------------
 Readmore
@@ -978,4 +902,14 @@ Readmore
 			}
 		}
 	}
+}
+
+/*--------------------------------------------------
+Table
+--------------------------------------------------*/
+[p-tabpanel] table {
+	width: 100%;
+	margin-bottom: 20px;
+	vertical-align: middle;
+	line-height: 1;
 }

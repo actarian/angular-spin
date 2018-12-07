@@ -8,24 +8,44 @@ import { TrustPilotConfig, TrustPilotService } from './trustpilot.service';
 @Component({
 	selector: 'trustpilot-widget-component',
 	template: `
-	<div class="trustpilot-comments">
-		<div class="trustpilot-widget"
-			[attr.data-template-id]="options.templateId"
-			[attr.data-businessunit-id]="options.businessunitId"
-			[attr.data-sku]="sku"
-			[attr.data-locale]="'it-IT'"
-			[attr.data-style-height]="'250px'"
-			[attr.data-style-width]="'100%'"
-			[attr.data-theme]="'light'"
-			style="margin: 30px 0; max-width: 750px;">
-			<a href="https://it.trustpilot.com/review/{{options.businessunitName}}" target="_blank">Trustpilot</a>
+	<ng-container *ngIf="sku">
+		<div class="trustpilot-comments">
+			<div class="trustpilot-widget"
+				[attr.data-template-id]="options.templateId"
+				[attr.data-businessunit-id]="options.businessunitId"
+				[attr.data-sku]="sku"
+				[attr.data-locale]="'it-IT'"
+				[attr.data-style-height]="'350px'"
+				[attr.data-style-width]="'100%'"
+				[attr.data-theme]="'light'"
+				style="margin: 30px 0; max-width: 750px;">
+				<a href="https://it.trustpilot.com/review/{{options.businessunitName}}" target="_blank">Trustpilot</a>
+			</div>
 		</div>
-	</div>`,
+	</ng-container>
+	<ng-container *ngIf="!sku">
+		<div class="carousel">
+			<div class="trustpilot-widget"
+				[attr.data-template-id]="templateId || options.templateServiceId"
+				[attr.data-businessunit-id]="options.businessunitId"
+				[attr.data-locale]="'it-IT'"
+				[attr.data-style-height]="'700px'"
+				[attr.data-style-width]="'100%'"
+				[attr.data-theme]="'light'"
+				[attr.data-group]="'on'"
+				[attr.data-stars]="'1,2,3,4,5'"
+				style="margin: 30px 0; max-width: 750px;">
+				<a href="https://it.trustpilot.com/review/{{options.businessunitName}}" target="_blank">Trustpilot</a>
+			</div>
+		</div>
+	</ng-container>
+	`,
 })
 
 export class TrustPilotWidgetComponent extends DisposableComponent {
 
-	@Input() sku: string;
+	@Input() sku?: string;
+	@Input() templateId?: string;
 	options: TrustPilotConfig;
 	loaded: boolean;
 

@@ -4,12 +4,14 @@
 			<li class="item" [ngClass]="{ active: index === active }" (click)="onClick(item)" (mouseover)="onMouseOver(index)" *ngIf="index < visibleItems">
 				<span class="ico">
 					<svg [ngSwitch]="item.type">
+						<use *ngSwitchCase="-1" xlink:href="#ico-struttura"></use>
 						<use *ngSwitchCase="0" xlink:href="#ico-star"></use>
 						<use *ngSwitchCase="1" xlink:href="#ico-star"></use>
 						<use *ngSwitchCase="2" xlink:href="#ico-pin"></use>
 						<use *ngSwitchCase="3" xlink:href="#ico-pin"></use>
 						<use *ngSwitchCase="4" xlink:href="#ico-pin"></use>
-						<use *ngSwitchCase="5" xlink:href="#ico-struttura"></use>
+						<use *ngSwitchCase="5" xlink:href="#ico-pin"></use>
+						<use *ngSwitchCase="9" xlink:href="#ico-pin"></use>
 					</svg>
 				</span>
 				<h4 class="tit" [innerHTML]="query ? (item.name | highlight : query) : item.name">---</h4>

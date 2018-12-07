@@ -1,0 +1,248 @@
+@import "~scss/variables";
+
+/*--------------------------------------------------
+Generic Page
+--------------------------------------------------*/
+
+.survey-component {
+	border-top: 1px solid $border-color;
+	padding: 20px 0 35px;
+
+	.container {
+		padding: 0 30px 0 15px;
+		max-width: 940px;
+	}
+
+	.loader {
+		width: 100%;
+		min-height: 70vh;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+
+		p {
+			margin-bottom: 50px;
+		}
+	}
+
+	.h1 {
+		color: $tit-color;
+		font-size: 40px;
+		line-height: 1.2;
+		font-weight: 300;
+		margin-bottom: 30px;
+
+		@include xs-down {
+			font-size: 28px;
+			font-weight: normal;
+		}
+	}
+
+	.abstract {
+		font-size: 16px;
+
+		strong {
+			font-size: 20px;
+			display: block;
+			font-weight: normal;
+			padding-bottom: 15px;
+		}
+	}
+
+	.description {
+		font-size: 16px;
+	}
+
+	.form {
+		margin: 40px 0 70px 0;
+	}
+
+	.fieldset {
+		display: block;
+		width: auto;
+
+		&:first-child {
+			.radio-group--align-left {
+				position: relative;
+				top: -20px;
+
+				@include xs-down {
+					padding: 0;
+					top: 0;
+				}
+			}
+		}
+
+		&:last-child {
+			.form-group {
+				border: 0 !important;
+			}
+		}
+	}
+
+	.form-group {
+		max-width: none;
+		padding-right: 0;
+		margin-bottom: 15px;
+		display: flex;
+		flex-direction: row;
+		border-bottom: 1px solid $border-color;
+	}
+
+	.tit {
+		flex: 0 0 30%;
+		max-width: 30%;
+		text-transform: uppercase;
+		color: $tertiary-color;
+		font-weight: bolder;
+		margin-bottom: 15px;
+
+		@include xs-down {
+			max-width: 100%;
+		}
+	}
+
+	.invalid {
+		pointer-events: none;
+		opacity: 0.7;
+	}
+
+	//radio group
+	.radio-group {
+		flex: 0 0 70%;
+		max-width: 70%;
+		padding: 0 15px;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+
+		@include xs-down {
+			max-width: 100%;
+			display: block;
+			padding: 0;
+		}
+
+		.radio {
+			display: inline-block;
+			padding-right: 20px;
+
+			@include xs-down {
+				padding-right: 10px;
+			}
+		}
+
+		.radio-group__hint {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			width: 216px;
+			padding: 0 0 4px 0;
+
+			@include xs-down {
+				width: 173px;
+			}
+
+			span {
+				font-size: 10px;
+				color: $primary-color;
+			}
+		}
+	}
+
+	.radio-group--align-left {
+		@extend .radio-group;
+		display: block;
+	}
+
+	//form primary
+	.form__primary {
+		margin-bottom: 70px;
+
+		@include xs-down {
+			margin-bottom: 30px;
+		}
+
+		.form-group {
+			padding: 25px 0 15px 0;
+
+			@include xs-down {
+				display: block;
+				margin-bottom: 0;
+			}
+		}
+
+		.radio-group {
+
+			.radio {
+				flex: 0 0 33.333%;
+				max-width: 33.333%;
+				margin-bottom: 10px;
+
+				@include xs-down {
+					max-width: 100%;
+				}
+			}
+		}
+	}
+
+	//form secondary
+	.form__secondary {
+
+		.h2 {
+			margin-bottom: 15px;
+		}
+
+		.form-group {
+			display: flex;
+			flex-direction: row;
+			align-items: flex-end;
+			padding: 15px 0;
+			margin-bottom: 0;
+			border-bottom: 1px solid $border-color;
+
+			@include xs-down {
+				display: block;
+				margin-bottom: 0;
+			}
+		}
+
+		.tit {
+			margin-bottom: 0;
+
+			@include xs-down {
+				margin-bottom: 15px;
+			}
+		}
+	}
+
+	//average
+	.form__average {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		margin-bottom: 40px;
+
+		.average__label {
+			text-align: right;
+			flex: 1 0 auto;
+			background: $border-color;
+			padding: 16px 20px;
+			font-weight: 700;
+		}
+
+		.average__value {
+			text-align: center;
+			flex: 0 0 auto;
+			color: white;
+			background: $secondary-color;
+			font-size: 21px;
+			font-weight: 600;
+			padding: 11px 20px;
+		}
+	}
+
+	.form__secondary+.form__submit {
+		margin-top: 40px;
+	}
+}

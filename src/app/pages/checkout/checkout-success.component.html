@@ -13,6 +13,11 @@
 			</a>
 		</div>
 		<br>
+		<!-- TRUSTPILOT -->
+		<ng-container *ngIf="trustPilotServiceReviewEnabled">
+			<trustpilot-widget-component></trustpilot-widget-component>
+		</ng-container>
+		<br>
 		<!-- PAY IN ADVANCE -->
 		<ng-container *ngIf="cart.paymentAdvance">
 			<div class="fieldset">
@@ -58,7 +63,7 @@
 		<h2 class="h1">Pagamento Annullato</h2>
 		<h3>La transazione non è andata a buon fine</h3>
 		<br>
-		<div class="form-group form-group-errors" *ngIf="error">
+		<div class="form-group form-group--errors" *ngIf="error">
 			<div class="alert alert-danger">
 				<span [innerHtml]="error.statusText"></span>
 			</div>

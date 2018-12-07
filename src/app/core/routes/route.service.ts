@@ -64,7 +64,7 @@ export class RouteService {
 			const language = this._languages.getValue().find(x => x.lang === lang);
 			this._language.next(language);
 			this.translateService.use(lang);
-			console.log('RouteService.set lang', lang, environment.useLang);
+			// console.log('RouteService.set lang', lang, environment.useLang);
 			if (environment.useLang) {
 				const _lang: string = this._lang;
 				let path = this.location.path();
@@ -86,9 +86,11 @@ export class RouteService {
 	// PUBLIC METHODS
 	public pageParams$: BehaviorSubject<Params> = new BehaviorSubject({});
 	public getPageParams(): Observable<Params> {
+		// console.log('RouteService.getPageParams', this.router.url);
 		return this.route.queryParams.pipe(
 			distinctUntilChanged(),
 			switchMap(params => {
+				// console.log(params);
 				const parsed = this.parseParams(params);
 				this.pageParams$.next(parsed);
 				return of(parsed);
@@ -97,16 +99,41 @@ export class RouteService {
 		);
 	}
 
-	public parseParams(params: any) {
+	public parseParams(params: any): any {
 		const parsed = {};
+		Object.keys(params).forEach(k => parsed[k] = this.parse(params[k]));
+		/*
 		for (const key in params) {
 			if (typeof (params[key]) === 'string') {
-				parsed[key] = JSON.parse(params[key]);
+				parsed[key] = this.parse(params[key]);
 			} else {
 				parsed[key] = params[key];
 			}
 		}
+		*/
 		return parsed;
+	}
+
+	public serializeParams(params: any) {
+		const serialized = {};
+		Object.keys(params).forEach(k => serialized[k] = this.serialize(params[k]));
+		return serialized;
+	}
+
+	public parse(base64) {
+		if (isPlatformBrowser(this.platformId)) {
+			return JSON.parse(window.atob(base64));
+		} else {
+			return JSON.parse(Buffer.from(base64, 'base64').toString('ascii'));
+		}
+	}
+
+	public serialize(object) {
+		if (isPlatformBrowser(this.platformId)) {
+			return window.btoa(JSON.stringify(object));
+		} else {
+			return Buffer.from(JSON.stringify(object), 'ascii').toString('base64');
+		}
 	}
 
 	public getId(): number {
@@ -206,7 +233,7 @@ export class RouteService {
 					})
 				);
 				this.queryParams = route.queryParams.pipe(
-					tap(x => console.log('queryParams', x)),
+					// tap(x => console.log('queryParams', x)),
 					concatMap(x => {
 						return of(this.toData(x));
 					})
@@ -229,7 +256,7 @@ export class RouteService {
 	public setLanguage(lang: string, silent?: boolean) {
 		this.lang = lang;
 		if (environment.useLang && this.path) {
-			console.log('RouteService.setLanguage', this.path, this._lang, lang, silent);
+			// console.log('RouteService.setLanguage', this.path, this._lang, lang, silent);
 			if (silent) {
 				this.location.replaceState(this.path);
 			} else {
@@ -262,7 +289,7 @@ export class RouteService {
 				const market = location[marketIndex];
 				if (market !== this.currentMarket) {
 					this.currentMarket = market;
-					console.log('RouteService.setMarket', market, event.url);
+					// console.log('RouteService.setMarket', market, event.url);
 				}
 			}
 			if (environment.useLang) {
@@ -300,12 +327,12 @@ export class RouteService {
 				} else {
 					acceptLanguage = null;
 				}
-				console.log('request', request, 'acceptLanguage', acceptLanguage);
+				// console.log('request', request, 'acceptLanguage', acceptLanguage);
 			}
-			console.log('RouteService.isPlatformServer', this.platformId, acceptLanguage);
+			// console.log('RouteService.isPlatformServer', this.platformId, acceptLanguage);
 		} else if (isPlatformBrowser(this.platformId)) {
 			acceptLanguage = this.translateService.getBrowserLang();
-			console.log('RouteService.isPlatformBrowser', this.platformId, acceptLanguage);
+			// console.log('RouteService.isPlatformBrowser', this.platformId, acceptLanguage);
 		}
 		let detectedLanguage: string = environment.defaultLanguage;
 		const regexp: RegExp = new RegExp(`(${environment.languages.map(x => x.lang).join('|')})`, 'gi');

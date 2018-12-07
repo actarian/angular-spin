@@ -140,7 +140,7 @@
 								<div *ngIf="referente.errors.required">{{ 'errors.required' | translate }}</div>
 							</div>
 						</div>
-						<div class="form-group form-group-errors">
+						<div class="form-group form-group--errors">
 							<label>Email</label>
 							<input placeholder="Email" type="email" class="form-control" required pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" [(ngModel)]="model.email" name="email" #email="ngModel" autocomplete="email">
 							<div *ngIf="email.invalid && (structure.submitted || email.dirty || email.touched)" class="alert alert-danger">
@@ -167,12 +167,16 @@
 							</div>
 						</div>
 					</div>
-					<div class="form-group form-group-errors">
-						<div class="checkbox">
-							<label>
-							<input type="checkbox" class="form-check-input" required [(ngModel)]="model.acceptPrivacyPolicies" name="acceptPrivacyPolicies" #acceptPrivacyPolicies="ngModel">
-							<span>Preso atto dell'<a href="/media/userfiles/files/20180522-Informativa_Contatti-areastrutture.pdf" target="_blank">informativa</a>, acconsento al trattamento dei miei dati personali ai fini dell'invio di proposte commerciali da parte di Eurospin.</span>
-						</label>
+					<div class="form-group form-group--errors">
+						<h4>Informativa Privacy</h4>
+						<div class="radio">
+							<input type="hidden" [(ngModel)]="model.acceptPrivacyPolicies" required name="acceptPrivacyPolicies" #acceptPrivacyPolicies="ngModel">
+
+							<span class="form-label">Dichiaro di avere letto e accettato l´<a href="/media/userfiles/files/20180522-Informativa_Contatti-areastrutture.pdf" target="_blank">informativa sulla privacy</a>,</span>
+							<div class="label-group"> 
+								<label><input type="radio" class="form-control" [attr.disabled]="true" name="acceptPrivacyPolicies" [(ngModel)]="model.acceptPrivacyPolicies"><span>non accetto</span></label>
+								<label><input type="radio" class="form-control" name="acceptPrivacyPolicies" [(ngModel)]="model.acceptPrivacyPolicies" [value]="true" required><span>accetto</span></label>
+							</div>
 						</div>
 						<div *ngIf="acceptPrivacyPolicies.invalid && (structure.submitted || acceptPrivacyPolicies.dirty || acceptPrivacyPolicies.touched)" class="alert alert-danger">
 							<div *ngIf="acceptPrivacyPolicies.errors.required">{{ 'errors.required' | translate }}</div>

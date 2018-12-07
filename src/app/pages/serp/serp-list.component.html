@@ -18,5 +18,5 @@
 			<serp-item [item]="item" [index]="i"></serp-item>
 		</ng-container>
 	</ng-container>
-	<button type="button" class="btn" *ngIf="(search.resultsFiltered$ | async)?.length > search.visibleItems" (click)="search.visibleItems = search.visibleItems + 20">carica altri</button>
+	<button type="button" class="btn" *ngIf="(search.resultsFiltered$ | async)?.length > search.visibleItems" (click)="search.viewMore()">carica altri</button>
 </div>

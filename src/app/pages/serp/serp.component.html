@@ -1,21 +1,21 @@
 <div class="serp-search">
 	<div class="container">
 		<div class="serp-filters">
-			<div class="item">
-				<button type="button" class="switch-map" [ngClass]="{ active: viewType === viewTypes.List }" (click)="viewType = viewTypes.Map">
+			<div class="item" *ngIf="search.totalResults > 0">
+				<button type="button" class="switch-map" [ngClass]="{ active: viewType === viewTypes.List }" (click)="setViewType(viewTypes.Map)">
 					<svg class="ico ico-pin">
 						<use xlink:href="#ico-pin"></use>
 					</svg>
 					<span>Mappa </span>
 				</button>
-				<button type="button" class="switch-map" [ngClass]="{ active: viewType === viewTypes.Map }" (click)="viewType = viewTypes.List">
+				<button type="button" class="switch-map" [ngClass]="{ active: viewType === viewTypes.Map }" (click)="setViewType(viewTypes.List)">
 					<svg class="ico ico-list">
 						<use xlink:href="#ico-list"></use>
 					</svg>
 					<span>Lista </span>
 				</button>
 			</div>
-			<div class="item" (click)="active = popupOrder" #popupOrder>
+			<div class="item" (click)="setViewType(viewTypes.Order)" *ngIf="search.totalResults > 0">
 				<button>
 					<svg class="ico ico-order">
 						<use xlink:href="#ico-order"></use>
@@ -23,7 +23,7 @@
 					<span>Ordina </span>
 				</button>
 			</div>
-			<div class="item" (click)="active = popupFilter" #popupFilter>
+			<div class="item" (click)="setViewType(viewTypes.Filter)" *ngIf="search.totalResults > 0">
 				<button>
 					<svg class="ico ico-filter">
 						<use xlink:href="#ico-filter"></use>
@@ -31,7 +31,7 @@
 					<span>Filtra </span>
 				</button>
 			</div>
-			<div class="item" (click)="active = popupMainSearch" #popupMainSearch>
+			<div class="item" (click)="setViewType(viewTypes.MainSearch)">
 				<button>
 					<svg class="ico ico-search">
 						<use xlink:href="#ico-search"></use>
@@ -41,10 +41,10 @@
 			</div>
 		</div>
 		<!-- Order Popup -->
-		<div class="serp-filters--popup serp-order--popup" [ngClass]="{ 'active' : active == popupOrder }">
+		<div class="serp-filters--popup serp-order--popup" [ngClass]="{ active : viewType === viewTypes.Order }">
 			<div class="head">
 				<div class="tit"> Ordina risultati </div>
-				<a class="close" (click)="active=null">
+				<a class="close" (click)="setViewType(viewTypes.List)">
 					<svg class="ico">
 						<use xlink:href="#ico-close"></use>
 					</svg>
@@ -57,14 +57,14 @@
 					</li>
 				</ul>
 			</div>
-			<div class="foot"> <a href="#" class="btn-reset" (click)="filterService.onReset()">Resetta filtri </a> <button type="button" class="btn" (click)="active = null">Aggiorna </button> </div>
+			<div class="foot"> <a class="btn-reset" (click)="filterService.onReset()">Resetta filtri </a> <button type="button" class="btn" (click)="setViewType(viewTypes.List)">Aggiorna </button> </div>
 		</div>
 		<!-- Order Popup -->
 		<!-- Filter Popup -->
-		<div class="serp-filters--popup serp-filter--popup" [ngClass]="{ 'active' : active == popupFilter }">
+		<div class="serp-filters--popup serp-filter--popup" [ngClass]="{ active : viewType === viewTypes.Filter }">
 			<div class="head">
 				<div class="tit"> Filtra risultati </div>
-				<a class="close" (click)="active=null">
+				<a class="close" (click)="setViewType(viewTypes.List)">
 					<svg class="ico">
 						<use xlink:href="#ico-close"></use>
 					</svg>
@@ -75,22 +75,23 @@
 					<section-filter (selectFilter)="filterService.setGroups()"></section-filter>
 				</div>
 			</div>
-			<div class="foot"> <a href="#" class="btn-reset" (click)="filterService.onReset()">Resetta filtri </a> <button type="button" class="btn" (click)="active = null">Aggiorna </button> </div>
+			<div class="foot"> <a class="btn-reset" (click)="filterService.onReset()">Resetta filtri </a> <button type="button" class="btn" (click)="setViewType(viewTypes.List)">Aggiorna </button> </div>
 		</div>
 		<!-- Filter Popup -->
 		<!-- Main Search Popup -->
-		<div class="serp-filters--popup serp-main-search--popup" [ngClass]="{ 'active' : active == popupMainSearch }">
+		<div class="serp-filters--popup serp-main-search--popup" [ngClass]="{ active : viewType === viewTypes.MainSearch }">
 			<div class="head">
 				<div class="tit"> Modifica ricerca </div>
-				<a class="close" (click)="active=null">
+				<a class="close" (click)="setViewType(viewTypes.List)">
 					<svg class="ico">
 						<use xlink:href="#ico-close"></use>
 					</svg>
 				</a>
 			</div>
-			<main-search [useBreadcrumbs]="useBreadcrumbs" (doSearch)="active = null; search.onSearchIn($event)">---</main-search>
+			<main-search [useBreadcrumbs]="useBreadcrumbs" (doSearch)="setViewType(viewTypes.List); search.onSearchIn($event)">---</main-search>
 		</div>
 		<!-- Main Search Popup -->
+		<router-outlet></router-outlet>
 	</div>
 </div>
 <div class="serp-content">
@@ -101,14 +102,16 @@
 			</div>
 		</ng-container>
 		<ng-container *ngIf="!search.busy">
-			<ng-container [ngSwitch]="(search.results$ | async)?.length">
+			<ng-container [ngSwitch]="search.totalResults">
 				<ng-container *ngSwitchCase="0">
-					<div class="nrp" *ngIf="!search.busy && (search.results$ | async)?.length == 0">
+					<div class="nrp" *ngIf="!search.busy && search.totalResults == 0">
 						<div class="tit h1">Purtroppo la ricerca non ha prodotto nessun risultato</div>
-						<div class="text">Hai una richiesta particolare?<br>
+						<div class="text">
+							Hai una richiesta particolare?<br>
 							Prova a contattare il nostro Call Center al numero di telefono <a href="tel:+39 045 9599"><svg class="ico">
 									<use xlink:href="#ico-tel"></use>
-								</svg>045 9599</a></div>
+								</svg>045 9599</a> o tramite il <a [routerLink]="'support' | slugAsync">form contatti</a>.
+						</div>
 					</div>
 					<div class="home-lastviews">
 						<home-lastviews></home-lastviews>
@@ -119,7 +122,7 @@
 						<div class="switch-map-list">
 							<div class="switch-map-list--item switch-map-list--item__map" [ngClass]="{ active: viewType === viewTypes.List }">
 								<img src="assets/img/map.png">
-								<button type="button" class="btn" (click)="viewType = viewTypes.Map">
+								<button type="button" class="btn" (click)="setViewType(viewTypes.Map)">
 									<svg class="ico">
 										<use xlink:href="#ico-pin"></use>
 									</svg>
@@ -127,7 +130,7 @@
 								</button>
 							</div>
 							<div class="switch-map-list--item switch-map-list--item__list" [ngClass]="{ active: viewType === viewTypes.Map }">
-								<button type="button" class="btn" (click)="viewType = viewTypes.List">
+								<button type="button" class="btn" (click)="setViewType(viewTypes.List)">
 									<svg class="ico">
 										<use xlink:href="#ico-list"></use>
 									</svg>

@@ -1,0 +1,92 @@
+@import "~scss/variables";
+
+/*--------------------------------------------------
+Popup Hint
+--------------------------------------------------*/
+.popup-hint {
+	position: absolute;
+	z-index: 10;
+	left: 0;
+	top: 59px;
+	background: #fff;
+	width: 100%;
+	box-shadow: 0 3px 7px rgba(0, 0, 0, .15);
+	min-width: 202px;
+	display: none;
+
+	.active & {
+		display: block;
+	}
+
+	@include md-down {
+		min-width: 100%;
+	}
+
+	@include xs-down {
+		top: 50px;
+	}
+
+	@include xs-down {
+		width: calc(100% - 20px);
+		min-width: 0;
+	}
+
+}
+
+.popup-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.item {
+	display: flex;
+	flex-wrap: wrap;
+	position: relative;
+	z-index: 1;
+	color: $tit-color;
+	padding: 7px 12px;
+	border: 1px solid $border-color;
+	cursor: pointer;
+
+	&.active {
+		background-color: #d8eeff;
+	}
+}
+
+.item+.item {
+	border-top: none;
+}
+
+.name {
+	font-size: 14px;
+	font-weight: 400;
+	flex: 1 0 100%;
+	max-width: 100%;
+	margin: 0;
+	padding: 0;
+	line-height: 1.2;
+	padding: 2px 0;
+}
+
+.body {
+	max-height: 300px;
+	overflow-y: auto;
+
+	@include xxs-down {
+		max-height: 70vh;
+	}
+}
+
+/*--------------------------------------------------
+Popup Hint Destination
+--------------------------------------------------*/
+
+.popup-hint--autocomplete {
+	width: 100%;
+
+	@include xxs-down {
+		width: 100%;
+		min-width: 0;
+	}
+}

@@ -1,0 +1,53 @@
+@import "~scss/variables";
+
+/*--------------------------------------------------
+Leaflet
+--------------------------------------------------*/
+.leaflet-detail {
+	border-top: 1px solid #e0e0e0;
+	padding: 20px 0 35px;
+
+	.container {
+		padding: 0 30px 0 15px;
+	}
+
+	.h1 {
+		color: $tit-color;
+		font-size: 40px;
+		line-height: 1.2;
+		font-weight: 300;
+
+		@include xs-down {
+			font-size: 28px;
+			font-weight: normal;
+		}
+	}
+
+	.card-row {
+		flex-wrap: wrap;
+		margin-left: -15px;
+		margin-right: -15px;
+
+		.card-col {
+			flex: 0 0 25%;
+			width: 25%;
+
+			@include xs-down {
+				flex: 0 0 50%;
+				width: 50%;
+			}
+
+			@include xxs-down {
+				flex: 0 0 100%;
+				width: 100%;
+			}
+		}
+	}
+
+}
+
+leaflet-item {
+	display: block;
+	width: 100%;
+	margin-bottom: 40px;
+}

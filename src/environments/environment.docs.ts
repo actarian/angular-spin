@@ -35,6 +35,7 @@ export const environment = {
 	],
 	authStrategy: AuthStrategy.Cookie,
 	production: true,
+	editor: false,
 	plugins: {
 		facebook: {
 			appId: 2044894462438447,
@@ -47,11 +48,13 @@ export const environment = {
 			clientId: '635556948154-k7fm0pvn6va39tap1ge4iq23ntd4hu37.apps.googleusercontent.com',
 		},
 		googleTagManager: {
-			id: 'GTM-TS2H6VG',
+			id: 'GTM-5L6HMD',
+			uaId: 'UA-12054755-5',
+			uaIdOperator: 'UA-12054755-6',
 		},
 		mapbox: {
-			accessToken: 'pk.eyJ1Ijoic3VwYWhmdW5rIiwiYSI6IjE4Zjg1MWMxYzQ3M2RlYTU4OGNlMTc4ODFmOTkyODczIn0.Nusb4DbKb1KnkWWDcZUy-w',
-			style: 'mapbox://styles/supahfunk/cjjy5l19r3c7m2rmy15gg3059',
+			accessToken: 'pk.eyJ1IjoiYWN0YXJpYW4iLCJhIjoiY2lqNWU3MnBzMDAyZndnbTM1cjMyd2N2MiJ9.CbuEGSvOAfIYggQv854pRQ', // Actarian Basic Style
+			style: 'mapbox://styles/actarian/cjosga2ir4hmg2sphrq0wil9n', // Actarian Basic Style
 		},
 		paypal: {
 			env: 'sandbox', // Set your environment: sandbox | production
@@ -72,8 +75,9 @@ export const environment = {
 		},
 		trustPilot: {
 			templateId: '544a426205dc0a09088833c6',
-			businessunitId: '58e253ab0000ff00059fc0fe',
-			businessunitName: 'www.eurospin-viaggi.it',
+			templateServiceId: '530d0eaf748a510e2093cf9b', // simple '56278e9abfbbba0bdcd568bc',
+			businessunitId: '59ef1f7e0000ff0005ae8138',
+			businessunitName: 'eurospin-viaggi.wslabs.it',
 		},
 		swiper: {
 			direction: 'horizontal',

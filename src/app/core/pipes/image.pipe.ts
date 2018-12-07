@@ -18,6 +18,6 @@ export class ImagePipe implements PipeTransform {
 		if (images && images.length) {
 			image = images.find(i => i.type === imageType) || images[0];
 		}
-		return image ? image.url + queryString : null;
+		return image ? (image.url + queryString).replace(/ /g, '%20') : null;
 	}
 }

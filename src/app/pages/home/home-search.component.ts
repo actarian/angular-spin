@@ -1,4 +1,5 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { Page } from '../../core';
 import { SearchService } from '../../models';
 
 @Component({
@@ -9,6 +10,8 @@ import { SearchService } from '../../models';
 })
 
 export class HomeSearchComponent {
+
+	@Input() page: Page;
 
 	constructor(
 		public search: SearchService,

@@ -15,6 +15,7 @@ Featured Hotels Item
 		z-index: 1;
 		width: auto;
 		flex: 0 0 auto;
+		width: 100%;
 
 		.discount {
 			position: absolute;
@@ -49,6 +50,7 @@ Featured Hotels Item
 
 	.content {
 		flex: 1 1 auto;
+		max-width: 310px;
 		padding: 8px 12px 12px;
 
 		@include xs-down {
@@ -229,6 +231,7 @@ Featured Hotels Item
 		background: $light-color;
 		width: auto;
 		flex: 0 0 auto;
+		max-width: 100%;
 		flex-direction: row;
 		flex-wrap: wrap;
 		align-items: flex-end;
@@ -247,6 +250,7 @@ Featured Hotels Item
 
 			@include xs-down {
 				flex: 0 0 50%;
+				wdith: 50%;
 				display: block;
 			}
 		}
@@ -305,6 +309,7 @@ Featured Hotels Item
 	.cta {
 		@include xs-down {
 			flex: 0 0 50%;
+			max-width: 50%;
 		}
 
 		.btn {

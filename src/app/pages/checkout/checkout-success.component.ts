@@ -2,7 +2,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { finalize, first, mergeMap, tap } from 'rxjs/operators';
+import { finalize, first, map, mergeMap, tap } from 'rxjs/operators';
 import { DisposableComponent } from '../../core';
 import { Cart, CartService, OrderService, User } from '../../models';
 
@@ -22,6 +22,7 @@ export class CheckoutSuccessComponent extends DisposableComponent implements OnI
 	error: any;
 	busy: boolean;
 	bookingFileCode: string;
+	trustPilotServiceReviewEnabled: boolean = true;
 
 	constructor(
 		@Inject(PLATFORM_ID) private platformId: string,
@@ -66,6 +67,9 @@ export class CheckoutSuccessComponent extends DisposableComponent implements OnI
 						return of(null);
 					}
 				}),
+				mergeMap((data: any) => this.cartService.removeFromCart().pipe(
+					map(x => data),
+				)),
 				first(),
 				finalize(() => this.busy = false)
 			).subscribe(

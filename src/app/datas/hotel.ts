@@ -50,7 +50,7 @@ export const hotel: Hotel[] = [{
 		sCode1: 'CS01', sCode3: 'DS03', sCode4: 'ES03'
 	},
 	structureID: 1364225351,
-	tags: [{
+	tagList: [{
 		id: 109, category: 0, name: 'Last Second', abstract: '', slug: 'destinazioni/last-second'
 	}, {
 		id: 1, category: 0, name: 'Mare Italia', abstract: '', slug: 'destinazioni/mare-italia'

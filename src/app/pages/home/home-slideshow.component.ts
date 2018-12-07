@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { map, takeUntil } from 'rxjs/operators';
 import { DisposableComponent, Page, PageIndex } from '../../core';
-import { Category, LandingService } from '../../models';
+import { LandingService } from '../../models';
 
 const SWIPER_CONFIG = {
 	direction: 'horizontal',
@@ -36,8 +36,7 @@ export class HomeSlideshowComponent extends DisposableComponent implements OnIni
 	@Input() type: number;
 	limit: number = 4;
 	item: Page;
-	items: PageIndex[]; // type, destination, time
-	categories: Category[] = [];
+	items: PageIndex[];
 	config: any = SWIPER_CONFIG;
 
 	constructor(

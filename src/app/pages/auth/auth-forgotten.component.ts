@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { finalize, takeUntil } from 'rxjs/operators';
+import { finalize, first } from 'rxjs/operators';
 import { DisposableComponent } from '../../core';
 import { ModalService } from '../../core/ui/modal';
 import { UserSignForgotten } from '../../models/user';
@@ -36,7 +36,7 @@ export class AuthForgottenComponent extends DisposableComponent implements OnIni
 		this.submitted = true;
 		this.busy = true;
 		this.userService.signForgotten(this.model).pipe(
-			takeUntil(this.unsubscribe),
+			first(),
 			finalize(() => this.busy = false),
 		).subscribe(
 			success => this.sent = true,

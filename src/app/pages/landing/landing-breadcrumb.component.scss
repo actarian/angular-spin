@@ -16,7 +16,7 @@ Breadcrumb
 
 	ul {
 		margin: 0;
-		padding: 0 5px;
+		padding: 0 0 0 15px;
 		list-style: none;
 		display: flex;
 		flex-wrap: wrap;
@@ -24,7 +24,7 @@ Breadcrumb
 
 		li {
 			margin: 0;
-			padding: 0 10px;
+			padding-right: 5px;
 			position: relative;
 			z-index: 1;
 			max-width: 25%;
@@ -32,19 +32,19 @@ Breadcrumb
 			white-space: nowrap;
 			overflow: hidden;
 
-			&:not(:last-child) {
-				&:after {
-					content: '/';
-					color: rgba(255, 255, 255, .5);
-					position: absolute;
-					right: -2px;
-					top: 1px;
-				}
-			}
-
 			a {
 				color: rgba(255, 255, 255, .8);
 			}
+
+			&:not(:last-child) {
+				&:after {
+					content: '/';
+					display: inline-block;
+					color: rgba(255, 255, 255, .5);
+					padding-left: 5px;
+				}
+			}
+
 		}
 	}
 }

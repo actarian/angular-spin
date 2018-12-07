@@ -1,23 +1,26 @@
-<p-accordion [multiple]="true">
-
-	<p-accordionTab [header]="group.name" [(selected)]="group.active" *ngFor="let group of groupsFiltered$ | async">
+<div><button type="button" class="btn-reset" (click)="filterService.onReset()" [disabled]="!(hasEnabledFilters() | async)">resetta i filtri</button></div>
+<p-accordion class="p-accordion" [multiple]="true">
+	<ng-container *ngFor="let group of groupsFiltered$ | async">
 		<ng-container *ngIf="group.visible">
-			<ul class="list">
-				<ng-container *ngFor="let item of group.items; let i = index;">
-					<li class="list--item item-{{item.id}}" *ngIf="item.visible">
-						<div class="checkbox" [ngSwitch]="group.type">
-							<label *ngSwitchCase="groupTypes.Rating">
+			<p-accordionTab [header]="group.name" [(selected)]="group.active">
+				<ul class="list">
+					<ng-container *ngFor="let item of group.items; let i = index;">
+						<li class="list--item item-{{item.id}}" *ngIf="item.visible">
+							<div class="checkbox" [ngSwitch]="group.type">
+								<label *ngSwitchCase="groupTypes.Rating">
 								<input type="checkbox" [(ngModel)]="item.selected" (ngModelChange)="onToggle(item.id, group.type)">
 								<span><span class="stars"> <em *ngFor="let star of item.name.split('');" [ngClass]="{ superior: star === 'S' }">{{star}}</em> </span> <em>{{item.count}}</em> </span>
 							</label>
-							<label *ngSwitchDefault>
+								<label *ngSwitchDefault>
 								<input type="checkbox" [(ngModel)]="item.selected" (ngModelChange)="onToggle(item.id, group.type)"> <span>{{item.name}} <em>{{item.count}}</em> </span>
 							</label>
-						</div>
-					</li>
-				</ng-container>
-			</ul>
+							</div>
+						</li>
+					</ng-container>
+				</ul>
+			</p-accordionTab>
 		</ng-container>
-	</p-accordionTab>
+	</ng-container>
+
 
 </p-accordion>

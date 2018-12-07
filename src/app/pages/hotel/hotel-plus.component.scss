@@ -1,0 +1,67 @@
+@import "~scss/variables";
+
+/*--------------------------------------------------
+Tab services
+--------------------------------------------------*/
+.tab-services {
+	column-count: 3;
+	margin: 30px 0 10px;
+
+	@include sm-down {
+		column-count: 2;
+	}
+
+	@include xxs-down {
+		column-count: auto;
+	}
+
+	.tab-services__wrapper {
+		margin: 0px 0 20px 0;
+	}
+
+	.tab-services__title {
+
+		.ico {
+			fill: $tertiary-color;
+			width: 16px;
+			height: 16px;
+			position: relative;
+			z-index: 1;
+			top: 2px;
+		}
+
+		span {
+			color: $tertiary-color;
+			padding-left: 4px;
+			font-weight: 600;
+			text-transform: uppercase;
+		}
+	}
+
+	ul.tab-services__list {
+		list-style: none;
+		padding: 0;
+
+		li {
+			padding: 0;
+			font-size: 12px;
+			margin-bottom: 2px;
+
+			svg {
+				width: 16px;
+				height: 16px;
+				fill: $rate-excellent;
+				position: relative;
+				z-index: 1;
+				top: 4px;
+			}
+
+			/*span {
+				padding: 2px 4px;
+				border-radius: 15px;
+				background: rgba($tertiary-color, 0.08);
+				font-size: 10px;
+			}*/
+		}
+	}
+}

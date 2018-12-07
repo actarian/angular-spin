@@ -1,14 +1,15 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CodiceFiscale } from 'codice-fiscale-js';
-import { finalize, takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { finalize, first, takeUntil } from 'rxjs/operators';
 import { Entity } from '../../core';
 import { DisposableComponent } from '../../core/disposable';
 import { DataService, Nation } from '../../models/data.service';
+import { BirthPlaceService, FiscalCodeService } from '../../models/fiscal-code';
 import { User } from '../../models/user';
 import { UserService } from '../../models/user.service';
-
+import { AutocompleteProvider } from '../../sections/autocomplete/autocomplete.component';
 
 @Component({
 	selector: 'profile-component',
@@ -19,8 +20,9 @@ import { UserService } from '../../models/user.service';
 
 export class ProfileComponent extends DisposableComponent implements OnInit {
 
-	nations: Nation[];
-	counties: Entity[];
+	nations: Nation[] = [];
+	counties: Entity[] = [];
+	birthPlaceProvider: AutocompleteProvider;
 	user: User;
 	model: any = {};
 	calculatedFiscalCode: string;
@@ -31,6 +33,8 @@ export class ProfileComponent extends DisposableComponent implements OnInit {
 		@Inject(PLATFORM_ID) private platformId: string,
 		private route: ActivatedRoute,
 		private dataService: DataService,
+		private birthPlaceService: BirthPlaceService,
+		private fiscalCodeService: FiscalCodeService,
 		private userService: UserService,
 	) {
 		super();
@@ -44,6 +48,26 @@ export class ProfileComponent extends DisposableComponent implements OnInit {
 			this.counties = data.counties;
 			this.setUser(this.route.snapshot.data['user']);
 		});
+		/*
+		this.birthPlaceService.entities().pipe(
+			first()
+		).subscribe(items => {
+			this.birthPlaceProvider = {
+				items: items,
+			};
+		});
+		*/
+		this.birthPlaceProvider = {
+			search: (query: string): Observable<Entity[]> => {
+				return this.birthPlaceService.entitiesByName(query);
+			}
+		};
+		/*
+		this.birthPlaces = isPlatformBrowser(this.platformId) ? COMUNI.map(x => {
+			const name = x[2].toLowerCase().replace(/\b\w/g, (t) => t.toUpperCase());
+			return { id: name, name: name };
+		}) : [];
+		*/
 	}
 
 	getDefaultCountry(code: string): string {
@@ -57,7 +81,10 @@ export class ProfileComponent extends DisposableComponent implements OnInit {
 		this.model.stateCode = this.getDefaultCountry(this.model.stateCode);
 		this.model.nationality = this.getDefaultCountry(this.model.nationality);
 		this.model.gender = this.model.gender || 'M';
-		console.log('PofileComponent.setUser', this.user, this.model);
+		if (this.model.fiscalCode) {
+			this.calculatedFiscalCode = this.model.fiscalCode;
+		}
+		// console.log('PofileComponent.setUser', this.user, this.model);
 	}
 
 	onSubmit() {
@@ -72,38 +99,38 @@ export class ProfileComponent extends DisposableComponent implements OnInit {
 	}
 
 	onNameChanged() {
-		console.log('ProfileComponent.onNameChanged', this.model.firstName, this.model.lastName);
+		// console.log('ProfileComponent.onNameChanged', this.model.firstName, this.model.lastName);
 		this.doCalcFiscalCode();
 	}
 
 	onProvinceChanged() {
-		console.log('ProfileComponent.onProvinceChanged', this.model.countyCode);
+		// console.log('ProfileComponent.onProvinceChanged', this.model.countyCode);
 	}
 
 	onCountryChanged() {
-		console.log('ProfileComponent.onCountryChanged', this.model.stateCode);
+		// console.log('ProfileComponent.onCountryChanged', this.model.stateCode);
 	}
 
 	onNationalityChanged() {
-		console.log('ProfileComponent.onNationalityChanged', this.model.nationality);
+		// console.log('ProfileComponent.onNationalityChanged', this.model.nationality);
 	}
 
 	onBirthCityChanged() {
-		console.log('ProfileComponent.onBirthCityChanged', this.model.birthCity);
+		// console.log('ProfileComponent.onBirthCityChanged');
 		this.doCalcFiscalCode();
 	}
 
 	onBirthCountyChanged() {
-		console.log('ProfileComponent.onBirthCountyChanged', this.model.birthCounty);
+		// console.log('ProfileComponent.onBirthCountyChanged', this.model.birthCounty);
 	}
 
 	onInputDateChanged(date: Date) {
-		console.log('ProfileComponent.onInputDateChanged', date);
+		// console.log('ProfileComponent.onInputDateChanged', date);
 		this.doCalcFiscalCode();
 	}
 
 	onGenderChanged() {
-		console.log('ProfileComponent.onGenderChanged', this.model.gender);
+		// console.log('ProfileComponent.onGenderChanged', this.model.gender);
 		this.doCalcFiscalCode();
 	}
 
@@ -113,21 +140,39 @@ export class ProfileComponent extends DisposableComponent implements OnInit {
 			if ((!this.model.fiscalCode || this.model.fiscalCode === this.calculatedFiscalCode) &&
 				this.model.firstName && this.model.lastName && this.model.gender && this.model.birthCity
 			) {
-				const fiscalCode: any = new CodiceFiscale({
+				console.log(this.model.birthCity);
+				this.fiscalCodeService.fiscalCodeWithOptions({
 					name: this.model.firstName,
 					surname: this.model.lastName,
 					gender: this.model.gender,
 					day: this.model.birthDate ? new Date(this.model.birthDate).getDate() : 1,
 					month: this.model.birthDate ? new Date(this.model.birthDate).getMonth() + 1 : 1,
 					year: this.model.birthDate ? new Date(this.model.birthDate).getFullYear() : 1970,
-					birthplace: this.model.birthCity,
-					// birthplaceProvincia: string // Optional
+					birthPlace: this.model.birthCity,
+				}).pipe(
+					first(),
+				).subscribe(fiscalCode => {
+					// console.log('ProfileComponent.doCalcFiscalCode', fiscalCode);
+					if (fiscalCode) {
+						this.model.fiscalCode = fiscalCode.code;
+						this.calculatedFiscalCode = fiscalCode.code;
+					}
 				});
-				console.log('ProfileComponent.doCalcFiscalCode', fiscalCode);
+				/*
+				const fiscalCode: any = new FiscalCode({
+					name: this.model.firstName,
+					surname: this.model.lastName,
+					gender: this.model.gender,
+					day: this.model.birthDate ? new Date(this.model.birthDate).getDate() : 1,
+					month: this.model.birthDate ? new Date(this.model.birthDate).getMonth() + 1 : 1,
+					year: this.model.birthDate ? new Date(this.model.birthDate).getFullYear() : 1970,
+					birthPlace: this.model.birthCity,
+				});
 				if (fiscalCode) {
 					this.model.fiscalCode = fiscalCode.code;
 					this.calculatedFiscalCode = fiscalCode.code;
 				}
+				*/
 			}
 		}
 	}

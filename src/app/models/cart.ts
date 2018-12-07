@@ -34,6 +34,8 @@ export class CartTotalAmount {
 
 export class CartDetail {
 	totalAmountDetail?: CartTotalAmount;
+	paxNumber?: string;
+	bookingFileCode?: string;
 }
 
 export class CartPassengerDocument {

@@ -1,7 +1,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { DisposableComponent } from '../../core';
-import { LastViewsService, SearchResult } from '../../models';
+import { GtmService, LastViewsService, SearchResult } from '../../models';
 
 @Component({
 	selector: 'home-lastviews',
@@ -17,6 +17,7 @@ export class HomeLastViewsComponent extends DisposableComponent {
 	busy: boolean = false;
 
 	constructor(
+		private gtm: GtmService,
 		public lastViews: LastViewsService,
 	) {
 		super();
@@ -26,6 +27,7 @@ export class HomeLastViewsComponent extends DisposableComponent {
 		).subscribe(items => {
 			this.items = items;
 			this.busy = false;
+			this.gtm.onImpressions(this.items.slice(0, this.visibleItems), 'Last Views');
 		});
 	}
 }

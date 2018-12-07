@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { finalize, takeUntil } from 'rxjs/operators';
+import { finalize, first } from 'rxjs/operators';
 import { DisposableComponent } from '../../core/disposable';
 import { FacebookService, FacebookUser, GoogleService, GoogleUser } from '../../core/plugins';
 import { ModalCompleteEvent, ModalData, ModalService } from '../../core/ui/modal';
@@ -65,7 +65,7 @@ export class AuthSignUpComponent extends DisposableComponent implements OnInit {
 		this.submitted = true;
 		this.busy = true;
 		this.userService.signUp(this.model).pipe(
-			takeUntil(this.unsubscribe),
+			first(),
 			finalize(() => this.busy = false),
 		).subscribe(
 			user => this.user = user,
@@ -78,7 +78,7 @@ export class AuthSignUpComponent extends DisposableComponent implements OnInit {
 
 	onFacebookLogout(): void {
 		this.facebookService.logout().pipe(
-			takeUntil(this.unsubscribe)
+			first()
 		).subscribe(x => {
 			console.log('SignUpComponent.onFacebookLogout', x);
 			this.facebook = null;
@@ -87,7 +87,7 @@ export class AuthSignUpComponent extends DisposableComponent implements OnInit {
 
 	onGoogleLogout(): void {
 		this.googleService.logout().pipe(
-			takeUntil(this.unsubscribe)
+			first()
 		).subscribe(x => {
 			console.log('SignUpComponent.onGoogleLogout', x);
 			this.google = null;
@@ -96,7 +96,7 @@ export class AuthSignUpComponent extends DisposableComponent implements OnInit {
 
 	onSignIn(): void {
 		this.modalService.open({ component: AuthSignInComponent }).pipe(
-			takeUntil(this.unsubscribe),
+			first(),
 		).subscribe(e => {
 			if (e instanceof ModalCompleteEvent) {
 				console.log('signed');

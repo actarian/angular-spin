@@ -8,7 +8,6 @@ import { fromPromise } from 'rxjs/observable/fromPromise';
 import { concatMap } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { OnceService } from '../../once';
-import { RouteService } from '../../routes';
 import { LocalStorageService, StorageService } from '../../storage';
 
 export class GoogleConfig {
@@ -60,7 +59,6 @@ export class GoogleService {
 		@Inject(PLATFORM_ID) private platformId: string,
 		private storageService: LocalStorageService,
 		private onceService: OnceService,
-		private routeService: RouteService,
 	) {
 		this.init();
 	}

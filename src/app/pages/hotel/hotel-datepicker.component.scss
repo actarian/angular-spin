@@ -10,15 +10,32 @@
 	position: relative;
 	z-index: 1000;
 	position: relative;
-	margin-top: -23px;
-	text-align: right;
-	margin-bottom: 12px;
 }
 
 .edit-name {}
 
 .selected-date {
 	color: $tit-color;
+	width: 100%;
+	background-color: #fff;
+	padding: 10px 25px 10px 12px !important;
+	appearance: none;
+	border: 1px solid #e0e0e0;
+	box-shadow: none;
+	outline: none;
+	position: relative;
+	text-align: left;
+
+	&:before {
+		content: '';
+		position: absolute;
+		top: 15px;
+		right: 12px;
+		border-top: 5px solid #333;
+		border-left: 4px solid transparent;
+		border-right: 4px solid transparent;
+		pointer-events: none;
+	}
 }
 
 .edit-btn {
@@ -31,6 +48,12 @@
 	width: auto;
 	border: 1px solid $border-color;
 	margin-bottom: 4px;
+	display: none;
+	margin-top: -6px;
+
+	&.active {
+		display: block;
+	}
 
 	&--legend {
 		padding-top: 12px;

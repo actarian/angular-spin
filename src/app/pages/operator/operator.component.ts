@@ -1,7 +1,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { of } from 'rxjs';
 import { catchError, finalize, first } from 'rxjs/operators';
-import { PageComponent, RouteService } from '../../core';
+import { RouteService, DisposableComponent, Page } from '../../core';
 import { Operator, OperatorService } from './operator.service';
 
 @Component({
@@ -11,9 +11,10 @@ import { Operator, OperatorService } from './operator.service';
 	encapsulation: ViewEncapsulation.Emulated,
 })
 
-export class OperatorComponent extends PageComponent {
+export class OperatorComponent extends DisposableComponent {
 
 	model: Operator = { passwordReveal: true };
+	page: Page = new Page({id:0, title: 'Login operatore'});
 	requestTypes: any[] = [];
 	error: any;
 	busy: boolean = false;
@@ -25,7 +26,7 @@ export class OperatorComponent extends PageComponent {
 		protected routeService: RouteService,
 		private operatorService: OperatorService,
 	) {
-		super(routeService);
+		super()
 	}
 
 	onSubmit(): void {

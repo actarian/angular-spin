@@ -11,6 +11,7 @@
 		z-index: 1;
 		width: auto;
 		flex: 0 0 auto;
+		max-width: none;
 
 		.discount {
 			position: absolute;
@@ -46,6 +47,7 @@
 
 	.content {
 		flex: 1 1 auto;
+		// max-width: 310px;
 		padding: 6px 12px 12px;
 	}
 
@@ -126,6 +128,7 @@
 	.action {
 		width: auto;
 		flex: 0 0 auto;
+		max-width: none;
 		padding: 6px 12px 10px;
 		background: $light-color;
 

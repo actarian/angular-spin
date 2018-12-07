@@ -34,6 +34,7 @@ Leaflet
 
 		h2 {
 			flex: 1 0 100%;
+			max-width: 100%;
 			margin-bottom: 20px;
 			font-size: 24px;
 		}
@@ -41,6 +42,7 @@ Leaflet
 
 	&__img {
 		flex: 0 0 calc(50% - 40px);
+		max-width: calc(50% - 40px);
 		margin-right: 40px;
 		padding-right: 40px;
 		padding: 40px 20px;
@@ -53,6 +55,7 @@ Leaflet
 
 		@include xs-down {
 			flex: 0 0 100%;
+			max-width: none;
 			margin-bottom: 20px;
 		}
 
@@ -64,12 +67,14 @@ Leaflet
 
 	&__content {
 		flex: 0 0 50%;
+		width: 50%;
 		padding-top: 20px;
 		padding-left: 20px;
 		font-size: 16px;
 
 		@include xs-down {
 			flex: 0 0 100%;
+			width: 100%;
 		}
 
 		h3 {

@@ -1,6 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
-import { first, takeUntil, tap } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 import { DisposableComponent, PageService } from '../../core';
 import { UserService } from '../../models';
 
@@ -19,12 +19,15 @@ export class ReservedAreaComponent extends DisposableComponent {
 		private pageService: PageService,
 	) {
 		super();
+		/*
+		// !!!
 		this.pageService.getPageBySlug('/area_riservata').pipe(
 			first()
 		).subscribe(page => {
-			console.log('ReservedAreaComponent', page);
+			// console.log('ReservedAreaComponent', page);
 			this.pageService.addOrUpdateMetaData(page);
 		});
+		*/
 	}
 
 	SignOut(): void {

@@ -4,7 +4,7 @@ import { environment } from '../environments/environment';
 import { CartResolve } from './models/cart.resolve';
 import { UserGuard } from './models/user.guard';
 import { UserResolve } from './models/user.resolve';
-import { DestinationComponent, DestinationDetailComponent, HomeComponent, HotelComponent, LeafletComponent, NewsletterComponent, OperatorComponent, OrderDetailComponent, OrderHistoryComponent, ProfileComponent, ReservedAreaComponent, SearchComponent, WishlistComponent } from './pages';
+import { DestinationComponent, DestinationDetailComponent, HotelComponent, NewsletterComponent, OperatorComponent, OrderDetailComponent, OrderHistoryComponent, ProfileComponent, ReservedAreaComponent, WishlistComponent } from './pages';
 import { CheckoutCanceledComponent, CheckoutComponent, CheckoutDataComponent, CheckoutPaxComponent, CheckoutPaymentComponent, CheckoutSuccessComponent } from './pages/checkout';
 import { NotFoundComponent } from './sections';
 
@@ -28,17 +28,15 @@ const routes: Routes = [
 			{ path: 'preferiti', component: WishlistComponent, resolve: { user: UserResolve }, }
 		], canActivate: [UserGuard]
 	},
-	{ path: 'search', component: SearchComponent },
 	{ path: 'not-found', component: NotFoundComponent },
 	{ path: 'hotel/:id/:slug', component: HotelComponent },
 	{ path: 'destinations', component: DestinationComponent },
 	{ path: 'destinations/:category', component: DestinationDetailComponent },
-	{ path: 'volantini', component: LeafletComponent },
-	{ path: 'volantini/:id', component: LeafletComponent },
 	{ path: 'newsletter', component: NewsletterComponent },
 	{ path: 'newsletter/:email', component: NewsletterComponent },
-	{ path: 'bom/login/operator', component: OperatorComponent },
-	{ path: 'homepage', component: HomeComponent, pathMatch: 'full' },
+	{ path: 'login/operator', component: OperatorComponent },
+	// { path: 'search', component: SearchComponent },
+	// { path: 'homepage', component: HomeComponent, pathMatch: 'full' },
 ];
 
 @NgModule({

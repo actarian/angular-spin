@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { catchError, tap } from 'rxjs/operators';
 import { Logger } from '../logger';
 import { RouteService } from '../routes';
+import { HttpStatusCodeService } from './http-status-code.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -38,7 +39,8 @@ export class HttpResponseInterceptor implements HttpInterceptor {
 	}
 
 	constructor(
-		private injector: Injector
+		private injector: Injector,
+		private statusCodeService: HttpStatusCodeService,
 	) { }
 
 	intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -59,10 +61,10 @@ export class HttpResponseInterceptor implements HttpInterceptor {
 			catchError((error: any) => {
 				// console.warn('HttpResponseInterceptor', error);
 				if (error instanceof HttpErrorResponse) {
+					// this.statusCodeService.setStatusCode(error.status);
 					switch (error.status) {
 						case 401:
 							// unauthorized
-							// this.logger.http(error);
 							break;
 						case 404:
 							// not found

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { DisposableComponent } from '../../core/disposable';
 import { FilterService, Group, GroupType } from '../../models';
 
@@ -19,7 +20,7 @@ export class SerpFilterComponent extends DisposableComponent implements OnInit {
 	selectFilter: EventEmitter<any> = new EventEmitter();
 
 	constructor(
-		private filterService: FilterService,
+		public filterService: FilterService,
 	) {
 		super();
 		this.groupTypes = this.filterService.groupTypes;
@@ -33,6 +34,16 @@ export class SerpFilterComponent extends DisposableComponent implements OnInit {
 	onToggle(id: number | string, groupType: GroupType) {
 		this.filterService.onToggle(id, groupType);
 		this.selectFilter.emit(this.filterService.valueSelected);
+	}
+
+	hasEnabledFilters(): Observable<boolean> {
+		return this.groupsFiltered$.pipe(
+			map(groups => {
+				let has = false;
+				groups.forEach(g => g.items.forEach(i => has = has || i.selected));
+				return has;
+			})
+		);
 	}
 
 }

@@ -29,8 +29,9 @@ export class UserService extends EntityService<User> {
 		if (environment.authStrategy === AuthStrategy.Bearer) {
 			this.storage.set('user', user);
 		}
+		const wasUser = this.user$.getValue();
 		this.user$.next(user);
-		if (user) {
+		if (user || wasUser) {
 			this.gtm.onUser(user);
 			/*
 			this.dispatcher.emit({
@@ -93,7 +94,7 @@ export class UserService extends EntityService<User> {
 	}
 
 	public edit(user: UserRegister): Observable<User> {
-		console.log('UserService.update', user);
+		// console.log('UserService.update', user);
 		if (user.nationality !== 'ITA') {
 			delete user.birthCounty;
 		}
@@ -118,7 +119,7 @@ export class UserService extends EntityService<User> {
 			tap(user => {
 				if (user) {
 					this.user = user;
-					console.log('UserService.tryLogin.success', user);
+					// console.log('UserService.tryLogin.success', user);
 				}
 			})
 		);

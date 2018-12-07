@@ -5,6 +5,7 @@ import { first, map, switchMap, tap } from 'rxjs/operators';
 import { AuthStrategy, environment } from '../../../environments/environment';
 import { LocalStorageService, StorageService } from '../../core';
 import { EntityService } from '../../core/models';
+import { GtmService } from '../../models/gtm.service';
 
 export class Operator {
 	id?: number;
@@ -34,13 +35,24 @@ export class OperatorService extends EntityService<any> {
 		if (environment.authStrategy === AuthStrategy.Bearer) {
 			this.storage.set('operator', operator);
 		}
+		const wasOperator = this.operator$.getValue();
 		this.operator$.next(operator);
+		if (operator || wasOperator) {
+			this.gtm.onOperator(operator);
+			/*
+			this.dispatcher.emit({
+				type: 'onOperator',
+				data: { operator: operator, }
+			});
+			*/
+		}
 	}
 
 	constructor(
 		@Inject(PLATFORM_ID) private platformId: string,
 		protected injector: Injector,
 		private storageService: LocalStorageService,
+		private gtm: GtmService,
 	) {
 		super(injector);
 		this.storage = this.storageService.tryGet();

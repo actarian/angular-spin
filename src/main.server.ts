@@ -7,6 +7,7 @@ import 'reflect-metadata';
 import { first } from 'rxjs/operators';
 import 'zone.js/dist/zone-node';
 import { AppModuleServer } from './app/app.module.server';
+import { HttpStatusCodeService } from './app/core/http';
 import { environment } from './environments/environment';
 
 // export { AppModuleServer } from './app/app.module.server';
@@ -34,6 +35,8 @@ export default createServerRenderer((params: BootFuncParams) => {
 		const application = module.injector.get(ApplicationRef);
 		const state = module.injector.get(PlatformState);
 		const zone = module.injector.get(NgZone);
+		const statusCodeService = module.injector.get(HttpStatusCodeService);
+
 		return new Promise<RenderResult>((resolve, reject) => {
 			zone.onError.subscribe((error) => {
 				reject(error);
@@ -48,6 +51,8 @@ export default createServerRenderer((params: BootFuncParams) => {
 					// console.log('html', html);
 					resolve({
 						html: html,
+						statusCode: statusCodeService.getStatusCode(),
+						redirectUrl: statusCodeService.getRedirectUrl(),
 					});
 					// module.destroy();
 				});

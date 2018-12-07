@@ -1,10 +1,11 @@
-import { Component, Input, Renderer2, forwardRef } from '@angular/core';
+import { Component, forwardRef, Input, Renderer2 } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ControlBase } from './control-base';
 
 @Component({
 	selector: 'app-control',
 	templateUrl: './control.component.html',
+	styleUrls: ['./control.component.scss'],
 	providers: [{
 		provide: NG_VALUE_ACCESSOR,
 		useExisting: forwardRef(() => ControlComponent),

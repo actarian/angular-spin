@@ -3,6 +3,7 @@ import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router'
 import { ORIGIN_URL } from '@nguniversal/aspnetcore-engine/tokens';
 import { DisposableComponent } from '../disposable';
 import { RouteService } from '../routes';
+import { PageNotFoundComponent } from './page-not-found.component';
 import { PageComponent } from './page.component';
 import { PageService } from './page.service';
 
@@ -25,7 +26,7 @@ export class PageOutletComponent extends DisposableComponent {
 		private pageService: PageService,
 	) {
 		super();
-		// this make PageOutlet change for different routes;
+		// !!! keep -> Avoid PageOutlet Route Caching for different routes
 		this.router.routeReuseStrategy.shouldReuseRoute = () => {
 			return false;
 		};
@@ -36,28 +37,36 @@ export class PageOutletComponent extends DisposableComponent {
 		this.routeService.params = this.routeService.toData(snapshot.params);
 		this.routeService.queryParams = this.routeService.toData(snapshot.queryParams);
 		const data = snapshot.data;
-		if (data.pageResolver && data.pageResolver.page) {
-			// console.log('PageOutletComponent.pageResolver', data.pageResolver.page.title);
+		const params = this.routeService.params;
+		const queryParams = this.routeService.queryParams;
+		let component: any = PageNotFoundComponent;
+		if (data.pageResolver) {
+			component = data.pageResolver.component;
 			this.routeService.page = data.pageResolver.page;
-			const factory: ComponentFactory<PageComponent> = this.componentFactoryResolver.resolveComponentFactory(data.pageResolver.component);
+			const factory: ComponentFactory<PageComponent> = this.componentFactoryResolver.resolveComponentFactory(component);
 			this.factory = factory;
 			this.viewContainerRef.clear();
 			const componentRef = this.viewContainerRef.createComponent(this.factory);
 			const instance = componentRef.instance;
-			instance.page = this.routeService.page;
-			instance.params = this.routeService.params;
+			instance.page = data.pageResolver.page;
+			instance.params = params;
+			instance.queryParams = queryParams;
 			if (typeof instance['PageInit'] === 'function') {
 				instance['PageInit']();
 			}
-			const config = this.router.config.slice();
-			const slug = data.pageResolver.page.slug;
-			config.push({
-				path: slug.indexOf('/') === 0 ? slug.substr(1) : slug, component: data.pageResolver.component,
-			});
-			this.router.resetConfig(config);
-			this.pageService.addOrUpdateMetaData(this.routeService.page);
+			if (data.pageResolver.page) {
+				const config = this.router.config.slice();
+				const slug = data.pageResolver.page.slug;
+				if (slug) {
+					config.push({
+						path: slug.indexOf('/') === 0 ? slug.substr(1) : slug, component: data.pageResolver.component,
+					});
+					this.router.resetConfig(config);
+				}
+				this.pageService.addOrUpdateMetaData(this.routeService.page);
+			}
 		} else {
-			console.log('PageOutletComponent.data', data);
+			console.log('PageOutletComponent.setSnapshot 404', data);
 		}
 	}
 

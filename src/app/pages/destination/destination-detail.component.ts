@@ -31,7 +31,7 @@ export class DestinationDetailComponent extends PageComponent implements OnInit 
 		public search: SearchService,
 	) {
 		super(routeService);
-		this.routeService.getPageParams().pipe(
+		this.search.getPageParams().pipe(
 			first()
 		).subscribe(params => {
 			this.search.setParams(params);

@@ -18,12 +18,12 @@ export class GenericComponent extends PageComponent implements PageInit {
 	}
 
 	PageInit(): void {
-		console.log('GenericComponent.PageInit', this.page);
+		// console.log('GenericComponent.PageInit', this.page);
 		this.routeService.getPageParams().pipe(
 			takeUntil(this.unsubscribe),
 			first()
 		).subscribe(params => {
-			console.log('GenericComponent.params', params);
+			// console.log('GenericComponent.params', params);
 		});
 	}
 

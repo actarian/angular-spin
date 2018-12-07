@@ -1,11 +1,11 @@
 <div class="hotel-datepicker">
-	<!--  (clickOutside)="active = false" -->
+
 	<div class="edit-row">
 		<div class="edit-name">
-			<span class="selected-date">{{ngModel | date:'dd MMMM yyyy'}}</span>
+			<button type="button" class="selected-date" (click)="active = !active">{{ngModel | date:'dd MMMM yyyy'}}</button>
 		</div>
 	</div>
-	<div class="calendar popup-calendar active">
+	<div class="calendar popup-calendar" [ngClass]="{ active: active }">
 		<p-calendar name="startDate" (onSelect)="onSelect($event); active = false;" (onMonthChange)="onMonthChange($event)" [(ngModel)]="ngModel" [disabledDates]="disabledDates" [inline]="true" [monthNavigator]="true" [yearNavigator]="true" [yearRange]="calendar.minYear + ':' + calendar.maxYear" [minDate]="minDate" [maxDate]="maxDate" [locale]="calendar.it" dateFormat="dd/mm/yy" [defaultDate]="ngModel">
 			<ng-template pTemplate="date" let-date>
 				<span [ngClass]="getDateClass(date)">{{date.day}}</span>

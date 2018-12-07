@@ -14,9 +14,10 @@ export class SerpListComponent extends DisposableComponent {
 
 	constructor(
 		public search: SearchService,
-		public filterService: FilterService
+		public filterService: FilterService,
 	) {
 		super();
+
 	}
 
 }

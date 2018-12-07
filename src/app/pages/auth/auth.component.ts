@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { switchMap, takeUntil, tap } from 'rxjs/operators';
+import { finalize, first, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { DisposableComponent } from '../../core/disposable';
 import { FacebookService, FacebookUser, GoogleService, GoogleUser } from '../../core/plugins';
 import { ModalCompleteEvent, ModalService } from '../../core/ui/modal';
@@ -17,7 +17,9 @@ import { AuthSignUpComponent } from './auth-sign-up.component';
 
 export class AuthComponent extends DisposableComponent implements OnInit {
 
+	facebookBusy: boolean;
 	facebookMe: FacebookUser;
+	googleBusy: boolean;
 	googleMe: GoogleUser;
 
 	constructor(
@@ -43,10 +45,12 @@ export class AuthComponent extends DisposableComponent implements OnInit {
 	}
 
 	onFacebook(): void {
+		this.facebookBusy = true;
 		this.facebookService.getMe().pipe(
-			takeUntil(this.unsubscribe),
+			first(),
 			tap(me => this.facebookMe = me),
 			switchMap(me => this.userService.tryFacebook(me)),
+			finalize(() => this.facebookBusy = false),
 		).subscribe(user => {
 			if (user) {
 				this.onAuth(user);
@@ -60,10 +64,12 @@ export class AuthComponent extends DisposableComponent implements OnInit {
 	}
 
 	onGoogle(): void {
+		this.googleBusy = true;
 		this.googleService.getMe().pipe(
-			takeUntil(this.unsubscribe),
+			first(),
 			tap(me => this.googleMe = me),
 			switchMap(me => this.userService.tryGoogle(me)),
+			finalize(() => this.googleBusy = false),
 		).subscribe(user => {
 			if (user) {
 				this.onAuth(user);
@@ -81,7 +87,7 @@ export class AuthComponent extends DisposableComponent implements OnInit {
 
 	onSignIn(): void {
 		this.modalService.open({ component: AuthSignInComponent }).pipe(
-			takeUntil(this.unsubscribe)
+			first()
 		).subscribe(e => {
 			if (e instanceof ModalCompleteEvent) {
 				this.onAuth(e.data);
@@ -91,10 +97,8 @@ export class AuthComponent extends DisposableComponent implements OnInit {
 	}
 
 	onSignUp(data?: any) {
-		this.modalService.open({
-			component: AuthSignUpComponent, data: data
-		}).pipe(
-			takeUntil(this.unsubscribe)
+		this.modalService.open({ component: AuthSignUpComponent, data: data }).pipe(
+			first()
 		).subscribe(e => {
 			if (e instanceof ModalCompleteEvent) {
 				console.log('signed');

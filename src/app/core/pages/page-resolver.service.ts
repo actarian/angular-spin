@@ -1,10 +1,12 @@
 
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Logger } from '../logger';
 import { RouteService } from '../routes';
+import { DefaultPage } from './default-page';
+import { NotFoundPage } from './not-found-page';
+import { Page } from './page';
 import { PageResolver } from './page-resolver';
 import { PageService } from './page.service';
 import { Pages } from './pages';
@@ -14,16 +16,31 @@ import { Pages } from './pages';
 })
 export class PageResolverService implements Resolve<PageResolver> {
 
+	public events$: BehaviorSubject<PageResolver> = new BehaviorSubject<PageResolver>(null);
+
 	constructor(
-		private logger: Logger,
 		private pageService: PageService,
 		private router: Router,
-		private config: Pages,
-		private routeService: RouteService
+		private pages: Pages,
+		private defaultPage: DefaultPage,
+		private notFoundPage: NotFoundPage,
+		private routeService: RouteService,
+		// @Optional() @Inject(RESPONSE) private response: Response,
 	) { }
 
+	pageToPageResolver(page: Page): PageResolver {
+		let pageResolver;
+		if (page) {
+			pageResolver = new PageResolver(page, this.pages, this.defaultPage, this.notFoundPage);
+		} else {
+			pageResolver = new PageResolver(null, null, this.defaultPage, this.notFoundPage);
+			// this.router.navigate(this.routeService.toRoute(['not-found']));
+		}
+		this.events$.next(pageResolver);
+		return pageResolver;
+	}
+
 	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<PageResolver> {
-		// console.log('route', route);
 		if (route.params && route.params.id) {
 			return this.getPageById(route.params.id);
 		} else {
@@ -39,31 +56,13 @@ export class PageResolverService implements Resolve<PageResolver> {
 
 	getPageById(id: number | string): Observable<PageResolver> {
 		return this.pageService.getPageById(id).pipe(
-			map(page => {
-				if (page) {
-					// console.log('PageResolverService.page', pages[0]);
-					return new PageResolver(page, this.config);
-				} else {
-					// console.log('routeService', this.routeService);
-					this.router.navigate(this.routeService.toRoute(['not-found']));
-					return null;
-				}
-			})
+			map(page => this.pageToPageResolver(page))
 		);
 	}
 
 	getPageBySlug(slug: string): Observable<PageResolver> {
 		return this.pageService.getStatePageBySlug(slug).pipe(
-			map(page => {
-				if (page) {
-					// console.log('PageResolverService.page', pages[0]);
-					return new PageResolver(page, this.config);
-				} else {
-					// console.log('routeService', this.routeService);
-					this.router.navigate(this.routeService.toRoute(['not-found']));
-					return null;
-				}
-			})
+			map(page => this.pageToPageResolver(page))
 		);
 	}
 

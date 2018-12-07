@@ -38,7 +38,6 @@ Switch Map List
 .switch-map-list {
 	padding-top: 10px;
 	padding-bottom: 18px;
-	border-bottom: 1px solid $border-color;
 	text-align: center;
 
 	&--item {
@@ -103,10 +102,11 @@ Serp Filters
 
 	@include sm-down {
 		display: flex;
-		justify-content: space-between;
+		justify-content: center;
 
 		.item {
 			flex: 0 0 25%;
+			max-width: 25%;
 
 			button {
 				width: 100%;
@@ -213,7 +213,7 @@ Serp Filters
 				z-index: 100;
 				background: #fff;
 				overflow-y: auto;
-
+				-webkit-overflow-scrolling: touch;
 			}
 
 			main-search {
@@ -294,7 +294,7 @@ Serp Content
 	z-index: 10;
 	*/
 	.sticky {
-		position: -webkit-sticky;
+		position: relative;
 		position: sticky;
 		top: 3px;
 		max-height: calc(100vh - 6px);
@@ -362,6 +362,7 @@ NRP
 --------------------------------------------------*/
 .nrp {
 	flex: 1 0 100%;
+	max-width: 100%;
 	padding: 0 15px;
 
 	@include sm-down {
@@ -403,6 +404,7 @@ NRP
 
 .home-lastviews {
 	flex: 1 0 100%;
+	max-width: 100%;
 	margin-top: 60px;
 	padding: 60px 0 0;
 	border-top: 1px solid $border-color;
@@ -411,5 +413,7 @@ NRP
 		border-top: none;
 		padding-top: 0;
 		transform: translateX(-15px);
+		max-width: none;
+		width: calc(100% + 30px);
 	}
 }

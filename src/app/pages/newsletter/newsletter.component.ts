@@ -2,6 +2,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { finalize, first, takeUntil } from 'rxjs/operators';
 import { PageComponent, PageInit, RouteService } from '../../core';
+import { GtmService } from '../../models';
 import { Newsletter, NewsletterService } from './newsletter.service';
 
 @Component({
@@ -23,10 +24,11 @@ export class NewsletterComponent extends PageComponent implements PageInit {
 		protected routeService: RouteService,
 		private route: ActivatedRoute,
 		private newsletterService: NewsletterService,
+		private gtm: GtmService,
 	) {
 		super(routeService);
 		const email = this.route.snapshot.params['email'];
-		if (email) {
+		if (email !== 'undefined') {
 			this.model.email = email;
 		}
 	}
@@ -49,7 +51,10 @@ export class NewsletterComponent extends PageComponent implements PageInit {
 			first(),
 			finalize(() => this.busy = false),
 		).subscribe(
-			() => this.sent = true,
+			() => {
+				this.sent = true;
+				this.gtm.onEvent('newsletterSubscription');
+			},
 			error => {
 				this.error = error;
 				this.submitted = false;

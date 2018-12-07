@@ -1,3 +1,5 @@
+export * from './autocomplete/autocomplete.component';
+export * from './dialog/dialog.component';
 export * from './footer/footer.component';
 export * from './header/header.component';
 export * from './loading-transition/loading-transition.component';

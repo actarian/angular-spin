@@ -13,6 +13,7 @@ ul.ui-tabview-nav {
 
 	li {
 		flex: 1 1 auto;
+		max-width: 100%;
 		margin-bottom: -1px;
 
 		a {
@@ -48,5 +49,21 @@ ul.ui-tabview-nav {
 
 	&.ui-helper-hidden {
 		display: none
+	}
+
+	table {
+		width: 100%;
+		margin-bottom: 20px;
+		vertical-align: middle;
+		line-height: 1.5;
+
+		td {
+			padding: 5px 0;
+			border-bottom: 1px solid $border-color;
+		}
+
+		p {
+			margin: 0;
+		}
 	}
 }

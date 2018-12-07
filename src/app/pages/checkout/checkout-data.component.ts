@@ -1,11 +1,13 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CodiceFiscale } from 'codice-fiscale-js';
+import { Observable } from 'rxjs';
 import { finalize, first, mergeMap, takeUntil, tap } from 'rxjs/operators';
-import { DisposableComponent, Entity, ModalCompleteEvent, ModalService } from '../../core';
+import { AuthService, DisposableComponent, Entity, ModalCompleteEvent, ModalService } from '../../core';
 import { Cart, CartService, User, UserService } from '../../models';
 import { DataService, Nation } from '../../models/data.service';
+import { BirthPlaceService, FiscalCodeService } from '../../models/fiscal-code';
+import { AutocompleteProvider } from '../../sections/autocomplete/autocomplete.component';
 import { AuthComponent } from '../auth/auth.component';
 
 @Component({
@@ -19,6 +21,7 @@ export class CheckoutDataComponent extends DisposableComponent implements OnInit
 
 	nations: Nation[] = [];
 	counties: Entity[] = [];
+	birthPlaceProvider: AutocompleteProvider;
 	cart: Cart;
 	user: User;
 	model: any = { passwordReveal: true };
@@ -34,7 +37,10 @@ export class CheckoutDataComponent extends DisposableComponent implements OnInit
 		private router: Router,
 		private route: ActivatedRoute,
 		private dataService: DataService,
+		private birthPlaceService: BirthPlaceService,
+		private fiscalCodeService: FiscalCodeService,
 		private modalService: ModalService,
+		private authService: AuthService,
 		private userService: UserService,
 		private cartService: CartService,
 	) {
@@ -56,6 +62,26 @@ export class CheckoutDataComponent extends DisposableComponent implements OnInit
 				this.setUser(user);
 			});
 		});
+		/*
+		this.birthPlaceService.entities().pipe(
+			first()
+		).subscribe(items => {
+			this.birthPlaceProvider = {
+				items: items,
+			};
+		});
+		*/
+		this.birthPlaceProvider = {
+			search: (query: string): Observable<Entity[]> => {
+				return this.birthPlaceService.entitiesByName(query);
+			}
+		};
+		/*
+		this.birthPlaces = isPlatformBrowser(this.platformId) ? COMUNI.map(x => {
+			const name = x[2].toLowerCase().replace(/\b\w/g, (t) => t.toUpperCase());
+			return { id: name, name: name };
+		}) : [];
+		*/
 	}
 
 	getDefaultCountry(code: string): string {
@@ -97,7 +123,10 @@ export class CheckoutDataComponent extends DisposableComponent implements OnInit
 				first(),
 				finalize(() => this.busy = false),
 			).subscribe(
-				user => console.log(user),
+				user => {
+					console.log(user);
+					this.onSign();
+				},
 				error => this.error = error
 			);
 		}
@@ -122,45 +151,42 @@ export class CheckoutDataComponent extends DisposableComponent implements OnInit
 	}
 
 	onNextStep(): void {
-		// !!!
-		setTimeout(() => {
-			this.router.navigate(['../dati_passeggeri'], { relativeTo: this.route });
-		}, 350);
+		this.router.navigate(['../dati_passeggeri'], { relativeTo: this.route });
 	}
 
 	onNameChanged() {
-		console.log('CheckoutDataComponent.onNameChanged', this.model.firstName, this.model.lastName);
+		// console.log('CheckoutDataComponent.onNameChanged', this.model.firstName, this.model.lastName);
 		this.doCalcFiscalCode();
 	}
 
 	onProvinceChanged() {
-		console.log('CheckoutDataComponent.onProvinceChanged', this.model.countyCode);
+		// console.log('CheckoutDataComponent.onProvinceChanged', this.model.countyCode);
 	}
 
 	onCountryChanged() {
-		console.log('CheckoutDataComponent.onCountryChanged', this.model.stateCode);
+		// console.log('CheckoutDataComponent.onCountryChanged', this.model.stateCode);
 	}
 
 	onNationalityChanged() {
-		console.log('CheckoutDataComponent.onNationalityChanged', this.model.nationality);
+		// console.log('CheckoutDataComponent.onNationalityChanged', this.model.nationality);
 	}
 
 	onBirthCityChanged() {
-		console.log('CheckoutDataComponent.onBirthCityChanged', this.model.birthCity);
+		// console.log('CheckoutDataComponent.onBirthCityChanged', this.model.birthCity);
 		this.doCalcFiscalCode();
 	}
 
 	onBirthCountyChanged() {
-		console.log('CheckoutDataComponent.onBirthCountyChanged', this.model.birthCounty);
+		// console.log('CheckoutDataComponent.onBirthCountyChanged', this.model.birthCounty);
 	}
 
 	onInputDateChanged(date: Date) {
-		console.log('CheckoutDataComponent.onInputDateChanged', date);
+		// console.log('CheckoutDataComponent.onInputDateChanged', date);
 		this.doCalcFiscalCode();
 	}
 
 	onGenderChanged() {
-		console.log('CheckoutDataComponent.onGenderChanged', this.model.gender);
+		// console.log('CheckoutDataComponent.onGenderChanged', this.model.gender);
 		this.doCalcFiscalCode();
 	}
 
@@ -170,21 +196,39 @@ export class CheckoutDataComponent extends DisposableComponent implements OnInit
 			if ((!this.model.fiscalCode || this.model.fiscalCode === this.calculatedFiscalCode) &&
 				this.model.firstName && this.model.lastName && this.model.gender && this.model.birthCity
 			) {
-				const fiscalCode: any = new CodiceFiscale({
+				this.fiscalCodeService.fiscalCodeWithOptions({
 					name: this.model.firstName,
 					surname: this.model.lastName,
 					gender: this.model.gender,
 					day: this.model.birthDate ? new Date(this.model.birthDate).getDate() : 1,
 					month: this.model.birthDate ? new Date(this.model.birthDate).getMonth() + 1 : 1,
 					year: this.model.birthDate ? new Date(this.model.birthDate).getFullYear() : 1970,
-					birthplace: this.model.birthCity,
-					// birthplaceProvincia: string // Optional
+					birthPlace: this.model.birthCity,
+				}).pipe(
+					first(),
+				).subscribe(fiscalCode => {
+					// console.log('CheckoutDataComponent.doCalcFiscalCode', fiscalCode);
+					if (fiscalCode) {
+						this.model.fiscalCode = fiscalCode.code;
+						this.calculatedFiscalCode = fiscalCode.code;
+					}
 				});
-				console.log('CheckoutDataComponent.doCalcFiscalCode', fiscalCode);
+				/*
+				const fiscalCode: any = new FiscalCode({
+					name: this.model.firstName,
+					surname: this.model.lastName,
+					gender: this.model.gender,
+					day: this.model.birthDate ? new Date(this.model.birthDate).getDate() : 1,
+					month: this.model.birthDate ? new Date(this.model.birthDate).getMonth() + 1 : 1,
+					year: this.model.birthDate ? new Date(this.model.birthDate).getFullYear() : 1970,
+					birthPlace: this.model.birthCity,
+				});
+				// console.log('CheckoutDataComponent.doCalcFiscalCode', fiscalCode);
 				if (fiscalCode) {
 					this.model.fiscalCode = fiscalCode.code;
 					this.calculatedFiscalCode = fiscalCode.code;
 				}
+				*/
 			}
 		}
 	}

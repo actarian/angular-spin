@@ -186,8 +186,13 @@
 		</ng-container>
 		<!-- Contatto Crociera -->
 		<br />
-		<button type="submit" class="btn" [ngClass]="{ 'btn--busy': busy }" title="Prosegui">
-			<span>Prosegui</span>
-		</button>
+		<div class="action-bar">
+			<button type="button" class="btn btn--dimmed" (click)="onPrevStep()" title="Indietro">
+				<span>Indietro</span>
+			</button>
+			<button type="submit" class="btn" [ngClass]="{ 'btn--busy': busy }" title="Procedi">
+				<span>Procedi</span>
+			</button>
+		</div>
 	</form>
 </div>

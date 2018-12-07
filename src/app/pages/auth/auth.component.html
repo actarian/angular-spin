@@ -2,13 +2,13 @@
 	<div class="sign-page">
 		<h2>Accedi al tuo account</h2>
 		<br>
-		<button type="button" class="btn btn btn-block btn-facebook" (click)="onFacebook()" title="Esci da Facebook">
+		<button type="button" class="btn btn btn-block btn-facebook" [ngClass]="{ 'btn--busy': facebookBusy }" (click)="onFacebook()" title="Esci da Facebook">
 			<svg class="ico">
 				<use xlink:href="#ico-facebook"></use>
 			</svg>
 			<span>{{ 'sign.facebook' | translate }}</span>
 		</button>
-		<button type="button" class="btn btn btn-block btn-google" (click)="onGoogle()" title="Esci da Google">
+		<button type="button" class="btn btn btn-block btn-google" [ngClass]="{ 'btn--busy': googleBusy }" (click)="onGoogle()" title="Esci da Google">
 			<svg class="ico">
 				<use xlink:href="#ico-google"></use>
 			</svg>
@@ -35,19 +35,13 @@
 				<svg class="ico">
 					<use xlink:href="#ico-check"></use>
 				</svg>
-				Scarica tutti i docmenti di viaggio
+				Salva e modifica i tuoi dati
 			</li>
 			<li>
 				<svg class="ico">
 					<use xlink:href="#ico-check"></use>
 				</svg>
-				Modifica i tuoi dati ogni volta che lo desideri
-			</li>
-			<li>
-				<svg class="ico">
-					<use xlink:href="#ico-check"></use>
-				</svg>
-				Nuove offerte e promozioni solo per te
+				Verifica lo stato delle tue prenotazioni
 			</li>
 		</ul>
 		<button type="button" class="btn btn btn-block btn-primary" (click)="onSignUp()" title="{{ 'sign.create' | translate }}"><span>{{ 'sign.create' | translate }}</span></button>

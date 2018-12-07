@@ -29,12 +29,13 @@
 
 	label {
 		flex: 0 0 100%;
+		max-width: none;
 	}
 
 	input {
 		flex: 1 1 auto;
-		width: auto;
 		max-width: none;
+		width: auto;
 		margin-right: 10px;
 
 		@include xxs-down {
@@ -44,7 +45,6 @@
 
 	.btn {
 		flex: 1 1 auto;
-		min-width: 0;
 		max-width: 120px;
 		width: auto;
 		padding: 4px 10px;

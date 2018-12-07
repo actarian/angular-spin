@@ -15,6 +15,7 @@ Main Search
 
 	&__col {
 		flex: 0 0 auto;
+		max-width: none;
 		position: relative;
 		z-index: 1;
 		background: #fff;
@@ -67,6 +68,7 @@ Main Search
 
 	&__date {
 		flex-shrink: 1;
+		width: 190px;
 
 		@include md-down {
 			width: 190px;
@@ -80,10 +82,7 @@ Main Search
 
 	&__duration {
 		flex-shrink: 1;
-
-		@include md-down {
-			width: 160px;
-		}
+		width: 170px;
 
 		@include sm-down {
 			width: calc(50% - 5px);
@@ -227,7 +226,7 @@ Main Search
 	.ico {
 		position: absolute;
 		left: 10px;
-		top: 29px;
+		top: 28px;
 		display: block;
 		width: 16px;
 		height: 16px;
@@ -422,6 +421,7 @@ Popup Hint
 		font-size: 14px;
 		font-weight: 400;
 		flex: 1 0 100%;
+		max-width: none;
 		margin: 0;
 		padding: 0;
 		line-height: 1.2;
@@ -447,6 +447,7 @@ Popup Hint
 
 	.info {
 		flex: 1 0 100%;
+		max-width: none;
 		font-size: 9px;
 		display: flex;
 		justify-content: space-between;
@@ -473,11 +474,7 @@ Popup Hint Duration
 --------------------------------------------------*/
 
 .popup-hint__duration {
-	width: 293px;
-
-	@include md-down {
-		width: 287px;
-	}
+	width: 295px;
 
 	@include xs-down {
 		width: 100%;
@@ -600,6 +597,7 @@ Spinner Input
 
 	strong {
 		flex: 1 0 auto;
+		max-width: none;
 		display: block;
 		font-size: 14px;
 		font-weight: 600;
@@ -608,6 +606,7 @@ Spinner Input
 
 	p-spinner {
 		flex: 0 1 auto;
+		max-width: none;
 		display: flex;
 	}
 }
@@ -629,6 +628,7 @@ Child Ages
 
 		strong {
 			flex: 1 0 auto;
+			max-width: none;
 			display: block;
 			font-weight: normal;
 			font-size: 13px;
@@ -636,6 +636,7 @@ Child Ages
 
 		.select {
 			flex: 1 0 auto;
+			max-width: none;
 			width: auto;
 			padding: 0 20px 0 0;
 			font-weight: 600;

@@ -71,9 +71,43 @@ export class Page implements Document {
 	}
 
 	getFeatures?(type: number, n: number[]): Feature[] {
-		return this.features.filter((x: Feature, i: number) => (
+		return this.features ? this.features.filter((x: Feature, i: number) => (
 			n.indexOf(Number(x.id)) !== -1 && x.type === type
-		)).sort((a: Feature, b: Feature) => a.type - b.type);
+		)).sort((a: Feature, b: Feature) => a.type - b.type) : [];
 	}
+
+	getFeaturesByTypes?(type: number[]): Feature[] {
+		return this.features ? this.features.filter((x: Feature) => (
+			type.indexOf(Number(x.type)) !== -1
+		)) : [];
+	}
+
+	getGroupedFeaturesByTypes?(type: number[]): any {
+		const groups = {};
+		type.forEach(type => {
+			const group = groups[type] || { features: [] };
+			if (this.features) {
+				this.features.forEach((x: Feature) => {
+					if (Number(x.type) === type) {
+						group.features.push(x);
+					}
+				});
+			}
+			groups[type] = group;
+		});
+		/*
+		if (this.features) {
+			this.features.forEach((x: Feature) => {
+				if (type.indexOf(Number(x.type)) !== -1) {
+					const group = groups[x.type] || { features: [] };
+					group.features.push(x);
+					groups[x.type] = group;
+				}
+			});
+		}
+		*/
+		return groups;
+	}
+
 
 }

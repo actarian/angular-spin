@@ -1,6 +1,8 @@
 
-import { Component, Input, ViewEncapsulation } from '@angular/core';
-import { GtmService, SearchResult, WishlistService } from '../../models';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+import { DisposableComponent } from '../../core';
+import { GtmService, SearchResult, Tag, TagService, WishlistService } from '../../models';
 
 @Component({
 	selector: 'hotel-variants-item',
@@ -10,7 +12,8 @@ import { GtmService, SearchResult, WishlistService } from '../../models';
 	exportAs: 'results',
 })
 
-export class HotelVariantsItemComponent {
+export class HotelVariantsItemComponent extends DisposableComponent implements OnInit {
+	tagList: Tag[];
 
 	@Input() item: SearchResult;
 	@Input() index?: number = 0;
@@ -19,14 +22,25 @@ export class HotelVariantsItemComponent {
 		// private dispatcher: EventDispatcherService,
 		public wishlist: WishlistService,
 		private gtm: GtmService,
-	) { }
+		private tagService: TagService
+	) {
+		super();
+	}
+
+	ngOnInit() {
+		this.tagService.getTagsByIds(this.item.tags).pipe(
+			takeUntil(this.unsubscribe),
+		).subscribe(tags => {
+			this.tagList = tags;
+		});
+	}
 
 	onBeforeNav() {
-		this.gtm.onProductClick('suggestion list', this.item, this.index);
+		this.gtm.onProductClick('Related Results', this.item, this.index);
 		/*
 		this.dispatcher.emit({
 			type: 'onProductClick',
-			data: { type: 'suggestion list', result: this.item, index: this.index, }
+			data: { type: 'Related Results', result: this.item, index: this.index, }
 		});
 		*/
 	}

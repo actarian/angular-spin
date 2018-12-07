@@ -140,6 +140,7 @@ Popup Hint
 	font-size: 14px;
 	font-weight: 400;
 	flex: 1 0 100%;
+	max-width: 100%;
 	margin: 0;
 	padding: 0;
 	line-height: 1.2;
@@ -161,6 +162,7 @@ Popup Hint
 
 .info {
 	flex: 1 0 100%;
+	max-width: 100%;
 	font-size: 9px;
 	display: flex;
 	justify-content: space-between;

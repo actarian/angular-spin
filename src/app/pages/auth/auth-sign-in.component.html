@@ -40,6 +40,7 @@
 		<button type="button" class="btn-text" (click)="onForgotten()" title="{{ 'signIn.passwordForgotten' | translate }}"><span>{{ 'signIn.passwordForgotten' | translate }}</span></button>
 	</form>
 	<div class="alert alert-danger fade show" role="alert" *ngIf="error">
-		<strong>{{error.message || error.statusText}}</strong>
+		<!-- <strong>{{error.message || error.statusText}}</strong> -->
+		<strong>Email, codice utente o password errata</strong>
 	</div>
 </div>

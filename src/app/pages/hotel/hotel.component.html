@@ -2,6 +2,7 @@
 	<div class="container">
 		<!-- MAIN -->
 		<div class="hotel-main-content">
+			<hotel-breadcrumb [hotel]="hotel"></hotel-breadcrumb>
 			<!-- HEAD -->
 			<div class="hotel-head">
 				<div class="hotel-info">
@@ -9,11 +10,10 @@
 						<span>{{page.title}}</span> <span class="stars"><em *ngFor="let star of hotel.rating?.split('');" [ngClass]="{ superior: star === 'S' }">{{star}}</em></span>
 					</div>
 					<div class="hotel-location">
-						<span class="hotel-region">{{hotel.location?.avesDstCode}}</span>
-						<!-- <span class="hotel-region">Italia Toscana</span>&nbsp;<span class="hotel-town">Radda in Chianti SI</span> -->
+						<span class="hotel-region">{{hotel.destinationNation}} <span *ngIf="hotel.destinationNation == 'Italia'">{{hotel.destinationRegion}}</span></span>&nbsp;<span class="hotel-town">{{hotel.destinationDescription}} <span *ngIf="hotel.destinationNation == 'Italia'">{{hotel.destinationProvince}}</span></span>
 					</div>
 				</div>
-				<ng-container *ngIf="hotel.trustPilot?.totalReviews > 9">
+				<ng-container *ngIf="hotel.trustPilot?.totalReviews >= minimumReviews">
 					<div class="hotel-trust" [trustPilot]="hotel.trustPilot"></div>
 				</ng-container>
 				<button class="add-to-fav" type="button" (click)="wishlist.doToggle(hotel)" [ngClass]="{ active: wishlist.has(hotel) }">
@@ -22,25 +22,27 @@
 					</svg>
 				</button>
 			</div>
+			<!-- SWIPER -->
+			<div class="hotel-gallery" *ngIf="page.images?.length > 0">
+				<div class="swiper-container" [swiper]>
+					<div class="swiper-wrapper" [fancybox]="fancyboxOptions">
+						<div class="swiper-slide" *ngFor="let image of page.images | hotelGallery">
+							<a href="{{image.url}}" data-fancybox="gallery">
+								<img sizes="(max-width: 1600px) 100vw, 300px" srcset="{{image.url}}?width=320&amp;height=180&rmode=crop 320w, {{image.url}}?width=375&height=211&rmode=crop 375w, {{image.url}}?width=575&height=323&rmode=crop 575w, {{image.url}}?width=300&height=169&rmode=crop 576w," src="{{image.url}}?width=300&height=169&rmode=crop" alt="{{image.name}}">
+							</a>
+						</div>
+					</div>
+					<div class="swiper-button swiper-button-prev"></div>
+					<div class="swiper-button swiper-button-next"></div>
+				</div>
+			</div>
 			<!-- ABSTRACT -->
-			<ng-container *ngIf="page.features">
+			<ng-container *ngIf="page.description">
 				<div class="hotel-abstract">
-					<div [innerHTML]="page.abstract">
+					<div [innerHTML]="page.description">
 					</div>
 				</div>
 			</ng-container>
-			<!-- SWIPER -->
-			<div class="hotel-gallery swiper-container" [swiper]>
-				<div class="swiper-wrapper" [fancybox]="fancyboxOptions">
-					<div class="swiper-slide" *ngFor="let image of page.images | hotelGallery">
-						<a href="{{image.url}}" data-fancybox="gallery">
-							<img sizes="(max-width: 1600px) 100vw, 300px" srcset="{{image.url}}?width=320&amp;height=180&rmode=crop 320w, {{image.url}}?width=375&height=211&rmode=crop 375w, {{image.url}}?width=575&height=323&rmode=crop 575w, {{image.url}}?width=300&height=169&rmode=crop 576w," src="{{image.url}}?width=300&height=169&rmode=crop" alt="{{image.name}}">
-						</a>
-					</div>
-				</div>
-				<div class="swiper-button swiper-button-prev"></div>
-				<div class="swiper-button swiper-button-next"></div>
-			</div>
 			<!-- DESKTOP DESCRIPTION -->
 			<div class="desktop-description">
 				<div class="hotel-desc">
@@ -62,14 +64,13 @@
 									<span>{{hotel.accomodation}}</span>
 								</li>
 								<!-- TAGS -->
-								<ng-container *ngIf="page.taxonomies">
-									<li class="hotel-list-item item-{{item.id}} category-{{item.category}}" *ngFor="let item of page.taxonomies | hotelTaxonomy">
-										<svg class="ico">
-											<use xlink:href="#ico-fav"></use>
-										</svg>
-										<span>{{item.name}}</span>
-									</li>
-								</ng-container>
+								<li class="hotel-list-item item-{{tag.id}} category-{{tag.category}}" *ngFor="let tag of tagList | hotelTag">
+									<img class="ico" [src]="tag.image" *ngIf="tag.image !== undefined && tag.image" />
+									<svg class="ico" *ngIf="tag.image === undefined && !tag.image">
+										<use xlink:href="#ico-struttura"></use>
+									</svg>
+									<span>{{tag.name}}</span>
+								</li>
 							</ul>
 						</div>
 						<!-- Quota comprende e non -->
@@ -78,9 +79,7 @@
 								<div class="" *ngFor="let feature of page.getFeatures(3, [13])">
 									<h3 class="h3">{{feature.title}}</h3>
 									<div class="desc">
-										<div class="">
-											<div [innerHTML]="feature.description"></div>
-										</div>
+										<div [innerHTML]="feature.description"></div>
 									</div>
 								</div>
 								<div class="" *ngFor="let feature of page.getFeatures(3, [14])">
@@ -105,57 +104,61 @@
 						<p-tabView (onChange)="onTabOpen($event)">
 							<!-- dStructure, Service, Price -->
 							<p-tabPanel [header]="tab.title" *ngFor="let tab of tabs; let i = index;" [selected]="i == 0">
-								<ng-container *ngFor="let item of tab.features; let f = index;">
-									<h3 [innerHTML]="item.title" *ngIf="f > 0"></h3>
-									<div [innerHTML]="item.description"></div>
+								<ng-container *ngFor="let feature of tab.features; let f = index;">
+									<h3 [innerHTML]="feature.title" *ngIf="i !== 2 && f > 0"></h3>
+									<h3 [innerHTML]="feature.title" *ngIf="i === 2"></h3>
+									<div [innerHTML]="feature.description"></div>
 								</ng-container>
+								<ng-container *ngFor="let quote of tab.quotes;">
+									<h3 [innerHTML]="quote.title"></h3>
+									<div [innerHTML]="quote.description"></div>
+								</ng-container>
+								<hotel-plus [page]="page" *ngIf="i === 1"></hotel-plus>
 							</p-tabPanel>
 						</p-tabView>
 					</div>
 					<!-- LOCATION -->
 					<div class="hotel-mapbox" *ngIf="hotel.location">
-						<div class="hotel-mapbox--map">
-							<button type="button" (click)="onShowMap()">
-								<svg class="ico" viewBox="0 0 32 32">
-									<use xlink:href="#ico-pin"></use>
-								</svg>
-								<img alt="" src="https://api.mapbox.com/styles/v1/mapbox/streets-v10/static/{{hotel.location.longitude}},{{hotel.location.latitude}},9.0,0,0/300x150@2x?access_token=pk.eyJ1Ijoic3VwYWhmdW5rIiwiYSI6IjE4Zjg1MWMxYzQ3M2RlYTU4OGNlMTc4ODFmOTkyODczIn0.Nusb4DbKb1KnkWWDcZUy-w">
-							</button>
-						</div>
+						<ng-container *ngIf="showMapBox && hotel.location.longitude && hotel.location.latitude">
+							<div class="hotel-mapbox--map">
+								<button type="button" (click)="onShowMap()">
+									<svg class="ico" viewBox="0 0 32 32">
+										<use xlink:href="#ico-pin"></use>
+									</svg>
+									<img alt="Mappa" src="https://api.mapbox.com/styles/v1/mapbox/streets-v10/static/{{hotel.location.longitude}},{{hotel.location.latitude}},9.0,0,0/300x150@2x?access_token={{mapBoxAccessToken}}">
+								</button>
+							</div>
+						</ng-container>
 						<div class="hotel-mapbox--desc">
-							<div class="h3">Località e contatti</div>
+							<div class="h3">Località</div>
 							<ul>
 								<li>
 									<svg class="ico" viewBox="0 0 32 32">
 										<use xlink:href="#ico-struttura"></use>
 									</svg>
-									{{page.title}}
+									<span>{{page.title}}</span> <span class="stars"><em *ngFor="let star of hotel.rating?.split('');" [ngClass]="{ superior: star === 'S' }">{{star}}</em></span>
 								</li>
 								<li>
 									<svg class="ico ico-pin" viewBox="0 0 32 32">
 										<use xlink:href="#ico-pin"></use>
 									</svg>
-									{{hotel.address.description}}, {{hotel.address.city}}, {{hotel.address.provinceCode}}, {{hotel.address.cap}}
-								</li>
-								<li>
-									<svg class="ico" viewBox="0 0 32 32">
-										<use xlink:href="#ico-tel"></use>
-									</svg>
-									{{hotel.address.phone}}
+									<span class="hotel-region">{{hotel.destinationNation}} <span *ngIf="hotel.destinationNation == 'Italia'">{{hotel.destinationRegion}}</span></span>&nbsp;<span class="hotel-town">{{hotel.destinationDescription}} <span *ngIf="hotel.destinationNation == 'Italia'">{{hotel.destinationProvince}}</span></span>
 								</li>
 							</ul>
 						</div>
 					</div>
 					<!-- TRUSTPILOT -->
-					<ng-container *ngIf="hotel.trustPilot?.totalReviews > 9">
-						<trustpilot-widget-component [sku]="hotel.structureID"></trustpilot-widget-component>
+					<ng-container *ngIf="hotel.trustPilot?.totalReviews >= minimumReviews">
+						<ng-container *ngIf="showTrustPilot">
+							<trustpilot-widget-component [sku]="hotel.structureID"></trustpilot-widget-component>
+						</ng-container>
 					</ng-container>
 				</div>
 			</div>
 		</div>
 		<!-- SIDEBAR -->
 		<ng-container *ngIf="hotel.active">
-			<form class="hotel-sidebar" name="options" role="form" novalidate autocomplete="off" (ngSubmit)="options.valid && onSubmit()" #options="ngForm">
+			<form class="hotel-sidebar" name="options" role="form" novalidate autocomplete="off" #options="ngForm">
 				<div class="sticky">
 					<div class="sidebar-group">
 						<div class="spinner-input">
@@ -170,11 +173,11 @@
 						</div>
 						<div class="child-ages">
 							<div class="child-age" *ngFor="let child of model.childrens; let i = index">
-								<strong>Età bambino {{i}}</strong>
+								<strong>Età bambino {{i + 1}}</strong>
 								<div class="custom-select">
 									<select dir="rtl" name="{{'age' + i}}" [(ngModel)]="child.age">
-									<option *ngFor="let age of search.ages" [ngValue]="age" (onChange)="onChildsAgeChanged()">{{age}}</option>
-								</select>
+										<option *ngFor="let age of search.ages" [ngValue]="age" (onChange)="onChildsAgeChanged()">{{age}}</option>
+									</select>
 								</div>
 							</div>
 						</div>
@@ -196,8 +199,8 @@
 						<ng-container *ngIf="calendar.nights.length > 0">
 							<div class="custom-select">
 								<select name="nights" [(ngModel)]="booking.nights" (change)="onNightsChanged($event.target.value)" [disabled]="busy">
-								<option *ngFor="let value of calendar.nights" [value]="value">{{getCheckoutDate(value) | date : 'shortDate'}} ({{value}} {{value != 1 ? 'notti' : 'notte'}})</option>
-							</select>
+									<option *ngFor="let value of calendar.nights" [value]="value">{{getCheckoutDate(value) | date : 'dd MMMM yyyy'}} ({{value}} {{value != 1 ? 'notti' : 'notte'}})</option>
+								</select>
 							</div>
 						</ng-container>
 					</div>
@@ -250,11 +253,19 @@
 						</div>
 						<div class="sidebar-group" *ngIf="booking.options.extraQuotes?.length">
 							<div class="tit">Assicurazione</div>
-							<div class="radio type-{{item.type}}" *ngFor="let item of booking.options.extraQuotes; let i = index;">
+							<div class="checkbox type-{{item.type}}" *ngFor="let item of booking.options.extraQuotes; let i = index;">
 								<label>
 									<input type="checkbox" name="extraQuote{{i}}" [(ngModel)]="item.checked">
-									<span>{{item.name}}</span> <small [innerHTML]="getExtraQuoteDescription(item)"></small> <small [innerHTML]="getExtraQuoteInfo(item)" *ngIf="item.checked"></small>
+									<span>{{item.name}}</span> <small [innerHTML]="getExtraQuoteDescription(item)"></small>
 								</label>
+								<div class="sidebar-group__secondary" *ngIf="booking.options.extraQuotes[i].checked">
+									<small [innerHTML]="getExtraQuoteInfo(item)"></small>
+									<button class="btn btn--small" (click)="showExtraQuoteInfo(item)">Leggi le condizioni</button>
+									<label>
+										<input type="checkbox" name="extraQuote{{i}}accepted" [(ngModel)]="item.accepted" required>
+										<span>{{item.detail.acceptTitle}}</span> <small [innerHTML]="item.detail.acceptText"></small>
+									</label>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -269,15 +280,16 @@
 						<div class="sidebar-cta">
 							<!-- <button type="button" class="btn" [routerLink]="'payment' | slugAsync">Prenota il tuo viaggio</button> -->
 							<!-- <button type="button" class="btn" (click)="onBook($event)" [value]="'payment' | slugAsync">Prenota il tuo viaggio</button> -->
-							<button type="button" class="btn" [ngClass]="{ 'btn--busy': busyBook }" (click)="onBook($event)">
+							<button type="submit" class="btn" [ngClass]="{ 'btn--busy': busyBook }" [disabled]="options?.invalid" (click)="onBook($event)">
 								<span>Prenota il tuo viaggio</span>
 							</button>
 							<span class="no-extra">(nessun costo aggiuntivo)</span>
 						</div>
 					</div>
+
 					<ng-container *ngIf="busy">
 						<div class="sidebar-group">
-							<div class="loader">Caricamento Offerta <span class="spinner">&nbsp;</span></div>
+							<loading-component title="Caricamento Offerta" [type]="loadingTypes.Button"></loading-component>
 						</div>
 					</ng-container>
 				</div>
@@ -302,6 +314,7 @@
 				<!-- COLS -->
 				<div class="hotel-description-cols">
 					<div class="hotel-plus">
+						<h3>Servizi ed esperienze incluse</h3>
 						<ul class="hotel-list">
 							<li class="hotel-list-item">
 								<svg class="ico">
@@ -316,14 +329,13 @@
 								<span>{{hotel.accomodation}}</span>
 							</li>
 							<!-- TAGS -->
-							<ng-container *ngIf="page.taxonomies">
-								<li class="hotel-list-item item-{{item.id}} category-{{item.category}}" *ngFor="let item of page.taxonomies | hotelTaxonomy">
-									<svg class="ico">
-										<use xlink:href="#ico-fav"></use>
-									</svg>
-									<span>{{item.name}}</span>
-								</li>
-							</ng-container>
+							<li class="hotel-list-item item-{{tag.id}} category-{{tag.category}}" *ngFor="let tag of tagList | hotelTag">
+								<img class="ico" [src]="tag.image" *ngIf="tag.image !== undefined && tag.image" />
+								<svg class="ico" *ngIf="tag.image === undefined && !tag.image">
+									<use xlink:href="#ico-struttura"></use>
+								</svg>
+								<span>{{tag.name}}</span>
+							</li>
 						</ul>
 					</div>
 					<!-- Quota comprende e non -->
@@ -355,19 +367,26 @@
 								<h3 [innerHTML]="item.title" *ngIf="f > 0"></h3>
 								<div [innerHTML]="item.description"></div>
 							</ng-container>
+							<ng-container *ngFor="let quote of tab.quotes;">
+								<h3 [innerHTML]="quote.title"></h3>
+								<div [innerHTML]="quote.description"></div>
+							</ng-container>
+							<hotel-plus [page]="page" *ngIf="i === 1"></hotel-plus>
 						</p-accordionTab>
 					</p-accordion>
 				</div>
 				<!-- LOCATION -->
 				<div class="hotel-mapbox" *ngIf="hotel.location">
-					<div class="hotel-mapbox--map">
-						<button type="button" (click)="onShowMap()">
-							<svg class="ico" viewBox="0 0 32 32">
-								<use xlink:href="#ico-pin"></use>
-							</svg>
-							<img alt="" src="https://api.mapbox.com/styles/v1/mapbox/streets-v10/static/{{hotel.location.longitude}},{{hotel.location.latitude}},9.0,0,0/300x150@2x?access_token=pk.eyJ1Ijoic3VwYWhmdW5rIiwiYSI6IjE4Zjg1MWMxYzQ3M2RlYTU4OGNlMTc4ODFmOTkyODczIn0.Nusb4DbKb1KnkWWDcZUy-w">
-						</button>
-					</div>
+					<ng-container *ngIf="showMapBox && hotel.location.longitude && hotel.location.latitude">
+						<div class="hotel-mapbox--map">
+							<button type="button" (click)="onShowMap()">
+								<svg class="ico" viewBox="0 0 32 32">
+									<use xlink:href="#ico-pin"></use>
+								</svg>
+								<img alt="Mappa" src="https://api.mapbox.com/styles/v1/mapbox/streets-v10/static/{{hotel.location.longitude}},{{hotel.location.latitude}},9.0,0,0/300x150@2x?access_token={{mapBoxAccessToken}}">
+							</button>
+						</div>
+					</ng-container>
 					<div class="hotel-mapbox--desc">
 						<div class="h3">Località e contatti</div>
 						<ul>
@@ -375,26 +394,22 @@
 								<svg class="ico" viewBox="0 0 32 32">
 									<use xlink:href="#ico-struttura"></use>
 								</svg>
-								{{page.title}}
+								<span>{{page.title}}</span> <span class="stars"><em *ngFor="let star of hotel.rating?.split('');" [ngClass]="{ superior: star === 'S' }">{{star}}</em></span>
 							</li>
 							<li>
 								<svg class="ico ico-pin" viewBox="0 0 32 32">
 									<use xlink:href="#ico-pin"></use>
 								</svg>
-								{{hotel.address.description}}, {{hotel.address.city}}, {{hotel.address.provinceCode}}, {{hotel.address.cap}}
-							</li>
-							<li>
-								<svg class="ico" viewBox="0 0 32 32">
-									<use xlink:href="#ico-tel"></use>
-								</svg>
-								{{hotel.address.phone}}
+								<span class="hotel-region">{{hotel.destinationNation}} <span *ngIf="hotel.destinationNation == 'Italia'">{{hotel.destinationRegion}}</span></span>&nbsp;<span class="hotel-town">{{hotel.destinationDescription}} <span *ngIf="hotel.destinationNation == 'Italia'">{{hotel.destinationProvince}}</span></span>
 							</li>
 						</ul>
 					</div>
 				</div>
 				<!-- TRUSTPILOT -->
-				<ng-container *ngIf="hotel.trustPilot?.totalReviews > 9">
-					<trustpilot-widget-component [sku]="hotel.structureId"></trustpilot-widget-component>
+				<ng-container *ngIf="hotel.trustPilot?.totalReviews >= minimumReviews">
+					<ng-container *ngIf="showTrustPilot">
+						<trustpilot-widget-component [sku]="hotel.structureId"></trustpilot-widget-component>
+					</ng-container>
 				</ng-container>
 			</div>
 		</div>
@@ -403,17 +418,19 @@
 			<div class="travel-recap">Per {{booking.paxTotal}} persone - dal {{booking.checkIn | date : 'shortDate'}} al {{booking.checkOut | date : 'shortDate'}} - {{hotel.accomodation}}</div>
 			<div class="total-price-recap">
 				<div class="prices">
+					<!-- RIMOSSO DA GDOC
 					<div class="price-pp">
 						<span>Prezzo<br>per persona</span>
 						<strong>{{(booking.priceTotal / booking.paxTotal) | price : '€'}}</strong>
 					</div>
+					-->
 					<div class="price-total">
 						<span>Prezzo<br>Totale</span>
 						<strong>{{booking.priceTotal | price : '€'}}</strong>
 					</div>
 				</div>
 				<div class="recap-cta">
-					<button type="button" class="btn" [ngClass]="{ 'btn--busy': busyBook }" (click)="onBook($event)">
+					<button type="button" class="btn" [ngClass]="{ 'btn--busy': busyBook }" [disabled]="options?.invalid" (click)="onBook($event)">
 						<span>Prenota subito</span>
 					</button>
 				</div>

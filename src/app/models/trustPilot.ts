@@ -1,4 +1,7 @@
 
+
+export const TrustPilotMinimumReviews: number = 1;
+
 export class TrustPilot {
 	averageStars: number;
 	totalReviews: number;

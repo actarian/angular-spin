@@ -1,6 +1,14 @@
-<home-search></home-search>
+<home-search [page]="page"></home-search>
 <home-lastviews></home-lastviews>
 <home-categories [type]="1"></home-categories>
 <!-- <home-slideshow [type]="2"></home-slideshow> -->
 <home-promotions [type]="2"></home-promotions>
 <home-promotions [type]="3"></home-promotions>
+
+<div class="home-features" *ngIf="page.features?.length">
+	<div class="container">
+		<div class="home-features__wrapper" *ngFor="let feature of page.features">
+			<div class="home-features__desc" [innerHTML]="feature.description"></div>
+		</div>
+	</div>
+</div>

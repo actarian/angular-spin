@@ -15,6 +15,15 @@
 					</svg>
 					<span>{{item.accomodation}}</span>
 				</li>
+				<ng-container *ngFor="let tag of tagList | hotelTag; let i = index">
+					<li class="hotel-list-item item-{{tag.id}} category-{{tag.category}}" *ngIf="i < 3">
+						<img class="ico" [src]="tag.image" *ngIf="tag.image !== undefined && tag.image" />
+						<svg class="ico" *ngIf="tag.image === undefined && !tag.image">
+							<use xlink:href="#ico-struttura"></use>
+						</svg>
+						<span>{{tag.name}}</span>
+					</li>
+				</ng-container>
 			</ul>
 			<div class="special-msg" *ngIf="item.earlyBookingText">
 				<!-- <strong>20%</strong> PRENOTA PRIMA -->
@@ -40,13 +49,15 @@
 		<div class="summary">
 			<div class="price">
 				<span class="desc">Da</span>
-				<span class="single-price"><span class="value">{{item.price}}</span><span class="symbol">€</span></span>
-				<span class="desc">Prezzo per persona</span>
+				<span class="single-price"><span class="value">{{item.price | number : '1.0-0'}}</span><span class="symbol">€</span></span>
+				<span class="desc">Prezzo per persona <span *ngIf="!item.exactPrice">per notte</span></span>
 			</div>
+			<!--
 			<div class="total-price">
 				<span class="desc">Prezzo totale</span>
 				<span class="total-price"><span class="value">{{item.totalPrice}}</span><span class="symbol">€</span></span>
 			</div>
+			-->
 		</div>
 		<div class="cta">
 			<a class="btn" [routerLink]="[item.slug] | route" (click)="onBeforeNav()">Scopri offerta</a>

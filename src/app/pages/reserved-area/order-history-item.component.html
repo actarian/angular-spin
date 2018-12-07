@@ -15,8 +15,8 @@
 			<div class="info">
 				<div class="name">
 					<a [routerLink]="item.bookingFileCode">
-					<span>{{item.serviceDetail?.name}}</span> <span class="stars"><em *ngFor="let star of item?.rating?.split('');" [ngClass]="{ superior: star === 'S' }">{{star}}</em></span>
-				</a>
+						<span>{{item.serviceDetail?.name}}</span> <span class="stars"><em *ngFor="let star of item?.rating?.split('');" [ngClass]="{ superior: star === 'S' }">{{star}}</em></span>
+					</a>
 				</div>
 				<div class="location">
 					<span class="region">{{item.serviceDetail?.destinationNation}} {{item.serviceDetail?.destinationRegion}}</span>&nbsp;<span class="town">{{item.serviceDetail?.destinationDescription}} {{item.serviceDetail?.destinationProvince}}</span>
@@ -45,7 +45,7 @@
 	</div>
 	<div class="action">
 		<div class="summary">
-			<div class="price"><span class="desc">Prezzo totale</span><span class="single-price"><span class="value">{{item.totalAmountDetail.totalAmountAfterDiscount}}</span><span class="symbol">€</span></span></div>
+			<div class="price"><span class="desc">Prezzo totale</span><span class="single-price"><span class="value">{{item.totalAmountDetail.totalAmountAfterDiscount | number : '1.0-0'}}</span><span class="symbol">€</span></span></div>
 		</div>
 		<div class="cta"><a class="btn" [routerLink]="item.bookingFileCode">Dettagli</a></div>
 	</div>

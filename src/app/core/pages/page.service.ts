@@ -4,6 +4,7 @@ import { ORIGIN_URL } from '@nguniversal/aspnetcore-engine/tokens';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
+import { HttpStatusCodeService } from '../http';
 import { EntityService, Image, ImageType } from '../models';
 import { LinkDefinition, LinkService } from './link.service';
 import { Page } from './page';
@@ -23,6 +24,7 @@ export class PageService extends EntityService<Page> {
 		private titleService: Title,
 		private metaService: Meta,
 		private linkService: LinkService,
+		private statusCodeService: HttpStatusCodeService,
 	) {
 		super(injector);
 	}
@@ -40,7 +42,10 @@ export class PageService extends EntityService<Page> {
 		} else {
 			return this.post(`/api/page/slug`, `"${slug}"`).pipe(
 				map(x => new Page(x)),
-				catchError(() => of(null)), // !!!
+				catchError(error => {
+					this.statusCodeService.setStatusCode(error.status, error.error ? error.error.redirectUrl : null);
+					return of(null);
+				}),
 				tap(page => this.state.set(STATE_KEY, page)),
 			);
 		}
@@ -50,8 +55,10 @@ export class PageService extends EntityService<Page> {
 		return this.get(`/api/page/${id}`).pipe(
 			map(x => new Page(x)),
 			catchError(error => {
-				console.log('PageService.getPageById.error', error);
-				return of(new Page()); // returning default page
+				// console.log('PageService.getPageById.error', error);
+				this.statusCodeService.setStatusCode(error.status, error.error ? error.error.redirectUrl : null);
+				return of(null);
+				// return of(new Page()); // returning default page
 			})
 		);
 	}
@@ -59,13 +66,15 @@ export class PageService extends EntityService<Page> {
 	getPageBySlug(slug: string): Observable<Page> {
 		slug = slug.split(';')[0];
 		// console.log('PageService.getPageBySlug', slug);
-		return this.get(`/api/page/slug/${slug}`).pipe(
+		return this.post(`/api/page/slug`, `"${slug}"`).pipe(
 			map(x => new Page(x)),
 			// tap(x => this.logger.log(`found pages matching "${slug}"`))
 			// tap(x => console.log('PageService.getPageBySlug', x, slug))
 			catchError(error => {
-				console.log('PageService.getPageBySlug.error', error);
-				return of(new Page()); // returning default page
+				// console.log('PageService.getPageBySlug.error', error);
+				this.statusCodeService.setStatusCode(error.status, error.error ? error.error.redirectUrl : null);
+				return of(null);
+				// return of(new Page()); // returning default page
 			})
 		);
 	}
@@ -97,11 +106,12 @@ export class PageService extends EntityService<Page> {
 	}
 
 	private getSocialImage(page: Page): Image {
-		return page.images ? (
+		const image = page.images ? (
 			page.images.find(i => i.type === ImageType.Share) ||
 			page.images.find(i => i.type === ImageType.Default) ||
 			page.images.find(i => i.type === ImageType.Gallery)
-		) : {
+		) : null;
+		return image || {
 			url: 'https://s-static.ak.fbcdn.net/images/devsite/attachment_blank.png'
 		} as Image;
 	}

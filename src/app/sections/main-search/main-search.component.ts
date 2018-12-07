@@ -46,6 +46,25 @@ export class MainSearchComponent extends DisposableComponent implements AfterVie
 		});
 	}
 
+	ngAfterViewInit() {
+		this.query$ = fromEvent(this.query.nativeElement, 'keyup').pipe(
+			debounceTime(250),
+			map((event: any) => {
+				return event.target.value; // input value
+			}),
+			distinctUntilChanged()
+		);
+		this.query$.pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(query => {
+			if (!query || query.trim() === '') {
+				return;
+			}
+			this.search.onDestinationQuery(query);
+			this.changeDetector.markForCheck();
+		});
+	}
+
 	@HostListener('document:keyup', ['$event'])
 	onKeyup(e: KeyboardEvent) {
 		switch (e.key) {
@@ -66,22 +85,17 @@ export class MainSearchComponent extends DisposableComponent implements AfterVie
 		}
 	}
 
-	ngAfterViewInit() {
-		this.query$ = fromEvent(this.query.nativeElement, 'keyup').pipe(
-			debounceTime(250),
-			map((event: any) => {
-				return event.target.value; // input value
-			}),
-			distinctUntilChanged()
-		);
-		this.query$.pipe(
+	onEnter(query: string) {
+		this.search.onDestinationTrySearch(query).pipe(
 			takeUntil(this.unsubscribe)
-		).subscribe(query => {
-			if (!query || query.trim() === '') {
-				return;
+		).subscribe(item => {
+			if (item) {
+				this.model.destination = item;
+				this.model.query = item.name;
+				// console.log('MainSearchComponent.onEnter', item);
+				this.onTab();
+				// this.doSearch.emit(this.model);
 			}
-			this.search.onDestinationQuery(query);
-			this.changeDetector.markForCheck();
 		});
 	}
 
@@ -112,20 +126,6 @@ export class MainSearchComponent extends DisposableComponent implements AfterVie
 			this.model.query = item.name;
 			this.onTab();
 		}
-	}
-
-	onEnter(query: string) {
-		this.search.onDestinationTrySearch(query).pipe(
-			takeUntil(this.unsubscribe)
-		).subscribe(item => {
-			if (item) {
-				this.model.destination = item;
-				this.model.query = item.name;
-				// console.log('MainSearchComponent.onEnter', item);
-				this.onTab();
-				// this.doSearch.emit(this.model);
-			}
-		});
 	}
 
 	onDateSelected(event) {

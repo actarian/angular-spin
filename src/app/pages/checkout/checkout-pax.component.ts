@@ -98,10 +98,11 @@ export class CheckoutPaxComponent extends DisposableComponent implements OnInit 
 	}
 
 	onNextStep(): void {
-		// !!!
-		setTimeout(() => {
-			this.router.navigate(['../pagamento'], { relativeTo: this.route });
-		}, 350);
+		this.router.navigate(['../pagamento'], { relativeTo: this.route });
+	}
+
+	onPrevStep(): void {
+		this.router.navigate(['../i_tuoi_dati'], { relativeTo: this.route });
 	}
 
 	onDinnerShiftChanged() {

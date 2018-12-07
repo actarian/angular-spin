@@ -75,103 +75,178 @@ export class SerpMapComponent extends DisposableComponent implements AfterViewIn
 					clusterMaxZoom: 14, // Max zoom to cluster points on
 					clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
 				});
-
 				map.on('click', (e) => {
 					if (!e.features) {
 						this.setResult(map, null);
 					}
 				});
-
-				map.on('click', 'unclustered-point', (e) => {
+				map.on('click', 'point-interactive', (e) => {
 					this.setResult(map, e.features[0].properties);
 				});
-
-			}
-
-			if (!map.getLayer('clusters')) {
-				map.addLayer({
-					id: 'clusters',
-					type: 'circle',
-					source: 'results',
-					filter: ['has', 'point_count'],
-					paint: {
-						'circle-color': ['step', ['get', 'point_count'], '#ffffff', 100, '#ffffff', 750, '#ffffff'],
-						'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40]
-					}
+				// Create a popup, but don't add it to the map yet.
+				const popup = new mapboxgl.Popup({
+					closeButton: false,
+					closeOnClick: false
 				});
+				map.on('mouseenter', 'point-interactive', function (e) {
+					map.getCanvas().style.cursor = 'pointer';
+					const coordinates = e.features[0].geometry.coordinates.slice();
+					const description = e.features[0].properties.name;
+					while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+						coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+					}
+					popup.setLngLat(coordinates).setHTML(description).addTo(map);
+				});
+				map.on('mouseleave', 'point-interactive', function () {
+					map.getCanvas().style.cursor = '';
+					popup.remove();
+				});
+				/*
+				map.on('mousemove', (e) => {
+					const features = map.queryRenderedFeatures(e.point, { layers: ['point-interactive'] });
+					map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
+				});
+				*/
 			}
+			this.addClusterBackground(map);
+			this.addClusterCount(map);
+			// this.addPointMarker(map);
+			this.addPointPrice(map);
+			this.onBoundResults(map, results);
+		}
+	}
 
-			if (!map.getLayer('cluster-count')) {
+	private addClusterBackground(map) {
+		if (!map.getLayer('cluster-interactive')) {
+			map.addLayer({
+				id: 'cluster-interactive',
+				type: 'circle',
+				source: 'results',
+				filter: ['has', 'point_count'],
+				paint: {
+					'circle-color': ['step', ['get', 'point_count'], '#ffffff', 100, '#ffffff', 750, '#ffffff'],
+					'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40]
+				}
+			});
+		}
+	}
+
+	private addClusterCount(map) {
+		if (!map.getLayer('cluster-count')) {
+			map.addLayer({
+				id: 'cluster-count',
+				type: 'symbol',
+				source: 'results',
+				filter: ['has', 'point_count'],
+				layout: {
+					'text-field': '{point_count_abbreviated}',
+					'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+					'text-size': 12
+				}
+			});
+		}
+	}
+
+	private addPointMarker(map) {
+		if (!map.getLayer('point-interactive')) {
+			map.loadImage('assets/img/map-pin.png', (error, image) => {
+				if (error) {
+					return;
+				}
+				map.addImage('map-pin', image);
 				map.addLayer({
-					id: 'cluster-count',
+					id: 'point-interactive',
 					type: 'symbol',
 					source: 'results',
-					filter: ['has', 'point_count'],
+					// filter: ['!=', ['id'], 1],
+					filter: ['!has', 'point_count'],
+					paint: {
+						'icon-opacity': ['case', ['feature-state', 'selected'], ['number', 0], ['number', 1]],
+					},
+					/*
+					paint: {
+						'circle-color': '#1676c1',
+						'circle-radius': 15,
+						'circle-stroke-width': 1,
+						'circle-stroke-color': '#fff'
+					},
+					*/
 					layout: {
-						'text-field': '{point_count_abbreviated}',
+						'icon-image': 'map-pin',
+					}
+				});
+			});
+		}
+	}
+
+	private addPointPrice(map) {
+		if (!map.getLayer('point-interactive')) {
+			map.loadImage('assets/img/map-text.png', (error, image) => {
+				if (error) {
+					return;
+				}
+				map.addImage('map-text', image);
+				map.addLayer({
+					id: 'point-interactive',
+					type: 'symbol',
+					source: 'results',
+					layout: {
+						'text-field': 'da {price} €',
 						'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-						'text-size': 12
+						'text-offset': [0, 0.6],
+						'text-anchor': 'top',
+						'text-size': 12,
+						'text-letter-spacing': 0.05,
+						'text-allow-overlap': true,
+						'text-ignore-placement': true,
+						'icon-allow-overlap': true,
+						'icon-ignore-placement': true,
+						'icon-image': 'map-text',
+						'icon-text-fit': 'both',
+						'icon-text-fit-padding': [
+							5,
+							10,
+							13,
+							10
+						]
+					},
+					// filter: ['!=', ['id'], 1],
+					filter: ['!has', 'point_count'],
+					paint: {
+						'icon-opacity': 1,
+						'text-color': '#FFFFFF',
+						'text-opacity': 1,
+					},
+					/*
+					paint: {
+						'circle-color': '#1676c1',
+						'circle-radius': 15,
+						'circle-stroke-width': 1,
+						'circle-stroke-color': '#fff'
+					},
+					*/
+				});
+			});
+		}
+	}
+
+	private addPointSelected(map) {
+		if (!map.getLayer('selected-point')) {
+			map.loadImage('assets/img/map-selected-pin.png', (error, image) => {
+				if (error) {
+					return;
+				}
+				map.addImage('map-selected-pin', image);
+				const selectedLayer = map.addLayer({
+					id: 'selected-point',
+					type: 'symbol',
+					source: 'results',
+					filter: ['==', 'selected', true],
+					layout: {
+						'icon-image': 'map-selected-pin',
 					}
 				});
-			}
-
-			if (!map.getLayer('unclustered-point')) {
-				map.loadImage('assets/img/map-pin.png', (error, image) => {
-					if (error) {
-						return;
-					}
-					map.addImage('map-pin', image);
-					const unclusteredLayer = map.addLayer({
-						id: 'unclustered-point',
-						type: 'symbol',
-						source: 'results',
-						// filter: ['!=', ['id'], 1],
-						filter: ['!has', 'point_count'],
-						/*
-						paint: {
-							'icon-opacity': ['case', ['feature-state', 'selected'], ['number', 0], ['number', 1]],
-						},
-						*/
-						/*
-						paint: {
-							'circle-color': '#1676c1',
-							'circle-radius': 15,
-							'circle-stroke-width': 1,
-							'circle-stroke-color': '#fff'
-						},
-						*/
-						layout: {
-							'icon-image': 'map-pin',
-						}
-					});
-					map.on('mousemove', (e) => {
-						const features = map.queryRenderedFeatures(e.point, { layers: ['unclustered-point'] });
-						map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
-					});
-				});
-			}
-
-			/*
-			if (!map.getLayer('selected-point')) {
-				map.loadImage('assets/img/map-selected-pin.png', (error, image) => {
-					if (error) {
-						return;
-					}
-					map.addImage('map-selected-pin', image);
-					const selectedLayer = map.addLayer({
-						id: 'selected-point',
-						type: 'symbol',
-						source: 'results',
-						filter: ['==', 'selected', true],
-						layout: {
-							'icon-image': 'map-selected-pin',
-						}
-					});
-				});
-			}
-			*/
-
-			this.onBoundResults(map, results);
+			});
 		}
 	}
 

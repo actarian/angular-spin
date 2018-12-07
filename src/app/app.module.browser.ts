@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ServiceWorkerModule } from '@angular/service-worker';
 import { ORIGIN_URL, REQUEST } from '@nguniversal/aspnetcore-engine/tokens';
 import { PrebootModule } from 'preboot';
 import { environment } from '../environments/environment';
@@ -22,7 +23,7 @@ export function getRequest() {
 		BrowserAnimationsModule,
 		AppModule,
 		// !!! PWA
-		// ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
+		ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
 	],
 	providers: [
 		// We need this for our Http calls since they'll be using an ORIGIN_URL provided in main.server

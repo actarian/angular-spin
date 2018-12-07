@@ -1,9 +1,8 @@
 @import "~scss/variables";
 
 :host {
-	flex: 1 0 calc(100% - 330px);
-	width: calc(100% - 330px);
-	max-width: calc(100% - 330px);
+	flex: 1 0 calc(100% - 320px);
+	width: calc(100% - 320px);
 	padding-right: 15px;
 
 	@include sm-down {
@@ -25,6 +24,7 @@
 
 .tit {
 	flex: 1 1 auto;
+	max-width: 100%;
 	padding-right: 10px;
 	font-size: 15px;
 	color: $tit-color;
@@ -37,6 +37,7 @@
 
 .filter {
 	flex: 1 1 auto;
+	max-width: 100%;
 	text-align: right;
 
 	@include sm-down {

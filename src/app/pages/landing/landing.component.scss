@@ -27,10 +27,6 @@ Landing Search
 		width: 100%;
 		height: 100%;
 		z-index: 1;
-
-		@include xxs-down {
-			display: none;
-		}
 	}
 
 	@include md-down {
@@ -39,21 +35,17 @@ Landing Search
 
 	@include sm-down {
 		max-height: none;
+		height: 200px;
 	}
 
 	@include xs-down {
-		height: auto;
+		height: 180px;
 		background: #fff;
 	}
 
 	@include xxs-down {
-		background-size: 100%;
-		background-repeat: no-repeat;
-		background-position: center 0;
 		display: block;
 		min-height: 0;
-		padding-top: calc(23.75% + 10px);
-		height: auto;
 	}
 
 
@@ -61,16 +53,17 @@ Landing Search
 		position: relative;
 		z-index: 2;
 		flex: 0 0 auto;
+		max-width: none;
 		color: #fff;
 		text-align: center;
-		display: flex;
-		justify-content: center;
-		align-items: center;
 		padding: 0 20px;
 
 		@include xxs-down {
 			display: block;
 			padding: 0;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
 		}
 
 		.tit {
@@ -94,8 +87,6 @@ Landing Search
 			}
 
 			@include xxs-down {
-				color: $tit-color;
-				text-align: left;
 				padding: 0 15px;
 				font-size: 20px;
 				margin-bottom: 6px;
@@ -106,25 +97,16 @@ Landing Search
 	&--desc {
 		position: relative;
 		z-index: 2;
-		flex: 0 0 auto;
-		padding: 0 20px 10px;
-		color: #fff;
-		text-shadow: 0 1px 5px rgba(0, 0, 0, 0.4), 0 3px 10px rgba(0, 0, 0, .4);
+		padding: 30px 20px 30px;
+		text-align: left;
 
-		@include xs-down {
-			text-shadow: none;
-			padding: 0 0 10px;
-		}
-
-		@include xxs-down {
-			background: transparent;
+		@include sm-down {
+			padding: 15px 0 30px;
 		}
 
 		.desc {
 			padding: 0 15px;
-			font-size: 18px;
-			text-align: center;
-			max-width: 800px;
+			font-size: 16px;
 			margin: 0 auto;
 
 			@include xs-down {
@@ -185,5 +167,67 @@ Landing Search
 				}
 			}
 		}
+	}
+}
+
+
+/*--------------------------------------------------
+Landing Features
+--------------------------------------------------*/
+.landing-features {
+	box-shadow: 0 -3px 7px rgba(0, 0, 0, 0.15);
+
+	&__wrapper {
+		position: relative;
+		z-index: 2;
+		flex: 0 0 auto;
+		max-width: none;
+		padding: 30px 20px 30px;
+
+		@include sm-down {
+			padding: 20px;
+		}
+
+		&:last-child {
+			padding-bottom: 30px;
+
+			@include sm-down {
+				padding-bottom: 20px;
+			}
+		}
+	}
+
+	&__desc {
+		position: relative;
+		z-index: 2;
+		text-align: left;
+
+		p:last-child {
+			margin-bottom: 0;
+		}
+	}
+}
+
+
+/*--------------------------------------------------
+Fullwidth bg
+--------------------------------------------------*/
+.fullwidth-bg {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+
+	img {
+		max-width: none;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		-webkit-transform: translate(-50%, -50%);
+		transform: translate(-50%, -50%);
+		min-width: 100%;
+		min-height: 100%;
 	}
 }

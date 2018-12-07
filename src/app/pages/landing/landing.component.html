@@ -1,25 +1,57 @@
-<div class="landing-search" [style.background-image]="'url(' + (page.images | image) + ')'">
-	<div class="landing-search--head">
+<div class="landing-search">
+	<div class="fullwidth-bg" *ngIf="page.images?.length">
+		<img srcset="{{page.images | image : 'Default' : 'width=550&height=250&rmode=crop'}} 575w,
+				{{page.images | image : 'Default' : 'width=991&height=520&rmode=crop'}} 991w,
+				{{page.images | image : 'Default' : 'width=1199&height=524&rmode=crop'}} 1199w,
+				{{page.images | image : 'Default' : 'width=1600&height=665&rmode=crop'}} 1520w,
+				{{page.images | image : 'Default' : 'width=1920&height=654&rmode=crop'}} 1800w" sizes="
+			(max-width: 575px) 575px,
+			(max-width: 991px) 991px,
+			(max-width: 1199px) 1199px,
+			(max-width: 1520px) 1520px,
+			1800px" src="{{page.images | image : 'Default' : 'width=1920&height=654&rmode=crop'}}" alt="{{page.images?.length ? page.images[0].title : ''}}">
+	</div>
+	<div class="fullwidth-bg" *ngIf="!page.images?.length">
+		<img srcset="{{'img/home/main-cover.jpg?width=991&height=520&rmode=crop' | asset}} 991w,
+					{{'img/home/main-cover.jpg?width=1199&height=524&rmode=crop' | asset}} 1199w,
+					{{'img/home/main-cover.jpg?width=1600&height=665&rmode=crop' | asset}} 1520w,
+					{{'img/home/main-cover.jpg?width=1920&height=654&rmode=crop' | asset}} 1800w" sizes="
+				(max-width: 991px) 991px,
+				(max-width: 1199px) 1199px,
+				(max-width: 1520px) 1520px,
+				1800px" src="{{'img/home/main-cover.jpg?width=1920&height=654&rmode=crop' | asset}}" alt="{{'home.title' | labelAsync : 'Viaggia con tutta la qualità<br> e la garanzia di Eurospin'}}">
+	</div>
+	<div class="landing-search--head" *ngIf="page.abstract?.length">
 		<div class="container">
 			<div class="tit" [innerHTML]="page.abstract">-</div>
 		</div>
 	</div>
-	<div class="landing-search--desc">
-		<div class="container">
-			<div class="readmore-wrap desc" [ngClass]="{active: readmore}">
-				<div class="readmore-accordion">
-					<div [innerHTML]="page.description"></div>
-				</div>
-				<div class="readmore-button">
-					<button (click)="readmore = !readmore">
-						<span *ngIf="!readmore">Leggi di più</span>
-						<span *ngIf="readmore">Leggi di meno</span>
-					</button>
-				</div>
-			</div>
+</div>
 
+<div class="landing-search--desc" *ngIf="page.description?.length">
+	<div class="container">
+		<div class="readmore-wrap desc" [ngClass]="{active: readmore}">
+			<div class="readmore-accordion">
+				<div [innerHTML]="page.description"></div>
+			</div>
+			<div class="readmore-button">
+				<button (click)="readmore = !readmore">
+					<span *ngIf="!readmore">Leggi di più</span>
+					<span *ngIf="readmore">Leggi di meno</span>
+				</button>
+			</div>
 		</div>
 	</div>
 </div>
+
 <serp-component [useBreadcrumbs]="true"></serp-component>
+
+<div class="landing-features" *ngIf="page.features?.length">
+	<div class="container">
+		<div class="landing-features__wrapper" *ngFor="let feature of page.features">
+			<div class="landing-features__desc" [innerHTML]="feature.description"></div>
+		</div>
+	</div>
+</div>
+
 <section-value-proposition></section-value-proposition>

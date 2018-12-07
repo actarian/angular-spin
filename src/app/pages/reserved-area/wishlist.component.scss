@@ -126,7 +126,7 @@ Fav
 			}
 
 			@include xs-down {
-				width: auto;
+				width: 100%;
 				flex: 0 0 auto;
 			}
 
@@ -192,6 +192,7 @@ Fav
 
 		.content {
 			flex: 1 1 auto;
+			max-width: 310px;
 			padding: 8px 12px 12px;
 
 			@include xs-down {
@@ -402,6 +403,7 @@ Fav
 
 				@include xs-down {
 					flex: 0 0 50%;
+					max-width: 50%;
 					display: block;
 				}
 			}
@@ -462,6 +464,7 @@ Fav
 
 			@include xs-down {
 				flex: 0 0 50%;
+				max-width: 50%;
 			}
 
 			.btn {

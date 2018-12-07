@@ -22,7 +22,7 @@ export class UserExistsValidator implements AsyncValidator {
 		if (!value || value.trim() === '') {
 			return of(null);
 		}
-		console.log('UserExistsValidator.validate', value);
+		// console.log('UserExistsValidator.validate', value);
 		return this.userService.exists(value).pipe(
 			catchError(() => of(null)),
 			switchMap(exists => {

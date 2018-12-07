@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Inject, Output, PLATFORM_ID } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { ORIGIN_URL } from '@nguniversal/aspnetcore-engine/tokens';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -16,14 +16,14 @@ import { GoogleTagManagerService } from './google-tag-manager.service';
 	<!-- End Google Tag Manager (noscript) -->`,
 })
 
-export class GoogleTagManagerComponent extends DisposableComponent {
+export class GoogleTagManagerComponent extends DisposableComponent implements AfterViewInit {
 
 	useIframe: boolean = true;
 	id: string;
 	iframeUrl: string;
 	dataLayer: any[];
 
-	// @Output() public navigationEnd = new EventEmitter();
+	@Output() public pageView = new EventEmitter();
 
 	constructor(
 		@Inject(PLATFORM_ID) private platformId: string,
@@ -32,6 +32,9 @@ export class GoogleTagManagerComponent extends DisposableComponent {
 		private googleTagManager: GoogleTagManagerService,
 	) {
 		super();
+	}
+
+	ngAfterViewInit() {
 		if (isPlatformBrowser(this.platformId)) {
 			this.router.events.pipe(
 				takeUntil(this.unsubscribe),
@@ -39,13 +42,8 @@ export class GoogleTagManagerComponent extends DisposableComponent {
 			).subscribe((e: NavigationEnd) => {
 				const url = `${this.originUrl}${e.urlAfterRedirects}`;
 				// console.log('GoogleTagManagerComponent.NavigationEnd', e.id, e.url, e.urlAfterRedirects, url);
-				const event = {
-					event: 'PageView',
-					url: url,
-				};
 				if (this.dataLayer) {
-					this.dataLayer.push(event);
-					// console.log(this.dataLayer);
+					this.pageView.emit({ dataLayer: this.dataLayer, url });
 				} else {
 					this.googleTagManager.once().pipe(
 						takeUntil(this.unsubscribe)
@@ -54,7 +52,7 @@ export class GoogleTagManagerComponent extends DisposableComponent {
 						this.id = this.googleTagManager.options.id;
 						this.iframeUrl = `https://www.googletagmanager.com/ns.html?id=${this.id}`;
 						this.dataLayer = dataLayer;
-						this.dataLayer.push(event);
+						this.pageView.emit({ dataLayer: this.dataLayer, url });
 					});
 				}
 			});

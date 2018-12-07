@@ -1,6 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { first, takeUntil } from 'rxjs/operators';
+import { first, takeUntil, filter } from 'rxjs/operators';
 import { MenuItem, MenuService } from '../../core';
 import { DisposableComponent } from '../../core/disposable';
 import { Label } from '../../core/labels';
@@ -9,6 +9,7 @@ import { ModalCompleteEvent, ModalService } from '../../core/ui/modal';
 import { CartService, UserService, WishlistService } from '../../models';
 import { OperatorService } from '../../pages';
 import { AuthComponent } from '../../pages/auth/auth.component';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
 	selector: 'section-header',
@@ -42,6 +43,7 @@ export class HeaderComponent extends DisposableComponent implements OnInit {
 	public menu: MenuItem[];
 
 	constructor(
+		private router: Router,
 		public routeService: RouteService,
 		private modalService: ModalService,
 		private menuService: MenuService,
@@ -54,6 +56,12 @@ export class HeaderComponent extends DisposableComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.router.events.pipe(
+			takeUntil(this.unsubscribe),
+			filter(x => x instanceof NavigationEnd)
+		).subscribe(() => {
+			this.navToggle = false;
+		});
 		this.menuService.get().pipe(
 			takeUntil(this.unsubscribe)
 		).subscribe(menu => {

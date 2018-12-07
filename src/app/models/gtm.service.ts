@@ -2,8 +2,10 @@ import { DatePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { environment } from '../../environments/environment.staging';
 import { EventDispatcherService, EventEntity } from '../core/models/event-dispatcher.service';
 import { GoogleTagManagerService } from '../core/plugins';
+import { Operator } from '../pages';
 import { Booking } from './booking';
 import { Cart } from './cart';
 import { Hotel } from './hotel';
@@ -14,6 +16,8 @@ import { User } from './user';
 	providedIn: 'root',
 })
 export class GtmService {
+
+	private uaId: string = environment.plugins.googleTagManager.uaId;
 
 	constructor(
 		private datePipe: DatePipe,
@@ -29,10 +33,39 @@ export class GtmService {
 		);
 	}
 
+	push(payload: any, uaId: string = null): void {
+		if (uaId !== null) {
+			this.uaId = uaId;
+		}
+		if (this.uaId) {
+			payload.uaId = this.uaId;
+		}
+		this.gtm.push(payload);
+	}
+
+	onVirtualPage(): void {
+		this.push({
+			event: 'virtualPage',
+		});
+	}
+
+	onOperator(operator: Operator): void {
+		this.push({
+			operatorId: operator ? (operator.id || '') : ''
+		}, operator ? environment.plugins.googleTagManager.uaIdOperator : environment.plugins.googleTagManager.uaId);
+	}
+
+	// app.js	userID
+	onUser(user: User): void {
+		this.push({
+			userID: user ? (user.recordCode || '') : ''
+		});
+	}
+
 	// BomContextData RenderGTMScript
 	/*
 	onPageView(url: string): void {
-		this.gtm.push({
+		this.push({
 			event: event
 		});
 	}
@@ -42,15 +75,8 @@ export class GtmService {
 	// newsletterService.subscribe -> gtm.event('newsletterSubscription');
 	// userService.signup -> gtm.event('websiteSignup');
 	onEvent(event: string): void {
-		this.gtm.push({
+		this.push({
 			event: event
-		});
-	}
-
-	// app.js	userID
-	onUser(user: User): void {
-		this.gtm.push({
-			userID: user.recordCode || ''
 		});
 	}
 
@@ -63,18 +89,27 @@ export class GtmService {
 	// gtm.search('Filter', 'Destinazione', tag.Name);
 	// gtm.search('Filter', 'Servizio', tag.Name);
 	// gtm.search('Search', 'Periodo', Name);
-	onSearch(type, typology, term): void {
-		this.gtm.push({
+	onSearch(type, typology, term, dateFrom?: Date, travelTime?: string, adults?: number, childs?: number): void {
+		/*
+		Modificato come richiesto da
+		Paolo Zupin <zupin@performancebased.com>
+		Email 20, Novembre 2018
+		*/
+		this.push({
 			event: 'search',
 			searchType: type,
 			searchTypology: typology,
 			searchTerm: term,
+			dateFrom: dateFrom ? this.datePipe.transform(dateFrom) : '',
+			travelTime: travelTime ? travelTime : '',
+			pax: adults ? String(adults + (childs ? childs : 0)) : '',
+			chld: childs ? String(childs) : '',
 		});
 	}
 
 	// app.js	impressions
-	onImpressions(results: SearchResult[]): void {
-		const position_shift = 1 + 0; // (($scope.query.page - 1) * $scope.pager.items_x_page);
+	onImpressions(results: SearchResult[], listType: string = 'Search Results', from: number = 0): void {
+		const positionShift = from + 1;
 		const impressions = results.map((item: SearchResult, i: number) => {
 			return {
 				name: item.frontEndName,
@@ -87,11 +122,11 @@ export class GtmService {
 				place: item.destinationDescription,
 				nation: item.destinationNation,
 				category: item.category,
-				list: 'Search Results',
-				position: i + position_shift,
+				list: listType,
+				position: i + positionShift,
 			};
 		});
-		this.gtm.push({
+		this.push({
 			'event': 'productImpression',
 			'impressions': impressions,
 		});
@@ -100,7 +135,7 @@ export class GtmService {
 	// app.js	searchTime
 	// gtm.searchTime($scope.filter);
 	onSearchTime(search: MainSearch): void {
-		this.gtm.push({
+		this.push({
 			event: 'searchTime',
 			searchType: 'Filter',
 			searchTypology: 'Periodo',
@@ -114,8 +149,7 @@ export class GtmService {
 	// app.js	clickProduct
 	// searchresult -> click
 	onProductClick(type: string, result: SearchResult, index: number): void {
-		// !!! type = 'Search Result' || 'suggestion list'; // nuovo! 'last views'
-		this.gtm.push({
+		this.push({
 			event: 'productClick',
 			actionField: {
 				list: type,
@@ -138,12 +172,13 @@ export class GtmService {
 
 	// BomContextData.cs	RenderGTMScript
 	// -> in componente
-
 	// DocumentHelper.cshtml	TrackGTM_productDetail
 	onProductDetail(result: SearchResult): void {
-		this.gtm.push({
+		this.push({
 			event: 'productDetail',
-			product: this.resultToGtm(result),
+			product: [
+				this.resultToGtm(result)
+			],
 		});
 	}
 
@@ -152,7 +187,7 @@ export class GtmService {
 	// gtm.tab('Partenze');
 	// gtm.tab('Mappa');
 	onTab(tabType: string): void {
-		this.gtm.push({
+		this.push({
 			event: 'tabClick',
 			tab: tabType,
 		});
@@ -161,7 +196,7 @@ export class GtmService {
 	// app.js	checkIn
 	// hotel -> checkIn
 	onCheckIn(booking: Booking): void {
-		this.gtm.push({
+		this.push({
 			event: 'checkIn',
 			dateFrom: this.datePipe.transform(booking.checkIn),
 		});
@@ -170,7 +205,7 @@ export class GtmService {
 	// app.js	checkOut
 	// hotel -> checkOut
 	onCheckOut(booking: Booking): void {
-		this.gtm.push({
+		this.push({
 			event: 'checkOut',
 			dateFrom: this.datePipe.transform(booking.checkOut),
 			nights: booking.daysTotal,
@@ -180,12 +215,12 @@ export class GtmService {
 	// app.js	reservationClick
 	// api.booking.reserve -> reservationClick
 	onReservationClick(cart: Cart, hotel: Hotel): void {
-		this.gtm.push({
+		this.push({
 			event: 'reservation',
 			detail: [{
 				dateFrom: this.datePipe.transform(cart.checkIn),
 				dateTo: this.datePipe.transform(cart.checkOut),
-				pax: cart.paxNumber,
+				pax: cart.detail.paxNumber,
 				chd: cart.passengers.filter(x => x.categoryCode === 'CH').length.toString(),
 				price: cart.detail.totalAmountDetail.totalAmountAfterDiscount.toFixed(2)
 			}],
@@ -208,7 +243,7 @@ export class GtmService {
 				position: ''
 			}],
 			transaction: [{
-				id: cart.code,
+				id: cart.detail.bookingFileCode,
 				revenue: cart.detail.totalAmountDetail.totalAmountAfterDiscount.toFixed(2),
 				tax: '',
 				modpag: this.paymentToGtm(cart),
@@ -219,11 +254,18 @@ export class GtmService {
 
 	// DocumentHelper.cshtml	TrackGTM_cartView
 	onCartView(cart: Cart, hotel: Hotel): void {
-		this.gtm.push({
+		/*
+		Commentato come richiesto da
+		Paolo Zupin <zupin@performancebased.com>
+		Email 20, Novembre 2018
+		*/
+		/*
+		this.push({
 			event: 'cartView',
 			product: this.hotelToGtm(hotel),
 			detail: this.cartToGtm(cart),
 		});
+		*/
 	}
 
 	// DocumentHelper.cshtml	TrackGTM_reservation
@@ -232,7 +274,7 @@ export class GtmService {
         @DocumentHelper.TrackGTM_reservation("reservation", dettagliPacchetto, detail, totaleGift, payment);
 	}*@*/
 	__onReservation(): void {
-		this.gtm.push({ 'event': 'TrackGTM_reservation' });
+		this.push({ 'event': 'TrackGTM_reservation' });
 		/*
 		// ajax url: "/ws/wsECommerce.asmx/GTM_reservation"
 		dataLayer.push({
@@ -265,12 +307,12 @@ export class GtmService {
 
 	// wsForm.js	sendActionsToGTM
 	onFormSent(model: any): void {
-		this.gtm.push({ 'event': 'TrackGTM_reservation' });
+		this.push({ 'event': 'TrackGTM_reservation' });
 	}
 
 	// condizioni-polizza-assicurativa.cshtml	condizioni-polizza-assicurativa.cshtml
 	onInsurance(): void {
-		this.gtm.push({ 'event': 'TrackGTM_reservation' });
+		this.push({ 'event': 'TrackGTM_reservation' });
 	}
 
 	// private conversions
@@ -327,12 +369,12 @@ export class GtmService {
 	}
 
 	private topDestinationToGtm(hotel: Hotel): string {
-		if (hotel.tags) {
-			let tags = hotel.tags.filter(x => x.category === 2 || x.name === '');
+		if (hotel.tagList) {
+			let tags = hotel.tagList.filter(x => x.category === 2 || x.name === '');
 			if (tags.length && tags[0].name.trim()) {
 				return tags[0].name;
 			} else {
-				tags = hotel.tags.filter(x => x.category === 3 || x.name === '');
+				tags = hotel.tagList.filter(x => x.category === 3 || x.name === '');
 				return tags.length ? tags[0].name : '';
 			}
 		}

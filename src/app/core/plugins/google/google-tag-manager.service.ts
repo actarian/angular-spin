@@ -1,12 +1,17 @@
 
 import { isPlatformBrowser } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Inject, Injectable, NgZone, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { ORIGIN_URL } from '@nguniversal/aspnetcore-engine/tokens';
 import { Observable, of } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { OnceService } from '../../once';
+
+export class GoogleTagManagerPageViewEvent {
+	dataLayer: any[];
+	url: string;
+}
 
 export class GoogleTagManagerConfig {
 	id: string;
@@ -25,6 +30,7 @@ export class GoogleTagManagerService {
 	constructor(
 		@Inject(PLATFORM_ID) private platformId: string,
 		@Inject(ORIGIN_URL) private originUrl: string,
+		private zone: NgZone,
 		private onceService: OnceService,
 		private router: Router,
 	) {
@@ -70,19 +76,21 @@ export class GoogleTagManagerService {
 	}
 
 	push(payload: any): void {
-		if (this.dataLayer) {
-			this.dataLayer.push(payload);
-			console.log('GoogleTagManagerConfig.push', payload);
-		} else {
-			this.once().pipe(
-				first(),
-			).subscribe(dataLayer => {
-				if (this.dataLayer) {
-					this.dataLayer.push(payload);
-					console.log('GoogleTagManagerConfig.push', payload);
-				}
-			});
-		}
+		this.zone.runOutsideAngular(() => {
+			if (this.dataLayer) {
+				this.dataLayer.push(payload);
+				console.log('GoogleTagManagerConfig.push', payload);
+			} else {
+				this.once().pipe(
+					first(),
+				).subscribe(dataLayer => {
+					if (this.dataLayer) {
+						this.dataLayer.push(payload);
+						console.log('GoogleTagManagerConfig.push', payload);
+					}
+				});
+			}
+		});
 	}
 }
 

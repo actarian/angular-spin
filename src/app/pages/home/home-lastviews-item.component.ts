@@ -19,14 +19,15 @@ export class HomeLastViewsItemComponent {
 		// private dispatcher: EventDispatcherService,
 		public wishlist: WishlistService,
 		private gtm: GtmService,
-	) { }
+	) {
+	}
 
 	onBeforeNav() {
-		this.gtm.onProductClick('last views', this.item, this.index);
+		this.gtm.onProductClick('Last Views', this.item, this.index);
 		/*
 		this.dispatcher.emit({
 			type: 'onProductClick',
-			data: { type: 'last views', result: this.item, index: this.index, }
+			data: { type: 'Last Views', result: this.item, index: this.index, }
 		});
 		*/
 	}

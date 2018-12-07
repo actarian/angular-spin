@@ -47,6 +47,7 @@ Accordion
 
 	&-content-wrapper {
 		overflow: hidden;
+		-webkit-overflow-scrolling: touch;
 
 		@media print {
 			overflow: visible;

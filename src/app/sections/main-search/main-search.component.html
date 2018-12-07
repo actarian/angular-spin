@@ -37,7 +37,7 @@
 		<div class="main-search--trigger" (click)="tab = tabs.Date" #tabDate>
 			<label for="main-search--date">Data di partenza</label>
 			<input placeholder="Seleziona una data" class="with-reset" disabled type="text" id="main-search--date" [value]="model.startDate | date : 'dd MMM yyyy'">
-			<span class="reset" (click)="model.startDate = null; query.focus()" [hidden]="!model.startDate">
+			<span class="reset" (click)="model.startDate = null;" [hidden]="!model.startDate">
 				<svg>
 					<use xlink:href="#ico-reset"></use>
 				</svg>
@@ -161,7 +161,7 @@
 				</div>
 				<div class="child-ages">
 					<div class="child-age" *ngFor="let child of model.childrens; let index = index">
-						<strong>Età bambino {{index}}</strong>
+						<strong>Età bambino {{index + 1}}</strong>
 						<div class="custom-select">
 							<select dir="rtl" name="{{'age' + index}}" [(ngModel)]="child.age">
 								<option *ngFor="let age of search.ages" [ngValue]="age">{{age}}</option>

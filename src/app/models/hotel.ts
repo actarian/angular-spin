@@ -73,7 +73,7 @@ export class Hotel implements Document {
 	//
 	location: HotelLocation;
 	address: HotelAddress;
-	tags: Tag[];
+	tagList: Tag[];
 	statisticCodes: any;
 	//
 	trustPilot_averageStars?: number;
@@ -122,7 +122,7 @@ export class Hotel implements Document {
 			//
 			this.location = options.location;
 			this.address = options.address;
-			this.tags = options.tags;
+			this.tagList = options.tagList;
 			this.statisticCodes = options.statisticCodes;
 			this.relatedSearch = options.relatedSearch;
 			if (this.relatedSearch) {

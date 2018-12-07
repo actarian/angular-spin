@@ -7,3 +7,5 @@ interface NodeModule {
 interface JQuery {
 	fancybox(options?: any): any;
 }
+
+declare module 'codice-fiscale-js';

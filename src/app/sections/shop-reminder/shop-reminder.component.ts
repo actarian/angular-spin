@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { combineLatest, Observable, of } from 'rxjs';
-import { filter, switchMap, takeUntil } from 'rxjs/operators';
+import { filter, first, switchMap, takeUntil } from 'rxjs/operators';
 import { DisposableComponent } from '../../core/disposable';
 import { Cart, CartService } from '../../models';
 
@@ -51,7 +51,11 @@ export class ShopReminderComponent extends DisposableComponent implements OnInit
 	}
 
 	removeFromCart(): void {
-		this.cartService.removeFromCart();
+		this.cartService.removeFromCart().pipe(
+			first(),
+		).subscribe(results => {
+			// none
+		});
 	}
 
 }

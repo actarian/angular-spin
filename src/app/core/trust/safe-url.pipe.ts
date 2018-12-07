@@ -15,6 +15,7 @@ export class SafeUrlPipe implements PipeTransform {
 	) { }
 
 	transform(url: string) {
+		console.log(url);
 		return this.sanitizer.bypassSecurityTrustResourceUrl(url);
 	}
 }

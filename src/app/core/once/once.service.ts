@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Inject, Injectable, NgZone, PLATFORM_ID } from '@angular/core';
 import { fromEvent, Observable, of } from 'rxjs';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { map } from 'rxjs/operators';
@@ -15,11 +15,13 @@ export class OnceService {
 	private paths: string[] = [];
 
 	constructor(
-		@Inject(PLATFORM_ID) private platformId: string
+		@Inject(PLATFORM_ID) private platformId: string,
+		private zone: NgZone,
 	) { }
 
 	script(url: string, callback?: string | boolean): Observable<Event> {
 		if (isPlatformBrowser(this.platformId)) {
+			// !!! this.zone.runOutsideAngular(() => {
 			if (this.paths.indexOf(url) === -1) {
 				this.paths.push(url);
 				let callbackName: string;
@@ -56,6 +58,7 @@ export class OnceService {
 			} else {
 				return of(new Event('loaded!'));
 			}
+			// });
 		} else {
 			return of(null);
 		}

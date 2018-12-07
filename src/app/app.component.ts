@@ -1,6 +1,6 @@
-import { Component, DoCheck } from '@angular/core';
+import { AfterViewInit, Component, DoCheck } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { Label, LabelService, LocalStorageService, SlugService } from './core';
+import { GoogleTagManagerPageViewEvent, Label, LabelService, LocalStorageService, SlugService } from './core';
 import { DisposableComponent } from './core/disposable';
 import { GtmService } from './models';
 
@@ -10,9 +10,8 @@ import { GtmService } from './models';
 	styleUrls: ['./app.component.scss']
 })
 
-export class AppComponent extends DisposableComponent implements DoCheck {
+export class AppComponent extends DisposableComponent implements DoCheck, AfterViewInit {
 
-	private date = new Date();
 	public cookieAccepted: boolean;
 
 	constructor(
@@ -35,7 +34,9 @@ export class AppComponent extends DisposableComponent implements DoCheck {
 		this.labelService.register().pipe(
 			takeUntil(this.unsubscribe)
 		).subscribe();
+	}
 
+	ngAfterViewInit() {
 		// observe gtm service
 		this.gtm.observe().pipe(
 			takeUntil(this.unsubscribe)
@@ -49,6 +50,24 @@ export class AppComponent extends DisposableComponent implements DoCheck {
 		// console.log('ngDoCheck');
 		this.slugService.collect();
 		this.labelService.collect();
+	}
+
+	onPageView(e: GoogleTagManagerPageViewEvent) {
+		this.gtm.onVirtualPage();
+		/*
+		const event = {
+			event: 'virtualPage',
+			// url: url,
+		}; // Paolo Zupin <zupin@performancebased.com> (email 03/12/2018)
+		e.dataLayer.push(event);
+		*/
+		/*
+		_bcd.Set("wsDebug", 1);
+		_bcd.Set("wsPage", doc.CO_ID);
+		_bcd.Set("wsCategory", doc.CA_ID);
+		_bcd.Set("wsDocType", doc.DocType);
+		_bcd.Set("wsTemplate", doc.Data["te_id"]);
+		*/
 	}
 
 	acceptCookie() {

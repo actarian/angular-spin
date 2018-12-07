@@ -1,0 +1,100 @@
+<div class="generic-component">
+	<div class="container">
+		<h1 class="h1 title">Richiesta di contatto</h1>
+		<h3 class="h3">
+			Telefono
+		</h3>
+		<p>
+			Per informazioni e assistenza nella scelta di acquisto della tua vacanza, contattaci allo 045 9599.
+		</p>
+		<h3 class="h3">
+			Orari
+		</h3>
+		<p>
+			<strong>Lunedì - Venerdì</strong> dalle 09:00 alle 19:00<br>
+			<strong>Sabato</strong> dalle 09:00 alle 17:00
+		</p>
+		<br>
+		<form class="form" [ngClass]="{ submitted: signUp.submitted }" name="signUp" role="form" novalidate autocomplete="off" (ngSubmit)="signUp.valid && onSignUp()" #signUp="ngForm">
+			<div class="fieldset">
+				<div class="form-group">
+					<label>Num. pratica</label>
+					<input placeholder="Num. pratica" type="text" class="form-control" name="">
+					<div *ngIf="firstName.invalid && (signUp.submitted || firstName.dirty || firstName.touched)" class="alert alert-danger">
+						<div *ngIf="firstName.errors.required">{{ 'errors.required' | translate }}</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label>Tipologia richiesta</label>
+					<select class="form-control" id="tipologia" name="tipologia" required>
+						<option value="? number:0 ?"></option>
+						<option value="1">Preventivo / Assistenza Prenotazione</option>
+						<option value="2" mandatory="mandatory">Modifica prenotazione</option>
+						<option value="3">Pagamento e Stato Prenotazione</option>
+						<option value="4" mandatory="mandatory">Richiesta documenti di viaggio</option>
+						<option value="5" mandatory="mandatory">Cancellazione prenotazione</option>
+						<option value="6">Reclami e segnalazioni</option>
+						<option value="7">Altro</option>
+					</select>
+					<div *ngIf="firstName.invalid && (signUp.submitted || firstName.dirty || firstName.touched)" class="alert alert-danger">
+						<div *ngIf="firstName.errors.required">{{ 'errors.required' | translate }}</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label>{{ 'signUp.firstName' | translate }}</label>
+					<input placeholder="{{ 'signUp.firstName' | translate }}" type="text" class="form-control" required [(ngModel)]="model.firstName" name="firstName" #firstName="ngModel" autocomplete="firstName">
+					<div *ngIf="firstName.invalid && (signUp.submitted || firstName.dirty || firstName.touched)" class="alert alert-danger">
+						<div *ngIf="firstName.errors.required">{{ 'errors.required' | translate }}</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label>{{ 'signUp.lastName' | translate }}</label>
+					<input placeholder="{{ 'signUp.lastName' | translate }}" type="text" class="form-control" required [(ngModel)]="model.lastName" name="lastName" #lastName="ngModel" autocomplete="lastName">
+					<div *ngIf="lastName.invalid && (signUp.submitted || lastName.dirty || lastName.touched)" class="alert alert-danger">
+						<div *ngIf="lastName.errors.required">{{ 'errors.required' | translate }}</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label>{{ 'signUp.email' | translate }}</label>
+					<input placeholder="{{ 'signUp.email' | translate }}" type="email" class="form-control" required pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" match="emailConfirm" reverse="true" [(ngModel)]="model.email" name="email" #email="ngModel" autocomplete="email">
+					<div *ngIf="email.invalid && (signUp.submitted || email.dirty || email.touched)" class="alert alert-danger">
+						<div *ngIf="email.errors.required">{{ 'errors.required' | translate }}</div>
+						<div *ngIf="email.errors.pattern">{{ 'errors.email' | translate }}</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label>Telefono</label>
+					<input placeholder="Telefono" type="text" class="form-control" name="">
+					<div *ngIf="firstName.invalid && (signUp.submitted || firstName.dirty || firstName.touched)" class="alert alert-danger">
+						<div *ngIf="firstName.errors.required">{{ 'errors.required' | translate }}</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="">Messaggio</label>
+				<textarea class="form-control" name="" id="" rows="5"></textarea>
+			</div>
+			<div class="form-group form-group--errors">
+				<h4>Informativa Privacy</h4>
+				<div class="radio">
+					<input type="hidden" [(ngModel)]="model.acceptPrivacyPolicies" required name="acceptPrivacyPolicies" #acceptPrivacyPolicies="ngModel">
+					<div class="label-group">
+						<label><input type="radio" class="form-control" name="acceptPrivacyPolicies" [(ngModel)]="model.acceptPrivacyPolicies" [value]="true"><span>acconsento</span></label>
+						<label><input type="radio" class="form-control" name="acceptPrivacyPolicies" [(ngModel)]="model.acceptPrivacyPolicies" [value]="null"><span>non acconsento</span></label>
+					</div>
+					<span class="form-label">Preso atto dell'<a href="/media/userfiles/files/20180522-Informativa_Newsletter.pdf" target="_blank">informativa</a>, accetto al trattamento dei miei dati personali ai fini dell’invio di proposte commerciali da parte di Eurospin.</span>
+				</div>
+				<div *ngIf="acceptPrivacyPolicies.invalid && (signUp.submitted || acceptPrivacyPolicies.dirty || acceptPrivacyPolicies.touched)" class="alert alert-danger">
+					<div *ngIf="acceptPrivacyPolicies.errors.required">{{ 'errors.required' | translate }}</div>
+				</div>
+			</div>
+			<br>
+			<button type="submit" class="btn" [ngClass]="{ 'btn--busy': busy }" title="Conferma">
+				<span>Iscriviti</span>
+			</button>
+		</form>
+
+	</div>
+</div>
+<section-value-proposition></section-value-proposition>

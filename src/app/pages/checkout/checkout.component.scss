@@ -50,18 +50,18 @@ Checkout page
 
 		label {
 			flex: 0 0 100%;
+			max-width: none;
 		}
 
 		input {
 			flex: 1 1 auto;
-			width: auto;
 			max-width: none;
+			width: auto;
 		}
 
 		.btn {
 			margin-left: 10px;
 			flex: 1 1 auto;
-			min-width: 0;
 			max-width: 120px;
 			width: auto;
 			align-self: flex-start;
@@ -83,11 +83,13 @@ Checkout page
 
 		.form-group {
 			flex: 1 1 auto;
+			max-width: none;
 		}
 
 		.btn {
 			margin-left: 10px;
 			flex: 0 1 auto;
+			max-width: none;
 			min-width: 60px;
 			width: auto;
 			align-self: flex-start;
@@ -139,6 +141,7 @@ Checkout Steps
 
 	@include xxs-down {
 		margin-bottom: 0;
+		position: relative;
 		position: sticky;
 		top: 0;
 		z-index: 10;
@@ -169,6 +172,7 @@ Checkout Steps
 		position: relative;
 		z-index: 1;
 		flex: 1 1 auto;
+		max-width: none;
 
 		&:first-child {
 			&:before {
@@ -203,6 +207,7 @@ Checkout Steps
 			font-size: 12px;
 			line-height: 28px;
 			margin: 0 auto;
+			color: #fff;
 		}
 
 		&.active {
@@ -233,12 +238,14 @@ Checkout hotel resume
 .checkout-hotel-resume {
 	width: 300px;
 	flex: 0 0 300px;
+	width: 300px;
 	display: block;
 	padding: 0;
 	z-index: 10;
 	margin-right: 15px;
 	background: #fafafa;
 	order: 2;
+	position: relative;
 	position: sticky;
 	top: 0;
 
@@ -312,6 +319,7 @@ Checkout hotel resume
 		.hotel-head {
 			color: $tit-color;
 			flex: 1 0 calc(100% - 40px);
+			max-width: calc(100% - 40px);
 			line-height: 1.2;
 			padding-right: 6px;
 
@@ -365,8 +373,8 @@ Checkout hotel resume
 
 			span,
 			strong {
-				width: 50%;
 				flex: 0 0 50%;
+				width: 50%;
 			}
 
 			span {
@@ -445,11 +453,11 @@ Checkout hotel resume
 
 .checkout-container {
 	padding: 0 15px;
-	flex: 0 1 calc(100% - 350px);
-	max-width: calc(100% - 350px);
+	flex: 0 1 calc(100% - 375px);
+	width: calc(100% - 375px);
 
 	@include xs-down {
 		float: 0 0 100%;
-		max-width: 100%;
+		width: 100%;
 	}
 }

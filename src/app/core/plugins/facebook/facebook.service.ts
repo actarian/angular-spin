@@ -82,7 +82,7 @@ export class FacebookService {
 	* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	facebook(): Observable<any> {
-		if (isPlatformBrowser(this.platformId) && window.location.protocol === 'https') {
+		if (isPlatformBrowser(this.platformId) && window.location.protocol.indexOf('https') !== -1) {
 			if (this.FB) {
 				return of(this.FB);
 			} else {

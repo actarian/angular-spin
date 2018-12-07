@@ -38,7 +38,7 @@
 							<div *ngIf="lastName.errors.required">{{ 'errors.required' | translate }}</div>
 						</div>
 					</div>
-					<div class="form-group form-group-errors">
+					<div class="form-group form-group--errors">
 						<label>{{ 'signUp.email' | translate }}</label>
 						<input placeholder="{{ 'signUp.email' | translate }}" type="email" class="form-control" required pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" [(ngModel)]="model.email" name="email" #email="ngModel" autocomplete="email">
 						<div *ngIf="email.invalid && (contact.submitted || email.dirty || email.touched)" class="alert alert-danger">
@@ -52,18 +52,24 @@
 					</div>
 					<div class="form-group">
 						<label>Messaggio</label>
-						<input placeholder="Messaggio" type="textarea" class="form-control" required [(ngModel)]="model.message" name="message" #message="ngModel" autocomplete="message">
+						<textarea placeholder="Messaggio" class="form-control" required [(ngModel)]="model.message" name="message" #message="ngModel" autocomplete="message" rows="5"></textarea>
 						<div *ngIf="message.invalid && (contact.submitted || message.dirty || message.touched)" class="alert alert-danger">
 							<div *ngIf="message.errors.required">{{ 'errors.required' | translate }}</div>
 						</div>
 					</div>
 				</div>
-				<div class="form-group form-group-errors">
-					<div class="checkbox">
-						<label>
-							<input type="checkbox" class="form-check-input" required [(ngModel)]="model.privacy" name="privacy" #privacy="ngModel">
-							<span>Preso atto dell'<a href="/media/userfiles/files/20180522-Informativa_Contatti.pdf" target="_blank">informativa</a>, acconsento al trattamento dei miei dati personali ai fini dell'invio di proposte commerciali da parte di Eurospin.</span>
-						</label>
+				<div class="form-group form-group--errors">
+					<h4>
+						<a href="/media/userfiles/files/20180522-Informativa_Contatti.pdf" target="_blank">Informativa Privacy</a>
+					</h4>
+					<div class="radio">
+						<input type="hidden" [(ngModel)]="model.privacy" required name="privacy" #privacy="ngModel">
+						<span class="form-label">Preso atto dell'informativa,</span>
+						<div class="label-group">
+							<label><input type="radio" class="form-control" name="privacy" [(ngModel)]="model.privacy" [value]="true"><span>acconsento</span></label>
+							<label><input type="radio" class="form-control" name="privacy" [(ngModel)]="model.privacy" [value]="false"><span>non acconsento</span></label>
+						</div>
+						<span class="form-label">al trattamento dei miei dati personali ai fini dell'invio di proposte commerciali da parte di Eurospin.</span>
 					</div>
 					<div *ngIf="privacy.invalid && (contact.submitted || privacy.dirty || privacy.touched)" class="alert alert-danger">
 						<div *ngIf="privacy.errors.required">{{ 'errors.required' | translate }}</div>

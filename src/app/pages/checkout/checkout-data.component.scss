@@ -1,6 +1,5 @@
 @import "~scss/variables";
 
-
 .btn--login {
 	color: #fff;
 	display: inline-block;
@@ -35,18 +34,18 @@ h3 {
 
 	label {
 		flex: 0 0 100%;
+		max-width: none;
 	}
 
 	input {
 		flex: 1 1 auto;
-		width: auto;
 		max-width: none;
+		width: auto;
 	}
 
 	.btn {
 		margin-left: 10px;
 		flex: 1 1 auto;
-		min-width: 0;
 		max-width: 120px;
 		width: auto;
 		align-self: flex-start;
@@ -68,6 +67,7 @@ h3 {
 
 	.form-group {
 		flex: 1 1 auto;
+		max-width: none;
 	}
 
 	.btn {

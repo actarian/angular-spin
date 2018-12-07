@@ -1,4 +1,6 @@
+export * from './default-page';
 export * from './link.service';
+export * from './not-found-page';
 export * from './page';
 export * from './page-not-found.component';
 export * from './page-outlet.component';

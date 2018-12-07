@@ -1,0 +1,12 @@
+<div (clickOutside)="onCancel()">
+	<input class="form-control" type="text" [placeholder]="placeholder" [value]="value" name="query" (focus)="onFocus()" autocomplete="autocomplete" #query>
+	<div class="body" #scrollable>
+		<ul class="popup-list" *ngIf="filteredItems.length">
+			<ng-template ngFor let-item [ngForOf]="filteredItems" let-index="index">
+				<li class="item" [ngClass]="{ active: index === active }" (click)="onClick(item)" (mouseover)="onMouseOver(index)" *ngIf="index < visibleItems">
+					<h4 class="name" [innerHTML]="query ? (item.name | highlight : query) : item.name">---</h4>
+				</li>
+			</ng-template>
+		</ul>
+	</div>
+</div>

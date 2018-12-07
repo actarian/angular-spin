@@ -1,6 +1,6 @@
 import { Inject, Injectable, Injector, PLATFORM_ID } from '@angular/core';
 import { BehaviorSubject, Observable, of, timer } from 'rxjs';
-import { map, mergeMap, switchMap } from 'rxjs/operators';
+import { distinctUntilChanged, map, mergeMap, switchMap } from 'rxjs/operators';
 import { EntityService } from '../core/models';
 import { LocalStorageService, StorageService } from '../core/storage';
 import { SearchResult } from './search';
@@ -97,7 +97,8 @@ export class LastViewsService extends EntityService<SearchResult> {
 				} else {
 					return this.getFromStorage();
 				}
-			})
+			}),
+			distinctUntilChanged((a, b) => a.map(x => x.id).join(',') === b.map(x => x.id).join(',')), // added for gtm
 		);
 	}
 

@@ -1,0 +1,11 @@
+<div class="loader loader--spinner" *ngIf="type == types.Spinner">
+	<div class="loader__spinner">
+		<span class="spinner">&nbsp;</span>
+	</div>
+	<span class="title">{{title}}</span>
+</div>
+
+<div class="loader loader--button" *ngIf="type == types.Button">
+	<span class="title">{{title}}</span>
+	<span class="spinner">&nbsp;</span>
+</div>

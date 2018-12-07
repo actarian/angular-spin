@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 // import { FormGroup } from '@angular/forms';
-import { finalize, first, takeUntil } from 'rxjs/operators';
+import { finalize, first } from 'rxjs/operators';
 import { AuthService, AuthToken } from '../../core/auth';
 import { DisposableComponent } from '../../core/disposable';
 // import { ControlBase } from '../../core/forms';
@@ -90,11 +90,6 @@ export class AuthSignInComponent extends DisposableComponent implements OnInit {
 
 	onSubmit(): void {
 		this.submitted = true;
-		// !!!
-		if (this.model.password === 'websolute') {
-			this.model.email = '000223';
-			this.model.password = 'WS-123';
-		}
 		this.error = null;
 		this.busy = true;
 		this.userService.tryLogin(this.model).pipe(
@@ -121,12 +116,13 @@ export class AuthSignInComponent extends DisposableComponent implements OnInit {
 			const authToken = new AuthToken(user.accessToken);
 			this.authService.setToken(authToken);
 		}
-		this.modalService.complete(null, user);
+		this.modalService.close(null, user);
+		// error 401!
 	}
 
 	onForgotten(): void {
 		this.modalService.open({ component: AuthForgottenComponent }).pipe(
-			takeUntil(this.unsubscribe)
+			first()
 		).subscribe(e => {
 			if (e instanceof ModalCompleteEvent) {
 				console.log('AuthSignInComponent.onForgotten.complete');

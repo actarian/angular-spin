@@ -9,6 +9,7 @@ import { OnceService } from '../../once';
 
 export class TrustPilotConfig {
 	templateId: string = '544a426205dc0a09088833c6';
+	templateServiceId: string = '530d0eaf748a510e2093cf9b';
 	businessunitId: string = '58e253ab0000ff00059fc0fe';
 	businessunitName: string = 'www.eurospin-viaggi.it';
 }

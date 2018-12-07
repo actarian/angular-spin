@@ -86,9 +86,9 @@ export class DestinationHintComponent extends DisposableComponent implements OnI
 		this.active = index;
 	}
 
-	@HostListener('document:keyup', ['$event'])
-	onKeyup(e: KeyboardEvent) {
-		// console.log('DestinationHintComponent.document:keyup', e.key);
+	@HostListener('document:keydown', ['$event'])
+	onKeydown(e: KeyboardEvent) {
+		// console.log('DestinationHintComponent.document:keydown', e.key);
 		switch (e.key) {
 			case 'ArrowUp':
 				this.active = this.active === -1 ? this.visibleItems : this.active;

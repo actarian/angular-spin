@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ControlBase, ControlBaseOptions, ControlCheckbox, ControlEmail, ControlNumber, ControlPassword, ControlRadio, ControlSelect, ControlService, ControlText } from './controls';
+import { ControlBase, ControlBaseOptions, ControlCheckbox, ControlEmail, ControlMarkdown, ControlNumber, ControlPassword, ControlRadio, ControlSelect, ControlService, ControlText } from './controls';
 
 @Injectable({
 	providedIn: 'root'
@@ -26,6 +26,8 @@ export class FormService {
 					return new ControlRadio(o);
 				case 'select':
 					return new ControlSelect(o);
+				case 'markdown':
+					return new ControlMarkdown(o);
 				case 'text':
 					return new ControlText(o);
 				default:

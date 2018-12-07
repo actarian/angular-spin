@@ -14,4 +14,5 @@ export * from './search';
 export * from './serp';
 export * from './structure';
 export * from './support';
+export * from './survey';
 

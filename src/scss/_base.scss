@@ -7,6 +7,16 @@ body.modal-active {
 	overflow: hidden;
 }
 
+.page {
+	// margin: 0 0 60px;
+
+	@include md-up {
+		&.page--editing {
+			padding-right: 320px;
+		}
+	}
+}
+
 .wrapper {
 	max-width: 1920px;
 	min-height: 100vh;
@@ -46,10 +56,6 @@ body.modal-active {
 img {
 	max-width: 100%;
 	height: auto;
-}
-
-.page {
-	margin: 0 0 60px;
 }
 
 svg {
@@ -105,8 +111,7 @@ Stars
 	em {
 		display: inline-block;
 		order: 1;
-		background-color: $star-color;
-		mask-image: url(assets/img/star.svg);
+		background: url(assets/img/star-yellow.svg) no-repeat center;
 		width: 12px;
 		height: 12px;
 		text-indent: -9999px;
@@ -123,7 +128,7 @@ Stars
 			text-indent: 0;
 			color: $star-color;
 			mask-image: none;
-			background-color: transparent !important;
+			background: transparent !important;
 			position: relative;
 			left: 2px;
 			top: 2px;
